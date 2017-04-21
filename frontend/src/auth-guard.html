@@ -1,0 +1,88 @@
+<!-- Imports polymer -->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/google-signin/google-signin-aware.html">
+<link rel="import" href="../bower_components/google-signin/google-signin.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="/src/my-app.html">
+<!-- Defines element markup -->
+<dom-module id="auth-guard">
+    <template>
+        <google-signin-aware hosted-domain="lunatech.com" client-id="172845937673-smq0kn52ie1spg9irdrhk4stgk7nrp0g.apps.googleusercontent.com"></google-signin-aware>
+        <template is="dom-if" if="{{!authenticated}}">
+          <paper-dialog id="login-dialog" modal="true" opened="true">
+            <h2>Lunatech Competence Center</h2>
+            <paper-dialog-scrollable>
+              Please sign in with your Lunatech G-Suite account!
+            </paper-dialog-scrollable>
+            <div class="buttons">
+              <google-signin width="wide" height="tall" hosted-domain="lunatech.com" client-id="172845937673-smq0kn52ie1spg9irdrhk4stgk7nrp0g.apps.googleusercontent.com"></google-signin>
+            </div>
+          </paper-dialog>
+        </template>
+        <template is="dom-if" if="{{authenticated}}">
+          <my-app basic-profile={{basicProfile}} id-token={{idToken}}></my-app>
+        </template>
+    </template>
+</dom-module>
+
+<!-- Registers custom element -->
+<script>
+Polymer({
+    is: 'auth-guard',
+    properties: {
+      authenticated: {
+        type: Boolean,
+        value: false
+      },
+
+      basicProfile: {
+        type: Object
+      },
+
+      idToken: {
+        type: String
+      }
+    },
+
+    listeners: {
+      'google-signin-success': '_signinSuccess',
+      'google-signed-out': '_signedOut',
+      'logout': '_handleLogout'
+    },
+
+    _handleLogout: function() {
+      console.log("Setting authenticated to false")
+      this.authenticated = false;
+      this.$$('google-signin-aware').signOut();
+      console.log("Signout triggered")
+    },
+
+    // TODO, google-signin-aware docs says: "You can bind to isAuthorized property to monitor authorization state."
+    _signinSuccess: function() {
+      console.log("Signin success event!")
+      // See the reference: https://developers.google.com/identity/sign-in/web/reference
+      googleAuth = gapi.auth2.getAuthInstance();
+      currentUser = googleAuth.currentUser.get();
+      basicProfile = currentUser.getBasicProfile();
+
+      // TODO, do a domain check?
+      domain = currentUser.getHostedDomain();
+
+      this.authenticated = true;
+      this.basicProfile = basicProfile;
+      this.idToken = currentUser.getAuthResponse().id_token;
+
+      console.log("Login dialog:", this.$$("#login-dialog"));
+      console.log("Closing now!");
+      this.$$("#login-dialog").close();
+    },
+
+    _signedOut: function() {
+      console.log("_signedOut handler")
+      this.authenticated = false;
+      this.basicProfile = null;
+      this.idToken = null;
+    }
+
+});
+</script>

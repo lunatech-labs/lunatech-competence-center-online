@@ -1,0 +1,66 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/cv-editor/cv-editor.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="page-cv-editor">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+        padding: 10px;
+      }
+    </style>
+    <iron-meta id="meta"></iron-meta>
+
+    <iron-ajax id="ajax"
+      url="http://localhost:9000/foo"
+      handle-as="json"
+      on-response="cvLoaded"></iron-ajax>
+
+    <div class="card">
+      <div class="circle">1</div>
+      <h1>Edit your CV</h1>
+
+      <cv-editor data='{ "educations": [] }'></cv-editor>
+
+      <span on-tap="logData">Log Data</span>
+
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'page-cv-editor',
+
+      ready: function() {
+
+        console.log("Hey! Ready!")
+        token = this.$.meta.byKey("idToken")
+        console.log(token)
+        this.$.ajax.headers = { "X-ID-Token": token}
+        this.$.ajax.generateRequest();
+      },
+
+      cvLoaded: function(data) {
+        console.log(data.detail.response);
+      },
+
+      logData: function() {
+        console.log(this.$$("cv-editor"))
+        console.log(this.$$("cv-editor").data)
+      }
+    });
+  </script>
+</dom-module>

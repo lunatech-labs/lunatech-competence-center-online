@@ -1,0 +1,114 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-input/paper-textarea.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-card/paper-card.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+
+<!--
+`cv-editor`
+CV Editor
+
+@demo demo/index.html
+-->
+
+<dom-module id="cv-editor">
+
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      .card-group {
+        margin-t  op: -20px;
+      }
+
+      .card-group paper-card {
+        margin-top: 20px;
+      }
+
+      .card-actions {
+        text-align: right;
+      }
+
+      paper-card {
+        width:500px;
+      }
+
+      paper-button.add {
+        margin-top: 10px;
+      }
+
+    </style>
+    <h1>CV Editor</h1>
+    <h2>Basic Info</h2>
+    <paper-card>
+      <div class="card-content">
+        <paper-input label="Name" value="{{data.basics.name}}"></paper-input>
+        <paper-input label="Label" value="{{data.basics.label}}"></paper-input>
+        <paper-textarea label="Summary" value="{{data.basics.summary}}"></paper-textarea>
+      </div>
+    </paper-card>
+
+
+    <h2>Education</h2>
+    <div class="card-group">
+    <template is="dom-repeat" items="{{data.education}}">
+
+      <paper-card>
+        <div class="card-content">
+          <paper-input label="Area" value="{{item.area}}"></paper-input>
+          <paper-input label="Institution" value="{{item.institution}}"></paper-input>
+          <paper-input label="Study Type" value="{{item.studyType}}"></paper-input>
+        </div>
+        <div class="card-actions">
+          <paper-icon-button icon="delete" on-click="removeEducation"></paper-icon-button>
+        </div>
+      </paper-card>
+
+    </template>
+    </div class="card-group">
+
+<span on-tap="show">Show</span>
+
+    <paper-button class="add" raised class="primary" on-click="addEducation"><iron-icon icon="add-circle"></iron-icon>Add education</paper-button>
+
+
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'cv-editor',
+
+      properties: {
+        data: {
+          type: Object,
+        },
+      },
+
+      _defaultData: {
+        education: {}
+      },
+
+      addEducation: function() {
+        this.push('data.education', {})
+      },
+
+      removeEducation: function(e) {
+        this.splice('data.education', e.model.index, 1);
+      },
+
+      show: function() {
+        console.log(this.data);
+      }
+
+    });
+  </script>
+</dom-module>

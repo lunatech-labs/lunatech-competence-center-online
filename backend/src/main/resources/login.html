@@ -1,0 +1,25 @@
+<html lang="en">
+  <head>
+    <meta name="google-signin-scope" content="email">
+    <meta name="google-signin-client_id" content="181311629383-p5hh74lss2ksp0s9jqsjdig7mjk355ic.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+  </head>
+  <body>
+    <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+    <script>
+      function onSignIn(googleUser) {
+        // The ID token you need to pass to your backend:
+        var idToken = googleUser.getAuthResponse().id_token;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/google-signin');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function() {
+          console.log('Signed in as: ' + xhr.responseText);
+        };
+        xhr.send(JSON.stringify({ idToken: idToken }));
+        
+      };
+    </script>
+  </body>
+</html>
