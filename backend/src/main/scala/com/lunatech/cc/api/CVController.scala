@@ -18,22 +18,44 @@ import io.circe.generic.semiauto._
 import cats._, cats.data._, cats.implicits._
 import doobie.imports._
 
+import java.util.UUID
+
 import fs2._
 
-class CVController(googleTokenVerifier: GoogleTokenVerifier) {
+
+class CVController(googleTokenVerifier: GoogleTokenVerifier, transactor: Transactor[Task]) {
+  import CVController._
 
   val `GET /cvs/me`: Endpoint[Json] = get("cvs" :: "me" :: header("X-ID-Token")) { (token: String) =>
     googleTokenVerifier.verifyToken(token) match {
       case Some(user) =>
-        Ok(Json.obj("greeting" -> Json.fromString(s"Hello, ${user.name}")))
+
+        findByPerson(user.email).transact(transactor).unsafeRun() match {
+          case Some(json) => Ok(json)
+          case None => NotFound(new RuntimeException("No CV found"))
+        }
+
       case None =>
-        NotFound(new RuntimeException("Invalid token"))
+        Unauthorized(new RuntimeException("Invalid token"))
+    }
+  }
+
+  val `PUT /cvs/me`: Endpoint[Unit] = put("cvs" :: "me" :: header("X-ID-Token") :: jsonBody[Json]) { (token: String, cv: Json) =>
+    googleTokenVerifier.verifyToken(token) match {
+      case Some(user) =>
+
+        insert(user.email, cv).transact(transactor).unsafeRun()
+
+        Ok()
+
+      case None =>
+        Unauthorized(new RuntimeException("Invalid token"))
     }
   }
 
 }
 
-object CVController extends App {
+object CVController { // extends App {
 
   implicit val JsonMeta: Meta[Json] =
   Meta.other[PGobject]("json").nxmap[Json](
@@ -46,13 +68,13 @@ object CVController extends App {
     }
   )
 
-/*
-  val xa = DriverManagerTransactor[Task](
-    "org.postgresql.Driver", "jdbc:postgresql:competence-center", "postgres", "")
+  def findByPerson(email: String): ConnectionIO[Option[Json]] = sql"select cv from cvs where person = $email order by created_on DESC limit 1".query[Json].option
 
-  def findByPerson(email: String): ConnectionIO[Option[CV]] = sql"select cv from cvs where person = $email order by created_on DESC limit 1".query[Json].option // ???
+  def insert(email: String, cv: Json): ConnectionIO[Int] = {
+    val id = UUID.randomUUID
+    val q = sql"insert into cvs (id, person, cv, created_on) VALUES (${id.toString} :: uuid, $email, $cv, CURRENT_TIMESTAMP)".update
+      println(q.sql)
+    q.run
+  }
 
-  val out = findByPerson("erik.bakker@lunatech.com").transact(xa).unsafeRun()
-  println(out)
-  */
 }

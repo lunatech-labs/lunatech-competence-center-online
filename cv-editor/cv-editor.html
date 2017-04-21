@@ -44,7 +44,6 @@ CV Editor
       }
 
     </style>
-    <h1>CV Editor</h1>
     <h2>Basic Info</h2>
     <paper-card>
       <div class="card-content">
@@ -72,13 +71,7 @@ CV Editor
 
     </template>
     </div class="card-group">
-
-<span on-tap="show">Show</span>
-
     <paper-button class="add" raised class="primary" on-click="addEducation"><iron-icon icon="add-circle"></iron-icon>Add education</paper-button>
-
-
-
   </template>
 
   <script>
@@ -93,12 +86,19 @@ CV Editor
         },
       },
 
-      _defaultData: {
-        education: {}
+      ready: function() {
+        if(this.data.basics === undefined) {
+          this.set('data.basics', {});
+        }
+
+        if(this.data.education === undefined ){
+          this.set('data.education', []);
+        }
       },
 
       addEducation: function() {
-        this.push('data.education', {})
+
+        this.push('data.education', { 'foo': 'bar' });
       },
 
       removeEducation: function(e) {

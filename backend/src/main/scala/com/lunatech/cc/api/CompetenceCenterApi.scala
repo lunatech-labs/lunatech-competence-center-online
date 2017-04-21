@@ -12,19 +12,24 @@ import io.finch.circe._
 
 import io.circe._
 import io.circe.generic.semiauto._
+import doobie.imports._
+import fs2._
 
 object CompetenceCenterApi extends App {
+
+  val transactor = DriverManagerTransactor[Task](
+    "org.postgresql.Driver", "jdbc:postgresql:competence-center?loggerLevel=DEBUG", "postgres", "")
 
   val googleTokenVerifier = new GoogleTokenVerifier("172845937673-smq0kn52ie1spg9irdrhk4stgk7nrp0g.apps.googleusercontent.com")
 
   val policy: Cors.Policy = Cors.Policy(
     allowsOrigin = _ => Some("*"),
-    allowsMethods = _ => Some(Seq("GET", "POST")),
+    allowsMethods = _ => Some(Seq("GET", "POST", "PUT", "DELETE")),
     allowsHeaders = x => Some(x))
 
-  val cvController = new CVController(googleTokenVerifier)
+  val cvController = new CVController(googleTokenVerifier, transactor)
 
-  val service = (cvController.`GET /cvs/me`).toServiceAs[Application.Json]
+  val service = (cvController.`GET /cvs/me` :+: cvController.`PUT /cvs/me`).toServiceAs[Application.Json]
 
   val corsService: Service[Request, Response] = new Cors.HttpFilter(policy).andThen(service)
 

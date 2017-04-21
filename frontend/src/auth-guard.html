@@ -51,15 +51,12 @@ Polymer({
     },
 
     _handleLogout: function() {
-      console.log("Setting authenticated to false")
       this.authenticated = false;
       this.$$('google-signin-aware').signOut();
-      console.log("Signout triggered")
     },
 
     // TODO, google-signin-aware docs says: "You can bind to isAuthorized property to monitor authorization state."
     _signinSuccess: function() {
-      console.log("Signin success event!")
       // See the reference: https://developers.google.com/identity/sign-in/web/reference
       googleAuth = gapi.auth2.getAuthInstance();
       currentUser = googleAuth.currentUser.get();
@@ -72,13 +69,10 @@ Polymer({
       this.basicProfile = basicProfile;
       this.idToken = currentUser.getAuthResponse().id_token;
 
-      console.log("Login dialog:", this.$$("#login-dialog"));
-      console.log("Closing now!");
       this.$$("#login-dialog").close();
     },
 
     _signedOut: function() {
-      console.log("_signedOut handler")
       this.authenticated = false;
       this.basicProfile = null;
       this.idToken = null;
