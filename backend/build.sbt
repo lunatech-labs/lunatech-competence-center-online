@@ -11,4 +11,9 @@ libraryDependencies ++= Seq(
   "com.google.api-client" % "google-api-client" % "1.22.0",
 
   "org.tpolecat" %% "doobie-core-cats" % "0.4.1",
-  "org.postgresql" % "postgresql" % "42.0.0")
+  "org.postgresql" % "postgresql" % "42.0.0",
+
+  "org.apache.xmlgraphics" % "fop" % "2.2",
+  "org.apache.xmlgraphics" % "batik-constants" % "1.9",
+  "org.apache.xmlgraphics" % "batik-i18n" % "1.9"
+)

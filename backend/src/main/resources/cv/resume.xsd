@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:resume="http://lunatech.com/2017/03/31/resume" attributeFormDefault="qualified"
+        elementFormDefault="qualified" targetNamespace="http://lunatech.com/2017/03/31/resume"
+        xmlns="http://www.w3.org/2001/XMLSchema">
+    <element name="resume" type="resume:resume"/>
+    <complexType name="resume">
+        <sequence>
+            <element minOccurs="0" name="basics">
+                <complexType>
+                    <sequence>
+                        <element minOccurs="0" name="name" type="string"/>
+                        <element minOccurs="0" name="firstName" type="string"/>
+                        <element minOccurs="0" name="lastName" type="string"/>
+                        <element minOccurs="0" name="label" type="string"/>
+                        <element minOccurs="0" name="startYear" type="int"/>
+                        <element minOccurs="0" name="image" type="string"/>
+                        <element minOccurs="0" name="email" type="string"/>
+                        <element minOccurs="0" name="url" type="anyURI"/>
+                        <element minOccurs="0" name="profile" type="string"/>
+                        <element minOccurs="0" name="contact">
+                            <complexType>
+                                <sequence>
+                                    <element minOccurs="0" name="name" type="string"/>
+                                    <element minOccurs="0" name="address" type="string"/>
+                                    <element minOccurs="0" name="postalCode" type="string"/>
+                                    <element minOccurs="0" name="city" type="string"/>
+                                    <element minOccurs="0" name="phone" type="string"/>
+                                    <element minOccurs="0" name="email" type="string"/>
+                                    <element minOccurs="0" name="countryCode" type="string"/>
+                                </sequence>
+                            </complexType>
+                        </element>
+                    </sequence>
+                </complexType>
+            </element>
+            <element minOccurs="0" name="educations">
+                <complexType>
+                    <sequence>
+                        <element name="education" maxOccurs="unbounded" minOccurs="0">
+                            <complexType>
+                                <sequence>
+                                    <element minOccurs="0" name="institution" type="string"/>
+                                    <element minOccurs="0" name="country" type="string"/>
+                                    <element minOccurs="0" name="studyType" type="string"/>
+                                    <element minOccurs="0" name="startDate" type="date"/>
+                                    <element minOccurs="0" name="endDate" type="date"/>
+                                    <element minOccurs="0" name="description" type="string"/>
+                                </sequence>
+                            </complexType>
+                        </element>
+                    </sequence>
+                </complexType>
+            </element>
+            <element minOccurs="0" name="skills">
+                <complexType>
+                    <sequence>
+                        <element name="skill" maxOccurs="unbounded" minOccurs="0">
+                            <complexType>
+                                <sequence>
+                                    <element minOccurs="0" name="name" type="string"/>
+                                    <element minOccurs="0" name="level" type="string"/>
+                                    <element minOccurs="0" name="category" type="string"/>
+                                </sequence>
+                            </complexType>
+                        </element>
+                    </sequence>
+                </complexType>
+            </element>
+            <element minOccurs="0" name="achievements">
+                <complexType>
+                    <sequence>
+                        <element minOccurs="0" name="achievement" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+
+            <element minOccurs="0" name="languages">
+                <complexType>
+                    <sequence>
+                        <element name="language" maxOccurs="unbounded" minOccurs="0">
+                            <complexType>
+                                <sequence>
+                                    <element minOccurs="0" name="language" type="string"/>
+                                    <element minOccurs="0" name="fluency" type="string"/>
+                                </sequence>
+                            </complexType>
+                        </element>
+                    </sequence>
+                </complexType>
+            </element>
+            <element minOccurs="0" name="projects">
+                <complexType>
+                    <sequence>
+                        <element name="project" maxOccurs="unbounded" minOccurs="0">
+                            <complexType>
+                                <sequence>
+                                    <element minOccurs="0" name="client" type="string"/>
+                                    <element minOccurs="0" name="startDate" type="date"/>
+                                    <element minOccurs="0" name="endDate" type="date"/>
+                                    <element minOccurs="0" name="role" type="string"/>
+                                    <element minOccurs="0" name="summary" type="string"/>
+                                </sequence>
+                            </complexType>
+                        </element>
+                    </sequence>
+                </complexType>
+            </element>
+            <element minOccurs="0" name="meta">
+                <complexType>
+                    <sequence>
+                        <element minOccurs="0" name="version" type="string"/>
+                        <element minOccurs="0" name="created" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+        </sequence>
+    </complexType>
+</schema>
