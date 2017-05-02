@@ -1,19 +1,13 @@
 package com.lunatech.cc.api
 
-import io.finch._
+import com.twitter.finagle.{Http, Service}
+import com.twitter.finagle.http.{Request, Response}
 import com.twitter.finagle.http.filter.Cors
-import com.twitter.finagle.Http
-import com.twitter.finagle.Service
-import com.twitter.finagle.http.{Request, Response }
-import com.twitter.finagle.http.Response
 import com.twitter.util.Await
-import com.twitter.io.{ Buf, Reader }
-import io.finch.circe._
-
-import io.circe._
-import io.circe.generic.semiauto._
 import doobie.imports._
 import fs2._
+import io.finch._
+import io.finch.circe._
 
 object CompetenceCenterApi extends App {
 

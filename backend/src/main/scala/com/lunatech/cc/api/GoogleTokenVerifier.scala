@@ -1,14 +1,12 @@
 package com.lunatech.cc.api
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
-import com.google.api.client.json.jackson.JacksonFactory
+import com.google.api.client.googleapis.auth.oauth2.{GoogleIdTokenVerifier, GooglePublicKeysManager}
 import com.google.api.client.http.javanet.NetHttpTransport
-import scala.collection.JavaConverters._
-import com.google.api.client.googleapis.auth.oauth2.GooglePublicKeysManager
-import io.circe.generic.semiauto._
+import com.google.api.client.json.jackson.JacksonFactory
 import io.circe._
+import io.circe.generic.semiauto._
+
+import scala.collection.JavaConverters._
 
 object GoogleTokenVerifier {
 
@@ -21,6 +19,7 @@ object GoogleTokenVerifier {
 }
 
 class GoogleTokenVerifier(clientId: String) {
+
   import GoogleTokenVerifier._
 
   def verifyToken(idTokenString: String): Option[GoogleUser] = {
@@ -33,29 +32,30 @@ class GoogleTokenVerifier(clientId: String) {
       .setAudience(List(clientId).asJava)
       .build()
 
-  Option(verifier.verify(idTokenString)).map { idToken =>
+    Option(verifier.verify(idTokenString)).map { idToken =>
 
-  val payload = idToken.getPayload();
+      val payload = idToken.getPayload
 
-  // Print user identifier
-  val userId = payload.getSubject();
-  println("User ID: " + userId);
-  println("PayLoad: " + payload);
+      // Print user identifier
+      val userId = payload.getSubject
+      println("User ID: " + userId)
+      println("PayLoad: " + payload)
 
-  // Get profile information from payload
-  val user = GoogleUser(
-    payload.getSubject(),
-    payload.getEmail,
-    payload.get("name").asInstanceOf[String],
-    payload.get("family_name").asInstanceOf[String],
-    payload.get("given_name").asInstanceOf[String])
+      // Get profile information from payload
+      val user = GoogleUser(
+        payload.getSubject,
+        payload.getEmail,
+        payload.get("name").asInstanceOf[String],
+        payload.get("family_name").asInstanceOf[String],
+        payload.get("given_name").asInstanceOf[String])
 
-  println(user)
+      println(user)
 
-  user
+      user
 
 
-  }}
+    }
+  }
 
 
 }
