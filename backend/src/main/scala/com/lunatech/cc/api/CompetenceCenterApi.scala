@@ -29,7 +29,7 @@ object CompetenceCenterApi extends App {
 
   val cvController = new CVController(googleTokenVerifier, transactor)
 
-  val service = (cvController.`GET /cvs/me` :+: cvController.`PUT /cvs/me`).toServiceAs[Application.Json]
+  val service = (cvController.`GET /employees` :+: cvController.`GET /employees/employeeId` :+: cvController.`GET /employees/me` :+: cvController.`PUT /employees/me` :+: cvController.`POST /cvs`).toServiceAs[Application.Json]
 
   val corsService: Service[Request, Response] = new Cors.HttpFilter(policy).andThen(service)
 
