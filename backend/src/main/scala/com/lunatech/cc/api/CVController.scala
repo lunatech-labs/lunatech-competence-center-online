@@ -7,6 +7,7 @@ import com.lunatech.cc.models.CV
 import doobie.imports._
 import fs2._
 import io.circe._
+import io.circe.generic.auto._
 import io.circe.parser._
 import io.circe.syntax._
 import io.finch._
@@ -61,9 +62,13 @@ class CVController(googleTokenVerifier: GoogleTokenVerifier, transactor: Transac
     }
   }
 
-  val `POST /cvs`: Endpoint[Unit] = post(cvs :: tokenHeader :: jsonBody[Json]) { (token: String, cv: Json) =>
+  val `POST /cvs`: Endpoint[String] = post(cvs :: tokenHeader :: jsonBody[Json]) { (token: String, cv: Json) =>
     googleTokenVerifier.verifyToken(token) match {
-      case Some(user) => Ok()
+      case Some(user) =>
+        cv.as[CV] match {
+          case Right(data) => Ok(data.meta.client)
+          case Left(e) => InternalServerError(e)
+        }
       case None => Unauthorized(new RuntimeException("Invalid token"))
     }
   }
