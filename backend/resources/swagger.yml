@@ -110,15 +110,24 @@ definitions:
         items:
           $ref: '#/definitions/Skill'
         description: Identifier of the key type
+      achievements:
+        type: array
+        items:
+          $ref: '#/definitions/Achievement'
       projects:
         type: array
-        items: 
+        items:
           $ref: '#/definitions/Project'
+        description: Value of the key
+      educations:
+        type: array
+        items:
+          $ref: '#/definitions/Education'
         description: Value of the key
       keyType:
         type: string
         description: Name of the key type
-  BasicDetails: 
+  BasicDetails:
     type: object
     required:
      - name
@@ -126,27 +135,26 @@ definitions:
      - startYear
      - email
      - profile
-     
-    properties: 
-      name: 
+
+    properties:
+      name:
         type: string
         description: todo
-      label: 
+      label:
         type: string
         description: job title
       startYear:
-        type: integer
-        format: int32
-      email: 
+        type: string
+      email:
         type: string
         format: email
-      image: 
+      image:
         type: string
-      profile: 
+      profile:
         type: string
-      contact: 
+      contact:
         $ref: '#/definitions/Contact'
-  
+
   Contact:
     type: object
     properties:
@@ -164,7 +172,7 @@ definitions:
         type: string
       countryCode:
         type: string
-    
+
   CV:
     type: object
     required:
@@ -173,7 +181,7 @@ definitions:
     properties:
       employee:
         $ref: '#/definitions/Employee'
-      meta: 
+      meta:
         $ref: '#/definitions/Meta'
 
   Meta:
@@ -201,13 +209,6 @@ definitions:
         format: int32
   Achievement:
     type: string
-  Language:
-    type: object
-    properties:
-      description:
-        type: string
-      fluency:
-        type: string
   Project:
     type: object
     properties:
@@ -221,7 +222,21 @@ definitions:
         type: string
       summary:
         type: string
-
+  Education:
+    type: object
+    properties:
+      institution:
+        type: string
+      country:
+        type: string
+      studyType:
+        type: string
+      startDate:
+        type: string
+      endDate:
+        type: string
+      description:
+        type: string
   Error:
     type: object
     properties:
