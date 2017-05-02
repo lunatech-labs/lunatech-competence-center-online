@@ -1,0 +1,238 @@
+# The endpoints of the Competence Center Backend in YAML
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: "Competence Center API"
+  description: Store data for awesome people
+# the domain of the service
+host: localhost:8081
+# will be prefixed to all paths
+basePath: /
+# array of all schemes that your API supports
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+  - application/pdf
+
+paths:
+  /employees:
+    get:
+      description: Get list of employee
+      responses:
+        '200':
+          description: bloa
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Employee'
+              
+  /employees/{employeeId}:
+    get:
+      description: Get personal data for specific user
+      parameters:
+        - $ref: '#/parameters/employeeId'
+      responses:
+        '200':
+          description: get specific employee data
+          schema:
+            $ref: '#/definitions/Employee'
+      
+  /employees/me:
+    get:
+      description: Get data for logged in user
+      responses:
+        '200':
+          description: get employee data
+          schema:
+            $ref: '#/definitions/Employee'
+    put:
+      summary: Create new Employee or update
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/employeeData'
+      responses:
+        201:
+          description: created
+          schema:
+            $ref: '#/definitions/Employee'
+  /cvs:
+    post:
+      summary: Create CV
+      consumes:
+        - application/json
+      produces:
+        - application/pdf
+      description: Generate a CV for user in body
+      parameters:
+        - $ref: '#/parameters/cvData'
+      responses:
+        '200':
+          description: Returns PDF
+          schema: 
+            type: file
+
+parameters:
+  employeeData:
+    in: body
+    name: employ
+    description: data needed to create an Employee
+    required: true
+    schema:
+      $ref: '#/definitions/Employee'
+  cvData:
+    in: body
+    name: cvdata
+    description: data to generate a CV
+    required: true
+    schema:
+      $ref: '#/definitions/CV'
+  employeeId: 
+    in: path
+    name: employeeId
+    description: todo
+    required: true
+    type: string
+
+definitions:
+  Employee:
+    type: object
+    properties:
+      basics:
+        $ref: '#/definitions/BasicDetails'
+      skills:
+        type: array
+        items:
+          $ref: '#/definitions/Skill'
+        description: Identifier of the key type
+      projects:
+        type: array
+        items: 
+          $ref: '#/definitions/Project'
+        description: Value of the key
+      keyType:
+        type: string
+        description: Name of the key type
+  BasicDetails: 
+    type: object
+    required:
+     - name
+     - label
+     - startYear
+     - email
+     - profile
+     
+    properties: 
+      name: 
+        type: string
+        description: todo
+      label: 
+        type: string
+        description: job title
+      startYear:
+        type: integer
+        format: int32
+      email: 
+        type: string
+        format: email
+      image: 
+        type: string
+      profile: 
+        type: string
+      contact: 
+        $ref: '#/definitions/Contact'
+  
+  Contact:
+    type: object
+    properties:
+      name:
+        type: string
+      address:
+        type: string
+      postalCode:
+        type: string
+      city:
+        type: string
+      phone:
+        type: string
+      email:
+        type: string
+      countryCode:
+        type: string
+    
+  CV:
+    type: object
+    required:
+      - employee
+      - meta
+    properties:
+      employee:
+        $ref: '#/definitions/Employee'
+      meta: 
+        $ref: '#/definitions/Meta'
+
+  Meta:
+    type: object
+    required:
+    - client
+    - creationDate
+    - language
+    properties:
+      client:
+        type: string
+      creationDate:
+        type: string
+      language:
+        type: string
+  Skill:
+    type: object
+    properties:
+      category:
+        type: string
+      name:
+        type: string
+      level:
+        type: integer
+        format: int32
+  Achievement:
+    type: string
+  Language:
+    type: object
+    properties:
+      description:
+        type: string
+      fluency:
+        type: string
+  Project:
+    type: object
+    properties:
+      client:
+        type: string
+      startDate:
+        type: string
+      endDate:
+        type: string
+      role:
+        type: string
+      summary:
+        type: string
+
+  Error:
+    type: object
+    properties:
+      internalCode:
+        type: integer
+        format: int32
+      errorMessage:
+        type: string
+      httpStatusCode:
+        type: integer
+        format: int32
+      timestamp:
+        type: integer
+        format: int64
