@@ -7,6 +7,9 @@
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-card/paper-card.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../image-mask/image-mask.html">
+<link rel="import" href="../file-input/file-input.html">
 
 <!--
 `cv-editor`
@@ -44,6 +47,14 @@ CV Editor
       }
 
     </style>
+    <h2>Photo</h2>
+    <image-mask id="photoImage" src="/images/erik_bakker_square_small.jpg" size="200" on-tap="updatePhoto"></image-mask>
+
+    <file-input id="photoInput" accept="image/*,video/*" max-files="1" on-change="photoSelected">
+    Select Photo
+    </file-input>
+    <paper-button hidden$=[[!photoChanged]] on-tap="resetPhoto">Reset Photo</paper-button>
+
     <h2>Basic Info</h2>
     <paper-card>
       <div class="card-content">
@@ -84,6 +95,11 @@ CV Editor
         data: {
           type: Object,
         },
+
+        photoChanged: {
+          type: Boolean,
+          value: false
+        }
       },
 
       ready: function() {
@@ -107,6 +123,35 @@ CV Editor
 
       show: function() {
         console.log(this.data);
+      },
+
+      updatePhoto: function() {
+        console.log("Update photo");
+      },
+
+      resetPhoto: function() {
+        this.$.photoImage.src = this.$.photoImage.savedSrc;
+        this.photoChanged = false;
+      },
+
+      photoSelected: function() {
+        console.log("Photo selected!");
+        console.log(this.$.photoInput.files.length);
+
+        var reader = new FileReader();
+        var photoImage = this.$.photoImage;
+
+        if(photoImage.savedSrc == undefined) {
+          photoImage.savedSrc = photoImage.src
+        }
+
+        reader.onload = function (e) {
+            photoImage.src = e.target.result;
+        }
+
+        this.photoChanged = true;
+
+        reader.readAsDataURL(this.$.photoInput.files[0]);
       }
 
     });
