@@ -26,12 +26,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <iron-meta id="meta"></iron-meta>
 
     <iron-ajax id="ajaxLoad"
-      url="http://localhost:9000/cvs/me"
+      url="http://localhost:9000/employees/me"
       handle-as="json"
       on-response="cvLoaded"></iron-ajax>
 
      <iron-ajax id="ajaxSave"
-       url="http://localhost:9000/cvs/me"
+       url="http://localhost:9000/employees/me"
        method="PUT"
        content-type="application/json"
        on-response="cvSaved"></iron-ajax>
