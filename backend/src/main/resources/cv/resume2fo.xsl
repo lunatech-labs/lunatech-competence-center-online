@@ -96,13 +96,13 @@
                         <fo:leader leader-pattern="rule" alignment-baseline="middle" padding-left="0.1em"
                                    padding-right="0.5em"/>
                         <xsl:value-of
-                                select="r:firstName"/>
+                                select="r:givenName"/>
                         <fo:leader leader-pattern="rule" alignment-baseline="middle" padding-left="0.5em"
                                    padding-right="0.1em"/>
                     </fo:block>
                     <fo:block font-size="18pt" font-weight="700" letter-spacing="2pt" padding-bottom="4pt">
                         <xsl:value-of
-                                select="r:lastName"/>
+                                select="r:familyName"/>
                     </fo:block>
                     <fo:block xsl:use-attribute-sets="basics-label">
                         <xsl:value-of

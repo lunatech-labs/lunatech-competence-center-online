@@ -8,7 +8,8 @@ case class Contact(name: String,
                    email: String,
                    countryCode: String)
 
-case class BasicDetails(name: String,
+case class BasicDetails(givenName: String,
+                        familyName: String,
                         label: String,
                         startYear: String,
                         email: String,
@@ -20,8 +21,7 @@ case class Employee(basics: BasicDetails,
                     skills: Seq[Skill],
                     achievements: Seq[String],
                     projects: Seq[Project],
-                    educations: Seq[Education],
-                    keyType: String)
+                    educations: Seq[Education])
 
 case class Skill(category: String,
                  name: String,
