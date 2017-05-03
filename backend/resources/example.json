@@ -1,0 +1,114 @@
+{
+  "employee": {
+    "basics": {
+      "givenName": "Erik",
+      "familyName": "Bakker",
+      "label": "Senior Software Engineer",
+      "startYear": "Employee since 2007",
+      "email": "erik.bakker@lunatech.com",
+      "image": "https://avatars2.githubusercontent.com/u/332784",
+      "profile": "Erik is an all-round software creator, who will lead your project to success. With more than ten years of commercial software experience under the belt, varying from very small projects with tight budget and time constraints, to multi-year projects for global enterprises, he knows how to make a project succeed. Erik is an early adopter of Scala, and has deep Scala knowledge. He’s a certified trainer for an Advanced Scala course, wrote a book on Scala and gave a talk on the worlds biggest Scala conference. He has many years of experience teaching teams how to benefit from Scala and how to avoid the pitfalls. A keen understanding of business needs in combination with his technical skills make Erik frequently a key player in bridging business, enterprise architecture and engineering. He is strong at execution, and strikes the right balance between urgent and important tasks.",
+      "contact": {
+        "name": "LUNATECH ROTTERDAM",
+        "address": "Baan 74",
+        "postalCode": "3011 CD",
+        "city": "Rotterdam",
+        "phone": "+31 10 750 2600",
+        "email": "info@lunatech.com",
+        "countryCode": "NL"
+      }
+    },
+    "skills": [
+      {
+        "category": "tech",
+        "name": "SCALA",
+        "level": 9
+      },
+      {
+        "category": "tech",
+        "name": "KAFKA",
+        "level": 8
+      },
+      {
+        "category": "tech",
+        "name": "AKKA",
+        "level": 10
+      },
+      {
+        "category": "tech",
+        "name": "PLAY FRAMEWORK",
+        "level": 0
+      },
+      {
+        "category": "tech",
+        "name": "FINCH",
+        "level": 5
+      },
+      {
+        "category": "tech",
+        "name": "FINAGLE",
+        "level": 5
+      },
+      {
+        "category": "fun",
+        "name": "FORMULA-1 TALK",
+        "level": 5
+      },
+      {
+        "category": "fun",
+        "name": "RASPBERRY PI",
+        "level": 7
+      }
+    ],
+    "achievements": [
+      "Co-authored the book “Play for Scala”, published by Manning with more than 7000 copies sold.",
+      "Presented a talk on Monad Transformers at Scala Days Amsterdam in 2015"
+    ],
+    "projects": [
+      {
+        "client": "ING",
+        "startDate": "AUG 2015",
+        "endDate": "NOW",
+        "role": "Tech lead and Product Owner",
+        "summary": "Training a team of Junior Scala developers to become proficient in Scala and leading the design of crucial parts of INGs new global Authentication Platform. Also the Product Owner of the team and responsible for alignment with other teams of the Platform and teams and other stakeholders in the organization. Frequently the point of contact for other programs and part of the team traveling to other countries for on-boarding. Technologies include Scala, Finch, functional programming, RESTful APIs."
+      },
+      {
+        "client": "Malmberg",
+        "startDate": "DEC 2014",
+        "endDate": "AUG 2015",
+        "role": "Tech lead and Scala coach",
+        "summary": "Tech lead of a team to transition development of a key Malmberg project from an external supplier to being developed in house by Malmberg. Responsible for ensuring knowledge transfer between old and new development team, setting development standard for the new team and continued development of the platform. Scala, Play framework and AngularJS."
+      },
+      {
+        "client": "Belastingdienst",
+        "startDate": "OKT 2013",
+        "endDate": "DEC 2014",
+        "role": "Scala developer and coach",
+        "summary": "Developer and Scala coach on a team working on an internal job board for De Belastingdienst. Responsible for training new developers to use Scala, architecture of the application and delivery of features. Scala, Play framework, Marionette.js."
+      }
+    ],
+    "educations": [
+      {
+        "institution": "Utrecht University",
+        "country": "The Netherlands",
+        "studyType": "Master of Science in Physics and Climate Science",
+        "startDate": "2006",
+        "endDate": "2007",
+        "description": "Program Nanomaterials: \"Chemistry and Physics\", thesis titled \"Generation of optical vortices with spiral phase plates\""
+      },
+      {
+        "institution": "Utrecht University",
+        "country": "The Netherlands",
+        "studyType": "Bachelor of Science in Physics and Astronomy",
+        "startDate": "2008",
+        "endDate": "2010",
+        "description": "Program \"Nanomaterials: Chemistry and Physics\", thesis titled \"Simulations on Rubidium Laser Cooling\"."
+      }
+    ]
+  },
+  "meta": {
+    "client": "Lunatech",
+    "creationDate": "2017-05-03",
+    "language": "EN"
+  }
+}

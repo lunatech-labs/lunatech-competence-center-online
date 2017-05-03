@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resume xmlns="http://lunatech.com/2017/03/31/resume"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://lunatech.com/2017/03/31/resume">
+    <basics>
+        <givenName>Erik</givenName>
+        <familyName>Bakker</familyName>
+        <label>Senior Software Engineer</label>
+        <startYear>employee since 2007</startYear>
+        <image>https://avatars0.githubusercontent.com/u/332784</image>
+        <email>erik.bakker@lunatech.com</email>
+        <profile>
+            Erik is an all-round software creator, who will lead your project to success. With more than ten years
+            of commercial software experience under the belt, varying from very small projects with tight budget and
+            time constraints, to multi-year projects for global enterprises, he knows how to make a project succeed.
+            Erik is an early adopter of Scala, and has deep Scala knowledge. He’s a certified
+            trainer for an Advanced
+            Scala course, wrote a book on Scala and gave a talk on the worlds biggest Scala conference. He has many
+            years of experience teaching teams how to benefit from Scala and how to avoid the pitfalls.
+            A keen understanding of business needs in combination with his technical skills make Erik frequently a
+            key player in bridging business, enterprise architecture and engineering. He is strong at execution, and
+            strikes the right balance between urgent and important tasks.
+        </profile>
+        <contact>
+            <name>LUNATECH ROTTERDAM</name>
+            <address>Baan 74</address>
+            <postalCode>3011 CD</postalCode>
+            <city>Rotterdam</city>
+            <phone>+31 10 750 2600</phone>
+            <email>info@lunatech.com</email>
+            <countryCode>FR</countryCode>
+        </contact>
+    </basics>
+
+    <educations>
+        <education>
+            <institution>Utrecht University</institution>
+            <country>The Netherlands</country>
+            <studyType>Master of Science in Physics &#038; Cliemate Science</studyType>
+            <startDate>2006</startDate>
+            <endDate>2007</endDate>
+            <description>Program "Nanomaterials: Chemistry and Physics", thesis titled "Generation of
+                optical vortices with spiral phase plates".
+            </description>
+        </education>
+        <education>
+            <institution>Utrecht University</institution>
+            <country>The Netherlands</country>
+            <studyType>Bachelor of Science in Physics &#038; Astronomy</studyType>
+            <startDate>2008</startDate>
+            <endDate>2010</endDate>
+            <description>
+                Program “Nanomaterials: Chemistry and Physics”, thesis titled “Simulations on Rubidium Laser Cooling”.
+            </description>
+        </education>
+    </educations>
+    <skills>
+        <skill>
+            <name>SCALA</name>
+            <level>9</level>
+            <category>tech</category>
+        </skill>
+        <skill>
+            <name>KAFKA</name>
+            <level>8</level>
+            <category>tech</category>
+        </skill>
+        <skill>
+            <name>AKKA</name>
+            <level>10</level>
+            <category>tech</category>
+        </skill>
+        <skill>
+            <name>PLAY FRAMEWORK</name>
+            <level>0</level>
+            <category>tech</category>
+        </skill>
+        <skill>
+            <name>FINCH</name>
+            <level>5</level>
+            <category>tech</category>
+        </skill>
+        <skill>
+            <name>FINAGLE</name>
+            <level>5</level>
+            <category>tech</category>
+        </skill>
+        <skill>
+            <name>FORMULA-1 TALK</name>
+            <level>5</level>
+            <category>fun</category>
+        </skill>
+        <skill>
+            <name>RASPBERRY PI</name>
+            <level>7</level>
+            <category>fun</category>
+        </skill>
+    </skills>
+    <achievements>
+        <achievement>
+            Co-authored the book “Play for Scala”, published by Manning with more than 7000 copies sold.
+        </achievement>
+        <achievement>
+            Presented a talk on Monad Transformers at Scala Days Amsterdam in 2015
+        </achievement>
+    </achievements>
+    <projects>
+        <project>
+            <client>ING</client>
+            <startDate>AUG 2015</startDate>
+            <endDate>NOW</endDate>
+            <role>Tech lead and Product Owner</role>
+            <summary>Training a team of Junior Scala developers to become proficient in Scala and leading the design of
+                crucial parts of INGs new global Authentication Platform. Also the Product Owner of the team and
+                responsible for alignment with other teams of the Platform and teams and other stakeholders in the
+                organization. Frequently the point of contact for other programs and part of the team traveling to other
+                countries for on-boarding. Technologies include Scala, Finch, functional programming, RESTful APIs.
+            </summary>
+        </project>
+        <project>
+            <client>Malmberg</client>
+            <startDate>DEC 2014</startDate>
+            <endDate>AUG 2015</endDate>
+            <role>Tech lead and Scala coach</role>
+            <summary>Tech lead of a team to transition development of a key Malmberg project from an external supplier
+                to being developed in house by Malmberg. Responsible for ensuring knowledge transfer between old and new
+                development team, setting development standard for the new team and continued development of the
+                platform. Scala, Play framework and AngularJS.
+            </summary>
+        </project>
+        <project>
+            <client>Belastingdienst</client>
+            <startDate>OKT 2013</startDate>
+            <endDate>DEC 2014</endDate>
+            <role>Scala developer and coach</role>
+            <summary>Developer and Scala coach on a team working on an
+                internal job board for De Belastingdienst. Responsible for training new developers
+                to use Scala, architecture of the application and delivery of features. Scala, Play
+                framework, Marionette.js.
+            </summary>
+        </project>
+    </projects>
+    <meta>
+        <version>version1</version>
+        <created>2017-04-22T22:43:44.321</created>
+    </meta>
+</resume>
