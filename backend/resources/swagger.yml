@@ -23,7 +23,7 @@ paths:
       description: Get list of employee
       responses:
         '200':
-          description: bloa
+          description: An list of employees with most recent data
           schema:
             type: array
             items:
@@ -109,7 +109,6 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Skill'
-        description: Identifier of the key type
       achievements:
         type: array
         items:
@@ -118,28 +117,27 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Project'
-        description: Value of the key
       educations:
         type: array
         items:
           $ref: '#/definitions/Education'
-        description: Value of the key
-      keyType:
-        type: string
-        description: Name of the key type
   BasicDetails:
     type: object
     required:
-     - name
+     - givenName
+     - familyName
      - label
      - startYear
      - email
      - profile
 
     properties:
-      name:
+      givenName:
         type: string
-        description: todo
+        description: How you normally call the person
+      familyName:
+        type: string
+        description: The family name
       label:
         type: string
         description: job title
