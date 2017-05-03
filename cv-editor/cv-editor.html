@@ -50,39 +50,63 @@ CV Editor
     <h2>Photo</h2>
     <image-mask id="photoImage" src="/images/erik_bakker_square_small.jpg" size="200" on-tap="updatePhoto"></image-mask>
 
-    <file-input id="photoInput" accept="image/*,video/*" max-files="1" on-change="photoSelected">
-    Select Photo
-    </file-input>
+    <paper-button>
+      <file-input id="photoInput" accept="image/*,video/*" max-files="1" on-change="photoSelected">
+        Select Photo
+      </file-input>
+    </paper-button>
     <paper-button hidden$=[[!photoChanged]] on-tap="resetPhoto">Reset Photo</paper-button>
 
     <h2>Basic Info</h2>
     <paper-card>
       <div class="card-content">
-        <paper-input label="Name" value="{{data.basics.name}}"></paper-input>
+        <paper-input label="Given name" value="{{data.basics.givenName}}"></paper-input>
+        <paper-input label="Family name" value="{{data.basics.familyName}}"></paper-input>
         <paper-input label="Label" value="{{data.basics.label}}"></paper-input>
-        <paper-textarea label="Summary" value="{{data.basics.summary}}"></paper-textarea>
+        <paper-input label="Start" value="{{data.basics.startYear}}"></paper-input>
+        <paper-textarea label="Summary" value="{{data.basics.profile}}"></paper-textarea>
       </div>
     </paper-card>
 
-
     <h2>Education</h2>
     <div class="card-group">
-    <template is="dom-repeat" items="{{data.education}}">
-
+    <template is="dom-repeat" items="{{data.educations}}">
       <paper-card>
         <div class="card-content">
           <paper-input label="Area" value="{{item.area}}"></paper-input>
           <paper-input label="Institution" value="{{item.institution}}"></paper-input>
+          <paper-input label="Country" value="{{item.country}}"></paper-input>
           <paper-input label="Study Type" value="{{item.studyType}}"></paper-input>
+          <paper-input label="Start Date" value="{{item.startDate}}"></paper-input>
+          <paper-input label="End Date" value="{{item.endDate}}"></paper-input>
+          <paper-textarea label="Description" value="{{item.description}}"></paper-textarea>
         </div>
         <div class="card-actions">
           <paper-icon-button icon="delete" on-click="removeEducation"></paper-icon-button>
         </div>
       </paper-card>
-
     </template>
     </div class="card-group">
     <paper-button class="add" raised class="primary" on-click="addEducation"><iron-icon icon="add-circle"></iron-icon>Add education</paper-button>
+
+    <h2>Projects</h2>
+    <div class="card-group">
+    <template is="dom-repeat" items="{{data.projects}}">
+      <paper-card>
+        <div class="card-content">
+          <paper-input label="Client" value="{{item.client}}"></paper-input>
+          <paper-input label="Start Date" value="{{item.startDate}}"></paper-input>
+          <paper-input label="End Date" value="{{item.endDate}}"></paper-input>
+          <paper-input label="Role" value="{{item.role}}"></paper-input>
+          <paper-textarea label="Summary" value="{{item.summary}}"></paper-textarea>
+        </div>
+        <div class="card-actions">
+          <paper-icon-button icon="delete" on-click="removeProject"></paper-icon-button>
+        </div>
+      </paper-card>
+    </template>
+    </div class="card-group">
+    <paper-button class="add" raised class="primary" on-click="addProject"><iron-icon icon="add-circle"></iron-icon>Add project</paper-button>
   </template>
 
   <script>
@@ -119,6 +143,15 @@ CV Editor
 
       removeEducation: function(e) {
         this.splice('data.education', e.model.index, 1);
+      },
+
+      addProject: function() {
+
+        this.push('data.project', { 'foo': 'bar' });
+      },
+
+      removeProject: function(e) {
+        this.splice('data.project', e.model.index, 1);
       },
 
       show: function() {
