@@ -1,0 +1,115 @@
+{
+	"variables": [],
+	"info": {
+		"name": "CCO",
+		"_postman_id": "3f16b122-44e2-b2ce-a4a1-4f96ea1640c5",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:9000/employee/me",
+			"request": {
+				"url": "localhost:9000/employees/me",
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-ID-Token",
+						"value": "{{token}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:9000/employees/me",
+			"request": {
+				"url": "http://localhost:9000/employees/me",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-ID-Token",
+						"value": "{{token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"basics\": {\n      \"givenName\": \"Erik\",\n      \"familyName\": \"Bakker\",\n      \"label\": \"Senior Software Engineer\",\n      \"startYear\": \"Employee since 2007\",\n      \"email\": \"erik.bakker@lunatech.com\",\n      \"image\": \"https://avatars2.githubusercontent.com/u/332784\",\n      \"profile\": \"Erik is an all-round software creator, who will lead your project to success. With more than ten years of commercial software experience under the belt, varying from very small projects with tight budget and time constraints, to multi-year projects for global enterprises, he knows how to make a project succeed. Erik is an early adopter of Scala, and has deep Scala knowledge. He’s a certified trainer for an Advanced Scala course, wrote a book on Scala and gave a talk on the worlds biggest Scala conference. He has many years of experience teaching teams how to benefit from Scala and how to avoid the pitfalls. A keen understanding of business needs in combination with his technical skills make Erik frequently a key player in bridging business, enterprise architecture and engineering. He is strong at execution, and strikes the right balance between urgent and important tasks.\",\n      \"contact\": {\n        \"name\": \"LUNATECH ROTTERDAM\",\n        \"address\": \"Baan 74\",\n        \"postalCode\": \"3011 CD\",\n        \"city\": \"Rotterdam\",\n        \"phone\": \"+31 10 750 2600\",\n        \"email\": \"info@lunatech.com\",\n        \"countryCode\": \"NL\"\n      }\n    },\n    \"skills\": [\n      {\n        \"category\": \"tech\",\n        \"name\": \"SCALA\",\n        \"level\": 9\n      },\n      {\n        \"category\": \"tech\",\n        \"name\": \"KAFKA\",\n        \"level\": 8\n      },\n      {\n        \"category\": \"tech\",\n        \"name\": \"AKKA\",\n        \"level\": 10\n      },\n      {\n        \"category\": \"tech\",\n        \"name\": \"PLAY FRAMEWORK\",\n        \"level\": 0\n      },\n      {\n        \"category\": \"tech\",\n        \"name\": \"FINCH\",\n        \"level\": 5\n      },\n      {\n        \"category\": \"tech\",\n        \"name\": \"FINAGLE\",\n        \"level\": 5\n      },\n      {\n        \"category\": \"fun\",\n        \"name\": \"FORMULA-1 TALK\",\n        \"level\": 5\n      },\n      {\n        \"category\": \"fun\",\n        \"name\": \"RASPBERRY PI\",\n        \"level\": 7\n      }\n    ],\n    \"achievements\": [\n      \"Co-authored the book “Play for Scala”, published by Manning with more than 7000 copies sold.\",\n      \"Presented a talk on Monad Transformers at Scala Days Amsterdam in 2015\"\n    ],\n    \"projects\": [\n      {\n        \"client\": \"ING\",\n        \"startDate\": \"AUG 2015\",\n        \"endDate\": \"NOW\",\n        \"role\": \"Tech lead and Product Owner\",\n        \"summary\": \"Training a team of Junior Scala developers to become proficient in Scala and leading the design of crucial parts of INGs new global Authentication Platform. Also the Product Owner of the team and responsible for alignment with other teams of the Platform and teams and other stakeholders in the organization. Frequently the point of contact for other programs and part of the team traveling to other countries for on-boarding. Technologies include Scala, Finch, functional programming, RESTful APIs.\"\n      },\n      {\n        \"client\": \"Malmberg\",\n        \"startDate\": \"DEC 2014\",\n        \"endDate\": \"AUG 2015\",\n        \"role\": \"Tech lead and Scala coach\",\n        \"summary\": \"Tech lead of a team to transition development of a key Malmberg project from an external supplier to being developed in house by Malmberg. Responsible for ensuring knowledge transfer between old and new development team, setting development standard for the new team and continued development of the platform. Scala, Play framework and AngularJS.\"\n      },\n      {\n        \"client\": \"Belastingdienst\",\n        \"startDate\": \"OKT 2013\",\n        \"endDate\": \"DEC 2014\",\n        \"role\": \"Scala developer and coach\",\n        \"summary\": \"Developer and Scala coach on a team working on an internal job board for De Belastingdienst. Responsible for training new developers to use Scala, architecture of the application and delivery of features. Scala, Play framework, Marionette.js.\"\n      }\n    ],\n    \"educations\": [\n      {\n        \"institution\": \"Utrecht University\",\n        \"country\": \"The Netherlands\",\n        \"studyType\": \"Master of Science in Physics and Climate Science\",\n        \"startDate\": \"2006\",\n        \"endDate\": \"2007\",\n        \"description\": \"Program Nanomaterials: \\\"Chemistry and Physics\\\", thesis titled \\\"Generation of optical vortices with spiral phase plates\\\"\"\n      },\n      {\n        \"institution\": \"Utrecht University\",\n        \"country\": \"The Netherlands\",\n        \"studyType\": \"Bachelor of Science in Physics and Astronomy\",\n        \"startDate\": \"2008\",\n        \"endDate\": \"2010\",\n        \"description\": \"Program \\\"Nanomaterials: Chemistry and Physics\\\", thesis titled \\\"Simulations on Rubidium Laser Cooling\\\".\"\n      }\n    ]\n  }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:9000/employees",
+			"request": {
+				"url": "localhost:9000/employees",
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-ID-Token",
+						"value": "{{token}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:9000/employees/employeeId",
+			"request": {
+				"url": "localhost:9000/employees/willem-jan.glerum@lunatech.com",
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-ID-Token",
+						"value": "{{token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:9000/cvs",
+			"request": {
+				"url": "localhost:9000/cvs",
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-ID-Token",
+						"value": "{{token}}",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"employee\": {\n    \"basics\": {\n      \"givenName\": \"Erik\",\n      \"familyName\": \"Bakker\",\n      \"label\": \"Senior Software Engineer\",\n      \"startYear\": \"Employee since 2007\",\n      \"email\": \"erik.bakker@lunatech.com\",\n      \"image\": \"https://avatars2.githubusercontent.com/u/332784\",\n      \"profile\": \"Erik is an all-round software creator, who will lead your project to success. With more than ten years of commercial software experience under the belt, varying from very small projects with tight budget and time constraints, to multi-year projects for global enterprises, he knows how to make a project succeed. Erik is an early adopter of Scala, and has deep Scala knowledge. He’s a certified trainer for an Advanced Scala course, wrote a book on Scala and gave a talk on the worlds biggest Scala conference. He has many years of experience teaching teams how to benefit from Scala and how to avoid the pitfalls. A keen understanding of business needs in combination with his technical skills make Erik frequently a key player in bridging business, enterprise architecture and engineering. He is strong at execution, and strikes the right balance between urgent and important tasks.\",\n      \"contact\": {\n        \"name\": \"LUNATECH ROTTERDAM\",\n        \"address\": \"Baan 74\",\n        \"postalCode\": \"3011 CD\",\n        \"city\": \"Rotterdam\",\n        \"phone\": \"+31 10 750 2600\",\n        \"email\": \"info@lunatech.com\",\n        \"countryCode\": \"NL\"\n      }\n    },\n    \"skills\": [\n      {\n        \"category\": \"tech\",\n        \"name\": \"SCALA\",\n        \"level\": 9\n      },\n      {\n        \"category\": \"tech\",\n        \"name\": \"KAFKA\",\n        \"level\": 8\n      },\n      {\n        \"category\": \"tech\",\n        \"name\": \"AKKA\",\n        \"level\": 10\n      },\n      {\n        \"category\": \"tech\",\n        \"name\": \"PLAY FRAMEWORK\",\n        \"level\": 0\n      },\n      {\n        \"category\": \"tech\",\n        \"name\": \"FINCH\",\n        \"level\": 5\n      },\n      {\n        \"category\": \"tech\",\n        \"name\": \"FINAGLE\",\n        \"level\": 5\n      },\n      {\n        \"category\": \"fun\",\n        \"name\": \"FORMULA-1 TALK\",\n        \"level\": 5\n      },\n      {\n        \"category\": \"fun\",\n        \"name\": \"RASPBERRY PI\",\n        \"level\": 7\n      }\n    ],\n    \"achievements\": [\n      \"Co-authored the book “Play for Scala”, published by Manning with more than 7000 copies sold.\",\n      \"Presented a talk on Monad Transformers at Scala Days Amsterdam in 2015\"\n    ],\n    \"projects\": [\n      {\n        \"client\": \"ING\",\n        \"startDate\": \"AUG 2015\",\n        \"endDate\": \"NOW\",\n        \"role\": \"Tech lead and Product Owner\",\n        \"summary\": \"Training a team of Junior Scala developers to become proficient in Scala and leading the design of crucial parts of INGs new global Authentication Platform. Also the Product Owner of the team and responsible for alignment with other teams of the Platform and teams and other stakeholders in the organization. Frequently the point of contact for other programs and part of the team traveling to other countries for on-boarding. Technologies include Scala, Finch, functional programming, RESTful APIs.\"\n      },\n      {\n        \"client\": \"Malmberg\",\n        \"startDate\": \"DEC 2014\",\n        \"endDate\": \"AUG 2015\",\n        \"role\": \"Tech lead and Scala coach\",\n        \"summary\": \"Tech lead of a team to transition development of a key Malmberg project from an external supplier to being developed in house by Malmberg. Responsible for ensuring knowledge transfer between old and new development team, setting development standard for the new team and continued development of the platform. Scala, Play framework and AngularJS.\"\n      },\n      {\n        \"client\": \"Belastingdienst\",\n        \"startDate\": \"OKT 2013\",\n        \"endDate\": \"DEC 2014\",\n        \"role\": \"Scala developer and coach\",\n        \"summary\": \"Developer and Scala coach on a team working on an internal job board for De Belastingdienst. Responsible for training new developers to use Scala, architecture of the application and delivery of features. Scala, Play framework, Marionette.js.\"\n      }\n    ],\n    \"educations\": [\n      {\n        \"institution\": \"Utrecht University\",\n        \"country\": \"The Netherlands\",\n        \"studyType\": \"Master of Science in Physics and Climate Science\",\n        \"startDate\": \"2006\",\n        \"endDate\": \"2007\",\n        \"description\": \"Program Nanomaterials: \\\"Chemistry and Physics\\\", thesis titled \\\"Generation of optical vortices with spiral phase plates\\\"\"\n      },\n      {\n        \"institution\": \"Utrecht University\",\n        \"country\": \"The Netherlands\",\n        \"studyType\": \"Bachelor of Science in Physics and Astronomy\",\n        \"startDate\": \"2008\",\n        \"endDate\": \"2010\",\n        \"description\": \"Program \\\"Nanomaterials: Chemistry and Physics\\\", thesis titled \\\"Simulations on Rubidium Laser Cooling\\\".\"\n      }\n    ]\n  },\n  \"meta\": {\n    \"client\": \"Lunatech\",\n    \"creationDate\": \"2017-05-03\",\n    \"language\": \"EN\"\n  }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
