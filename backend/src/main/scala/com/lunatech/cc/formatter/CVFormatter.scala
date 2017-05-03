@@ -6,30 +6,34 @@ import javax.xml.transform.TransformerFactory
 import javax.xml.transform.sax.SAXResult
 import javax.xml.transform.stream.StreamSource
 
+import com.lunatech.cc.models.{CV, Models}
 import org.apache.fop.apps.FopFactory
 import org.apache.xmlgraphics.util.MimeConstants
+import xml.{ Resume, defaultScope }
 
 import scala.util.{Failure, Success, Try}
+import scala.xml.NodeSeq
 
 
 object CVFormatter {
 
-  def format(cv: File): Either[Throwable, File] = format(cv, DefaultTemplate)
+  def format(cv: CV): Either[Exception, File] = format(cv, DefaultTemplate)
 
-  def format(cv: File, template: Template): Either[Throwable, File] = {
+  def format(cv: CV, template: Template): Either[Exception, File] = {
     val pdf = new File(s"/tmp/${UUID.randomUUID()}.pdf")
     val out = new BufferedOutputStream(new FileOutputStream(pdf))
+    val data = scalaxb.toXML[Resume](Models.toXML(cv), None, Some("resume"), defaultScope)
 
-    Try(run(cv, template.file, out)) match {
+    Try(run(data, template.file, out)) match {
       case Success(_) => Right(pdf)
       case Failure(e) =>
         pdf.delete()
         println(e.getMessage)
-        Left(e)
+        Left(new RuntimeException(e.getMessage))
     }
   }
 
-  private def run(cv: File, template: File, out: OutputStream) = {
+  private def run(cv: NodeSeq, template: File, out: OutputStream) = {
     // Step 1: Construct a FopFactory by specifying a reference to the configuration file
     // (reuse if you plan to render multiple documents!)
     val fopFactory = FopFactory.newInstance(getClass.getResource("/cv/fop.xconf").toURI)
@@ -53,7 +57,7 @@ object CVFormatter {
 
       // Step 5: Setup input and output for XSLT transformation
       // Setup input stream
-      val src = new StreamSource(cv)
+      val src = new StreamSource(new StringReader(cv.toString))
 
       // Resulting SAX events (the generated FO) must be piped through to FOP
       val res = new SAXResult(fop.getDefaultHandler)
@@ -65,4 +69,3 @@ object CVFormatter {
     }
   }
 }
-

@@ -116,5 +116,4 @@ package object Models {
     version = Some(meta.client),
     created = Some(meta.creationDate)
   )
-
 }
