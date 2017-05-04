@@ -138,20 +138,20 @@ CV Editor
 
       addEducation: function() {
 
-        this.push('data.education', { 'foo': 'bar' });
+        this.push('data.educations', { 'foo': 'bar' });
       },
 
       removeEducation: function(e) {
-        this.splice('data.education', e.model.index, 1);
+        this.splice('data.educations', e.model.index, 1);
       },
 
       addProject: function() {
 
-        this.push('data.project', { 'foo': 'bar' });
+        this.push('data.projects', { 'foo': 'bar' });
       },
 
       removeProject: function(e) {
-        this.splice('data.project', e.model.index, 1);
+        this.splice('data.projects', e.model.index, 1);
       },
 
       show: function() {
