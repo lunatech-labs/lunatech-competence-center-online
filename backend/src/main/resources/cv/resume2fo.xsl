@@ -9,7 +9,8 @@
                  xsl:use-attribute-sets="document">
             <fo:layout-master-set>
                 <fo:simple-page-master xsl:use-attribute-sets="page">
-                    <fo:region-body xsl:use-attribute-sets="body"/>
+                    <fo:region-body xsl:use-attribute-sets="body" background-position-horizontal="center"
+                                    background-repeat="repeat-y" background-image='url("images/line.svg")'/>
                     <fo:region-before/>
                     <fo:region-after/>
                 </fo:simple-page-master>
@@ -419,7 +420,6 @@
 
     <xsl:attribute-set name="column-left">
         <xsl:attribute name="padding-right">1cm</xsl:attribute>
-        <xsl:attribute name="border-right">solid 1pt black</xsl:attribute>
     </xsl:attribute-set>
 
     <xsl:attribute-set name="column-right">
