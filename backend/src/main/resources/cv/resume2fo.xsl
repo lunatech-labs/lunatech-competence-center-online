@@ -222,15 +222,13 @@
                         <xsl:value-of select="r:role"/>
                         <xsl:text>: </xsl:text>
                     </fo:inline>
-                    <fo:inline>
-                        <xsl:call-template name="formattableText"/>
-                    </fo:inline>
+                    <xsl:apply-templates select="r:summary"/>
                 </fo:block>
             </fo:list-item-body>
         </fo:list-item>
     </xsl:template>
 
-    <xsl:template match="r:summary|r:description" name="formattableText">
+    <xsl:template match="r:summary|r:description">
         <xsl:apply-templates/>
     </xsl:template>
 
@@ -267,7 +265,7 @@
                     </fo:inline>
                 </fo:block>
                 <fo:block>
-                    <xsl:call-template name="formattableText"/>
+                    <xsl:apply-templates select="r:description"/>
                 </fo:block>
             </fo:list-item-body>
         </fo:list-item>
