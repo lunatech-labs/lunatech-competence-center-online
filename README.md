@@ -1,6 +1,9 @@
 # lunatech-competence-center-online
 CCO is the Competence Center Online for Lunatech employees.
 
+## Contact and Information
+Erik Bakker is the initiator of the Competence Center and oversees all sub projects. 
+
 ## Purpose
 The Competence Center will become a portal in which Lunatech employees can track their development and where to improve their development via training or workshop. On the other side it gives Client directors / Sales insight into who will fit in which project based on experience and knowledge. 
 
