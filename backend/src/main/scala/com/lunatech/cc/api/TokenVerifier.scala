@@ -36,3 +36,13 @@ class GoogleTokenVerifier(clientId: String) extends TokenVerifier {
     }
   }
 }
+
+class StaticTokenVerifier extends TokenVerifier {
+  override def verifyToken(idTokenString: String): Option[GoogleUser] =
+    Some(GoogleUser(
+      userId = "developer@lunatech.com",
+      email = "developer@lunatech.com",
+      name = "Lunatech Developer",
+      givenName = "Developer",
+      familyName = "Lunatech"))
+}

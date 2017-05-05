@@ -161,16 +161,6 @@ object Data {
   val cvJson: Json = cv.asJson
 }
 
-class StaticTokenVerifier extends TokenVerifier {
-  override def verifyToken(idTokenString: String): Option[GoogleUser] =
-    Some(GoogleUser(
-      userId = "developer@lunatech.com",
-      email = "developer@lunatech.com",
-      name = "Lunatech Developer",
-      givenName = "Developer",
-      familyName = "Lunatech"))
-}
-
 class NoneTokenVerifier extends TokenVerifier {
   override def verifyToken(idTokenString: String): Option[GoogleUser] = None
 }

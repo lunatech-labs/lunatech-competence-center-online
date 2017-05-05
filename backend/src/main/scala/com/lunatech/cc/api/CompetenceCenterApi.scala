@@ -24,7 +24,11 @@ object CompetenceCenterApi extends App {
 
   val cvService = new PostgresCVService(transactor)
 
-  val tokenVerifier = new GoogleTokenVerifier(config.getString("google.clientId"))
+  val tokenVerifier = config.getString("application.mode") match {
+    case "dev" => new StaticTokenVerifier()
+    case "prod" => new GoogleTokenVerifier(config.getString("google.clientId"))
+    case _ => throw new RuntimeException("no valid application mode found")
+  }
 
   val cvFormatter = new PdfCVFormatter()
 
