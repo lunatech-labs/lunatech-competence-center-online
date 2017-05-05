@@ -1,10 +1,11 @@
 package com.lunatech.cc.api
 
-import com.lunatech.cc.formatter.{CVFormatter, PdfCVFormatter}
-import com.twitter.finagle.{Http, Service}
-import com.twitter.finagle.http.{Request, Response}
+import com.lunatech.cc.formatter.PdfCVFormatter
 import com.twitter.finagle.http.filter.Cors
+import com.twitter.finagle.http.{Request, Response}
+import com.twitter.finagle.{Http, Service}
 import com.twitter.util.Await
+import com.typesafe.config.ConfigFactory
 import doobie.imports._
 import fs2._
 import io.finch._
@@ -12,12 +13,18 @@ import io.finch.circe._
 
 object CompetenceCenterApi extends App {
 
+  val config = ConfigFactory.load()
+
   val transactor = DriverManagerTransactor[Task](
-    "org.postgresql.Driver", "jdbc:postgresql:competence-center?loggerLevel=DEBUG", "postgres", "")
+    driver = config.getString("db.driver"),
+    url = config.getString("db.url"),
+    user = config.getString("db.user"),
+    pass = config.getString("db.password")
+  )
 
   val cvService = new PostgresCVService(transactor)
 
-  val tokenVerifier = new GoogleTokenVerifier("172845937673-smq0kn52ie1spg9irdrhk4stgk7nrp0g.apps.googleusercontent.com")
+  val tokenVerifier = new GoogleTokenVerifier(config.getString("google.clientId"))
 
   val cvFormatter = new PdfCVFormatter()
 
