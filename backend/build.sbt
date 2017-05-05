@@ -29,6 +29,15 @@ libraryDependencies ++= Seq(
   "com.typesafe" % "config" % "1.3.1"
 )
 
+packageOptions in (Compile, packageBin) +=  {
+  import java.util.jar.{Attributes, Manifest}
+  val manifest = new Manifest
+  val attributes = new Attributes
+  attributes.put(Attributes.Name.CONTENT_TYPE, "application/x-font")
+  manifest.getEntries().put("font/Avenir Next.ttc", attributes)
+  Package.JarManifest( manifest )
+}
+
 lazy val root = (project in file(".")).
   enablePlugins(ScalaxbPlugin).
   settings(
