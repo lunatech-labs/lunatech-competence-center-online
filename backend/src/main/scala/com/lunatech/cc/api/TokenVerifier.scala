@@ -8,9 +8,13 @@ import scala.collection.JavaConverters._
 
 case class GoogleUser(userId: String, email: String, name: String, familyName: String, givenName: String)
 
-class GoogleTokenVerifier(clientId: String) {
+trait TokenVerifier {
+  def verifyToken(idTokenString: String): Option[GoogleUser]
+}
 
-  def verifyToken(idTokenString: String): Option[GoogleUser] = {
+class GoogleTokenVerifier(clientId: String) extends TokenVerifier {
+
+  override def verifyToken(idTokenString: String): Option[GoogleUser] = {
     val transport = new NetHttpTransport()
     val jsonFactory = new JacksonFactory()
     val googlePublicKeysManager = new GooglePublicKeysManager.Builder(transport, jsonFactory).build()

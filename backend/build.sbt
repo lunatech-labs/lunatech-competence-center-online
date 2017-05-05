@@ -23,7 +23,10 @@ libraryDependencies ++= Seq(
 
   "org.scala-lang.modules" %% "scala-xml" % "1.0.6",
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5",
-  "net.databinder.dispatch" %% "dispatch-core" % "0.11.3"
+  "net.databinder.dispatch" %% "dispatch-core" % "0.11.3",
+
+  "org.scalatest" %% "scalatest" % "2.2.4" % "test",
+  "com.typesafe" % "config" % "1.3.1"
 )
 
 lazy val root = (project in file(".")).
@@ -32,3 +35,6 @@ lazy val root = (project in file(".")).
     scalaxbDispatchVersion in (Compile, scalaxb) := "0.11.3",
     scalaxbPackageName in (Compile, scalaxb)     := "xml"
   )
+
+
+coverageExcludedPackages := "scalaxb;xml;"

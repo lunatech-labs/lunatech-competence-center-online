@@ -7,25 +7,30 @@ import javax.xml.transform.sax.SAXResult
 import javax.xml.transform.stream.StreamSource
 
 import com.lunatech.cc.models.{CV, Models}
+import com.twitter.io.Reader
 import org.apache.fop.apps.FopFactory
 import org.apache.xmlgraphics.util.MimeConstants
-import xml.{ Resume, defaultScope }
+import xml.{Resume, defaultScope}
 
 import scala.util.{Failure, Success, Try}
 import scala.xml.NodeSeq
 
+trait CVFormatter {
+  def format(cv: CV): Either[Exception, Reader]
+  def format(cv: CV, template: Template): Either[Exception, Reader]
+}
 
-object CVFormatter {
+class PdfCVFormatter extends CVFormatter {
 
-  def format(cv: CV): Either[Exception, File] = format(cv, DefaultTemplate)
+  override def format(cv: CV): Either[Exception, Reader] = format(cv, DefaultTemplate)
 
-  def format(cv: CV, template: Template): Either[Exception, File] = {
+  override def format(cv: CV, template: Template): Either[Exception, Reader] = {
     val pdf = new File(s"/tmp/${UUID.randomUUID()}.pdf")
     val out = new BufferedOutputStream(new FileOutputStream(pdf))
     val data = scalaxb.toXML[Resume](Models.toXML(cv), None, Some("resume"), defaultScope)
 
     Try(run(data, template.file, out)) match {
-      case Success(_) => Right(pdf)
+      case Success(_) => Right(Reader.fromFile(pdf))
       case Failure(e) =>
         pdf.delete()
         println(e.getMessage)
