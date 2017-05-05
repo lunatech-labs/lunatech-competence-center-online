@@ -23,7 +23,7 @@
         <fo:page-sequence master-reference="A4">
             <xsl:apply-templates select="r:basics" mode="heading"/>
             <fo:flow flow-name="xsl-region-body">
-                <fo:table table-layout="fixed">
+                <fo:table table-layout="fixed" width="100%">
                     <fo:table-column column-width="proportional-column-width(9)"/>
                     <fo:table-column column-width="proportional-column-width(13)"/>
                     <fo:table-body>
@@ -312,15 +312,9 @@
                 <fo:block text-align-last="center">
                     <fo:instream-foreign-object>
                         <svg xmlns="http://www.w3.org/2000/svg" width="1.1289cm" height="1.1289cm">
-                            <circle cx="0.56445cm" cy="0.56445cm" r="0.56445cm" fill="white" stroke="black"
-                                    stroke-width="1"/>
-                            <defs>
-                                <clipPath id="round-photo">
-                                    <circle cx="0.56445cm" cy="0.56445cm" r="0.56445cm"/>
-                                </clipPath>
-                            </defs>
-                            <image xlink:href="{$logo}" x="30%" y="30%" width="0.4544cm" height="0.4544cm"
-                                   clip-path="url(#round-photo)"/>
+                            <image xlink:href="{$logo}" x="30%" y="30%" width="0.4544cm" height="0.4544cm" />
+                            <circle cx="0.56445cm" cy="0.56445cm" r="0.5cm" fill="none" stroke="black"
+                                stroke-width="1"/>
                         </svg>
                     </fo:instream-foreign-object>
                 </fo:block>

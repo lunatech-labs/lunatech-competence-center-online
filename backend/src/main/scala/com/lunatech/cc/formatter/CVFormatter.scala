@@ -6,14 +6,17 @@ import javax.xml.transform.TransformerFactory
 import javax.xml.transform.sax.SAXResult
 import javax.xml.transform.stream.StreamSource
 
-import com.lunatech.cc.models.{CV, Models}
 import com.twitter.io.Reader
-import org.apache.fop.apps.FopFactory
+import com.lunatech.cc.models._
+import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder
+import org.apache.fop.apps.FopFactoryBuilder
 import org.apache.xmlgraphics.util.MimeConstants
 import xml.{Resume, defaultScope}
 
 import scala.util.{Failure, Success, Try}
 import scala.xml.NodeSeq
+
+import sys.process._
 
 trait CVFormatter {
   def format(cv: CV): Either[Exception, Reader]
@@ -33,20 +36,23 @@ class PdfCVFormatter extends CVFormatter {
       case Success(_) => Right(Reader.fromFile(pdf))
       case Failure(e) =>
         pdf.delete()
-        println(e.getMessage)
+        e.printStackTrace()
         Left(new RuntimeException(e.getMessage))
     }
   }
 
   private def run(cv: NodeSeq, template: File, out: OutputStream) = {
-    // Step 1: Construct a FopFactory by specifying a reference to the configuration file
-    // (reuse if you plan to render multiple documents!)
-    val fopFactory = FopFactory.newInstance(getClass.getResource("/cv/fop.xconf").toURI)
+    val cfgBuilder = new DefaultConfigurationBuilder
+    val cfg = cfgBuilder.build(getClass.getResource("/cv/fop.xconf").toURI.toString)
+    val fopFactoryBuilder = new FopFactoryBuilder(getClass.getResource("/cv/").toURI).setConfiguration(cfg)
+    fopFactoryBuilder.setComplexScriptFeatures(false)
+    val fopFactory = fopFactoryBuilder.build()
     // Step 2: Set up output stream.
     // Note: Using BufferedOutputStream for performance reasons (helpful with FileOutputStreams).
     try {
       // Setup additional event listeners
       val foUserAgent = fopFactory.newFOUserAgent
+
       foUserAgent.setAuthor("Lunatech")
       foUserAgent.getEventBroadcaster.addEventListener(new ThrowExceptionEventListener)
       foUserAgent.getEventBroadcaster.addEventListener(new SysOutEventListener)
@@ -73,4 +79,28 @@ class PdfCVFormatter extends CVFormatter {
       out.close()
     }
   }
+}
+
+object PdfCVFormatter {
+  def main(args: Array[String]): Unit = {
+    val contact = Contact("Lunatech Labs", "Baan 74", "3011 CD", "Rotterdam", "+31 (0)10 750 2600", "bart.schuller@lunatech.com", "nl")
+    val basics = BasicDetails("Bart", "Schuller", "Senior Software Engineer", "1995", "bart.schuller@lunatech.com", "https://avatars1.githubusercontent.com/u/47303", "Profile", contact)
+    val skills = Seq(Skill("serious", "Scala", 9))
+    val projects = Seq(Project("Sdu", "2014", "present", "Lead developer/Architect", "Very interesting system"))
+    val education = Seq(Education("TU Delft", "The Netherlands", "Bachelor", "1987", "1994", "Studied Computer Science. No diploma."))
+    val emp = Employee(basics, skills, Seq("Achievement!"), projects, education)
+    val meta = Meta("Client Name", "2017-05-05", "en")
+    val cv = CV(emp, meta)
+    val xml = scalaxb.toXML[Resume](Models.toXML(cv), None, Some("resume"), defaultScope)
+
+    println(xml)
+
+    val pdfCvFormatter = new PdfCVFormatter
+
+    pdfCvFormatter.format(cv) match {
+      case Right(pdfFile) => s"open $pdfFile" !
+      case Left(ex) => ex.printStackTrace()
+    }
+  }
+
 }

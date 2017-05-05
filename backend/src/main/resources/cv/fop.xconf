@@ -25,7 +25,7 @@ the location of this file.
   <target-resolution>72</target-resolution>
   
   <!-- Default page-height and page-width, in case value is specified as auto -->
-  <default-page-settings height="11.00in" width="8.50in"/>
+  <default-page-settings height="297mm" width="210mm"/>
   
   <!-- Information for specific renderers -->
   <!-- Uses renderer mime type for renderers -->
@@ -45,7 +45,6 @@ the location of this file.
       </filterList>
 
       <fonts>
-             <auto-detect/>
         <!-- embedded fonts -->
         <!--
         This information must exactly match the font specified
