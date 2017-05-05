@@ -1,7 +1,7 @@
 package com.lunatech.cc.api
 
 import com.lunatech.cc.api.Routes._
-import com.lunatech.cc.formatter.CVFormatter
+import com.lunatech.cc.formatter.{CVFormatter, FormatResult}
 import com.lunatech.cc.models.{CV, Employee}
 import com.twitter.io.{Buf, Reader}
 import com.twitter.util.Future
@@ -53,7 +53,7 @@ class CVController(tokenVerifier: TokenVerifier, cvService: CVService, cvFormatt
       cv.as[CV] match {
         case Right(data) =>
           cvFormatter.format(data) match {
-            case Right(result) =>
+            case Right(FormatResult(result, _)) =>
               Reader.readAll(result).map { content =>
                 Ok(content).withHeader("Content-type" -> "application/pdf")
               }

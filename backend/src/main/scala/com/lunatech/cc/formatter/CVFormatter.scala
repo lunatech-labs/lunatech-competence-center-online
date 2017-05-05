@@ -6,34 +6,35 @@ import javax.xml.transform.TransformerFactory
 import javax.xml.transform.sax.SAXResult
 import javax.xml.transform.stream.StreamSource
 
-import com.twitter.io.Reader
 import com.lunatech.cc.models._
+import com.twitter.io.Reader
 import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder
 import org.apache.fop.apps.FopFactoryBuilder
 import org.apache.xmlgraphics.util.MimeConstants
 import xml.{Resume, defaultScope}
 
+import scala.language.postfixOps
+import scala.sys.process._
 import scala.util.{Failure, Success, Try}
 import scala.xml.NodeSeq
 
-import sys.process._
-
 trait CVFormatter {
-  def format(cv: CV): Either[Exception, Reader]
-  def format(cv: CV, template: Template): Either[Exception, Reader]
+  def format(cv: CV): Either[Exception, FormatResult]
+
+  def format(cv: CV, template: Template): Either[Exception, FormatResult]
 }
 
 class PdfCVFormatter extends CVFormatter {
 
-  override def format(cv: CV): Either[Exception, Reader] = format(cv, DefaultTemplate)
+  override def format(cv: CV): Either[Exception, FormatResult] = format(cv, DefaultTemplate)
 
-  override def format(cv: CV, template: Template): Either[Exception, Reader] = {
+  override def format(cv: CV, template: Template): Either[Exception, FormatResult] = {
     val pdf = new File(s"/tmp/${UUID.randomUUID()}.pdf")
     val out = new BufferedOutputStream(new FileOutputStream(pdf))
     val data = scalaxb.toXML[Resume](Models.toXML(cv), None, Some("resume"), defaultScope)
 
     Try(run(data, template.file, out)) match {
-      case Success(_) => Right(Reader.fromFile(pdf))
+      case Success(_) => Right(FormatResult(Reader.fromFile(pdf), pdf.toString))
       case Failure(e) =>
         pdf.delete()
         e.printStackTrace()
@@ -81,26 +82,24 @@ class PdfCVFormatter extends CVFormatter {
   }
 }
 
-object PdfCVFormatter {
-  def main(args: Array[String]): Unit = {
-    val contact = Contact("Lunatech Labs", "Baan 74", "3011 CD", "Rotterdam", "+31 (0)10 750 2600", "bart.schuller@lunatech.com", "nl")
-    val basics = BasicDetails("Bart", "Schuller", "Senior Software Engineer", "1995", "bart.schuller@lunatech.com", "https://avatars1.githubusercontent.com/u/47303", "Profile", contact)
-    val skills = Seq(Skill("serious", "Scala", 9))
-    val projects = Seq(Project("Sdu", "2014", "present", "Lead developer/Architect", "Very interesting system"))
-    val education = Seq(Education("TU Delft", "The Netherlands", "Bachelor", "1987", "1994", "Studied Computer Science. No diploma."))
-    val emp = Employee(basics, skills, Seq("Achievement!"), projects, education)
-    val meta = Meta("Client Name", "2017-05-05", "en")
-    val cv = CV(emp, meta)
-    val xml = scalaxb.toXML[Resume](Models.toXML(cv), None, Some("resume"), defaultScope)
+object PdfCVFormatter extends App {
+  val contact = Contact("Lunatech Labs", "Baan 74", "3011 CD", "Rotterdam", "+31 (0)10 750 2600", "bart.schuller@lunatech.com", "nl")
+  val basics = BasicDetails("Bart", "Schuller", "Senior Software Engineer", "1995", "bart.schuller@lunatech.com", "https://avatars1.githubusercontent.com/u/47303", "Profile", contact)
+  val skills = Seq(Skill("serious", "Scala", 9))
+  val projects = Seq(Project("Sdu", "2014", "present", "Lead developer/Architect", "Very interesting system"))
+  val education = Seq(Education("TU Delft", "The Netherlands", "Bachelor", "1987", "1994", "Studied Computer Science. No diploma."))
+  val emp = Employee(basics, skills, Seq("Achievement!"), projects, education)
+  val meta = Meta("Client Name", "2017-05-05", "en")
+  val cv = CV(emp, meta)
+  val xml = scalaxb.toXML[Resume](Models.toXML(cv), None, Some("resume"), defaultScope)
 
-    println(xml)
+  println(xml)
 
-    val pdfCvFormatter = new PdfCVFormatter
+  val pdfCvFormatter = new PdfCVFormatter
 
-    pdfCvFormatter.format(cv) match {
-      case Right(pdfFile) => s"open $pdfFile" !
-      case Left(ex) => ex.printStackTrace()
-    }
+  pdfCvFormatter.format(cv) match {
+    case Right(FormatResult(_, filename)) => s"open $filename" !
+    case Left(ex) => ex.printStackTrace()
   }
 
 }

@@ -3,7 +3,7 @@ package com.lunatech.cc.api
 import java.io.ByteArrayInputStream
 
 import com.lunatech.cc.api.Data._
-import com.lunatech.cc.formatter.{CVFormatter, DefaultTemplate, Template}
+import com.lunatech.cc.formatter.{CVFormatter, DefaultTemplate, FormatResult, Template}
 import com.lunatech.cc.models._
 import com.twitter.io.Reader
 import io.circe.Json
@@ -179,11 +179,11 @@ class StaticCVService extends CVService {
 }
 
 class StaticCVFormatter extends CVFormatter {
-  override def format(cv: CV): Either[Exception, Reader] = format(cv, DefaultTemplate)
+  override def format(cv: CV): Either[Exception, FormatResult] = format(cv, DefaultTemplate)
 
-  override def format(cv: CV, template: Template): Either[Exception, Reader] =
+  override def format(cv: CV, template: Template): Either[Exception, FormatResult] =
     cv match {
       case CV(_, Meta("error", _, _)) => Left(new RuntimeException("error generating file"))
-      case _ => Right(Reader.fromStream(new ByteArrayInputStream(cv.toString.getBytes())))
+      case _ => Right(FormatResult(Reader.fromStream(new ByteArrayInputStream(cv.toString.getBytes())), "test"))
     }
 }
