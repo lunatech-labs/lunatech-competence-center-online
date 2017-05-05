@@ -68,6 +68,18 @@ CV Editor
       </div>
     </paper-card>
 
+    <paper-card>
+      <div class="card-content">
+        <paper-input label="Name" value="{{data.basics.contact.name}}"></paper-input>
+        <paper-input label="Address" value="{{data.basics.contact.address}}"></paper-input>
+        <paper-input label="Postal Code" value="{{data.basics.contact.postalCode}}"></paper-input>
+        <paper-input label="City" value="{{data.basics.contact.city}}"></paper-input>
+        <paper-input label="Phone" value="{{data.basics.contact.phone}}"></paper-input>
+        <paper-input label="Email" value="{{data.basics.contact.email}}"></paper-input>
+        <paper-input label="Country Code" value="{{data.basics.contact.countryCode}}"></paper-input>
+      </div>
+    </paper-card>
+
     <h2>Education</h2>
     <div class="card-group">
     <template is="dom-repeat" items="{{data.educations}}">
@@ -107,6 +119,38 @@ CV Editor
     </template>
     </div class="card-group">
     <paper-button class="add" raised class="primary" on-click="addProject"><iron-icon icon="add-circle"></iron-icon>Add project</paper-button>
+
+    <h2>Skills</h2>
+    <div class="card-group">
+    <template is="dom-repeat" items="{{data.skills}}">
+      <paper-card>
+        <div class="card-content">
+          <paper-input label="Name" value="{{item.name}}"></paper-input>
+          <paper-input label="Category" value="{{item.category}}"></paper-input>
+          <paper-input label="Level" value="{{item.level}}"></paper-input>
+        </div>
+        <div class="card-actions">
+          <paper-icon-button icon="delete" on-click="removeSkill"></paper-icon-button>
+        </div>
+      </paper-card>
+    </template>
+    </div class="card-group">
+    <paper-button class="add" raised class="primary" on-click="addSkill"><iron-icon icon="add-circle"></iron-icon>Add skill</paper-button>
+
+    <h2>Achievements</h2>
+    <div class="card-group">
+    <template is="dom-repeat" items="{{data.achievements}}">
+      <paper-card>
+        <div class="card-content">
+          <paper-textarea label="Achievement" value="{{item}}"></paper-textarea>
+        </div>
+        <div class="card-actions">
+          <paper-icon-button icon="delete" on-click="removeAchievement"></paper-icon-button>
+        </div>
+      </paper-card>
+    </template>
+    </div class="card-group">
+    <paper-button class="add" raised class="primary" on-click="addAchievement"><iron-icon icon="add-circle"></iron-icon>Add achievement</paper-button>
   </template>
 
   <script>
@@ -152,6 +196,24 @@ CV Editor
 
       removeProject: function(e) {
         this.splice('data.projects', e.model.index, 1);
+      },
+
+      addSkill: function() {
+
+        this.push('data.skills', { 'foo': 'bar' });
+      },
+
+      removeSkill: function(e) {
+        this.splice('data.skills', e.model.index, 1);
+      },
+
+      addAchievement: function() {
+
+        this.push('data.achievements', { 'foo': 'bar' });
+      },
+
+      removeAchievement: function(e) {
+        this.splice('data.achievements', e.model.index, 1);
       },
 
       show: function() {
