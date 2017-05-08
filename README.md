@@ -14,7 +14,7 @@ The Competence Center will become a portal in which Lunatech employees can track
 ## How to run
 - Configure a PostgreSQL server with the provided [schema](backend/src/main/resources/schema.sql)
   - install PostgreSQL via `brew install postgres`
-  - `createdb competence-center`
+  - `createdb competence-center` (if this returns `createdb: could not connect to database`, try `brew services stop postgresql; brew services start postgresql`)
   - `psql -d competence-center -f backend/src/main/resources/schema.sql`
 - [Build and serve frontend](frontend/README.md)
 - [Run the backend](backend/README.md)
