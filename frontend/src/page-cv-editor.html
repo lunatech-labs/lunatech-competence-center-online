@@ -37,7 +37,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        on-response="cvSaved"></iron-ajax>
 
     <template is="dom-if" if="[[cvData]]">
-      <cv-editor hidden data='{{cvData}}'></cv-editor>
+      <cv-editor data='{{cvData}}'></cv-editor>
     </template>
 
     <paper-button on-tap="save">Save</paper-button>
