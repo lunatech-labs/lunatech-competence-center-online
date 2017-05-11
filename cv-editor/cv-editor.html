@@ -10,6 +10,8 @@
 <link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../image-mask/image-mask.html">
 <link rel="import" href="../file-input/file-input.html">
+<link rel="import" href="../vaadin-date-picker/vaadin-date-picker.html">
+
 
 <!--
 `cv-editor`
@@ -98,7 +100,10 @@ CV Editor
       <paper-card class="horizontal">
         <div class="card-content">
           <paper-input label="Institution" value="{{item.institution}}"></paper-input>
-          <paper-input label="Start Date" value="{{item.startDate}}"></paper-input>
+          <paper-input label="Country" value="{{item.country}}"></paper-input>
+          <paper-input label="Study Type" value="{{item.studyType}}"></paper-input>
+          <vaadin-date-picker label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
+          <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
           <paper-textarea label="Description" value="{{item.description}}"></paper-textarea>
         </div>
         <div class="card-content">
@@ -120,12 +125,10 @@ CV Editor
       <paper-card class="horizontal">
         <div class="card-content">
           <paper-input label="Client" value="{{item.client}}"></paper-input>
-          <paper-input label="Start Date" value="{{item.startDate}}"></paper-input>
-          <paper-textarea label="Summary" value="{{item.summary}}" ></paper-textarea>
-        </div>
-        <div class="card-content">
-          <paper-input label="Role" value="{{item.role}}"></paper-input> 
-          <paper-input label="End Date" value="{{item.endDate}}"></paper-input>
+          <vaadin-date-picker id="start" label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
+          <vaadin-date-picker id="end" label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
+          <paper-input label="Role" value="{{item.role}}"></paper-input>
+          <paper-textarea label="Summary" value="{{item.summary}}"></paper-textarea>
         </div>
         <div class="card-actions">
           <paper-icon-button icon="delete" on-click="removeProject"></paper-icon-button>
