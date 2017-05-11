@@ -12,7 +12,6 @@
 <link rel="import" href="../file-input/file-input.html">
 <link rel="import" href="../vaadin-date-picker/vaadin-date-picker.html">
 
-
 <!--
 `cv-editor`
 CV Editor
@@ -100,15 +99,12 @@ CV Editor
       <paper-card class="horizontal">
         <div class="card-content">
           <paper-input label="Institution" value="{{item.institution}}"></paper-input>
-          <paper-input label="Country" value="{{item.country}}"></paper-input>
-          <paper-input label="Study Type" value="{{item.studyType}}"></paper-input>
           <vaadin-date-picker label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
-          <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
           <paper-textarea label="Description" value="{{item.description}}"></paper-textarea>
         </div>
         <div class="card-content">
           <paper-input label="Country" value="{{item.country}}"></paper-input>
-          <paper-input label="End Date" value="{{item.endDate}}"></paper-input>
+          <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
           <paper-input label="Study Type" value="{{item.studyType}}"></paper-input>
         </div>
         <div class="card-actions">
@@ -125,10 +121,12 @@ CV Editor
       <paper-card class="horizontal">
         <div class="card-content">
           <paper-input label="Client" value="{{item.client}}"></paper-input>
-          <vaadin-date-picker id="start" label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
-          <vaadin-date-picker id="end" label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
-          <paper-input label="Role" value="{{item.role}}"></paper-input>
-          <paper-textarea label="Summary" value="{{item.summary}}"></paper-textarea>
+          <vaadin-date-picker label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
+          <paper-textarea label="Summary" value="{{item.summary}}" ></paper-textarea>
+        </div>
+        <div class="card-content">
+          <paper-input label="Role" value="{{item.role}}"></paper-input> 
+          <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
         </div>
         <div class="card-actions">
           <paper-icon-button icon="delete" on-click="removeProject"></paper-icon-button>
@@ -162,7 +160,7 @@ CV Editor
     <h2>Achievements</h2>
     <div class="card-group">
     <template is="dom-repeat" items="{{data.achievements}}">
-      <paper-card>
+      <paper-card class="horizontal">
         <div class="card-content">
           <paper-textarea label="Achievement" value="{{item}}"></paper-textarea>
         </div>
