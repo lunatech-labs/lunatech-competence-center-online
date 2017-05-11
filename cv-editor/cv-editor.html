@@ -37,43 +37,55 @@ CV Editor
       .card-actions {
         text-align: right;
       }
+      
+      .card-content {
+        text-aligh: left;
+        width: 50%;
+      }
 
       paper-card {
-        width:500px;
+        width:100%;
       }
 
       paper-button.add {
         margin-top: 10px;
       }
 
+      paper-card.horizontal { @apply(--layout-horizontal); }
+
     </style>
-    <h2>Photo</h2>
-    <image-mask id="photoImage" src="/images/erik_bakker_square_small.jpg" size="200" on-tap="updatePhoto"></image-mask>
-
-    <paper-button>
-      <file-input id="photoInput" accept="image/*,video/*" max-files="1" on-change="photoSelected">
-        Select Photo
-      </file-input>
-    </paper-button>
-    <paper-button hidden$=[[!photoChanged]] on-tap="resetPhoto">Reset Photo</paper-button>
-
-    <h2>Basic Info</h2>
-    <paper-card>
+    <h2>Personal Details</h2>
+    <paper-card class="horizontal">
       <div class="card-content">
         <paper-input label="Given name" value="{{data.basics.givenName}}"></paper-input>
         <paper-input label="Family name" value="{{data.basics.familyName}}"></paper-input>
         <paper-input label="Label" value="{{data.basics.label}}"></paper-input>
         <paper-input label="Start" value="{{data.basics.startYear}}"></paper-input>
+      </div>
+      <div class="card-content">
+        <image-mask id="photoImage" src="/images/erik_bakker_square_small.jpg" size="200" on-tap="updatePhoto"></image-mask>
+        <paper-button>
+          <file-input id="photoInput" accept="image/*,video/*" max-files="1" on-change="photoSelected">
+             Select Photo
+          </file-input>
+          </paper-button>
+        <paper-button hidden$=[[!photoChanged]] on-tap="resetPhoto">Reset Photo</paper-button>
+      </div>
+    </paper-card>
+    <paper-card>
+      <div class="card-content" style="margin: 0 auto;">
         <paper-textarea label="Summary" value="{{data.basics.profile}}"></paper-textarea>
       </div>
     </paper-card>
 
-    <paper-card>
+    <paper-card class="horizontal">
       <div class="card-content">
         <paper-input label="Name" value="{{data.basics.contact.name}}"></paper-input>
         <paper-input label="Address" value="{{data.basics.contact.address}}"></paper-input>
         <paper-input label="Postal Code" value="{{data.basics.contact.postalCode}}"></paper-input>
         <paper-input label="City" value="{{data.basics.contact.city}}"></paper-input>
+      </div>
+      <div class="card-content">
         <paper-input label="Phone" value="{{data.basics.contact.phone}}"></paper-input>
         <paper-input label="Email" value="{{data.basics.contact.email}}"></paper-input>
         <paper-input label="Country Code" value="{{data.basics.contact.countryCode}}"></paper-input>
@@ -83,15 +95,17 @@ CV Editor
     <h2>Education</h2>
     <div class="card-group">
     <template is="dom-repeat" items="{{data.educations}}">
-      <paper-card>
+      <paper-card class="horizontal">
         <div class="card-content">
-          <paper-input label="Area" value="{{item.area}}"></paper-input>
           <paper-input label="Institution" value="{{item.institution}}"></paper-input>
+          <paper-input label="Area" value="{{item.area}}"></paper-input>
+          <paper-input label="Start Date" value="{{item.startDate}}"></paper-input>
+          <paper-textarea label="Description" value="{{item.description}}"></paper-textarea>
+        </div>
+        <div class="card-content">
           <paper-input label="Country" value="{{item.country}}"></paper-input>
           <paper-input label="Study Type" value="{{item.studyType}}"></paper-input>
-          <paper-input label="Start Date" value="{{item.startDate}}"></paper-input>
           <paper-input label="End Date" value="{{item.endDate}}"></paper-input>
-          <paper-textarea label="Description" value="{{item.description}}"></paper-textarea>
         </div>
         <div class="card-actions">
           <paper-icon-button icon="delete" on-click="removeEducation"></paper-icon-button>
@@ -104,13 +118,15 @@ CV Editor
     <h2>Projects</h2>
     <div class="card-group">
     <template is="dom-repeat" items="{{data.projects}}">
-      <paper-card>
+      <paper-card class="horizontal">
         <div class="card-content">
           <paper-input label="Client" value="{{item.client}}"></paper-input>
           <paper-input label="Start Date" value="{{item.startDate}}"></paper-input>
+          <paper-textarea label="Summary" value="{{item.summary}}" ></paper-textarea>
+        </div>
+        <div class="card-content">
+          <paper-input label="Role" value="{{item.role}}"></paper-input> 
           <paper-input label="End Date" value="{{item.endDate}}"></paper-input>
-          <paper-input label="Role" value="{{item.role}}"></paper-input>
-          <paper-textarea label="Summary" value="{{item.summary}}"></paper-textarea>
         </div>
         <div class="card-actions">
           <paper-icon-button icon="delete" on-click="removeProject"></paper-icon-button>
@@ -123,10 +139,14 @@ CV Editor
     <h2>Skills</h2>
     <div class="card-group">
     <template is="dom-repeat" items="{{data.skills}}">
-      <paper-card>
+      <paper-card class="horizontal">
         <div class="card-content">
           <paper-input label="Name" value="{{item.name}}"></paper-input>
+        </div>
+        <div class="card-content">
           <paper-input label="Category" value="{{item.category}}"></paper-input>
+        </div>
+        <div class="card-content">
           <paper-input label="Level" value="{{item.level}}"></paper-input>
         </div>
         <div class="card-actions">
