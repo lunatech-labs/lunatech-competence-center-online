@@ -14,7 +14,6 @@ import org.apache.xmlgraphics.util.MimeConstants
 import xml.{Resume, defaultScope}
 
 import scala.language.postfixOps
-import scala.sys.process._
 import scala.util.{Failure, Success, Try}
 import scala.xml.NodeSeq
 
@@ -98,7 +97,7 @@ object PdfCVFormatter extends App {
   val pdfCvFormatter = new PdfCVFormatter
 
   pdfCvFormatter.format(cv) match {
-    case Right(FormatResult(_, filename)) => s"open $filename" !
+    case Right(FormatResult(_, filename)) => println(s"open $filename")
     case Left(ex) => ex.printStackTrace()
   }
 
