@@ -7,16 +7,7 @@
       "startYear": "Employee since 2007",
       "email": "erik.bakker@lunatech.com",
       "image": "https://avatars2.githubusercontent.com/u/332784",
-      "profile": "Erik is an all-round software creator, who will lead your project to success. With more than ten years of commercial software experience under the belt, varying from very small projects with tight budget and time constraints, to multi-year projects for global enterprises, he knows how to make a project succeed. Erik is an early adopter of Scala, and has deep Scala knowledge. He’s a certified trainer for an Advanced Scala course, wrote a book on Scala and gave a talk on the worlds biggest Scala conference. He has many years of experience teaching teams how to benefit from Scala and how to avoid the pitfalls. A keen understanding of business needs in combination with his technical skills make Erik frequently a key player in bridging business, enterprise architecture and engineering. He is strong at execution, and strikes the right balance between urgent and important tasks.",
-      "contact": {
-        "name": "LUNATECH ROTTERDAM",
-        "address": "Baan 74",
-        "postalCode": "3011 CD",
-        "city": "Rotterdam",
-        "phone": "+31 10 750 2600",
-        "email": "info@lunatech.com",
-        "countryCode": "NL"
-      }
+      "profile": "Erik is an all-round software creator, who will lead your project to success. With more than ten years of commercial software experience under the belt, varying from very small projects with tight budget and time constraints, to multi-year projects for global enterprises, he knows how to make a project succeed. Erik is an early adopter of Scala, and has deep Scala knowledge. He’s a certified trainer for an Advanced Scala course, wrote a book on Scala and gave a talk on the worlds biggest Scala conference. He has many years of experience teaching teams how to benefit from Scala and how to avoid the pitfalls. A keen understanding of business needs in combination with his technical skills make Erik frequently a key player in bridging business, enterprise architecture and engineering. He is strong at execution, and strikes the right balance between urgent and important tasks."
     },
     "skills": [
       {
@@ -109,6 +100,7 @@
   "meta": {
     "client": "Lunatech",
     "creationDate": "2017-05-03",
-    "language": "EN"
+    "language": "EN",
+    "office": "Rotterdam"
   }
 }
