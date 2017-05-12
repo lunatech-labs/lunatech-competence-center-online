@@ -44,6 +44,7 @@ case class Education(institution: String,
 
 case class Meta(client: String,
                 creationDate: String,
+                office: String,
                 language: String)
 
 case class CV(employee: Employee,
@@ -57,63 +58,66 @@ case class Error(internalCode: Int,
 package object Models {
 
   implicit def toXML(cv: CV): xml.Resume = xml.Resume(
-    basics = Some(cv.employee.basics),
-    educations = Some(cv.employee.educations),
-    skills = Some(cv.employee.skills),
-    achievements = Some(cv.employee.achievements),
-    projects = Some(cv.employee.projects),
-    meta = Some(cv.meta))
+    basics = cv.employee.basics,
+    educations = cv.employee.educations,
+    skills = cv.employee.skills,
+    achievements = cv.employee.achievements,
+    projects = cv.employee.projects,
+    meta = cv.meta)
 
   implicit def toXML(basicDetails: BasicDetails): xml.Basics = xml.Basics(
-    givenName = Some(basicDetails.givenName),
-    familyName = Some(basicDetails.familyName),
-    label = Some(basicDetails.label),
-    startYear = Some(basicDetails.startYear),
-    image = Some(basicDetails.image),
-    email = Some(basicDetails.email),
-    profile = Some(basicDetails.profile),
-    contact = Some(basicDetails.contact))
+    givenName = basicDetails.givenName,
+    familyName = basicDetails.familyName,
+    label = basicDetails.label,
+    startYear = basicDetails.startYear,
+    image = basicDetails.image,
+    email = basicDetails.email,
+    profile = basicDetails.profile,
+    contact = basicDetails.contact)
 
   implicit def toXML(contact: Contact): xml.Contact = xml.Contact(
-    name = Some(contact.name),
-    address = Some(contact.address),
-    postalCode = Some(contact.postalCode),
-    city = Some(contact.city),
-    phone = Some(contact.phone),
-    email = Some(contact.email),
-    countryCode = Some(contact.countryCode))
+    name = contact.name,
+    address = contact.address,
+    postalCode = contact.postalCode,
+    city = contact.city,
+    phone = contact.phone,
+    email = contact.email,
+    countryCode = contact.countryCode)
 
   implicit def toXML(education: Education): xml.Education = xml.Education(
-    institution = Some(education.institution),
-    studyType = Some(education.studyType),
-    startDate = Some(education.startDate),
-    endDate = Some(education.endDate),
-    description = Some(education.description))
+    country = education.country,
+    institution = education.institution,
+    studyType = education.studyType,
+    startDate = education.startDate,
+    endDate = education.endDate,
+    description = education.description)
 
   implicit def toXML(educations: Seq[Education]): xml.Educations = xml.Educations(educations.map(toXML))
 
   implicit def toXML(skill: Skill): xml.Skill = xml.Skill(
-    name = Some(skill.name),
-    level = Some(skill.level),
-    category = Some(skill.category))
+    name = skill.name,
+    level = skill.level,
+    category = skill.category)
 
   implicit def toXML(skills: Seq[Skill]): xml.Skills = xml.Skills(skills.map(toXML))
 
-  implicit def toXML(description: String): xml.Achievement = xml.Achievement(Some(description))
+  implicit def toXML(description: String): xml.Achievement = xml.Achievement(description)
 
   implicit def toXML(achievements: Seq[String]): xml.Achievements = xml.Achievements(achievements.map(toXML))
 
   implicit def toXML(project: Project): xml.Project = xml.Project(
-    client = Some(project.client),
-    startDate = Some(project.startDate),
-    endDate = Some(project.endDate),
-    role = Some(project.role),
-    summary = Some(project.summary))
+    client = project.client,
+    startDate = project.startDate,
+    endDate = project.endDate,
+    role = project.role,
+    summary = project.summary)
 
   implicit def toXML(projects: Seq[Project]): xml.Projects = xml.Projects(projects.map(toXML))
 
   implicit def toXML(meta: Meta): xml.Meta = xml.Meta(
-    version = Some(meta.client),
-    created = Some(meta.creationDate)
+    version = meta.client,
+    created = meta.creationDate,
+    office = xml.OfficeType.fromString(meta.office, xml.defaultScope),
+    language = xml.LanguageType.fromString(meta.language, xml.defaultScope)
   )
 }

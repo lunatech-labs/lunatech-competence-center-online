@@ -88,7 +88,7 @@ object PdfCVFormatter extends App {
   val projects = Seq(Project("Sdu", "2014", "present", "Lead developer/Architect", "Very interesting system"))
   val education = Seq(Education("TU Delft", "The Netherlands", "Bachelor", "1987", "1994", "Studied Computer Science. No diploma."))
   val emp = Employee(basics, skills, Seq("Achievement!"), projects, education)
-  val meta = Meta("Client Name", "2017-05-05", "en")
+  val meta = Meta("Client Name", "2017-05-05", "Rotterdam", "EN")
   val cv = CV(emp, meta)
   val xml = scalaxb.toXML[Resume](Models.toXML(cv), None, Some("resume"), defaultScope)
 
