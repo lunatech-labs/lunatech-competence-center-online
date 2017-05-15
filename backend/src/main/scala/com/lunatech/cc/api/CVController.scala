@@ -67,11 +67,14 @@ class CVController(tokenVerifier: TokenVerifier, cvService: CVService, peopleSer
   }
 
   val `GET /cvs`: Endpoint[Json] = get(cvs :: tokenHeader).mapAsync { token =>
-    val employees: Seq[Employee] = cvService.findAll.flatMap(_.as[Employee].toValidated.toOption)
-    peopleService.findByRole("developer").map { _.map { person =>
+    for {
+      people <- peopleService.findByRole("developer")
+      employees <- Future.value(cvService.findAll.flatMap(_.as[Employee].toValidated.toOption))
+    } yield {
+      people.map { person =>
         Json.obj(
           "person" -> person.asJson,
-          "cv" ->employees.find(_.basics.email.toLowerCase == person.email.toLowerCase).asJson
+          "cv" -> employees.find(_.basics.email.toLowerCase == person.email.toLowerCase).asJson
         )
       }.asJson
     }
