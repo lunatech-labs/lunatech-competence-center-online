@@ -67,12 +67,11 @@ class CVController(tokenVerifier: TokenVerifier, cvService: CVService, peopleSer
   }
 
   val `GET /cvs`: Endpoint[Json] = get(cvs :: tokenHeader).mapAsync { token =>
-    val cvs = cvService.findAll.flatMap(_.as[CV].toValidated.toOption)
-    peopleService.findByRole("developer").map { people =>
-      people.map { person =>
+    val employees: Seq[Employee] = cvService.findAll.flatMap(_.as[Employee].toValidated.toOption)
+    peopleService.findByRole("developer").map { _.map { person =>
         Json.obj(
           "person" -> person.asJson,
-          "cv" ->cvs.find(_.employee.basics.email.toLowerCase == person.email.toLowerCase).asJson
+          "cv" ->employees.find(_.basics.email.toLowerCase == person.email.toLowerCase).asJson
         )
       }.asJson
     }
