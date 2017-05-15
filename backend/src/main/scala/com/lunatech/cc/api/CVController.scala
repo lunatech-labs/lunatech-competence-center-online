@@ -1,6 +1,7 @@
 package com.lunatech.cc.api
 
 import com.lunatech.cc.api.Routes._
+import com.lunatech.cc.api.services.{PeopleService, Person}
 import com.lunatech.cc.formatter.{CVFormatter, FormatResult}
 import com.lunatech.cc.models.{CV, Employee}
 import com.twitter.io.{Buf, Reader}
@@ -10,8 +11,9 @@ import io.circe.generic.auto._
 import io.circe.syntax._
 import io.finch._
 import io.finch.circe._
+import cats.implicits._
 
-class CVController(tokenVerifier: TokenVerifier, cvService: CVService, cvFormatter: CVFormatter) {
+class CVController(tokenVerifier: TokenVerifier, cvService: CVService, peopleService: PeopleService, cvFormatter: CVFormatter) {
 
   val `GET /employees`: Endpoint[Json] = get(employees :: tokenHeader) { (token: String) =>
     auth(token)(_ => Ok(cvService.findAll.asJson))
@@ -61,6 +63,15 @@ class CVController(tokenVerifier: TokenVerifier, cvService: CVService, cvFormatt
           }
         case Left(e) => Future(BadRequest(new RuntimeException(e)))
       }
+    }
+  }
+
+  val `GET /cvs`: Endpoint[Json] = get(cvs :: tokenHeader).mapAsync { token =>
+    val cvs = cvService.findAll.flatMap(_.as[CV].toValidated.toOption)
+    peopleService.findByRole("developer").map { people =>
+      people.map { person =>
+        (person, cvs.find(_.employee.basics.email.toLowerCase == person.email.toLowerCase))
+      }.asJson
     }
   }
 
