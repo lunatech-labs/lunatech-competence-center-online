@@ -27,6 +27,8 @@ CV Editor
         display: block;
       }
 
+      :host([hidden]) { display: none !important }
+
       .card-group {
         margin-t  op: -20px;
       }
@@ -49,6 +51,14 @@ CV Editor
 
       paper-card {
         width:100%;
+      }
+
+      paper-card[hidden] {
+        display: none;
+      }
+
+      paper-icon-button[hidden] {
+        display: none;
       }
 
       paper-button.add {
@@ -86,7 +96,7 @@ CV Editor
     </style>
 
     <!-- editable view -->
-    <paper-card elevation="0" hidden={{editing}}>
+    <paper-card elevation="0" hidden="{{editing}}">
       <paper-card elevation="0" class="horizontal">
         <div class="card-content">
           <div class="header">Personal Details
@@ -191,7 +201,7 @@ CV Editor
     </paper-card>
 
     <!-- overview -->
-    <paper-card elevation="0" hidden={{!editing}}>
+    <paper-card elevation="0" hidden="{{!editing}}">
       <paper-card elevation="0" class="horizontal">
         <div class="card-content">
           <div class="header">Personal Details
@@ -309,8 +319,8 @@ CV Editor
       </paper-card>      
 
     </paper-card>
-    <paper-icon-button hidden={{!editing}} title="Overview" icon="icons:done" on-tap="doEdit" class="done" mini></paper-icon-button>
-    <paper-icon-button hidden={{editing}}  title="Edit" icon="icons:create" on-tap="doEdit" class="edit" mini></paper-icon-button>
+    <paper-icon-button hidden="{{!editing}}" title="Overview" icon="icons:done" on-tap="doEdit" class="done" mini></paper-icon-button>
+    <paper-icon-button hidden="{{editing}}"  title="Edit" icon="icons:create" on-tap="doEdit" class="edit" mini></paper-icon-button>
   </template>
 
   <script>
