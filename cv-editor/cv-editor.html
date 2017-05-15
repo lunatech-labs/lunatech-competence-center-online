@@ -44,6 +44,9 @@ CV Editor
         width: 50%;
       }
 
+      .header { @apply(--paper-font-headline);}
+      .header-out { @apply(--paper-font-headline); margin-top: 10px; margin-left: 15px;}
+
       paper-card {
         width:100%;
       }
@@ -54,123 +57,260 @@ CV Editor
 
       paper-card.horizontal { @apply(--layout-horizontal); }
 
+      paper-input.no-underline {
+        --paper-input-container-underline: {
+          display: none;
+        };
+        --paper-input-container-underline-focus: {
+          display: none;
+        };
+        --paper-input-container-underline-disabled: {
+          display: none;
+        };
+      }
+
+      .content {
+        font-size: 17px;
+        margin: auto;
+      }
+
+      .left {
+        float: left;
+      }
+      
+      .right {
+        float: right;
+      }
+
+      }
     </style>
-    <h2>Personal Details</h2>
-    <paper-card class="horizontal">
-      <div class="card-content">
-        <paper-input label="Given name" value="{{data.basics.givenName}}"></paper-input>
-        <paper-input label="Family name" value="{{data.basics.familyName}}"></paper-input>
-        <paper-input label="Label" value="{{data.basics.label}}"></paper-input>
-        <paper-input label="Start" value="{{data.basics.startYear}}"></paper-input>
-      </div>
-      <div class="card-content">
-        <image-mask id="photoImage" src="/images/erik_bakker_square_small.jpg" size="200" on-tap="updatePhoto"></image-mask>
-        <paper-button>
-          <file-input id="photoInput" accept="image/*,video/*" max-files="1" on-change="photoSelected">
-             Select Photo
-          </file-input>
+
+    <!-- editable view -->
+    <paper-card elevation="0" hidden={{editing}}>
+      <paper-card elevation="0" class="horizontal">
+        <div class="card-content">
+          <div class="header">Personal Details
+            <paper-input label="Given name" value="{{data.basics.givenName}}" class="no-underline" readonly></paper-input>
+            <paper-input label="Family name" value="{{data.basics.familyName}}" class="no-underline" readonly></paper-input>
+            <paper-input label="Label" value="{{data.basics.label}}" class="no-underline" readonly></paper-input>
+            <paper-input label="Start" value="{{data.basics.startYear}}" class="no-underline" readonly></paper-input>
+          </div>
+        </div>
+        <div class="card-content">
+          <image-mask id="photoImage" src="/images/erik_bakker_square_small.jpg" size="200" on-tap="updatePhoto"></image-mask>    
+        </div>
+      </paper-card>
+      <paper-card elevation="0">
+        <div class="card-content">
+          {{data.basics.profile}}    
+        </div>
+      </paper-card>
+      <paper-card elevation="0">
+        <div class="card-content" style="width=100%;">
+          <div class="header">Education
+            <template is="dom-repeat" items="{{data.educations}}">
+              <div class="content">
+                <br>
+                <b>{{item.studyType}}</b>
+                <br>
+                <pre>{{item.institution}} / {{item.country}} / {{item.startDate}} - {{item.endDate}} </pre>
+                {{item.description}}
+                <br>
+              </div>
+            </template>
+          </div>
+        </div>
+      </paper-card>
+      <paper-card elevation="0">
+        <div class="card-content">
+          <div class="header">Key Experience
+            <template is="dom-repeat" items="{{data.projects}}">
+              <div class="content">
+                <br>
+                <b>{{item.client}}</b> {{item.startDate}} - {{item.endDate}}
+                <br>
+                <b>{{item.role}}</b> : {{item.summary}}
+                <br>
+              </div>
+            </template>
+          </div>
+        </div>
+      </paper-card>
+      <paper-card elevation="0">
+        <div class="card-content">
+          <div class="header">Key Skills
+            <div class="content">
+              <br>
+              <br>
+              <b>Technical Skills</b>
+              <template is="dom-repeat" items="{{data.skills}}" filter="isTech" observe="item.category">
+                <br>
+                <div class="content">
+                  <div class="left">
+                    {{item.name}}
+                  </div>
+                  <pre></pre>
+                  <div class="right">
+                    {{item.level}}
+                  </div>
+                </div>
+              </template>
+            </div>
+            <div class="content">
+              <br>
+              <br>
+              <b>Fun Skills</b>
+              <template is="dom-repeat" items="{{data.skills}}" filter="isFun" observe="item.category">
+                <br>
+                <div class="content">
+                  <div class="left">
+                    {{item.name}}
+                  </div>
+                  <pre></pre>
+                  <div class="right">
+                    {{item.level}}
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </paper-card>
+      <paper-card elevation="0">
+        <div class="card-content">
+          <div class="header">Achievements
+            <template is="dom-repeat" items="{{data.achievements}}">
+              <div class="content">
+                <br>
+                {{item}}
+              </div>
+            </template>
+          </div>
+        </div>
+      </paper-card>      
+    </paper-card>
+
+    <!-- overview -->
+    <paper-card elevation="0" hidden={{!editing}}>
+      <paper-card elevation="0" class="horizontal">
+        <div class="card-content">
+          <div class="header">Personal Details
+            <paper-input label="Given name" value="{{data.basics.givenName}}"></paper-input>
+            <paper-input label="Family name" value="{{data.basics.familyName}}"></paper-input>
+            <paper-input label="Label" value="{{data.basics.label}}"></paper-input>
+            <paper-input label="Start" value="{{data.basics.startYear}}"></paper-input>
+          </div>
+        </div>
+        <div class="card-content">
+          <image-mask id="photoImage" src="/images/erik_bakker_square_small.jpg" size="200" on-tap="updatePhoto"></image-mask>
+          <paper-button>
+            <file-input id="photoInput" accept="image/*,video/*" max-files="1" on-change="photoSelected">
+              Select Photo
+            </file-input>
           </paper-button>
-        <paper-button hidden$=[[!photoChanged]] on-tap="resetPhoto">Reset Photo</paper-button>
-      </div>
+          <paper-button hidden$=[[!photoChanged]] on-tap="resetPhoto">Reset Photo</paper-button>
+        </div>
+      </paper-card>
+      <paper-card elevation="0">
+        <div class="card-content">
+          <paper-textarea label="Summary" value="{{data.basics.profile}}"></paper-textarea>
+        </div>
+      </paper-card>
+      <paper-card elevation="0">
+        <div class="header-out">Education
+          <div class="card-group">
+            <template is="dom-repeat" items="{{data.educations}}">
+              <paper-card class="horizontal">
+                <div class="card-content">
+                  <paper-input label="Institution" value="{{item.institution}}"></paper-input>
+                  <vaadin-date-picker label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
+                  <paper-textarea label="Description" value="{{item.description}}"></paper-textarea>
+                </div>
+                <div class="card-content">
+                  <paper-input label="Country" value="{{item.country}}"></paper-input>
+                  <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
+                  <paper-input label="Study Type" value="{{item.studyType}}"></paper-input>
+                </div>
+                <div class="card-actions">
+                  <paper-icon-button icon="delete" title="Delete education" on-click="removeEducation"></paper-icon-button>
+                </div>
+              </paper-card>
+            </template>
+          </div class="card-group">
+          <paper-icon-button icon="add-circle" on-click="addEducation" title="Add education" mini></paper-icon-button>
+        </div>
+      </paper-card>
+      <paper-card elevation="0">
+        <div class="header-out">Key Experience
+          <div class="card-group">
+            <template is="dom-repeat" items="{{data.projects}}">
+              <paper-card class="horizontal">
+                <div class="card-content">
+                  <paper-input label="Client" value="{{item.client}}"></paper-input>
+                  <vaadin-date-picker label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
+                  <paper-textarea label="Summary" value="{{item.summary}}" ></paper-textarea>
+                </div>
+                <div class="card-content">
+                  <paper-input label="Role" value="{{item.role}}"></paper-input> 
+                  <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
+                </div>
+                <div class="card-actions">
+                  <paper-icon-button icon="delete" title="Delete project" on-click="removeProject"></paper-icon-button>
+                </div>
+              </paper-card>
+            </template>
+          </div class="card-group">
+          <paper-icon-button icon="add-circle" title="Add project" on-click="addProject"></paper-icon-button>
+        </div>
+      </paper-card>
+      <paper-card elevation="0">
+        <div class="card-content">
+          <div class="header">Key Skills
+            <div class="card-group">
+              <template is="dom-repeat" items="{{data.skills}}">
+                <paper-card class="horizontal">
+                  <div class="card-content">
+                    <paper-input label="Name" value="{{item.name}}"></paper-input>
+                  </div>
+                  <div class="card-content">
+                    <paper-input label="Category" value="{{item.category}}"></paper-input>
+                  </div>
+                  <div class="card-content">
+                    <paper-input label="Level" value="{{item.level}}"></paper-input>
+                  </div>
+                  <div class="card-actions">
+                    <paper-icon-button icon="delete" title="Delete skill" on-click="removeSkill"></paper-icon-button>
+                  </div>
+                </paper-card>
+              </template>
+            </div class="card-group">
+            <paper-icon-button icon="add-circle" title="Add skill" on-click="addSkill"></paper-icon-button>
+          </div>
+        </div>
+      </paper-card>
+      <paper-card elevation="0">
+        <div class="card-content">
+          <div class="header">Achievements
+            <div class="card-group">
+              <template is="dom-repeat" items="{{data.achievements}}">
+                <paper-card class="horizontal">
+                  <div class="card-content">
+                    <paper-textarea label="Achievement" value="{{item}}"></paper-textarea>
+                  </div>
+                  <div class="card-actions">
+                    <paper-icon-button icon="delete" title="Delete achievement" on-click="removeAchievement"></paper-icon-button>
+                  </div>
+                </paper-card>
+              </template>
+            </div class="card-group">
+            <paper-button icon="add-circle" title="Add achievement" on-click="addAchievement"></paper-icon-button>
+          </div>
+        </div>
+      </paper-card>      
+
     </paper-card>
-    <paper-card>
-      <div class="card-content" style="margin: 0 auto;">
-        <paper-textarea label="Summary" value="{{data.basics.profile}}"></paper-textarea>
-      </div>
-    </paper-card>
-
-    <paper-card class="horizontal">
-      <div class="card-content">
-        <paper-input label="Name" value="{{data.basics.contact.name}}"></paper-input>
-        <paper-input label="Address" value="{{data.basics.contact.address}}"></paper-input>
-        <paper-input label="Postal Code" value="{{data.basics.contact.postalCode}}"></paper-input>
-        <paper-input label="City" value="{{data.basics.contact.city}}"></paper-input>
-      </div>
-      <div class="card-content">
-        <paper-input label="Phone" value="{{data.basics.contact.phone}}"></paper-input>
-        <paper-input label="Email" value="{{data.basics.contact.email}}"></paper-input>
-        <paper-input label="Country Code" value="{{data.basics.contact.countryCode}}"></paper-input>
-      </div>
-    </paper-card>
-
-    <h2>Education</h2>
-    <div class="card-group">
-    <template is="dom-repeat" items="{{data.educations}}">
-      <paper-card class="horizontal">
-        <div class="card-content">
-          <paper-input label="Institution" value="{{item.institution}}"></paper-input>
-          <vaadin-date-picker label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
-          <paper-textarea label="Description" value="{{item.description}}"></paper-textarea>
-        </div>
-        <div class="card-content">
-          <paper-input label="Country" value="{{item.country}}"></paper-input>
-          <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
-          <paper-input label="Study Type" value="{{item.studyType}}"></paper-input>
-        </div>
-        <div class="card-actions">
-          <paper-icon-button icon="delete" on-click="removeEducation"></paper-icon-button>
-        </div>
-      </paper-card>
-    </template>
-    </div class="card-group">
-    <paper-button class="add" raised class="primary" on-click="addEducation"><iron-icon icon="add-circle"></iron-icon>Add education</paper-button>
-
-    <h2>Projects</h2>
-    <div class="card-group">
-    <template is="dom-repeat" items="{{data.projects}}">
-      <paper-card class="horizontal">
-        <div class="card-content">
-          <paper-input label="Client" value="{{item.client}}"></paper-input>
-          <vaadin-date-picker label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
-          <paper-textarea label="Summary" value="{{item.summary}}" ></paper-textarea>
-        </div>
-        <div class="card-content">
-          <paper-input label="Role" value="{{item.role}}"></paper-input> 
-          <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
-        </div>
-        <div class="card-actions">
-          <paper-icon-button icon="delete" on-click="removeProject"></paper-icon-button>
-        </div>
-      </paper-card>
-    </template>
-    </div class="card-group">
-    <paper-button class="add" raised class="primary" on-click="addProject"><iron-icon icon="add-circle"></iron-icon>Add project</paper-button>
-
-    <h2>Skills</h2>
-    <div class="card-group">
-    <template is="dom-repeat" items="{{data.skills}}">
-      <paper-card class="horizontal">
-        <div class="card-content">
-          <paper-input label="Name" value="{{item.name}}"></paper-input>
-        </div>
-        <div class="card-content">
-          <paper-input label="Category" value="{{item.category}}"></paper-input>
-        </div>
-        <div class="card-content">
-          <paper-input label="Level" value="{{item.level}}"></paper-input>
-        </div>
-        <div class="card-actions">
-          <paper-icon-button icon="delete" on-click="removeSkill"></paper-icon-button>
-        </div>
-      </paper-card>
-    </template>
-    </div class="card-group">
-    <paper-button class="add" raised class="primary" on-click="addSkill"><iron-icon icon="add-circle"></iron-icon>Add skill</paper-button>
-
-    <h2>Achievements</h2>
-    <div class="card-group">
-    <template is="dom-repeat" items="{{data.achievements}}">
-      <paper-card class="horizontal">
-        <div class="card-content">
-          <paper-textarea label="Achievement" value="{{item}}"></paper-textarea>
-        </div>
-        <div class="card-actions">
-          <paper-icon-button icon="delete" on-click="removeAchievement"></paper-icon-button>
-        </div>
-      </paper-card>
-    </template>
-    </div class="card-group">
-    <paper-button class="add" raised class="primary" on-click="addAchievement"><iron-icon icon="add-circle"></iron-icon>Add achievement</paper-button>
+    <paper-icon-button hidden={{!editing}} title="Overview" icon="icons:done" on-tap="doEdit" class="done" mini></paper-icon-button>
+    <paper-icon-button hidden={{editing}}  title="Edit" icon="icons:create" on-tap="doEdit" class="edit" mini></paper-icon-button>
   </template>
 
   <script>
@@ -187,7 +327,12 @@ CV Editor
         photoChanged: {
           type: Boolean,
           value: false
-        }
+        },
+
+        editing: {
+	    	type: Boolean,
+	    	value: false	
+    	}
       },
 
       ready: function() {
@@ -198,6 +343,10 @@ CV Editor
         if(this.data.education === undefined ){
           this.set('data.education', []);
         }
+      },
+
+      doEdit: function(e){
+    	this.editing=!this.editing;
       },
 
       addEducation: function() {
