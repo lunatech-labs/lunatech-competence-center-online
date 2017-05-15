@@ -70,7 +70,10 @@ class CVController(tokenVerifier: TokenVerifier, cvService: CVService, peopleSer
     val cvs = cvService.findAll.flatMap(_.as[CV].toValidated.toOption)
     peopleService.findByRole("developer").map { people =>
       people.map { person =>
-        (person, cvs.find(_.employee.basics.email.toLowerCase == person.email.toLowerCase))
+        Json.obj(
+          "person" -> person.asJson,
+          "cv" ->cvs.find(_.employee.basics.email.toLowerCase == person.email.toLowerCase).asJson
+        )
       }.asJson
     }
   }
