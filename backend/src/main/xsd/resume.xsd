@@ -5,72 +5,72 @@
     <element name="resume" type="resume:resume"/>
     <complexType name="resume">
         <sequence>
-            <element minOccurs="0" name="basics">
+            <element name="basics">
                 <complexType>
                     <sequence>
-                        <element minOccurs="0" name="givenName" type="string"/>
-                        <element minOccurs="0" name="familyName" type="string"/>
-                        <element minOccurs="0" name="label" type="string"/>
-                        <element minOccurs="0" name="startYear" type="string"/>
-                        <element minOccurs="0" name="image" type="string"/>
-                        <element minOccurs="0" name="email" type="string"/>
-                        <element minOccurs="0" name="profile" type="string"/>
-                        <element minOccurs="0" name="contact">
+                        <element name="givenName" type="string"/>
+                        <element name="familyName" type="string"/>
+                        <element name="label" type="string"/>
+                        <element name="startYear" type="string"/>
+                        <element name="image" type="string"/>
+                        <element name="email" type="string"/>
+                        <element name="profile" type="string"/>
+                        <element name="contact">
                             <complexType>
                                 <sequence>
-                                    <element minOccurs="0" name="name" type="string"/>
-                                    <element minOccurs="0" name="address" type="string"/>
-                                    <element minOccurs="0" name="postalCode" type="string"/>
-                                    <element minOccurs="0" name="city" type="string"/>
-                                    <element minOccurs="0" name="phone" type="string"/>
-                                    <element minOccurs="0" name="email" type="string"/>
-                                    <element minOccurs="0" name="countryCode" type="string"/>
+                                    <element name="name" type="string"/>
+                                    <element name="address" type="string"/>
+                                    <element name="postalCode" type="string"/>
+                                    <element name="city" type="string"/>
+                                    <element name="phone" type="string"/>
+                                    <element name="email" type="string"/>
+                                    <element name="countryCode" type="string"/>
                                 </sequence>
                             </complexType>
                         </element>
                     </sequence>
                 </complexType>
             </element>
-            <element minOccurs="0" name="educations">
+            <element name="educations">
                 <complexType>
                     <sequence>
                         <element name="education" maxOccurs="unbounded" minOccurs="0">
                             <complexType>
                                 <sequence>
-                                    <element minOccurs="0" name="institution" type="string"/>
-                                    <element minOccurs="0" name="country" type="string"/>
-                                    <element minOccurs="0" name="studyType" type="string"/>
-                                    <element minOccurs="0" name="startDate" type="string"/>
-                                    <element minOccurs="0" name="endDate" type="string"/>
-                                    <element minOccurs="0" name="description" type="string"/>
+                                    <element name="institution" type="string"/>
+                                    <element name="country" type="string"/>
+                                    <element name="studyType" type="string"/>
+                                    <element name="startDate" type="string"/>
+                                    <element name="endDate" type="string"/>
+                                    <element name="description" type="string"/>
                                 </sequence>
                             </complexType>
                         </element>
                     </sequence>
                 </complexType>
             </element>
-            <element minOccurs="0" name="skills">
+            <element name="skills">
                 <complexType>
                     <sequence>
                         <element name="skill" maxOccurs="unbounded" minOccurs="0">
                             <complexType>
                                 <sequence>
-                                    <element minOccurs="0" name="name" type="string"/>
-                                    <element minOccurs="0" name="level" type="int"/>
-                                    <element minOccurs="0" name="category" type="string"/>
+                                    <element name="name" type="string"/>
+                                    <element name="level" type="int"/>
+                                    <element name="category" type="string"/>
                                 </sequence>
                             </complexType>
                         </element>
                     </sequence>
                 </complexType>
             </element>
-            <element minOccurs="0" name="achievements">
+            <element name="achievements">
                 <complexType>
                     <sequence>
                         <element name="achievement" maxOccurs="unbounded" minOccurs="0">
                             <complexType>
                                 <sequence>
-                                    <element minOccurs="0" name="description" type="string"/>
+                                    <element name="description" type="string"/>
                                 </sequence>
                             </complexType>
                         </element>
@@ -78,31 +78,46 @@
                 </complexType>
             </element>
 
-            <element minOccurs="0" name="projects">
+            <element name="projects">
                 <complexType>
                     <sequence>
                         <element name="project" maxOccurs="unbounded" minOccurs="0">
                             <complexType>
                                 <sequence>
-                                    <element minOccurs="0" name="client" type="string"/>
-                                    <element minOccurs="0" name="startDate" type="string"/>
-                                    <element minOccurs="0" name="endDate" type="string"/>
-                                    <element minOccurs="0" name="role" type="string"/>
-                                    <element minOccurs="0" name="summary" type="string"/>
+                                    <element name="client" type="string"/>
+                                    <element name="startDate" type="string"/>
+                                    <element name="endDate" type="string"/>
+                                    <element name="role" type="string"/>
+                                    <element name="summary" type="string"/>
                                 </sequence>
                             </complexType>
                         </element>
                     </sequence>
                 </complexType>
             </element>
-            <element minOccurs="0" name="meta">
+            <element name="meta">
                 <complexType>
                     <sequence>
-                        <element minOccurs="0" name="version" type="string"/>
-                        <element minOccurs="0" name="created" type="string"/>
+                        <element name="version" type="string"/>
+                        <element name="created" type="string"/>
+                        <element name="office" type="resume:officeType"/>
+                        <element name="language" type="resume:languageType"/>
                     </sequence>
                 </complexType>
             </element>
         </sequence>
     </complexType>
+    <simpleType name="officeType">
+        <restriction base="string">
+            <enumeration value="Amsterdam"/>
+            <enumeration value="Paris"/>
+            <enumeration value="Rotterdam"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="languageType">
+        <restriction base="string">
+            <enumeration value="EN"/>
+            <enumeration value="FR"/>
+        </restriction>
+    </simpleType>
 </schema>

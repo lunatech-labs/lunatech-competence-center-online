@@ -185,16 +185,20 @@ definitions:
   Meta:
     type: object
     required:
-    - client
-    - creationDate
     - language
+    - office
     properties:
-      client:
-        type: string
-      creationDate:
-        type: string
       language:
         type: string
+        enum: 
+          - FR
+          - NL
+      office: 
+        type: string
+        enum:
+          - Amsterdam
+          - Paris
+          - Rotterdam
   Skill:
     type: object
     properties:

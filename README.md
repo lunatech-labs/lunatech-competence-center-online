@@ -10,6 +10,7 @@ The Competence Center will become a portal in which Lunatech employees can track
 ## Structure
 - Frontend: Polymer web application
 - Backend: Finch http service
+- Fonts: helper project containing fonts for the PDF generation
 
 ## How to run
 - Configure a PostgreSQL server with the provided [schema](backend/src/main/resources/schema.sql)

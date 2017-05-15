@@ -157,7 +157,7 @@ object Data {
     educations = Nil
   )
   val employeeJson: Json = employee.asJson
-  val cv: CV = CV(employee, Meta("test", "today", "1"))
+  val cv: CV = CV(employee, Meta("test", "today", "Rotterdam", "EN"))
   val cvJson: Json = cv.asJson
 }
 
@@ -183,7 +183,7 @@ class StaticCVFormatter extends CVFormatter {
 
   override def format(cv: CV, template: Template): Either[Exception, FormatResult] =
     cv match {
-      case CV(_, Meta("error", _, _)) => Left(new RuntimeException("error generating file"))
+      case CV(_, Meta("error", _, _, _)) => Left(new RuntimeException("error generating file"))
       case _ => Right(FormatResult(Reader.fromStream(new ByteArrayInputStream(cv.toString.getBytes())), "test"))
     }
 }

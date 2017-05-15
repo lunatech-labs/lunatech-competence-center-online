@@ -14,7 +14,6 @@ import org.apache.xmlgraphics.util.MimeConstants
 import xml.{Resume, defaultScope}
 
 import scala.language.postfixOps
-import scala.sys.process._
 import scala.util.{Failure, Success, Try}
 import scala.xml.NodeSeq
 
@@ -89,7 +88,7 @@ object PdfCVFormatter extends App {
   val projects = Seq(Project("Sdu", "2014", "present", "Lead developer/Architect", "Very interesting system"))
   val education = Seq(Education("TU Delft", "The Netherlands", "Bachelor", "1987", "1994", "Studied Computer Science. No diploma."))
   val emp = Employee(basics, skills, Seq("Achievement!"), projects, education)
-  val meta = Meta("Client Name", "2017-05-05", "en")
+  val meta = Meta("Client Name", "2017-05-05", "Rotterdam", "EN")
   val cv = CV(emp, meta)
   val xml = scalaxb.toXML[Resume](Models.toXML(cv), None, Some("resume"), defaultScope)
 
@@ -98,7 +97,7 @@ object PdfCVFormatter extends App {
   val pdfCvFormatter = new PdfCVFormatter
 
   pdfCvFormatter.format(cv) match {
-    case Right(FormatResult(_, filename)) => s"open $filename" !
+    case Right(FormatResult(_, filename)) => println(s"open $filename")
     case Left(ex) => ex.printStackTrace()
   }
 
