@@ -110,6 +110,23 @@
 				"description": ""
 			},
 			"response": []
+		},
+		{
+			"name": "localhost:9000/cvs",
+			"request": {
+				"url": "localhost:9000/cvs",
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-ID-Token",
+						"value": "{{token}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
 		}
 	]
 }
