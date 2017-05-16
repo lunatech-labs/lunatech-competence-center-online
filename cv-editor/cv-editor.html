@@ -151,7 +151,6 @@ CV Editor
           <div class="header">Key Skills
             <div class="content">
               <br>
-              <br>
               <b>Technical Skills</b>
               <template is="dom-repeat" items="{{data.skills}}" filter="isTech" observe="item.category">
                 <br>
@@ -407,6 +406,15 @@ CV Editor
         this.$.photoImage.src = this.$.photoImage.savedSrc;
         this.photoChanged = false;
       },
+
+      isTech: function(item) {
+        return item.category === 'tech';
+      },
+
+      isFun: function(item) {
+        return item.category === 'fun';
+      },
+
 
       photoSelected: function() {
         console.log("Photo selected!");
