@@ -5,7 +5,10 @@
 <link rel="import" href="../paper-input/paper-textarea.html">
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-slider/paper-slider.html">
 <link rel="import" href="../paper-card/paper-card.html">
+<link rel="import" href="../paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../paper-radio-group/paper-radio-group.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../image-mask/image-mask.html">
@@ -92,10 +95,20 @@ CV Editor
         float: right;
       }
 
+     .floating-label {
+        top         : .7em;
+        margin-left : 2px;
+        font-size   : .45em;
+        color       : #666;
+        opacity     : 1;
+
+      }
+      paper-radio-button.small {
+        font-size   : .65em;
       }
     </style>
 
-    <!-- editable view -->
+    <!-- overview view -->
     <paper-card elevation="0" hidden="{{editing}}">
       <paper-card elevation="0" class="horizontal">
         <div class="card-content">
@@ -151,7 +164,6 @@ CV Editor
           <div class="header">Key Skills
             <div class="content">
               <br>
-              <br>
               <b>Technical Skills</b>
               <template is="dom-repeat" items="{{data.skills}}" filter="isTech" observe="item.category">
                 <br>
@@ -200,7 +212,7 @@ CV Editor
       </paper-card>      
     </paper-card>
 
-    <!-- overview -->
+    <!-- editable view -->
     <paper-card elevation="0" hidden="{{!editing}}">
       <paper-card elevation="0" class="horizontal">
         <div class="card-content">
@@ -209,6 +221,12 @@ CV Editor
             <paper-input label="Family name" value="{{data.basics.familyName}}"></paper-input>
             <paper-input label="Label" value="{{data.basics.label}}"></paper-input>
             <paper-input label="Start" value="{{data.basics.startYear}}"></paper-input>
+            <div class="floating-label">Office</div>
+            <paper-radio-group selected="{{data.basics.contact.name}}">
+              <paper-radio-button class="small" name="LUNATECH ROTTERDAM">Rotterdam</paper-radio-button>
+              <paper-radio-button class="small" name="LUNATECH AMSTERDAM">Amsterdam</paper-radio-button>
+              <paper-radio-button class="small" name="LUNATECH PARIS">Paris</paper-radio-button>
+            </paper-radio-group>
           </div>
         </div>
         <div class="card-content">
@@ -274,28 +292,29 @@ CV Editor
         </div>
       </paper-card>
       <paper-card elevation="0">
-        <div class="card-content">
-          <div class="header">Key Skills
+        <div class="header-out">Key Skills
             <div class="card-group">
               <template is="dom-repeat" items="{{data.skills}}">
                 <paper-card class="horizontal">
                   <div class="card-content">
                     <paper-input label="Name" value="{{item.name}}"></paper-input>
                   </div>
-                  <div class="card-content">
-                    <paper-input label="Category" value="{{item.category}}"></paper-input>
-                  </div>
-                  <div class="card-content">
-                    <paper-input label="Level" value="{{item.level}}"></paper-input>
-                  </div>
+                  <div class="floating-label">Category</div>
+                  <paper-radio-group selected="{{item.category}}">
+                    <paper-radio-button class="small" name="tech">Technology</paper-radio-button>
+                    <paper-radio-button class="small" name="fun">Fun</paper-radio-button>
+                  </paper-radio-group>
+                  <div class="floating-label">Level</div>
+                  <paper-slider id="ratings" pin snaps max="10" max-markers="10" step="1" value="{{item.level}}"></paper-slider>
+                  
                   <div class="card-actions">
                     <paper-icon-button icon="delete" title="Delete skill" on-click="removeSkill"></paper-icon-button>
-                  </div>
+                  </div>                  
                 </paper-card>
               </template>
             </div class="card-group">
             <paper-icon-button icon="add-circle" title="Add skill" on-click="addSkill"></paper-icon-button>
-          </div>
+         
         </div>
       </paper-card>
       <paper-card elevation="0">
@@ -407,6 +426,14 @@ CV Editor
         this.$.photoImage.src = this.$.photoImage.savedSrc;
         this.photoChanged = false;
       },
+      
+      isTech: function(item) {
+        return item.category === 'tech';
+      },
+
+      isFun: function(item) {
+        return item.category === 'fun';
+      },
 
       photoSelected: function() {
         console.log("Photo selected!");
@@ -427,6 +454,7 @@ CV Editor
 
         reader.readAsDataURL(this.$.photoInput.files[0]);
       }
+
 
     });
   </script>
