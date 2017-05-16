@@ -17,10 +17,12 @@ import scala.collection.mutable
 
 class ApiSpec extends FlatSpec with Matchers {
 
+  import PeopleServiceSpec._
+
   private val tokenVerifier = new StaticTokenVerifier()
   private val cvService = new StaticCVService
   private val cvFormatter = new StaticCVFormatter
-  private val cvController = new CVController(tokenVerifier, cvService, cvFormatter)
+  private val cvController = new CVController(tokenVerifier, cvService, apiPeopleService, cvFormatter)
 
   private def withToken(input: Input) = input.withHeaders("X-ID-Token" -> "Token")
 
@@ -34,7 +36,7 @@ class ApiSpec extends FlatSpec with Matchers {
 
   it should "throw exception when header is not valid" in {
     val noTokenVerifier = new NoneTokenVerifier
-    val cvController = new CVController(noTokenVerifier, cvService, cvFormatter)
+    val cvController = new CVController(noTokenVerifier, cvService, apiPeopleService, cvFormatter)
     val input = withToken(Input.get("/employees/me"))
     val error = intercept[RuntimeException] {
       cvController.`GET /employees/me`(input).awaitValueUnsafe()
