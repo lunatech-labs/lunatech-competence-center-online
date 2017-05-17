@@ -57,7 +57,7 @@ class CVController(tokenVerifier: TokenVerifier, cvService: CVService, peopleSer
           cvFormatter.format(data) match {
             case Right(FormatResult(result, _)) =>
               Reader.readAll(result).map { content =>
-                Ok(content).withHeader("Content-type" -> "application/pdf")
+                Ok(content).withHeader("Content-type" -> "application/pdf").withHeader("ACCESS_CONTROL_ALLOW_ORIGIN" -> "*")
               }
             case Left(e) => Future(InternalServerError(e))
           }
