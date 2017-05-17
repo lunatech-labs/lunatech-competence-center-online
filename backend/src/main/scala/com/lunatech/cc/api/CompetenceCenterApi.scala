@@ -1,5 +1,7 @@
 package com.lunatech.cc.api
 
+import com.lunatech.cc.api.CompetenceCenterApi.cvController
+import com.lunatech.cc.api.services.ApiPeopleService
 import com.lunatech.cc.formatter.PdfCVFormatter
 import com.twitter.finagle.http.filter.Cors
 import com.twitter.finagle.http.{Request, Response}
@@ -24,6 +26,7 @@ object CompetenceCenterApi extends App {
 
   val cvService = new PostgresCVService(transactor)
 
+  val apiPeopleService =  ApiPeopleService(config)
   val tokenVerifier = config.getString("application.mode") match {
     case "dev" => new StaticTokenVerifier()
     case "prod" => new GoogleTokenVerifier(config.getString("google.clientId"))
@@ -37,9 +40,9 @@ object CompetenceCenterApi extends App {
     allowsMethods = _ => Some(Seq("GET", "POST", "PUT")),
     allowsHeaders = x => Some(x))
 
-  val cvController = new CVController(tokenVerifier, cvService, cvFormatter)
+  val cvController = new CVController(tokenVerifier, cvService, apiPeopleService, cvFormatter)
 
-  val service = (cvController.`GET /employees` :+: cvController.`GET /employees/me` :+: cvController.`GET /employees/employeeId` :+: cvController.`PUT /employees/me` :+: cvController.`POST /cvs`).toServiceAs[Application.Json]
+  val service = (cvController.`GET /employees` :+: cvController.`GET /employees/me` :+: cvController.`GET /employees/employeeId` :+: cvController.`PUT /employees/me` :+: cvController.`POST /cvs` :+: cvController.`GET /cvs`).toServiceAs[Application.Json]
 
   val corsService: Service[Request, Response] = new Cors.HttpFilter(policy).andThen(service)
 
