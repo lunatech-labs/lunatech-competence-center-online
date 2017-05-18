@@ -27,5 +27,10 @@
   "devDependencies": {
     "web-component-tester": "^4.0.0"
   },
-  "private": true
+  "private": true,
+  "resolutions": {
+    "polymer": "^1.2.0",
+    "paper-icon-button": "~1.1.0",
+    "paper-styles": "^1.0.0"
+  }
 }
