@@ -29,8 +29,8 @@
   },
   "private": true,
   "resolutions": {
-    "polymer": "^1.2.0",
-    "paper-icon-button": "~1.1.0",
-    "paper-styles": "^1.0.0"
+    "paper-icon-button": "^1.0.0",
+    "polymer": "^1.6.1",
+    "paper-styles": "^1.1.5"
   }
 }
