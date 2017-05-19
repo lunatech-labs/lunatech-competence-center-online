@@ -388,12 +388,12 @@
             </fo:inline>
             <fo:leader leader-pattern="space"/>
             <fo:instream-foreign-object>
-                <svg xmlns="http://www.w3.org/2000/svg" width="{213 div 256}in" height="{7 div 128}in">
-                    <rect x="0" y="0" width="{213 div 256}in" height="{7 div 128}in" rx="1mm" ry="1mm" fill="none"
+                <svg xmlns="http://www.w3.org/2000/svg" width="{217 div 256}in" height="{9 div 128}in">
+                    <rect x="{1 div 128}in" y="{1 div 128}in" width="{213 div 256}in" height="{7 div 128}in" rx="0.69mm" ry="0.69mm" fill="none"
                           stroke="{$color}"/>
                     <xsl:if test="$level &gt; 0">
-                        <rect x="0" y="0" width="{213 div 256*($level div 10.0)}in" height="{7 div 128}in" rx="1mm"
-                              ry="1mm" fill="{$color}" stroke="{$color}"/>
+                        <rect x="{1 div 128}in" y="{1 div 128}in" width="{213 div 256*($level div 10.0)}in" height="{7 div 128}in" rx="0.69mm"
+                              ry="0.69mm" fill="{$color}" stroke="{$color}"/>
                     </xsl:if>
                 </svg>
             </fo:instream-foreign-object>

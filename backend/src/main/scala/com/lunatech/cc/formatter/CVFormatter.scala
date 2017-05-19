@@ -80,25 +80,3 @@ class PdfCVFormatter extends CVFormatter {
     }
   }
 }
-
-object PdfCVFormatter extends App {
-  val contact = Contact("Lunatech Labs", "Baan 74", "3011 CD", "Rotterdam", "+31 (0)10 750 2600", "bart.schuller@lunatech.com", "nl")
-  val basics = BasicDetails("Bart", "Schuller", "Senior Software Engineer", "1995", "bart.schuller@lunatech.com", "https://avatars1.githubusercontent.com/u/47303", "Profile", contact)
-  val skills = Seq(Skill("serious", "Scala", 9))
-  val projects = Seq(Project("Sdu", "2014", "present", "Lead developer/Architect", "Very interesting system"))
-  val education = Seq(Education("TU Delft", "The Netherlands", "Bachelor", "1987", "1994", "Studied Computer Science. No diploma."))
-  val emp = Employee(basics, skills, Seq("Achievement!"), projects, education)
-  val meta = Meta("Client Name", "2017-05-05", "Rotterdam", "EN")
-  val cv = CV(emp, meta)
-  val xml = scalaxb.toXML[Resume](Models.toXML(cv), None, Some("resume"), defaultScope)
-
-  println(xml)
-
-  val pdfCvFormatter = new PdfCVFormatter
-
-  pdfCvFormatter.format(cv) match {
-    case Right(FormatResult(_, filename)) => println(s"open $filename")
-    case Left(ex) => ex.printStackTrace()
-  }
-
-}
