@@ -16,10 +16,10 @@
     </conf:office>
     <conf:office code="Paris">
         <r:name>Lunatech Labs</r:name>
-        <r:address>14 avenue de l'Europe</r:address>
-        <r:postalCode>77144</r:postalCode>
-        <r:city>Montévrain</r:city>
-        <r:phone>0033 1 82 88 56 64</r:phone>
+        <r:address>3, Rue de la Galmy</r:address>
+        <r:postalCode>77700</r:postalCode>
+        <r:city>Chessy</r:city>
+        <r:phone>+33 (0)1 82 88 56 64</r:phone>
         <r:email>info@lunatech.com</r:email>
     </conf:office>
     <conf:office code="Rotterdam">
