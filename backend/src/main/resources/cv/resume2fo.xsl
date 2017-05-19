@@ -2,8 +2,49 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:r="http://lunatech.com/2017/03/31/resume"
+                xmlns:conf="urn:lunatech-resume-internal-configuration"
                 version="1.0">
+    
+    <!-- Addresses to put in the top-right of the PDF -->
+    <conf:office code="Amsterdam">
+        <r:name>Lunatech Labs</r:name>
+        <r:address>Van Leijenberghlaan 197A</r:address>
+        <r:postalCode>1082 GG</r:postalCode>
+        <r:city>Amsterdam</r:city>
+        <r:phone>+31 (0)10 750 2600</r:phone>
+        <r:email>info@lunatech.com</r:email>
+    </conf:office>
+    <conf:office code="Paris">
+        <r:name>Lunatech Labs</r:name>
+        <r:address>14 avenue de l'Europe</r:address>
+        <r:postalCode>77144</r:postalCode>
+        <r:city>Montévrain</r:city>
+        <r:phone>0033 1 82 88 56 64</r:phone>
+        <r:email>info@lunatech.com</r:email>
+    </conf:office>
+    <conf:office code="Rotterdam">
+        <r:name>Lunatech Labs</r:name>
+        <r:address>Baan 74</r:address>
+        <r:postalCode>3011 CD</r:postalCode>
+        <r:city>Rotterdam</r:city>
+        <r:phone>+31 (0)10 750 2600</r:phone>
+        <r:email>info@lunatech.com</r:email>
+    </conf:office>
+    
+    <!-- Heading texts -->
+    <conf:heading code="key_skills" language="EN">Key Skills</conf:heading>
+    <conf:heading code="key_skills" language="FR">Compétences</conf:heading>
+    <conf:heading code="other" language="EN">Other</conf:heading>
+    <conf:heading code="other" language="FR">Extras</conf:heading>
+    <conf:heading code="profile" language="EN">Profile</conf:heading>
+    <conf:heading code="profile" language="FR">Introduction</conf:heading>
+    <conf:heading code="key_experience" language="EN">Key Experience</conf:heading>
+    <conf:heading code="key_experience" language="FR">Expérience Professionelle</conf:heading>
+    <conf:heading code="education" language="EN">Education</conf:heading>
+    <conf:heading code="education" language="FR">Formation</conf:heading>
+    
     <xsl:variable name="red" select="'#CC0033'"/>
+
     <xsl:template match="/">
         <fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xlink="http://www.w3.org/1999/xlink"
                  xsl:use-attribute-sets="document">
@@ -46,6 +87,8 @@
     </xsl:template>
 
     <xsl:template match="r:basics" mode="heading">
+        <xsl:variable name="officeCode" select="/r:resume/r:meta/r:office"></xsl:variable>
+        <xsl:variable name="officeDetails" select="document('')/*/conf:office[@code=$officeCode]"/>
         <fo:static-content flow-name="xsl-region-before">
             <fo:block-container xsl:use-attribute-sets="basics-contact">
                 <fo:table table-layout="fixed" width="100%">
@@ -61,10 +104,10 @@
                                 </fo:block>
                             </fo:table-cell>
                             <fo:table-cell column-number="2" xsl:use-attribute-sets="column-right">
-                                <xsl:apply-templates select="r:contact" mode="left"/>
+                                <xsl:apply-templates select="$officeDetails" mode="left"/>
                             </fo:table-cell>
                             <fo:table-cell column-number="3">
-                                <xsl:apply-templates select="r:contact" mode="right"/>
+                                <xsl:apply-templates select="$officeDetails" mode="right"/>
                             </fo:table-cell>
                         </fo:table-row>
                     </fo:table-body>
@@ -119,8 +162,7 @@
 
     <xsl:template match="r:skills">
         <xsl:call-template name="section-heading">
-            <xsl:with-param name="logo">images/key_skills.svg</xsl:with-param>
-            <xsl:with-param name="heading">Key Skills</xsl:with-param>
+            <xsl:with-param name="code">key_skills</xsl:with-param>
         </xsl:call-template>
         <fo:block>
             <xsl:apply-templates select="r:skill[r:category!='fun']"/>
@@ -159,8 +201,7 @@
 
     <xsl:template match="r:achievements">
         <xsl:call-template name="section-heading">
-            <xsl:with-param name="logo">images/other.svg</xsl:with-param>
-            <xsl:with-param name="heading">Other</xsl:with-param>
+            <xsl:with-param name="code">other</xsl:with-param>
         </xsl:call-template>
         <fo:list-block>
             <xsl:apply-templates/>
@@ -182,8 +223,7 @@
 
     <xsl:template match="r:basics/r:profile">
         <xsl:call-template name="section-heading">
-            <xsl:with-param name="logo">images/profile.svg</xsl:with-param>
-            <xsl:with-param name="heading">Profile</xsl:with-param>
+            <xsl:with-param name="code">profile</xsl:with-param>
         </xsl:call-template>
         <fo:block>
             <xsl:apply-templates/>
@@ -192,8 +232,7 @@
 
     <xsl:template match="r:projects">
         <xsl:call-template name="section-heading">
-            <xsl:with-param name="logo">images/key_experience.svg</xsl:with-param>
-            <xsl:with-param name="heading">Key Experience</xsl:with-param>
+            <xsl:with-param name="code">key_experience</xsl:with-param>
         </xsl:call-template>
         <fo:list-block>
             <xsl:apply-templates/>
@@ -234,8 +273,7 @@
 
     <xsl:template match="r:educations">
         <xsl:call-template name="section-heading">
-            <xsl:with-param name="logo">images/education.svg</xsl:with-param>
-            <xsl:with-param name="heading">Education</xsl:with-param>
+            <xsl:with-param name="code">education</xsl:with-param>
         </xsl:call-template>
         <fo:list-block>
             <xsl:apply-templates/>
@@ -272,7 +310,7 @@
     </xsl:template>
 
 
-    <xsl:template match="r:contact" mode="left">
+    <xsl:template match="conf:office" mode="left">
         <fo:block-container xsl:use-attribute-sets="contact">
             <fo:block>
                 <xsl:value-of select="r:name"/>
@@ -287,7 +325,7 @@
         </fo:block-container>
     </xsl:template>
 
-    <xsl:template match="r:contact" mode="right">
+    <xsl:template match="conf:office" mode="right">
         <fo:block-container text-align="right" text-align-last="right" font-size="8pt" letter-spacing="1pt"
                             text-transform="uppercase" padding-top="5pt">
             <fo:block>
@@ -303,8 +341,10 @@
     </xsl:template>
 
     <xsl:template name="section-heading">
-        <xsl:param name="heading"/>
-        <xsl:param name="logo"/>
+        <xsl:param name="code"/>
+        <xsl:variable name="language" select="/r:resume/r:meta/r:language"/>
+        <xsl:variable name="heading" select="document('')/*/conf:heading[@code=$code and @language=$language]"/>
+        <xsl:variable name="logo" select="concat('images/', $code, '.svg')"/>
         <fo:block xsl:use-attribute-sets="heading">
             <fo:block-container xsl:use-attribute-sets="image" padding-bottom="5mm">
                 <fo:block text-align-last="center">
@@ -465,4 +505,5 @@
     <xsl:attribute-set name="achievement">
         <xsl:attribute name="line-height">1.5</xsl:attribute>
     </xsl:attribute-set>
+
 </xsl:stylesheet>
