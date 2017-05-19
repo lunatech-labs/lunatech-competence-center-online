@@ -27,6 +27,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
     <iron-meta id="meta"></iron-meta>
+    <iron-location id="csvList"></iron-location>
+    <iron-ajax id="ajaxLoadSingleCV"
+      url="{{selectedUrl}}"
+      handle-as="json"
+      on-response="cvLoaded"></iron-ajax>
 
     <iron-ajax id="ajaxLoad"
       url="http://localhost:9000/cvs"
@@ -43,7 +48,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </div>
           <paper-datatable id="cvsDatatable" data={{cvsData}} progress="[[loading]]">
             <paper-datatable-column header="Name" property="item.person.name.fullName" type="String" sortable>
-              <template>{{item.person.name.fullName}}</template>
+              <template>
+                <paper-button on-tap="goToEditCv" disabled="{{!item.cv}}">{{item.person.name.fullName}}</paper-button>
+              </template>
             </paper-datatable-column>
             <paper-datatable-column header="Email" property="item.person.email"  type="String" sortable>
               <template>{{item.person.email}}</template>
@@ -76,13 +83,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Array,
           value: []
         },
+        
         loading: {
           type: Boolean,
           value: true
+        },
+
+        selectedUrl: {
+          type: String,
+          value: ""
         }
+        
       },
       ready: function() {
         this.$.ajaxLoad.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
+        this.$.ajaxLoadSingleCV.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
         this.$.ajaxLoad.generateRequest();
       },
       cvsLoaded: function(event) {
@@ -104,7 +119,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.cvsData = [];
           this.$.cvsDatatable.reset();
         }
-     }
+     },
+
+     goToEditCv: function(e){
+       // for now we can cheat and use the info got from the data table
+       //this.selectedUrl = "http://localhost:9000/employees/developer@lunatech.com"; // + e.model.get('item.person.email');
+       //this.$.ajaxLoadSingleCV.generateRequest();
+       //window.location.assign("/cv-editor"); //this is just a mockup
+       this.$.csvList.set('path', '/cv-editor');
+       this.$.csvList.set('data', e.model.get('item.cv')); // FIXME check if this works
+       console.log(this.$.csvList.data);
+     },
+     
+     cvLoaded: function(e) {
+       console.log("CV loaded in CSVList!");
+       //this.cvData = e.detail.response;
+      },
     });
   </script>
 </dom-module>
