@@ -24,6 +24,13 @@ The Competence Center will become a portal in which Lunatech employees can track
 - Use the provided [Postman](https://www.getpostman.com/) [collection](backend/resources/CCO.postman_collection.json) and [environment](backend/resources/OCC.postman_environment.json) to try the API.
 
 
+## Documentation
+
+- [Swagger REST API documentation](backend/resources/swagger.yml)
+
+  Copy/paste the swagger.yml content into http://editor.swagger.io/ to
+  view the documentation for the REST API
+
 ## Sub projects
 
 ### CV editor and generator
