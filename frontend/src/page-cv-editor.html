@@ -16,66 +16,46 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="page-cv-editor">
-  <template>
-    <style include="shared-styles">
-      :host {
-        display: block;
-        padding: 10px;
-      }
-    </style>
-    <iron-meta id="meta"></iron-meta>
+ <template>
+   <style include="shared-styles">
+     :host {
+       display: block;
+       padding: 10px;
+     }
+   </style>
+   <iron-meta id="meta"></iron-meta>
 
-    <iron-ajax id="ajaxLoad"
-      url="http://localhost:9000/employees/me"
-      handle-as="json"
-      on-response="cvLoaded"></iron-ajax>
+   <iron-ajax id="ajaxLoad"
+     url="http://localhost:9000/employees/me"
+     handle-as="json"
+     on-response="cvLoaded"></iron-ajax>
 
-     <iron-ajax id="ajaxSave"
-       url="http://localhost:9000/employees/me"
-       method="PUT"
-       content-type="application/json"
-       on-response="cvSaved"></iron-ajax>
+   <template is="dom-if" if="[[cvData]]">
+     <cv-editor data='{{cvData}}'></cv-editor>
+   </template>
 
-    <template is="dom-if" if="[[cvData]]">
-      <cv-editor data='{{cvData}}'></cv-editor>
-    </template>
+ </template>
 
-    <paper-button on-tap="save">Save</paper-button>
+ <script>
+   Polymer({
+     is: 'page-cv-editor',
 
-  </template>
+     ready: function() {
+       this.$.ajaxLoad.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
+       this.$.ajaxLoad.generateRequest();
+     },
 
-  <script>
-    Polymer({
-      is: 'page-cv-editor',
+     ajaxResponse: function(data) {
 
-      ready: function() {
-        this.$.ajaxLoad.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
-        this.$.ajaxSave.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
-        this.$.ajaxLoad.generateRequest();
-      },
+       console.log(data);
+       console.log(data.detail);
+       console.log(data.detail.xhr);
+     },
 
-      ajaxResponse: function(data) {
-
-        console.log(data);
-        console.log(data.detail);
-        console.log(data.detail.xhr);
-      },
-
-      cvLoaded: function(data) {
-        console.log("CV loaded!");
-        this.cvData = data.detail.response;
-      },
-
-      cvSaved: function(data) {
-        console.log("CV saved!");
-        console.log(arguments);
-      },
-
-      save: function() {
-        a = this.$.ajaxSave
-        a.body = this.$$("cv-editor").data;
-        a.generateRequest();
-      }
-    });
-  </script>
+     cvLoaded: function(data) {
+       console.log("CV loaded!");
+       this.cvData = data.detail.response;
+     }
+   });
+ </script>
 </dom-module>

@@ -26,627 +26,646 @@ CV Editor
 
 <dom-module id="cv-editor">
 
-  <template>
-    <style>
-      :host {
-        display: block;
-      }
+ <template>
+   <style>
+     :host {
+       display: block;
+     }
 
-      :host([hidden]) { display: none !important }
+     :host([hidden]) { display: none !important }
 
-      .card-group {
-        margin-t  op: -20px;
-      }
+     .card-group {
+       margin-t  op: -20px;
+     }
 
-      .card-group paper-card {
-        margin-top: 20px;
-      }
+     .card-group paper-card {
+       margin-top: 20px;
+     }
 
-      .card-actions {
-        text-align: right;
-      }
-      
-      .card-content {
-        text-aligh: left;
-        width: 50%;
-      }
+     .card-actions {
+       text-align: right;
+     }
 
-      .header { @apply(--paper-font-headline);}
-      .header-out { @apply(--paper-font-headline); margin-top: 10px; margin-left: 15px;}
+     .card-content {
+       text-aligh: left;
+       width: 50%;
+     }
 
-      paper-card {
-        width:100%;
-      }
+     .header { @apply(--paper-font-headline);}
+     .header-out { @apply(--paper-font-headline); margin-top: 10px; margin-left: 15px;}
 
-      paper-card[hidden] {
-        display: none;
-      }
+     paper-card {
+       width:100%;
+     }
 
-      paper-icon-button[hidden] {
-        display: none;
-      }
+     paper-card[hidden] {
+       display: none;
+     }
 
-      paper-button.add {
-        margin-top: 10px;
-      }
+     paper-icon-button[hidden] {
+       display: none;
+     }
 
-      paper-card.horizontal { @apply(--layout-horizontal); }
+     paper-button.add {
+       margin-top: 10px;
+     }
 
-      paper-input.no-underline {
-        --paper-input-container-underline: {
-          display: none;
-        };
-        --paper-input-container-underline-focus: {
-          display: none;
-        };
-        --paper-input-container-underline-disabled: {
-          display: none;
-        };
-      }
+     paper-card.horizontal { @apply(--layout-horizontal); }
 
-      .content {
-        font-size: 17px;
-        margin: auto;
-      }
+     paper-input.no-underline {
+       --paper-input-container-underline: {
+         display: none;
+       };
+       --paper-input-container-underline-focus: {
+         display: none;
+       };
+       --paper-input-container-underline-disabled: {
+         display: none;
+       };
+     }
 
-      .left {
-        float: left;
-      }
-      
-      .right {
-        float: right;
-      }
+     .content {
+       font-size: 17px;
+       margin: auto;
+     }
 
-     .floating-label {
-        top         : .7em;
-        margin-left : 2px;
-        font-size   : .45em;
-        color       : #666;
-        opacity     : 1;
+     .left {
+       float: left;
+     }
 
-      }
-      paper-radio-button.small {
-        font-size   : .65em;
-      }
-    </style>
-    <iron-meta id="meta"></iron-meta>
+     .right {
+       float: right;
+     }
 
-    <!-- overview view -->
-    <paper-card elevation="0" hidden="{{!isOverviewVisible}}">
-      <paper-card elevation="0" class="horizontal">
-        <div class="card-content">
-          <div class="header">Personal Details
-            <paper-input label="Given name" value="{{data.basics.givenName}}" class="no-underline" readonly></paper-input>
-            <paper-input label="Family name" value="{{data.basics.familyName}}" class="no-underline" readonly></paper-input>
-            <paper-input label="Label" value="{{data.basics.label}}" class="no-underline" readonly></paper-input>
-            <paper-input label="Start" value="{{data.basics.startYear}}" class="no-underline" readonly></paper-input>
-          </div>
-        </div>
-        <div class="card-content">
-          <image-mask id="photoImage" src="/images/erik_bakker_square_small.jpg" size="200"></image-mask>    
-        </div>
-      </paper-card>
-      <paper-card elevation="0">
-        <div class="card-content">
-          {{data.basics.profile}}    
-        </div>
-      </paper-card>
-      <paper-card elevation="0">
-        <div class="card-content" style="width=100%;">
-          <div class="header">Education
-            <template is="dom-repeat" items="{{data.educations}}">
-              <div class="content">
-                <br>
-                <b>{{item.studyType}}</b>
-                <br>
-                <pre>{{item.institution}} / {{item.country}} / {{item.startDate}} - {{item.endDate}} </pre>
-                {{item.description}}
-                <br>
-              </div>
-            </template>
-          </div>
-        </div>
-      </paper-card>
-      <paper-card elevation="0">
-        <div class="card-content">
-          <div class="header">Key Experience
-            <template is="dom-repeat" items="{{data.projects}}">
-              <div class="content">
-                <br>
-                <b>{{item.client}}</b> {{item.startDate}} - {{item.endDate}}
-                <br>
-                <b>{{item.role}}</b> : {{item.summary}}
-                <br>
-              </div>
-            </template>
-          </div>
-        </div>
-      </paper-card>
-      <paper-card elevation="0">
-        <div class="card-content">
-          <div class="header">Key Skills
-            <div class="content">
-              <br>
-              <b>Technical Skills</b>
-              <template is="dom-repeat" items="{{data.skills}}" filter="isTech" observe="item.category">
-                <br>
-                <div class="content">
-                  <div class="left">
-                    {{item.name}}
-                  </div>
-                  <pre></pre>
-                  <div class="right">
-                    {{item.level}}
-                  </div>
-                </div>
-              </template>
-            </div>
-            <div class="content">
-              <br>
-              <br>
-              <b>Fun Skills</b>
-              <template is="dom-repeat" items="{{data.skills}}" filter="isFun" observe="item.category">
-                <br>
-                <div class="content">
-                  <div class="left">
-                    {{item.name}}
-                  </div>
-                  <pre></pre>
-                  <div class="right">
-                    {{item.level}}
-                  </div>
-                </div>
-              </template>
-            </div>
-          </div>
-        </div>
-      </paper-card>
-      <paper-card elevation="0">
-        <div class="card-content">
-          <div class="header">Achievements
-            <template is="dom-repeat" items="{{data.achievements}}">
-              <div class="content">
-                <br>
-                {{item}}
-              </div>
-            </template>
-          </div>
-        </div>
-      </paper-card>      
-    </paper-card>
+    .floating-label {
+       top         : .7em;
+       margin-left : 2px;
+       font-size   : .45em;
+       color       : #666;
+       opacity     : 1;
 
-    <!-- editable view -->
-    <paper-card elevation="0" hidden="{{!isEditableVisible}}">
-      <paper-card elevation="0" class="horizontal">
-        <div class="card-content">
-          <div class="header">Personal Details
-            <paper-input label="Given name" value="{{data.basics.givenName}}"></paper-input>
-            <paper-input label="Family name" value="{{data.basics.familyName}}"></paper-input>
-            <paper-input label="Label" value="{{data.basics.label}}"></paper-input>
-            <paper-input label="Start" value="{{data.basics.startYear}}"></paper-input>
-            <div class="floating-label">Office</div>
-            <paper-radio-group selected="{{data.basics.contact.name}}">
-              <paper-radio-button class="small" name="LUNATECH ROTTERDAM">Rotterdam</paper-radio-button>
-              <paper-radio-button class="small" name="LUNATECH AMSTERDAM">Amsterdam</paper-radio-button>
-              <paper-radio-button class="small" name="LUNATECH PARIS">Paris</paper-radio-button>
-            </paper-radio-group>
-          </div>
-        </div>
-        <div class="card-content">
-          <image-mask id="photoImage" src="/images/erik_bakker_square_small.jpg" size="200" on-tap="updatePhoto"></image-mask>
-          <paper-button>
-            <file-input id="photoInput" accept="image/*,video/*" max-files="1" on-change="photoSelected">
-              Select Photo
-            </file-input>
-          </paper-button>
-          <paper-button hidden$=[[!photoChanged]] on-tap="resetPhoto">Reset Photo</paper-button>
-        </div>
-      </paper-card>
-      <paper-card elevation="0">
-        <div class="card-content">
-          <paper-textarea label="Summary" value="{{data.basics.profile}}"></paper-textarea>
-        </div>
-      </paper-card>
-      <paper-card elevation="0">
-        <div class="header-out">Education
-          <div class="card-group">
-            <template is="dom-repeat" items="{{data.educations}}">
-              <paper-card class="horizontal">
-                <div class="card-content">
-                  <paper-input label="Institution" value="{{item.institution}}"></paper-input>
-                  <vaadin-date-picker label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
-                  <paper-textarea label="Description" value="{{item.description}}"></paper-textarea>
-                </div>
-                <div class="card-content">
-                  <paper-input label="Country" value="{{item.country}}"></paper-input>
-                  <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
-                  <paper-input label="Study Type" value="{{item.studyType}}"></paper-input>
-                </div>
-                <div class="card-actions">
-                  <paper-icon-button icon="delete" title="Delete education" on-click="removeEducation"></paper-icon-button>
-                </div>
-              </paper-card>
-            </template>
-          </div class="card-group">
-          <paper-icon-button icon="add-circle" on-click="addEducation" title="Add education" mini></paper-icon-button>
-        </div>
-      </paper-card>
-      <paper-card elevation="0">
-        <div class="header-out">Key Experience
-          <div class="card-group">
-            <template is="dom-repeat" items="{{data.projects}}">
-              <paper-card class="horizontal">
-                <div class="card-content">
-                  <paper-input label="Client" value="{{item.client}}"></paper-input>
-                  <vaadin-date-picker label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
-                  <paper-textarea label="Summary" value="{{item.summary}}" ></paper-textarea>
-                </div>
-                <div class="card-content">
-                  <paper-input label="Role" value="{{item.role}}"></paper-input> 
-                  <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
-                </div>
-                <div class="card-actions">
-                  <paper-icon-button icon="delete" title="Delete project" on-click="removeProject"></paper-icon-button>
-                </div>
-              </paper-card>
-            </template>
-          </div class="card-group">
-          <paper-icon-button icon="add-circle" title="Add project" on-click="addProject"></paper-icon-button>
-        </div>
-      </paper-card>
-      <paper-card elevation="0">
-        <div class="header-out">Key Skills
-            <div class="card-group">
-              <template is="dom-repeat" items="{{data.skills}}">
-                <paper-card class="horizontal">
-                  <div class="card-content">
-                    <paper-input label="Name" value="{{item.name}}"></paper-input>
-                  </div>
-                  <div class="floating-label">Category</div>
-                  <paper-radio-group selected="{{item.category}}">
-                    <paper-radio-button class="small" name="tech">Technology</paper-radio-button>
-                    <paper-radio-button class="small" name="fun">Fun</paper-radio-button>
-                  </paper-radio-group>
-                  <div class="floating-label">Level</div>
-                  <paper-slider id="ratings" pin snaps max="10" max-markers="10" step="1" value="{{item.level}}"></paper-slider>
-                  
-                  <div class="card-actions">
-                    <paper-icon-button icon="delete" title="Delete skill" on-click="removeSkill"></paper-icon-button>
-                  </div>                  
-                </paper-card>
-              </template>
-            </div class="card-group">
-            <paper-icon-button icon="add-circle" title="Add skill" on-click="addSkill"></paper-icon-button>
-         
-        </div>
-      </paper-card>
-      <paper-card elevation="0">
-        <div class="card-content">
-          <div class="header">Achievements
-            <div class="card-group">
-              <template is="dom-repeat" items="{{data.achievements}}">
-                <paper-card class="horizontal">
-                  <div class="card-content">
-                    <paper-textarea label="Achievement" value="{{item}}"></paper-textarea>
-                  </div>
-                  <div class="card-actions">
-                    <paper-icon-button icon="delete" title="Delete achievement" on-click="removeAchievement"></paper-icon-button>
-                  </div>
-                </paper-card>
-              </template>
-            </div class="card-group">
-            <paper-button icon="add-circle" title="Add achievement" on-click="addAchievement"></paper-icon-button>
-          </div>
-        </div>
-      </paper-card>      
+     }
+     paper-radio-button.small {
+       font-size   : .65em;
+     }
+   </style>
+   <iron-meta id="meta"></iron-meta>
 
-    </paper-card>
+   <iron-ajax id="ajaxSave"
+      url="http://localhost:9000/employees/me"
+      method="PUT"
+      content-type="application/json"
+      on-response="cvSaved"></iron-ajax>
 
-    <!-- generating PDF view -->
-    <paper-card elevation="0" hidden="{{!isGeneratingVisible}}">
-      <paper-card elevation="0" class="horizontal">
-        <div class="card-content">
-          <div class="header">Personal Details
-            <paper-input label="Given name" value="{{data.basics.givenName}}" class="no-underline" readonly></paper-input>
-            <paper-input label="Family name" value="{{data.basics.familyName}}" class="no-underline" readonly></paper-input>
-            <paper-input label="Label" value="{{data.basics.label}}" class="no-underline" readonly></paper-input>
-            <paper-input label="Start" value="{{data.basics.startYear}}" class="no-underline" readonly></paper-input>
-            <paper-input label="Office" value="{{data.basics.contact.name}}" class="no-underline" readonly></paper-input>
-          </div>
-        </div>
-        <div class="card-content">
-          <image-mask id="photoImage" src="/images/erik_bakker_square_small.jpg" size="200"></image-mask>    
-        </div>
-      </paper-card>
-      <paper-card elevation="0">
-          <div class="card-content">
-            <paper-textarea label="Summary" value="{{data.basics.profile}}"></paper-textarea>
-          </div>
-      </paper-card>
-      <paper-card elevation="0">
-        <div class="header-out">Education
-          <div class="card-group">
-            <template is="dom-repeat" items="{{data.educations}}">
-              <paper-card class="horizontal">
-                <div class="card-content">
-                  <paper-input label="Institution" value="{{item.institution}}"></paper-input>
-                  <vaadin-date-picker label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
-                  <paper-textarea label="Description" value="{{item.description}}"></paper-textarea>
-                </div>
-                <div class="card-content">
-                  <paper-input label="Country" value="{{item.country}}"></paper-input>
-                  <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
-                  <paper-input label="Study Type" value="{{item.studyType}}"></paper-input>
-                </div>
-                <div class="card-actions">
-                  <paper-icon-button icon="delete" title="Delete education" on-click="removeEducation"></paper-icon-button>
-                </div>
-              </paper-card>
-            </template>
-          </div class="card-group">
-          <paper-icon-button icon="add-circle" on-click="addEducation" title="Add education" mini></paper-icon-button>
-        </div>
-      </paper-card>
-      <paper-card elevation="0">
-        <div class="header-out">Key Experience
-          <div class="card-group">
-            <template is="dom-repeat" items="{{data.projects}}">
-              <paper-card class="horizontal">
-                <div class="card-content">
-                  <paper-input label="Client" value="{{item.client}}"></paper-input>
-                  <vaadin-date-picker label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
-                  <paper-textarea label="Summary" value="{{item.summary}}" ></paper-textarea>
-                </div>
-                <div class="card-content">
-                  <paper-input label="Role" value="{{item.role}}"></paper-input> 
-                  <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
-                </div>
-                <div class="card-actions">
-                  <paper-icon-button icon="delete" title="Delete project" on-click="removeProject"></paper-icon-button>
-                </div>
-              </paper-card>
-            </template>
-          </div class="card-group">
-          <paper-icon-button icon="add-circle" title="Add project" on-click="addProject"></paper-icon-button>
-        </div>
-      </paper-card>
-      <paper-card elevation="0">
-        <div class="header-out">Key Skills
-            <div class="card-group">
-              <template is="dom-repeat" items="{{data.skills}}">
-                <paper-card class="horizontal">
-                  <div class="card-content">
-                    <paper-input label="Name" value="{{item.name}}"></paper-input>
-                  </div>
-                  <div class="floating-label">Category</div>
-                  <paper-radio-group selected="{{item.category}}">
-                    <paper-radio-button class="small" name="tech">Technology</paper-radio-button>
-                    <paper-radio-button class="small" name="fun">Fun</paper-radio-button>
-                  </paper-radio-group>
-                  <div class="floating-label">Level</div>
-                  <paper-slider id="ratings" pin snaps max="10" max-markers="10" step="1" value="{{item.level}}"></paper-slider>
-                  
-                  <div class="card-actions">
-                    <paper-icon-button icon="delete" title="Delete skill" on-click="removeSkill"></paper-icon-button>
-                  </div>                  
-                </paper-card>
-              </template>
-            </div class="card-group">
-            <paper-icon-button icon="add-circle" title="Add skill" on-click="addSkill"></paper-icon-button>
-         
-        </div>
-      </paper-card>
-      <paper-card elevation="0">
-        <div class="card-content">
-          <div class="header">Achievements
-            <div class="card-group">
-              <template is="dom-repeat" items="{{data.achievements}}">
-                <paper-card class="horizontal">
-                  <div class="card-content">
-                    <paper-textarea label="Achievement" value="{{item}}"></paper-textarea>
-                  </div>
-                  <div class="card-actions">
-                    <paper-icon-button icon="delete" title="Delete achievement" on-click="removeAchievement"></paper-icon-button>
-                  </div>
-                </paper-card>
-              </template>
-            </div class="card-group">
-            <paper-button icon="add-circle" title="Add achievement" on-click="addAchievement"></paper-icon-button>
-          </div>
-        </div>
-      </paper-card>      
+   <!-- overview view -->
+   <paper-card elevation="0" hidden="{{!isOverviewVisible}}">
+     <paper-card elevation="0" class="horizontal">
+       <div class="card-content">
+         <div class="header">Personal Details
+           <paper-input label="Given name" value="{{data.basics.givenName}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Family name" value="{{data.basics.familyName}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Label" value="{{data.basics.label}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Start" value="{{data.basics.startYear}}" class="no-underline" readonly></paper-input>
+         </div>
+       </div>
+       <div class="card-content">
+         <image-mask id="photoImage" src="/images/erik_bakker_square_small.jpg" size="200"></image-mask>    
+       </div>
+     </paper-card>
+     <paper-card elevation="0">
+       <div class="card-content">
+         {{data.basics.profile}}    
+       </div>
+     </paper-card>
+     <paper-card elevation="0">
+       <div class="card-content" style="width=100%;">
+         <div class="header">Education
+           <template is="dom-repeat" items="{{data.educations}}">
+             <div class="content">
+               <br>
+               <b>{{item.studyType}}</b>
+               <br>
+               <pre>{{item.institution}} / {{item.country}} / {{item.startDate}} - {{item.endDate}} </pre>
+               {{item.description}}
+               <br>
+             </div>
+           </template>
+         </div>
+       </div>
+     </paper-card>
+     <paper-card elevation="0">
+       <div class="card-content">
+         <div class="header">Key Experience
+           <template is="dom-repeat" items="{{data.projects}}">
+             <div class="content">
+               <br>
+               <b>{{item.client}}</b> {{item.startDate}} - {{item.endDate}}
+               <br>
+               <b>{{item.role}}</b> : {{item.summary}}
+               <br>
+             </div>
+           </template>
+         </div>
+       </div>
+     </paper-card>
+     <paper-card elevation="0">
+       <div class="card-content">
+         <div class="header">Key Skills
+           <div class="content">
+             <br>
+             <b>Technical Skills</b>
+             <template is="dom-repeat" items="{{data.skills}}" filter="isTech" observe="item.category">
+               <br>
+               <div class="content">
+                 <div class="left">
+                   {{item.name}}
+                 </div>
+                 <pre></pre>
+                 <div class="right">
+                   {{item.level}}
+                 </div>
+               </div>
+             </template>
+           </div>
+           <div class="content">
+             <br>
+             <br>
+             <b>Fun Skills</b>
+             <template is="dom-repeat" items="{{data.skills}}" filter="isFun" observe="item.category">
+               <br>
+               <div class="content">
+                 <div class="left">
+                   {{item.name}}
+                 </div>
+                 <pre></pre>
+                 <div class="right">
+                   {{item.level}}
+                 </div>
+               </div>
+             </template>
+           </div>
+         </div>
+       </div>
+     </paper-card>
+     <paper-card elevation="0">
+       <div class="card-content">
+         <div class="header">Achievements
+           <template is="dom-repeat" items="{{data.achievements}}">
+             <div class="content">
+               <br>
+               {{item}}
+             </div>
+           </template>
+         </div>
+       </div>
+     </paper-card>      
+   </paper-card>
 
-    </paper-card>
-    <paper-icon-button hidden="{{isOverviewVisible}}" title="Go to Overview" icon="icons:arrow-back" on-tap="doOverview" class="done" mini></paper-icon-button>
-    <paper-icon-button hidden="{{!isOverviewVisible}}"  title="Go to Edit" icon="icons:create" on-tap="doEdit" class="edit" mini></paper-icon-button>
-    <paper-icon-button hidden="{{isGeneratingVisible}}" title="Go to PDF generation" icon="image:picture-as-pdf" on-tap="doGenerate"  mini></paper-icon-button>
-    <paper-icon-button hidden="{{!isGeneratingVisible}}" title="Reset Modifications" icon="icons:refresh" on-tap="resetData"   mini></paper-icon-button>
-    <paper-icon-button hidden="{{!isGeneratingVisible}}" title="Generate PDF" icon="icons:done" on-tap="getPDF" mini></paper-icon-button>
-    <iron-ajax id="ajaxDownloadPDF"
-       url="http://localhost:9000/cvs"
-       handle-as="blob"
-       method="POST"
-       content-type="application/json"
-       on-response="cvDownloaded"
-       debounce-duration="3000">
-    </iron-ajax>
-  </template>
+   <!-- editable view -->
+   <paper-card elevation="0" hidden="{{!isEditableVisible}}">
+     <paper-card elevation="0" class="horizontal">
+       <div class="card-content">
+         <div class="header">Personal Details
+           <paper-input label="Given name" value="{{data.basics.givenName}}"></paper-input>
+           <paper-input label="Family name" value="{{data.basics.familyName}}"></paper-input>
+           <paper-input label="Label" value="{{data.basics.label}}"></paper-input>
+           <paper-input label="Start" value="{{data.basics.startYear}}"></paper-input>
+           <div class="floating-label">Office</div>
+           <paper-radio-group selected="{{data.basics.contact.name}}">
+             <paper-radio-button class="small" name="LUNATECH ROTTERDAM">Rotterdam</paper-radio-button>
+             <paper-radio-button class="small" name="LUNATECH AMSTERDAM">Amsterdam</paper-radio-button>
+             <paper-radio-button class="small" name="LUNATECH PARIS">Paris</paper-radio-button>
+           </paper-radio-group>
+         </div>
+       </div>
+       <div class="card-content">
+         <image-mask id="photoImage" src="/images/erik_bakker_square_small.jpg" size="200" on-tap="updatePhoto"></image-mask>
+         <paper-button>
+           <file-input id="photoInput" accept="image/*,video/*" max-files="1" on-change="photoSelected">
+             Select Photo
+           </file-input>
+         </paper-button>
+         <paper-button hidden$=[[!photoChanged]] on-tap="resetPhoto">Reset Photo</paper-button>
+       </div>
+     </paper-card>
+     <paper-card elevation="0">
+       <div class="card-content">
+         <paper-textarea label="Summary" value="{{data.basics.profile}}"></paper-textarea>
+       </div>
+     </paper-card>
+     <paper-card elevation="0">
+       <div class="header-out">Education
+         <div class="card-group">
+           <template is="dom-repeat" items="{{data.educations}}">
+             <paper-card class="horizontal">
+               <div class="card-content">
+                 <paper-input label="Institution" value="{{item.institution}}"></paper-input>
+                 <vaadin-date-picker label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
+                 <paper-textarea label="Description" value="{{item.description}}"></paper-textarea>
+               </div>
+               <div class="card-content">
+                 <paper-input label="Country" value="{{item.country}}"></paper-input>
+                 <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
+                 <paper-input label="Study Type" value="{{item.studyType}}"></paper-input>
+               </div>
+               <div class="card-actions">
+                 <paper-icon-button icon="delete" title="Delete education" on-click="removeEducation"></paper-icon-button>
+               </div>
+             </paper-card>
+           </template>
+         </div class="card-group">
+         <paper-icon-button icon="add-circle" on-click="addEducation" title="Add education" mini></paper-icon-button>
+       </div>
+     </paper-card>
+     <paper-card elevation="0">
+       <div class="header-out">Key Experience
+         <div class="card-group">
+           <template is="dom-repeat" items="{{data.projects}}">
+             <paper-card class="horizontal">
+               <div class="card-content">
+                 <paper-input label="Client" value="{{item.client}}"></paper-input>
+                 <vaadin-date-picker label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
+                 <paper-textarea label="Summary" value="{{item.summary}}" ></paper-textarea>
+               </div>
+               <div class="card-content">
+                 <paper-input label="Role" value="{{item.role}}"></paper-input> 
+                 <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
+               </div>
+               <div class="card-actions">
+                 <paper-icon-button icon="delete" title="Delete project" on-click="removeProject"></paper-icon-button>
+               </div>
+             </paper-card>
+           </template>
+         </div class="card-group">
+         <paper-icon-button icon="add-circle" title="Add project" on-click="addProject"></paper-icon-button>
+       </div>
+     </paper-card>
+     <paper-card elevation="0">
+       <div class="header-out">Key Skills
+           <div class="card-group">
+             <template is="dom-repeat" items="{{data.skills}}">
+               <paper-card class="horizontal">
+                 <div class="card-content">
+                   <paper-input label="Name" value="{{item.name}}"></paper-input>
+                 </div>
+                 <div class="floating-label">Category</div>
+                 <paper-radio-group selected="{{item.category}}">
+                   <paper-radio-button class="small" name="tech">Technology</paper-radio-button>
+                   <paper-radio-button class="small" name="fun">Fun</paper-radio-button>
+                 </paper-radio-group>
+                 <div class="floating-label">Level</div>
+                 <paper-slider id="ratings" pin snaps max="10" max-markers="10" step="1" value="{{item.level}}"></paper-slider>
 
-  <script>
+                 <div class="card-actions">
+                   <paper-icon-button icon="delete" title="Delete skill" on-click="removeSkill"></paper-icon-button>
+                 </div>                  
+               </paper-card>
+             </template>
+           </div class="card-group">
+           <paper-icon-button icon="add-circle" title="Add skill" on-click="addSkill"></paper-icon-button>
 
-    Polymer({
+       </div>
+     </paper-card>
+     <paper-card elevation="0">
+       <div class="card-content">
+         <div class="header">Achievements
+           <div class="card-group">
+             <template is="dom-repeat" items="{{data.achievements}}">
+               <paper-card class="horizontal">
+                 <div class="card-content">
+                   <paper-textarea label="Achievement" value="{{item}}"></paper-textarea>
+                 </div>
+                 <div class="card-actions">
+                   <paper-icon-button icon="delete" title="Delete achievement" on-click="removeAchievement"></paper-icon-button>
+                 </div>
+               </paper-card>
+             </template>
+           </div class="card-group">
+           <paper-button icon="add-circle" title="Add achievement" on-click="addAchievement"></paper-icon-button>
+         </div>
+       </div>
+     </paper-card>      
 
-      is: 'cv-editor',
+   </paper-card>
 
-      properties: {
-        data: {
-          type: Object,
-        },
+   <!-- generating PDF view -->
+   <paper-card elevation="0" hidden="{{!isGeneratingVisible}}">
+     <paper-card elevation="0" class="horizontal">
+       <div class="card-content">
+         <div class="header">Personal Details
+           <paper-input label="Given name" value="{{data.basics.givenName}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Family name" value="{{data.basics.familyName}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Label" value="{{data.basics.label}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Start" value="{{data.basics.startYear}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Office" value="{{data.basics.contact.name}}" class="no-underline" readonly></paper-input>
+         </div>
+       </div>
+       <div class="card-content">
+         <image-mask id="photoImage" src="/images/erik_bakker_square_small.jpg" size="200"></image-mask>    
+       </div>
+     </paper-card>
+     <paper-card elevation="0">
+         <div class="card-content">
+           <paper-textarea label="Summary" value="{{data.basics.profile}}"></paper-textarea>
+         </div>
+     </paper-card>
+     <paper-card elevation="0">
+       <div class="header-out">Education
+         <div class="card-group">
+           <template is="dom-repeat" items="{{data.educations}}">
+             <paper-card class="horizontal">
+               <div class="card-content">
+                 <paper-input label="Institution" value="{{item.institution}}"></paper-input>
+                 <vaadin-date-picker label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
+                 <paper-textarea label="Description" value="{{item.description}}"></paper-textarea>
+               </div>
+               <div class="card-content">
+                 <paper-input label="Country" value="{{item.country}}"></paper-input>
+                 <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
+                 <paper-input label="Study Type" value="{{item.studyType}}"></paper-input>
+               </div>
+               <div class="card-actions">
+                 <paper-icon-button icon="delete" title="Delete education" on-click="removeEducation"></paper-icon-button>
+               </div>
+             </paper-card>
+           </template>
+         </div class="card-group">
+         <paper-icon-button icon="add-circle" on-click="addEducation" title="Add education" mini></paper-icon-button>
+       </div>
+     </paper-card>
+     <paper-card elevation="0">
+       <div class="header-out">Key Experience
+         <div class="card-group">
+           <template is="dom-repeat" items="{{data.projects}}">
+             <paper-card class="horizontal">
+               <div class="card-content">
+                 <paper-input label="Client" value="{{item.client}}"></paper-input>
+                 <vaadin-date-picker label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
+                 <paper-textarea label="Summary" value="{{item.summary}}" ></paper-textarea>
+               </div>
+               <div class="card-content">
+                 <paper-input label="Role" value="{{item.role}}"></paper-input> 
+                 <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
+               </div>
+               <div class="card-actions">
+                 <paper-icon-button icon="delete" title="Delete project" on-click="removeProject"></paper-icon-button>
+               </div>
+             </paper-card>
+           </template>
+         </div class="card-group">
+         <paper-icon-button icon="add-circle" title="Add project" on-click="addProject"></paper-icon-button>
+       </div>
+     </paper-card>
+     <paper-card elevation="0">
+       <div class="header-out">Key Skills
+           <div class="card-group">
+             <template is="dom-repeat" items="{{data.skills}}">
+               <paper-card class="horizontal">
+                 <div class="card-content">
+                   <paper-input label="Name" value="{{item.name}}"></paper-input>
+                 </div>
+                 <div class="floating-label">Category</div>
+                 <paper-radio-group selected="{{item.category}}">
+                   <paper-radio-button class="small" name="tech">Technology</paper-radio-button>
+                   <paper-radio-button class="small" name="fun">Fun</paper-radio-button>
+                 </paper-radio-group>
+                 <div class="floating-label">Level</div>
+                 <paper-slider id="ratings" pin snaps max="10" max-markers="10" step="1" value="{{item.level}}"></paper-slider>
 
-        win : {
-          type: Object,
-        },
-        
-        dataBackup: {
-          type: Object,
-        },
+                 <div class="card-actions">
+                   <paper-icon-button icon="delete" title="Delete skill" on-click="removeSkill"></paper-icon-button>
+                 </div>                  
+               </paper-card>
+             </template>
+           </div class="card-group">
+           <paper-icon-button icon="add-circle" title="Add skill" on-click="addSkill"></paper-icon-button>
 
-        photoChanged: {
-          type: Boolean,
-          value: false
-        },
+       </div>
+     </paper-card>
+     <paper-card elevation="0">
+       <div class="card-content">
+         <div class="header">Achievements
+           <div class="card-group">
+             <template is="dom-repeat" items="{{data.achievements}}">
+               <paper-card class="horizontal">
+                 <div class="card-content">
+                   <paper-textarea label="Achievement" value="{{item}}"></paper-textarea>
+                 </div>
+                 <div class="card-actions">
+                   <paper-icon-button icon="delete" title="Delete achievement" on-click="removeAchievement"></paper-icon-button>
+                 </div>
+               </paper-card>
+             </template>
+           </div class="card-group">
+           <paper-button icon="add-circle" title="Add achievement" on-click="addAchievement"></paper-icon-button>
+         </div>
+       </div>
+     </paper-card>      
 
-        isOverviewVisible: {
-	    	type: Boolean,
-	    	value: true	
-    	},
-        
-        isGeneratingVisible: {
-	    	type: Boolean,
-	    	value: false	
-    	},
-        
-        isEditableVisible: {
-            	type: Boolean,
-	    	value: false	
-    	}
-      },
+   </paper-card>
+   <paper-icon-button hidden="{{isOverviewVisible}}" title="Go to Overview" icon="icons:arrow-back" on-tap="doOverview" class="done" mini></paper-icon-button>
+   <paper-button hidden="{{!isOverviewVisible}}" title="Save Modifications" on-tap="save">Save</paper-button>
+   <paper-icon-button hidden="{{!isOverviewVisible}}"  title="Go to Edit" icon="icons:create" on-tap="doEdit" class="edit" mini></paper-icon-button>
+   <paper-icon-button hidden="{{isGeneratingVisible}}" title="Go to PDF generation" icon="image:picture-as-pdf" on-tap="doGenerate"  mini></paper-icon-button>
+   <paper-icon-button hidden="{{!isGeneratingVisible}}" title="Reset Modifications" icon="icons:refresh" on-tap="resetData"   mini></paper-icon-button>
+   <paper-icon-button hidden="{{!isGeneratingVisible}}" title="Generate PDF" icon="icons:done" on-tap="getPDF" mini></paper-icon-button>
+   <iron-ajax id="ajaxDownloadPDF"
+      url="http://localhost:9000/cvs"
+      handle-as="blob"
+      method="POST"
+      content-type="application/json"
+      on-response="cvDownloaded"
+      debounce-duration="3000">
+   </iron-ajax>
+ </template>
 
-      ready: function() {
-        if(this.data.basics === undefined) {
-          this.set('data.basics', {});
-        }
+ <script>
 
-        if(this.data.education === undefined ){
-          this.set('data.education', []);
-        }
-      },
+   Polymer({
 
-      doEdit: function(e){
-    	this.isEditableVisible=true;
-        this.isOverviewVisible=false;
-        this.isGeneratingVisible=false;
-      },
-      
-      doOverview: function(e){
-        this.isOverviewVisible=true;
-        this.isEditableVisible=false;
-        this.isGeneratingVisible=false;
-      },
+     is: 'cv-editor',
 
-      doGenerate: function(e){
-    	this.isGeneratingVisible=true;
-        this.dataBackup=JSON.parse(JSON.stringify(this.data));
-        this.isEditableVisible=false;
-        this.isOverviewVisible=false;
-      },
+     properties: {
+       data: {
+         type: Object,
+       },
 
-      resetData: function(e) {
-        this.data=JSON.parse(JSON.stringify(this.dataBackup));;
-      },
- 
-      getPDF : function(e) {
-        a = this.$.ajaxDownloadPDF;
-        a.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
-        employeeData = this.data;
-        metaData = {"client" : "test", "creationDate" : "2017-05-05", "office" : "Rotterdam", "language" : "EN" };
-        cvData = {"employee": employeeData, "meta": metaData};
-        a.body = cvData;
-        win = window.open('about:blank', '_blank'); // we need to open a window at user input as browsers block async window.open
-        a.generateRequest();
-      },
-      
-      cvDownloaded : function(e) {
-        const pdfUrl = URL.createObjectURL(this.$.ajaxDownloadPDF.lastResponse);
-        win.location.href = pdfUrl;
-        console.log("PDF downloaded");
-        win = null;
-      },
-      
-      addEducation: function() {
+       win : {
+         type: Object,
+       },
 
-        this.push('data.educations', { 'foo': 'bar' });
-      },
+       dataBackup: {
+         type: Object,
+       },
 
-      removeEducation: function(e) {
-        this.splice('data.educations', e.model.index, 1);
-      },
+       photoChanged: {
+         type: Boolean,
+         value: false
+       },
 
-      removeSummary: function(e) {
-        console.log(this.data);
-        this.data.basics.profile='';
-        this.$.summaryTextarea.update('');
-      },
+       isOverviewVisible: {
+               type: Boolean,
+               value: true	
+       },
 
-      addProject: function() {
+       isGeneratingVisible: {
+               type: Boolean,
+               value: false	
+       },
 
-        this.push('data.projects', { 'foo': 'bar' });
-      },
+       isEditableVisible: {
+               type: Boolean,
+               value: false	
+       }
+     },
 
-      removeProject: function(e) {
-        this.splice('data.projects', e.model.index, 1);
-      },
+     ready: function() {
+       this.$.ajaxSave.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
+       if(this.data.basics === undefined) {
+         this.set('data.basics', {});
+       }
 
-      addSkill: function() {
+       if(this.data.education === undefined ){
+         this.set('data.education', []);
+       }
+     },
 
-        this.push('data.skills', { 'foo': 'bar' });
-      },
+     doEdit: function(e){
+       this.isEditableVisible=true;
+       this.isOverviewVisible=false;
+       this.isGeneratingVisible=false;
+     },
 
-      removeSkill: function(e) {
-        this.splice('data.skills', e.model.index, 1);
-      },
+     doOverview: function(e){
+       this.isOverviewVisible=true;
+       this.isEditableVisible=false;
+       this.isGeneratingVisible=false;
+     },
 
-      addAchievement: function() {
+     doGenerate: function(e){
+       this.isGeneratingVisible=true;
+       this.dataBackup=JSON.parse(JSON.stringify(this.data));
+       this.isEditableVisible=false;
+       this.isOverviewVisible=false;
+     },
 
-        this.push('data.achievements', { 'foo': 'bar' });
-      },
+     resetData: function(e) {
+       this.data=JSON.parse(JSON.stringify(this.dataBackup));;
+     },
 
-      removeAchievement: function(e) {
-        this.splice('data.achievements', e.model.index, 1);
-      },
+     getPDF : function(e) {
+       a = this.$.ajaxDownloadPDF;
+       a.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
+       employeeData = this.data;
+       metaData = {"client" : "test", "creationDate" : "2017-05-05", "office" : "Rotterdam", "language" : "EN" };
+       cvData = {"employee": employeeData, "meta": metaData};
+       a.body = cvData;
+       win = window.open('about:blank', '_blank'); // we need to open a window at user input as browsers block async window.open
+       a.generateRequest();
+     },
 
-      show: function() {
-        console.log(this.data);
-      },
+     cvDownloaded : function(e) {
+       const pdfUrl = URL.createObjectURL(this.$.ajaxDownloadPDF.lastResponse);
+       win.location.href = pdfUrl;
+       console.log("PDF downloaded");
+       win = null;
+     },
 
-      updatePhoto: function() {
-        console.log("Update photo");
-      },
+     addEducation: function() {
 
-      resetPhoto: function() {
-        this.$.photoImage.src = this.$.photoImage.savedSrc;
-        this.photoChanged = false;
-      },
-      
-      isTech: function(item) {
-        return item.category === 'tech';
-      },
+       this.push('data.educations', { 'foo': 'bar' });
+     },
 
-      isFun: function(item) {
-        return item.category === 'fun';
-      },
+     removeEducation: function(e) {
+       this.splice('data.educations', e.model.index, 1);
+     },
 
-      photoSelected: function() {
-        console.log("Photo selected!");
-        console.log(this.$.photoInput.files.length);
+     removeSummary: function(e) {
+       console.log(this.data);
+       this.data.basics.profile='';
+       this.$.summaryTextarea.update('');
+     },
 
-        var reader = new FileReader();
-        var photoImage = this.$.photoImage;
+     addProject: function() {
 
-        if(photoImage.savedSrc == undefined) {
-          photoImage.savedSrc = photoImage.src
-        }
+       this.push('data.projects', { 'foo': 'bar' });
+     },
 
-        reader.onload = function (e) {
-            photoImage.src = e.target.result;
-        }
+     removeProject: function(e) {
+       this.splice('data.projects', e.model.index, 1);
+     },
 
-        this.photoChanged = true;
+     addSkill: function() {
 
-        reader.readAsDataURL(this.$.photoInput.files[0]);
-      }
+       this.push('data.skills', { 'foo': 'bar' });
+     },
+
+     removeSkill: function(e) {
+       this.splice('data.skills', e.model.index, 1);
+     },
+
+     addAchievement: function() {
+
+       this.push('data.achievements', { 'foo': 'bar' });
+     },
+
+     removeAchievement: function(e) {
+       this.splice('data.achievements', e.model.index, 1);
+     },
+
+     show: function() {
+       console.log(this.data);
+     },
+
+     updatePhoto: function() {
+       console.log("Update photo");
+     },
+
+     resetPhoto: function() {
+       this.$.photoImage.src = this.$.photoImage.savedSrc;
+       this.photoChanged = false;
+     },
+
+     isTech: function(item) {
+       return item.category === 'tech';
+     },
+
+     isFun: function(item) {
+       return item.category === 'fun';
+     },
+
+     cvSaved: function(data) {
+       console.log("CV saved!");
+       console.log(arguments);
+     },
+
+     save: function() {
+       a = this.$.ajaxSave
+       a.body = this.data;
+       a.generateRequest();
+     },
+
+     photoSelected: function() {
+       console.log("Photo selected!");
+       console.log(this.$.photoInput.files.length);
+
+       var reader = new FileReader();
+       var photoImage = this.$.photoImage;
+
+       if(photoImage.savedSrc == undefined) {
+         photoImage.savedSrc = photoImage.src
+       }
+
+       reader.onload = function (e) {
+           photoImage.src = e.target.result;
+       }
+
+       this.photoChanged = true;
+
+       reader.readAsDataURL(this.$.photoInput.files[0]);
+     }
 
 
-    });
-  </script>
+   });
+ </script>
 </dom-module>
