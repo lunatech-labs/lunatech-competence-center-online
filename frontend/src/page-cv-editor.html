@@ -12,6 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/cv-editor/cv-editor.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="shared-styles.html">
 
@@ -23,12 +24,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 10px;
       }
     </style>
-    <iron-meta id="meta"></iron-meta>
+    <!--
+      app-route provides the cv email like /cv-editor/erik.bakker@lunatech.com
+    -->
+    <app-route
+        route="[[route]]"
+        pattern="/:email"
+        data="{{routeData}}"></app-route>
 
-    <iron-ajax id="ajaxLoad"
-      url="http://localhost:9000/employees/me"
-      handle-as="json"
-      on-response="cvLoaded"></iron-ajax>
+    <iron-meta id="meta"></iron-meta>
 
      <iron-ajax id="ajaxSave"
        url="http://localhost:9000/employees/me"
@@ -48,22 +52,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'page-cv-editor',
 
+      properties : {
+        cvData: Object,
+        route: Object,
+        routeData: Object,
+        person: Object,
+        cv: Object
+      },
+
       ready: function() {
-        this.$.ajaxLoad.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
-        this.$.ajaxSave.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
-        this.$.ajaxLoad.generateRequest();
+        this.$.ajaxSave.headers = { "X-ID-Token": this.$.meta.byKey("idToken")};
+        console.log("Ready!!");
+      },
+
+      created: function() {
+        console.log("Created!!");
       },
 
       ajaxResponse: function(data) {
-
         console.log(data);
         console.log(data.detail);
         console.log(data.detail.xhr);
-      },
-
-      cvLoaded: function(data) {
-        console.log("CV loaded!");
-        this.cvData = data.detail.response;
       },
 
       cvSaved: function(data) {
@@ -71,7 +80,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         console.log(arguments);
       },
 
+      updateData: function(data) {
+        this.cvData = data;
+      },
+
       save: function() {
+        console.log(this.person);
+        return false;
         a = this.$.ajaxSave
         a.body = this.$$("cv-editor").data;
         a.generateRequest();
