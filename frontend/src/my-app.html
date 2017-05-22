@@ -23,6 +23,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-avatar/paper-avatar.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
 <dom-module id="my-app">
   <template>
@@ -65,14 +66,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
     </style>
+     <app-location route="{{route}}"></app-location>
     <iron-meta key="idToken" value="{{idToken}}"></iron-meta>
-
-      <app-location route="{{route}}"></app-location>
       <app-route
           route="{{route}}"
           pattern="/:page"
           data="{{routeData}}"
           tail="{{subroute}}"></app-route>
+
+      <iron-ajax id="ajaxLoad"
+        url="http://localhost:9000/employees/me"
+        handle-as="json"
+        on-response="cvLoaded"></iron-ajax>
 
       <app-drawer-layout fullbleed>
         <!-- Drawer content -->
@@ -105,8 +110,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               attr-for-selected="name"
               fallback-selection="view404"
               role="main">
-            <page-cv-editor title="CV Editor" name="cv-editor"></page-cv-editor>
-            <page-cvs title="CVS List" name="cvs"></page-cvs>
+            <page-cv-editor title="CV Editor" route=[[subroute]] name="cv-editor" cv-data="{{selectedCV}}" person="{{selectedPerson}}" ></page-cv-editor>
+            <page-cvs title="CVS List" route=[[subroute]] name="cvs" cv="{{selectedCV}}" person="{{selectedPerson}}" ></page-cvs>
             <page-view404 name="view404"></page-view404>
           </iron-pages>
         </app-header-layout>
@@ -124,6 +129,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           observer: '_pageChanged',
         },
 
+        selectedCV: Object,
         basicProfile: {
           type: Object
         },
@@ -137,14 +143,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
       },
-
+      ready: function() {
+        console.log("on ready...");
+        this.$.ajaxLoad.headers = { "X-ID-Token": this.idToken};
+        this.$.ajaxLoad.generateRequest();
+      },
       observers: [
         '_routePageChanged(routeData.page)',
         '_basicProfileChanged(basicProfile)'
       ],
-
       handleLogoutTap: function() {
         this.fire("logout")
+      },
+      cvLoaded: function(data) {
+        console.log("CV loaded!");
+        this.selectedCV = data.detail.response;
       },
 
       _basicProfileChanged: function(basicProfile) {
@@ -155,8 +168,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _routePageChanged: function(page) {
-        this.page = page || 'view1';
+        this.page = page || 'cvs';
 
+        console.log(this.page);
         this.pageTitle = this.$$("iron-pages [name=" + this.page +"]").title
 
         if (!this.$.drawer.persistent) {
@@ -165,6 +179,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _pageChanged: function(page) {
+        console.log("Page changed");
         // Load page import on demand. Show 404 page if fails
         var resolvedPageUrl = this.resolveUrl('page-' +page + '.html');
         this.importHref(resolvedPageUrl, null, this._showPage404, true);

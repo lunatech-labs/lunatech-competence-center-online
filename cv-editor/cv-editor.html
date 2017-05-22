@@ -129,7 +129,7 @@ CV Editor
          </div>
        </div>
        <div class="card-content">
-         <image-mask id="photoImage" src="/images/erik_bakker_square_small.jpg" size="200"></image-mask>    
+         <image-mask id="photoImage" src="{{data.basics.image}}" size="200"></image-mask>    
        </div>
      </paper-card>
      <paper-card elevation="0">
@@ -171,6 +171,7 @@ CV Editor
      <paper-card elevation="0">
        <div class="card-content">
          <div class="header">Key Skills
+           <template is="dom-if" if="{{data.skills.length}}">
            <div class="content">
              <br>
              <b>Technical Skills</b>
@@ -204,6 +205,7 @@ CV Editor
                </div>
              </template>
            </div>
+           </template>
          </div>
        </div>
      </paper-card>
@@ -527,6 +529,10 @@ CV Editor
 
        if(this.data.education === undefined ){
          this.set('data.education', []);
+       }
+
+       if(this.data.skills === undefined) {
+         this.set('data.skills', {});
        }
      },
 
