@@ -118,7 +118,7 @@ CV Editor
       on-response="cvSaved"></iron-ajax>
 
    <!-- overview view -->
-   <paper-card elevation="0" hidden="{{!isOverviewVisible}}">
+   <template is="dom-if" if="{{isOverviewVisible}}">
      <paper-card elevation="0" class="horizontal">
        <div class="card-content">
          <div class="header">Personal Details
@@ -221,10 +221,10 @@ CV Editor
          </div>
        </div>
      </paper-card>      
-   </paper-card>
+   </template>
 
    <!-- editable view -->
-   <paper-card elevation="0" hidden="{{!isEditableVisible}}">
+   <template is="dom-if" if="{{isEditableVisible}}">
      <paper-card elevation="0" class="horizontal">
        <div class="card-content">
          <div class="header">Personal Details
@@ -348,10 +348,10 @@ CV Editor
        </div>
      </paper-card>      
 
-   </paper-card>
+   </template>
 
    <!-- generating PDF view -->
-   <paper-card elevation="0" hidden="{{!isGeneratingVisible}}">
+   <template is="dom-if" if="{{isGeneratingVisible}}">
      <paper-card elevation="0" class="horizontal">
        <div class="card-content">
          <div class="header">Personal Details
@@ -464,13 +464,17 @@ CV Editor
        </div>
      </paper-card>      
 
-   </paper-card>
+   </template>
    <paper-icon-button hidden="{{isOverviewVisible}}" title="Go to Overview" icon="icons:arrow-back" on-tap="doOverview" class="done" mini></paper-icon-button>
+   <template is="dom-if" if="{{editable}}">
    <paper-button hidden="{{!isOverviewVisible}}" title="Save Modifications" on-tap="save">Save</paper-button>
    <paper-icon-button hidden="{{!isOverviewVisible}}"  title="Go to Edit" icon="icons:create" on-tap="doEdit" class="edit" mini></paper-icon-button>
+   </template>
    <paper-icon-button hidden="{{isGeneratingVisible}}" title="Go to PDF generation" icon="image:picture-as-pdf" on-tap="doGenerate"  mini></paper-icon-button>
    <paper-icon-button hidden="{{!isGeneratingVisible}}" title="Reset Modifications" icon="icons:refresh" on-tap="resetData"   mini></paper-icon-button>
    <paper-icon-button hidden="{{!isGeneratingVisible}}" title="Generate PDF" icon="icons:done" on-tap="getPDF" mini></paper-icon-button>
+
+
    <iron-ajax id="ajaxDownloadPDF"
       url="http://localhost:9000/cvs"
       handle-as="blob"
@@ -488,8 +492,10 @@ CV Editor
      is: 'cv-editor',
 
      properties: {
-       data: {
-         type: Object,
+
+       loading: {
+         type: Boolean,
+         value: true
        },
 
        win : {
@@ -521,7 +527,7 @@ CV Editor
        }
      },
 
-     ready: function() {
+     attached: function() {
        this.$.ajaxSave.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
        if(this.data.basics === undefined) {
          this.set('data.basics', {});
@@ -536,12 +542,13 @@ CV Editor
        }
      },
 
+
      doEdit: function(e){
        this.isEditableVisible=true;
        this.isOverviewVisible=false;
        this.isGeneratingVisible=false;
      },
-
+     
      doOverview: function(e){
        this.isOverviewVisible=true;
        this.isEditableVisible=false;
@@ -556,7 +563,7 @@ CV Editor
      },
 
      resetData: function(e) {
-       this.data=JSON.parse(JSON.stringify(this.dataBackup));;
+       this.data=JSON.parse(JSON.stringify(this.dataBackup));
      },
 
      getPDF : function(e) {
