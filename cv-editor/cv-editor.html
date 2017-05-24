@@ -241,7 +241,7 @@ CV Editor
          </div>
        </div>
        <div class="card-content">
-         <image-mask id="photoImage" src="/images/erik_bakker_square_small.jpg" size="200" on-tap="updatePhoto"></image-mask>
+         <image-mask id="photoImage" src="{{data.basics.image}}" size="200" on-tap="updatePhoto"></image-mask>
          <paper-button>
            <file-input id="photoInput" accept="image/*,video/*" max-files="1" on-change="photoSelected">
              Select Photo
@@ -363,7 +363,7 @@ CV Editor
          </div>
        </div>
        <div class="card-content">
-         <image-mask id="photoImage" src="/images/erik_bakker_square_small.jpg" size="200"></image-mask>    
+         <image-mask id="photoImage" src="{{data.basics.image}}" size="200"></image-mask>    
        </div>
      </paper-card>
      <paper-card elevation="0">
@@ -463,16 +463,18 @@ CV Editor
          </div>
        </div>
      </paper-card>      
+   </template>
 
-   </template>
-   <paper-icon-button hidden="{{isOverviewVisible}}" title="Go to Overview" icon="icons:arrow-back" on-tap="doOverview" class="done" mini></paper-icon-button>
    <template is="dom-if" if="{{editable}}">
-   <paper-button hidden="{{!isOverviewVisible}}" title="Save Modifications" on-tap="save">Save</paper-button>
-   <paper-icon-button hidden="{{!isOverviewVisible}}"  title="Go to Edit" icon="icons:create" on-tap="doEdit" class="edit" mini></paper-icon-button>
+     <paper-button hidden="{{!isOverviewVisible}}" title="Save Modifications" on-tap="save">Save</paper-button>
+     <paper-icon-button hidden="{{!isOverviewVisible}}"  title="Go to Edit" icon="icons:create" on-tap="doEdit" class="edit" mini></paper-icon-button>
    </template>
-   <paper-icon-button hidden="{{isGeneratingVisible}}" title="Go to PDF generation" icon="image:picture-as-pdf" on-tap="doGenerate"  mini></paper-icon-button>
+   <template is="dom-if" if="true">
+   <paper-icon-button hidden="{{isOverviewVisible}}" title="Go to Overview" icon="icons:arrow-back" on-tap="doOverview" class="done" mini></paper-icon-button>
+   <paper-icon-button hidden="{{isGeneratingVisible}}" title="Go to PDF generation" icon="image:picture-as-pdf" on-tap="doGenerate" mini></paper-icon-button>
    <paper-icon-button hidden="{{!isGeneratingVisible}}" title="Reset Modifications" icon="icons:refresh" on-tap="resetData"   mini></paper-icon-button>
    <paper-icon-button hidden="{{!isGeneratingVisible}}" title="Generate PDF" icon="icons:done" on-tap="getPDF" mini></paper-icon-button>
+   </template>
 
 
    <iron-ajax id="ajaxDownloadPDF"
@@ -573,15 +575,14 @@ CV Editor
        metaData = {"client" : "test", "creationDate" : "2017-05-05", "office" : "Rotterdam", "language" : "EN" };
        cvData = {"employee": employeeData, "meta": metaData};
        a.body = cvData;
-       win = window.open('about:blank', '_blank'); // we need to open a window at user input as browsers block async window.open
+       this.win = window.open('about:blank', '_blank'); // we need to open a window at user input as browsers block async window.open
        a.generateRequest();
      },
 
      cvDownloaded : function(e) {
        const pdfUrl = URL.createObjectURL(this.$.ajaxDownloadPDF.lastResponse);
-       win.location.href = pdfUrl;
-       console.log("PDF downloaded");
-       win = null;
+       this.win.location.href = pdfUrl;
+       this.win = undefined;
      },
 
      addEducation: function() {
@@ -670,7 +671,7 @@ CV Editor
        }
 
        reader.onload = function (e) {
-           photoImage.src = e.target.result;
+         photoImage.src = e.target.result;
        }
 
        this.photoChanged = true;
