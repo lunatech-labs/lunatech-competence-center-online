@@ -241,12 +241,8 @@ CV Editor
          </div>
        </div>
        <div class="card-content">
-         <image-mask id="photoImage" src="{{data.basics.image}}" size="200" on-tap="updatePhoto"></image-mask>
-         <paper-button>
-           <file-input id="photoInput" accept="image/*,video/*" max-files="1" on-change="photoSelected">
-             Select Photo
-           </file-input>
-         </paper-button>
+         <image-mask id="photoImage" src="{{data.basics.image}}" size="200" on-tap="photoSelected"></image-mask>
+         <paper-input label="Photo address" value="{{data.basics.image}}"></paper-input>
          <paper-button hidden$=[[!photoChanged]] on-tap="resetPhoto">Reset Photo</paper-button>
        </div>
      </paper-card>
@@ -629,10 +625,6 @@ CV Editor
 
      show: function() {
        console.log(this.data);
-     },
-
-     updatePhoto: function() {
-       console.log("Update photo");
      },
 
      resetPhoto: function() {
