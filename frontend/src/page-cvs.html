@@ -41,13 +41,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         handle-as="json"
         on-response="cvsLoaded"></iron-ajax>
 
-    <template is="dom-if" if="{{!cv}}">
-     <div>Loading page...</div>
-    </template>
     <template is="dom-if" if="{{cv}}">
-    <template is="dom-if" if="{{!showTable}}">
-      <cv-editor data="{{cv}}" editable="{{isCurrentUserMe}}"></cv-editor>
-    </template>
+      <template is="dom-if" if="{{!showTable}}">
+        <cv-editor data="{{cv}}" editable="{{isCurrentUserMe}}"></cv-editor>
+      </template>
     </template>
 
     <template is="dom-if" if="{{showTable}}">
