@@ -155,7 +155,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // do not show table if we are in cvs
           this.set('showTable', false);
         } else {
-          var email = route.base.path.substr(1);
+          var email = route.base.path.substr(1).replace(/-/g,".");
           if(this.data.length !== 0){this.set('cv', this.data.find(x => x.person.email === email.toLowerCase()).cv);}
           else{
             this.$.ajaxLoad.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
@@ -198,7 +198,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
           this.person = event.detail.item.person;
           this.set('cv', event.detail.item.cv);
-          this.$.csvList.set('path', '/cvs/'+this.person.email);
+          this.$.csvList.set('path', '/cvs/'+this.person.email.replace(/\./g,"-"));
       },
 
       applyFilter: function() {
