@@ -135,7 +135,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _pathChanged: function(route) {
         this.set('cv', undefined);
-        if (route.base.prefix === "/cvs" && route.base.path.length === 0) {
+        if (route.base.prefix === "/cvs" && (route.base.path.length === 0 || route.base.path === "/")) {
           this.set('isCurrentUserMe' , false);
           // show table if we are in cvs
           this.set('showTable', true);
@@ -155,7 +155,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // do not show table if we are in cvs
           this.set('showTable', false);
         } else {
-          var email = route.base.path.substr(1).split("-").join(".") + "@lunatech.com";
+          var email = route.base.path.substr(1);
           if(this.data.length !== 0){this.set('cv', this.data.find(x => x.person.email === email.toLowerCase()).cv);}
           else{
             this.$.ajaxLoad.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
@@ -198,7 +198,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
           this.person = event.detail.item.person;
           this.set('cv', event.detail.item.cv);
-          this.$.csvList.set('path', '/cvs/'+this.person.name.fullName.split(" ").join("-"));
+          this.$.csvList.set('path', '/cvs/'+this.person.email);
       },
 
       applyFilter: function() {
