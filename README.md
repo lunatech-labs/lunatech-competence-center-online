@@ -17,7 +17,7 @@ The Competence Center will become a portal in which Lunatech employees can track
   - Install PostgreSQL via `brew install postgres`
   - `/usr/local/Cellar/postgresql/<INSERT YOUR POSTGRES VERSION NUMBER (e.g., 9.6.2)>/bin/createuser -s postgres`
   - `createdb -O postgres competence-center` (if this returns `createdb: could not connect to database`, try `brew services stop postgresql; brew services start postgresql`)
-  - The Schema will automatically loaded by [Flyway](http://flaywaydb.org) when the application starts.
+  - The Schema will automatically be loaded by [Flyway](http://flaywaydb.org) when the application starts.
 - [Build and serve frontend](frontend/README.md)
 - [Run the backend](backend/README.md)
 - Open [http://localhost:8081](http://localhost:8081) in your browser
