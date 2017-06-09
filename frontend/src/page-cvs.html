@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/cv-editor/cv-editor.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
@@ -22,53 +23,67 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <style include="shared-styles">
       :host {
-        display: block;
-        padding: 10px;
+      display: block;
+      padding: 10px;
       }
     </style>
     <iron-meta id="meta"></iron-meta>
     <iron-location id="csvList"></iron-location>
 
+
+    <iron-ajax id="ajaxLoadMe"
+        url="http://localhost:9000/employees/me"
+        handle-as="json"
+        on-response="cvLoaded"></iron-ajax>
+
     <iron-ajax id="ajaxLoad"
-      url="http://localhost:9000/cvs"
-      handle-as="json"
-      on-response="cvsLoaded"></iron-ajax>
+        url="http://localhost:9000/cvs"
+        handle-as="json"
+        on-response="cvsLoaded"></iron-ajax>
 
+    <template is="dom-if" if="{{cv}}">
+      <template is="dom-if" if="{{!showTable}}">
+        <cv-editor data="{{cv}}" editable="{{isCurrentUserMe}}"></cv-editor>
+      </template>
+    </template>
+
+    <template is="dom-if" if="{{showTable}}">
       <paper-datatable-card heading="Just a normal data table" page-size="1000">
-          <div toolbar-main>
-            <paper-input id="searchInput" value="{{searchTerm}}" on-input="applyFilter" label="Search..." style="display:inline-block" no-label-float>
-              <div prefix>
-                <iron-icon icon="search"></iron-icon>
-              </div>
-            </paper-input>
-          </div>
-          <paper-datatable id="cvsDatatable" data={{data}} progress="[[loading]]" on-row-tap="rowClicked">
-            <paper-datatable-column header="Name" property="item.person.name.fullName" type="String" sortable>
-              <template is="dom-if" if="{{item.cv}}">
-                <a href$="[[_getPersonHref(item)]]">{{item.person.name.fullName}}</a>
-              </template>
-            </paper-datatable-column>
-            <paper-datatable-column header="Email" property="item.person.email"  type="String" sortable>
-              <template>{{item.person.email}}</template>
-            </paper-datatable-column>
-            <paper-datatable-column header="Title" property="item.cv"  type="String" sortable>
-              <template>{{item.cv.details.title}}</template>
-            </paper-datatable-column>
-            <paper-datatable-column header="Skills">
-              <template>{{formatSkills(item)}}</template>
-            </paper-datatable-column>
-            <div no-results>Loading or no more items...</div>
-        </paper-datatable>
-    </paper-datatable-card>
-
-
-        <!-- <div class="input-area flexchild">
-            <paper-input on-keyup="refreshFilter" id="searchInput" on-keyup="searchCVS" no-label-float placeholder="Search by Email or Name" value="{{searchInput::input}}"></paper-input>
+        <div toolbar-main>
+          <paper-input id="searchInput" value="{{searchTerm}}" on-input="applyFilter" label="Search..." style="display:inline-block" no-label-float>
+            <div prefix>
+              <iron-icon icon="search"></iron-icon>
+            </div>
+          </paper-input>
         </div>
-      <template id="cvsList" is="dom-repeat" items="{{cvsData}}" filter="checkFilter" as="cv">
-          <div>First name: <span>{{cv.person.name.givenName}}</span></div>
-          <div>Last name: <span>{{cv.person.name.familyName}}</span></div>
-      </template> -->
+        <paper-datatable id="cvsDatatable" data={{data}} progress="[[loading]]" on-row-tap="rowClicked">
+          <paper-datatable-column header="Name" property="item.person.name.fullName" type="String" sortable>
+            <template is="dom-if" if="{{item.cv}}">
+              {{item.person.name.fullName}}
+            </template>
+          </paper-datatable-column>
+          <paper-datatable-column header="Email" property="item.person.email"  type="String" sortable>
+            <template>{{item.person.email}}</template>
+          </paper-datatable-column>
+          <paper-datatable-column header="Title" property="item.cv"  type="String" sortable>
+            <template>{{item.cv.details.title}}</template>
+          </paper-datatable-column>
+          <paper-datatable-column header="Skills">
+            <template>{{formatSkills(item)}}</template>
+          </paper-datatable-column>
+          <div no-results>Loading or no more items...</div>
+        </paper-datatable>
+      </paper-datatable-card>
+    </template>
+
+
+    <!-- <div class="input-area flexchild">
+         <paper-input on-keyup="refreshFilter" id="searchInput" on-keyup="searchCVS" no-label-float placeholder="Search by Email or Name" value="{{searchInput::input}}"></paper-input>
+    </div>
+    <template id="cvsList" is="dom-repeat" items="{{cvsData}}" filter="checkFilter" as="cv">
+      <div>First name: <span>{{cv.person.name.givenName}}</span></div>
+      <div>Last name: <span>{{cv.person.name.familyName}}</span></div>
+    </template> -->
   </template>
 
   <script>
@@ -88,23 +103,88 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Object,
           notify:true
         },
+        mycv: {
+          type: Object
+        },        
         cv: {
           type: Object,
-          notify: true
+          observer: '_cvChanged'
         },
         loading: {
           type: Boolean,
           value: true
+        },
+        showTable: {
+          type: Boolean,
+          value: false
+        },
+        isCurrentUserMe: {
+          type: Boolean,
+          value: false
+        }
+        
+      },
+
+      observers: [
+        '_pathChanged(route.*)'
+      ],
+
+      _cvChanged: function() {
+        if(this.cv !== this.mycv) this.set('isCurrentUserMe', false);
+      },
+
+      _pathChanged: function(route) {
+        this.set('cv', undefined);
+        if (route.base.prefix === "/cvs" && (route.base.path.length === 0 || route.base.path === "/")) {
+          this.set('isCurrentUserMe' , false);
+          // show table if we are in cvs
+          this.set('showTable', true);
+          return true;
+        } else if (route.base.prefix === "/cvs" && route.base.path === "/me") {
+          if(this.mycv){this.set('cv', this.mycv);}
+          else{
+            this.$.ajaxLoadMe.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
+            var dataRequest = this.$.ajaxLoadMe.generateRequest();
+            Promise.all([dataRequest.completes])
+              .then(function(requests) { 
+                this.set('mycv' , requests[0].response);
+                this.set('cv', this.mycv);
+            }.bind(this));
+          }
+          this.set('isCurrentUserMe', true);
+          // do not show table if we are in cvs
+          this.set('showTable', false);
+        } else {
+          var email = route.base.path.substr(1).replace(/-/g,".");
+          if(this.data.length !== 0){this.set('cv', this.data.find(x => x.person.email === email.toLowerCase()).cv);}
+          else{
+            this.$.ajaxLoad.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
+            var dataRequest = this.$.ajaxLoad.generateRequest();
+            dataRequest.completes.then(function(requests) { 
+              this.set('cv', this.data.find(x => x.person.email === email.toLowerCase()).cv);
+            }.bind(this));
+          }
+          this.set('isCurrentUserMe', false);
+          // do not show table if we are in cvs
+          this.set('showTable', false);
+          return true;
         }
       },
+
+      
       ready: function() {
         this.$.ajaxLoad.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
         this.$.ajaxLoad.generateRequest();
       },
+
+      cvLoaded: function(data) {
+        this.set('mycv', data.detail.response);
+      },
+
       cvsLoaded: function(event) {
         this.loading = false;
         this._setPeople(event.detail.response);
-        this.data = event.detail.response;
+        this.set('data', event.detail.response);
       },
       formatSkills: function(item) {
         if(!item.cv || !item.cv.skills){
@@ -117,12 +197,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             return false;
           }
           this.person = event.detail.item.person;
-          this.cv = event.detail.item.cv;
-          this.$.csvList.set('path', '/cv-editor');
+          this.set('cv', event.detail.item.cv);
+          this.$.csvList.set('path', '/cvs/'+this.person.email.replace(/\./g,"-"));
       },
-      _getPersonHref: function(item) {
-          return item.person.email ? ['/cv-editor',item.person.name.fullName].join('/') : null;
-        },
+
       applyFilter: function() {
         var keyword = this.$$("#searchInput").value;
         this.data = this.people.filter(function(item) {
