@@ -1,9 +1,9 @@
 <!-- Imports polymer -->
-<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/google-signin/google-signin-aware.html">
 <link rel="import" href="../bower_components/google-signin/google-signin.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="/src/my-app.html">
+<link rel="import" href="/src/cv-app.html">
 <!-- Defines element markup -->
 <dom-module id="auth-guard">
     <template>
@@ -20,7 +20,7 @@
           </paper-dialog>
         </template>
         <template is="dom-if" if="{{authenticated}}">
-          <my-app basic-profile={{basicProfile}} id-token={{idToken}}></my-app>
+          <cv-app basic-profile={{basicProfile}} id-token={{idToken}}></cv-app>
         </template>
     </template>
 </dom-module>

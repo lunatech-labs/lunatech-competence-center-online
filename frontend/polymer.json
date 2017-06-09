@@ -1,19 +1,44 @@
 {
   "entrypoint": "index.html",
-  "shell": "src/my-app.html",
+  "shell": "src/cv-app.html",
   "fragments": [
-    "src/my-view1.html",
-    "src/my-view2.html",
-    "src/my-view3.html",
-    "src/my-view404.html"
+    "src/cv-app.html",
+    "src/page-cv-editor.html",
+    "src/page-cvs.html",
+    "src/page-view404.html",
+    "src/shared-styles.html"
   ],
-  "sourceGlobs": [
+  "sources": [
     "src/**/*",
     "images/**/*",
     "bower.json"
   ],
-  "includeDependencies": [
+  "extraDependencies": [
     "manifest.json",
-    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
-  ]
+    "bower_components/webcomponentsjs/webcomponents-lite.min.js",
+    "bower_components/*"
+  ],
+  "builds": [
+    {
+      "name": "unbundled",
+      "bundle": false,
+      "js": { "compile": true, "minify": true },
+      "css": { "minify": true },
+      "html": { "minify": true },
+      "addServiceWorker": true,
+      "insertPrefetchLinks": false
+    },
+    {
+      "name": "bundled",
+      "bundle": true,
+      "js": { "compile": true, "minify": true },
+      "css": { "minify": true },
+      "html": { "minify": true },
+      "addServiceWorker": true,
+      "insertPrefetchLinks": false
+    }
+  ],
+  "lint": {
+    "rules": ["polymer-2-hybrid"]
+  }
 }
