@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xlink="http://www.w3.org/1999/xlink"
-                xmlns:r="http://lunatech.com/2017/03/31/resume"
-                xmlns:conf="urn:lunatech-resume-internal-configuration"
-                version="1.0">
-    
+    xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:r="http://lunatech.com/2017/03/31/resume"
+    xmlns:conf="urn:lunatech-resume-internal-configuration" version="1.0">
+
     <!-- Addresses to put in the top-right of the PDF -->
     <conf:office code="Amsterdam">
         <r:name>Lunatech Labs</r:name>
@@ -30,7 +29,7 @@
         <r:phone>+31 (0)10 750 2600</r:phone>
         <r:email>info@lunatech.com</r:email>
     </conf:office>
-    
+
     <!-- Heading texts -->
     <conf:heading code="key_skills" language="EN">Key Skills</conf:heading>
     <conf:heading code="key_skills" language="FR">Compétences</conf:heading>
@@ -42,16 +41,17 @@
     <conf:heading code="key_experience" language="FR">Expérience Professionelle</conf:heading>
     <conf:heading code="education" language="EN">Education</conf:heading>
     <conf:heading code="education" language="FR">Formation</conf:heading>
-    
+
     <xsl:variable name="red" select="'#CC0033'"/>
 
     <xsl:template match="/">
-        <fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xlink="http://www.w3.org/1999/xlink"
-                 xsl:use-attribute-sets="document">
+        <fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format"
+            xmlns:xlink="http://www.w3.org/1999/xlink" xsl:use-attribute-sets="document">
             <fo:layout-master-set>
                 <fo:simple-page-master xsl:use-attribute-sets="page">
-                    <fo:region-body xsl:use-attribute-sets="body" background-position-horizontal="center"
-                                    background-repeat="repeat-y" background-image='url("images/line.svg")'/>
+                    <fo:region-body xsl:use-attribute-sets="body"
+                        background-position-horizontal="center" background-repeat="repeat-y"
+                        background-image='url("images/line.svg")'/>
                     <fo:region-before/>
                     <fo:region-after/>
                 </fo:simple-page-master>
@@ -87,7 +87,7 @@
     </xsl:template>
 
     <xsl:template match="r:basics" mode="heading">
-        <xsl:variable name="officeCode" select="/r:resume/r:meta/r:office"></xsl:variable>
+        <xsl:variable name="officeCode" select="/r:resume/r:meta/r:office"/>
         <xsl:variable name="officeDetails" select="document('')/*/conf:office[@code=$officeCode]"/>
         <fo:static-content flow-name="xsl-region-before">
             <fo:block-container xsl:use-attribute-sets="basics-contact">
@@ -99,8 +99,8 @@
                         <fo:table-row>
                             <fo:table-cell column-number="1">
                                 <fo:block padding-top="5mm">
-                                    <fo:external-graphic src="images/lunatech-logo.svg" content-width="75%"
-                                                         content-height="75%"/>
+                                    <fo:external-graphic src="images/lunatech-logo.svg"
+                                        content-width="75%" content-height="75%"/>
                                 </fo:block>
                             </fo:table-cell>
                             <fo:table-cell column-number="2" xsl:use-attribute-sets="column-right">
@@ -117,7 +117,7 @@
     </xsl:template>
 
     <xsl:template match="r:basics" mode="left">
-        <fo:block text-align-last="center">
+        <fo:block text-align-last="center" keep-together.within-page="5">
             <fo:block-container>
                 <fo:block xsl:use-attribute-sets="basics-image image">
                     <fo:instream-foreign-object>
@@ -129,30 +129,30 @@
                             </defs>
                             <circle cx="1.75cm" cy="1.75cm" r="1.75cm" fill="black"/>
                             <image xlink:href="{r:image}" x="0" y="0" width="3.5cm" height="3.5cm"
-                                   clip-path="url(#round-photo)"/>
+                                clip-path="url(#round-photo)"/>
                         </svg>
                     </fo:instream-foreign-object>
                 </fo:block>
             </fo:block-container>
             <fo:block-container>
                 <fo:block text-align-last="center" line-height="1.2" text-transform="uppercase">
-                    <fo:block text-align-last="justify" font-weight="200" font-size="18pt" letter-spacing="2pt">
-                        <fo:leader leader-pattern="rule" alignment-baseline="middle" padding-left="0.1em"
-                                   padding-right="0.5em"/>
-                        <xsl:value-of
-                                select="r:givenName"/>
-                        <fo:leader leader-pattern="rule" alignment-baseline="middle" padding-left="0.5em"
-                                   padding-right="0.1em"/>
+                    <fo:block text-align-last="justify" font-weight="200" font-size="18pt"
+                        letter-spacing="2pt">
+                        <fo:leader leader-pattern="rule" alignment-baseline="middle"
+                            padding-left="0.1em" padding-right="0.5em"/>
+                        <xsl:value-of select="r:givenName"/>
+                        <fo:leader leader-pattern="rule" alignment-baseline="middle"
+                            padding-left="0.5em" padding-right="0.1em"/>
                     </fo:block>
-                    <fo:block font-size="18pt" font-weight="700" letter-spacing="2pt" padding-bottom="4pt">
-                        <xsl:value-of
-                                select="r:familyName"/>
+                    <fo:block font-size="18pt" font-weight="700" letter-spacing="2pt"
+                        padding-bottom="4pt">
+                        <xsl:value-of select="r:familyName"/>
                     </fo:block>
                     <fo:block xsl:use-attribute-sets="basics-label">
-                        <xsl:value-of
-                                select="r:label"/>
+                        <xsl:value-of select="r:label"/>
                     </fo:block>
-                    <fo:block text-transform="uppercase" font-size="8pt" padding-top="8pt" letter-spacing="1pt">
+                    <fo:block text-transform="uppercase" font-size="8pt" padding-top="8pt"
+                        letter-spacing="1pt">
                         <xsl:value-of select="r:startYear"/>
                     </fo:block>
                 </fo:block>
@@ -161,15 +161,17 @@
     </xsl:template>
 
     <xsl:template match="r:skills">
-        <xsl:call-template name="section-heading">
-            <xsl:with-param name="code">key_skills</xsl:with-param>
-        </xsl:call-template>
-        <fo:block>
-            <xsl:apply-templates select="r:skill[r:category!='fun']"/>
-        </fo:block>
-        <fo:block xsl:use-attribute-sets="fun-skills">
-            <xsl:apply-templates select="r:skill[r:category='fun']"/>
-        </fo:block>
+        <fo:block-container keep-together.within-page="5">
+            <xsl:call-template name="section-heading">
+                <xsl:with-param name="code">key_skills</xsl:with-param>
+            </xsl:call-template>
+            <fo:block>
+                <xsl:apply-templates select="r:skill[r:category!='fun']"/>
+            </fo:block>
+            <fo:block xsl:use-attribute-sets="fun-skills">
+                <xsl:apply-templates select="r:skill[r:category='fun']"/>
+            </fo:block>
+        </fo:block-container>
     </xsl:template>
 
     <xsl:template match="r:skill">
@@ -200,16 +202,18 @@
 
 
     <xsl:template match="r:achievements">
-        <xsl:call-template name="section-heading">
-            <xsl:with-param name="code">other</xsl:with-param>
-        </xsl:call-template>
-        <fo:list-block>
-            <xsl:apply-templates/>
-        </fo:list-block>
+        <fo:block-container keep-together.within-page="5">
+            <xsl:call-template name="section-heading">
+                <xsl:with-param name="code">other</xsl:with-param>
+            </xsl:call-template>
+            <fo:list-block>
+                <xsl:apply-templates/>
+            </fo:list-block>
+        </fo:block-container>
     </xsl:template>
 
     <xsl:template match="r:achievement">
-        <fo:list-item>
+        <fo:list-item keep-together.within-page="always">
             <fo:list-item-label end-indent="label-end(  )">
                 <fo:block>O</fo:block>
             </fo:list-item-label>
@@ -222,25 +226,29 @@
     </xsl:template>
 
     <xsl:template match="r:basics/r:profile">
-        <xsl:call-template name="section-heading">
-            <xsl:with-param name="code">profile</xsl:with-param>
-        </xsl:call-template>
-        <fo:block>
-            <xsl:apply-templates/>
-        </fo:block>
+        <fo:block-container keep-together.within-page="5">
+           <xsl:call-template name="section-heading">
+               <xsl:with-param name="code">profile</xsl:with-param>
+           </xsl:call-template>
+           <fo:block>
+               <xsl:apply-templates/>
+           </fo:block>
+        </fo:block-container>
     </xsl:template>
 
     <xsl:template match="r:projects">
-        <xsl:call-template name="section-heading">
-            <xsl:with-param name="code">key_experience</xsl:with-param>
-        </xsl:call-template>
-        <fo:list-block>
-            <xsl:apply-templates/>
-        </fo:list-block>
+        <fo:block-container keep-together.within-page="5">
+           <xsl:call-template name="section-heading">
+               <xsl:with-param name="code">key_experience</xsl:with-param>
+           </xsl:call-template>
+           <fo:list-block>
+               <xsl:apply-templates/>
+           </fo:list-block>
+        </fo:block-container>
     </xsl:template>
 
     <xsl:template match="r:project">
-        <fo:list-item>
+        <fo:list-item keep-together.within-page="always">
             <fo:list-item-label end-indent="label-end(  )">
                 <fo:block>O</fo:block>
             </fo:list-item-label>
@@ -272,16 +280,18 @@
     </xsl:template>
 
     <xsl:template match="r:educations">
-        <xsl:call-template name="section-heading">
-            <xsl:with-param name="code">education</xsl:with-param>
-        </xsl:call-template>
-        <fo:list-block>
-            <xsl:apply-templates/>
-        </fo:list-block>
+        <fo:block-container keep-together.within-page="5">
+            <xsl:call-template name="section-heading">
+                <xsl:with-param name="code">education</xsl:with-param>
+            </xsl:call-template>
+            <fo:list-block>
+                <xsl:apply-templates/>
+            </fo:list-block>
+        </fo:block-container>
     </xsl:template>
 
     <xsl:template match="r:education">
-        <fo:list-item>
+        <fo:list-item keep-together.within-page="always">
             <fo:list-item-label end-indent="label-end(  )">
                 <fo:block>O</fo:block>
             </fo:list-item-label>
@@ -326,8 +336,8 @@
     </xsl:template>
 
     <xsl:template match="conf:office" mode="right">
-        <fo:block-container text-align="right" text-align-last="right" font-size="8pt" letter-spacing="1pt"
-                            text-transform="uppercase" padding-top="5pt">
+        <fo:block-container text-align="right" text-align-last="right" font-size="8pt"
+            letter-spacing="1pt" text-transform="uppercase" padding-top="5pt">
             <fo:block>
                 <xsl:value-of select="r:address"/>
             </fo:block>
@@ -343,28 +353,30 @@
     <xsl:template name="section-heading">
         <xsl:param name="code"/>
         <xsl:variable name="language" select="/r:resume/r:meta/r:language"/>
-        <xsl:variable name="heading" select="document('')/*/conf:heading[@code=$code and @language=$language]"/>
+        <xsl:variable name="heading"
+            select="document('')/*/conf:heading[@code=$code and @language=$language]"/>
         <xsl:variable name="logo" select="concat('images/', $code, '.svg')"/>
-        <fo:block xsl:use-attribute-sets="heading">
+        <fo:block xsl:use-attribute-sets="heading" keep-together.within-page="always">
             <fo:block-container xsl:use-attribute-sets="image" padding-bottom="5mm">
                 <fo:block text-align-last="center">
                     <fo:instream-foreign-object>
                         <svg xmlns="http://www.w3.org/2000/svg" width="1.1289cm" height="1.1289cm">
-                            <image xlink:href="{$logo}" x="30%" y="30%" width="0.4544cm" height="0.4544cm" />
-                            <circle cx="0.56445cm" cy="0.56445cm" r="0.5cm" fill="none" stroke="black"
-                                stroke-width="1"/>
+                            <image xlink:href="{$logo}" x="30%" y="30%" width="0.4544cm"
+                                height="0.4544cm"/>
+                            <circle cx="0.56445cm" cy="0.56445cm" r="0.5cm" fill="none"
+                                stroke="black" stroke-width="1"/>
                         </svg>
                     </fo:instream-foreign-object>
                 </fo:block>
             </fo:block-container>
 
             <fo:leader leader-pattern="rule" alignment-baseline="middle" padding-left="0.1em"
-                       padding-right="0.5em"/>
+                padding-right="0.5em"/>
             <fo:inline text-transform="uppercase">
                 <xsl:value-of select="$heading"/>
             </fo:inline>
             <fo:leader leader-pattern="rule" alignment-baseline="middle" padding-left="0.5em"
-                       padding-right="0.1em"/>
+                padding-right="0.1em"/>
         </fo:block>
     </xsl:template>
 
@@ -388,12 +400,14 @@
             </fo:inline>
             <fo:leader leader-pattern="space"/>
             <fo:instream-foreign-object>
-                <svg xmlns="http://www.w3.org/2000/svg" width="{217 div 256}in" height="{9 div 128}in">
-                    <rect x="{1 div 128}in" y="{1 div 128}in" width="{213 div 256}in" height="{7 div 128}in" rx="0.69mm" ry="0.69mm" fill="none"
-                          stroke="{$color}"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="{217 div 256}in"
+                    height="{9 div 128}in">
+                    <rect x="{1 div 128}in" y="{1 div 128}in" width="{213 div 256}in"
+                        height="{7 div 128}in" rx="0.69mm" ry="0.69mm" fill="none" stroke="{$color}"/>
                     <xsl:if test="$level &gt; 0">
-                        <rect x="{1 div 128}in" y="{1 div 128}in" width="{213 div 256*($level div 10.0)}in" height="{7 div 128}in" rx="0.69mm"
-                              ry="0.69mm" fill="{$color}" stroke="{$color}"/>
+                        <rect x="{1 div 128}in" y="{1 div 128}in"
+                            width="{213 div 256*($level div 10.0)}in" height="{7 div 128}in"
+                            rx="0.69mm" ry="0.69mm" fill="{$color}" stroke="{$color}"/>
                     </xsl:if>
                 </svg>
             </fo:instream-foreign-object>
