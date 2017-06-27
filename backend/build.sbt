@@ -56,6 +56,40 @@ packageDescription := "Competence Center main application"
 dockerBaseImage := "openjdk:latest"
 dockerCommands := {
   val from :: remainder = dockerCommands.value
-  from :: Cmd("RUN", "apt-get update && apt-get install -y nginx") :: remainder
+  from ::
+    Cmd("RUN", "apt-get update") ::
+    Cmd("RUN", "apt-get install -y nginx-light") ::
+    Cmd("RUN", "apt-get install -y supervisor") ::
+    Cmd("ADD", "nginx.conf", "/etc/nginx/nginx.conf") ::
+    Cmd("ADD", "supervisord.conf", "/etc/supervisor/conf.d/supervisord.conf") ::
+    remainder
 }
+daemonUser in Docker := "root"
+dockerEntrypoint := Seq("/usr/bin/supervisord")
 dockerExposedPorts := Seq(8080)
+
+mappings in Docker ++= {
+  val sourceDir = baseDirectory.value / ".." / "frontend" / "build" / "default"
+  ((sourceDir.*** --- sourceDir) pair relativeTo(sourceDir)).map { case (file, mapping) =>
+    file -> ("opt/docker/frontend/" + mapping)
+  }
+}
+
+mappings in Docker ++= Seq(
+  baseDirectory.value / "nginx.conf" -> "nginx.conf",
+  baseDirectory.value / "supervisord.conf" -> "supervisord.conf")
+
+val buildFrontend = TaskKey[File]("build-frontend", "Build the Polymer Frontend")
+
+buildFrontend := {
+  val srcDir = baseDirectory.value / ".." / "frontend"
+  val targetDir = srcDir / "build" / "default"
+
+  Process("polymer build", Some(srcDir)).!
+
+  // There seems to be a bug in Polymer-cli preventing all dependencies to be properly copied to
+  // the build directory. We were missing the google-signin buttons.
+  Process("bower install", Some(targetDir)).!
+
+  targetDir
+}
