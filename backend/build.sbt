@@ -1,3 +1,5 @@
+import com.typesafe.sbt.packager.docker._
+
 scalaVersion := "2.11.8"
 
 organization := "com.lunatech.cc"
@@ -47,5 +49,17 @@ lazy val root = (project in file(".")).
   )
 
 
-
 coverageExcludedPackages := "scalaxb;xml;"
+
+enablePlugins(JavaAppPackaging)
+
+maintainer := "Erik Bakker <erik.bakker@lunatech.com>"
+packageSummary := "Competence Center Online"
+packageDescription := "Competence Center main application"
+
+dockerBaseImage := "openjdk:latest"
+dockerCommands := {
+  val from :: remainder = dockerCommands.value
+  from :: Cmd("RUN", "apt-get update && apt-get install -y nginx") :: remainder
+}
+dockerExposedPorts := Seq(8080)
