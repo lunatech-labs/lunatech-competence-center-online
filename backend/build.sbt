@@ -10,6 +10,8 @@ lazy val catsVersion = "0.9.0"
 lazy val circeVersion = "0.7.0"
 lazy val finchVersion = "0.14.0"
 lazy val googleHttpVersion = "1.22.0"
+lazy val logbackVersion       = "1.2.2"
+
 
 libraryDependencies ++= Seq(
   "com.github.finagle" %% "finch-core" % finchVersion,
@@ -34,6 +36,8 @@ libraryDependencies ++= Seq(
   "org.scala-lang.modules" %% "scala-xml" % "1.0.6",
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5",
   "net.databinder.dispatch" %% "dispatch-core" % "0.11.3",
+
+  "ch.qos.logback" % "logback-classic" % logbackVersion,
 
   "org.scalatest" %% "scalatest" % "2.2.4" % "test",
   "com.typesafe" % "config" % "1.3.1"
@@ -64,7 +68,9 @@ dockerCommands := {
     Cmd("RUN", "apt-get update") ::
     Cmd("RUN", "apt-get install -y nginx-light") ::
     Cmd("RUN", "apt-get install -y supervisor") ::
+    Cmd("RUN", "ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log") ::
     Cmd("ADD", "nginx.conf", "/etc/nginx/nginx.conf") ::
+    Cmd("VOLUME", "/logs") ::
     Cmd("ADD", "supervisord.conf", "/etc/supervisor/conf.d/supervisord.conf") ::
     remainder
 }

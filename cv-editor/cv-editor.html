@@ -122,10 +122,10 @@ CV Editor
      <paper-card elevation="0" class="horizontal">
        <div class="card-content">
          <div class="header">Personal Details
-           <paper-input label="Given name" value="{{data.basics.givenName}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Family name" value="{{data.basics.familyName}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Label" value="{{data.basics.label}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Start" value="{{data.basics.startYear}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Given name" value="{{data.employee.basics.givenName}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Family name" value="{{data.employee.basics.familyName}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Label" value="{{data.employee.basics.label}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Start" value="{{data.employee.basics.startYear}}" class="no-underline" readonly></paper-input>
          </div>
        </div>
        <div class="card-content">
@@ -351,11 +351,11 @@ CV Editor
      <paper-card elevation="0" class="horizontal">
        <div class="card-content">
          <div class="header">Personal Details
-           <paper-input label="Given name" value="{{data.basics.givenName}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Family name" value="{{data.basics.familyName}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Label" value="{{data.basics.label}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Start" value="{{data.basics.startYear}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Office" value="{{data.basics.contact.name}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Given name" value="{{data.employee.basics.givenName}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Family name" value="{{data.employee.basics.familyName}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Label" value="{{data.employee.basics.label}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Start" value="{{data.employee.basics.startYear}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Office" value="{{data.employee.basics.contact.name}}" class="no-underline" readonly></paper-input>
          </div>
        </div>
        <div class="card-content">
@@ -527,6 +527,7 @@ CV Editor
 
      attached: function() {
        this.$.ajaxSave.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
+       console.log(this.data);
        if(this.data.basics === undefined) {
          this.set('data.basics', {});
        }
