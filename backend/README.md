@@ -12,15 +12,26 @@ Run `sbt buildFrontend docker:stage`, and you'll have a docker file ready in `ta
 Go to `target/docker/stage`
 
 Start docker on your machine. Then run: 
-`docker build . -t cco`
+`docker build -t cco . `
 `docker run -p 8081:8080 -it cco`
 
 Open `http://localhost:8080`
 
+
+
+
+## Useful Docker commands
+ - Clean up system: `docker system prune`
+ - Get access to shell inside container: `docker exec -i -t competence_center /bin/bash`
+
+
 ### TODO
  - Load data DB / connect to external DB from config (done in test)
+ - Logging in API
+ - Logging in Docker
+ - Cross Origin within Docker / proxy nginx
  - fix list table issue
- - fix dependencies issue JS
+ - fix dependencies issue JS NOT FOUND / Access Denied
  - Build with Jenkins
  - Deploy on CC
  

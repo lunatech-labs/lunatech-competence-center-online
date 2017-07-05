@@ -62,6 +62,8 @@ Polymer({
       googleAuth = gapi.auth2.getAuthInstance();
       currentUser = googleAuth.currentUser.get();
       basicProfile = currentUser.getBasicProfile();
+      console.log(currentUser);
+      console.log(basicProfile);
 
       // TODO, do a domain check?
       domain = currentUser.getHostedDomain();
