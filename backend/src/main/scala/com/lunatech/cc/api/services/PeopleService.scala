@@ -8,6 +8,8 @@ import io.circe._
 import io.circe.parser._
 import io.circe.generic.auto._
 import cats.implicits._
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory._
 
 trait PeopleService {
   def findAll: Future[Seq[Person]]
@@ -16,9 +18,13 @@ trait PeopleService {
 }
 
 class ApiPeopleService(apiKey: String, client: Service[Request, Response]) extends PeopleService {
+
+  lazy val logger: Logger = getLogger(getClass)
+
   override def findAll: Future[Seq[Person]] = {
     //TODO check why getting 404 when full url is not specified
     //    val request = Request(Request.queryString("/people",Map("apiKey" -> apiKey)))
+
 
     val request = RequestBuilder()
       .url(Request.queryString("http://lunatech-people-api.cleverapps.io:80/people", Map("apiKey" -> apiKey)))
@@ -31,11 +37,13 @@ class ApiPeopleService(apiKey: String, client: Service[Request, Response]) exten
             json: Json => json.as[Seq[Person]].toValidated.toValidatedNel
           } valueOr {
             failures =>
-              //TODO log the errors
-              //failures.map(failure => logger.error(failure.getMessage))
-              throw new Exception(s"Unexpected response from people api, Response Status: ${response.statusCode}, Response: ${response.toString}")
+              val errormsg = s"Unexpected response from people api, Parsing failures: $failures, Response Status: ${response.statusCode}, Response: ${response.toString}"
+              logger.error(errormsg)
+              throw new Exception(errormsg)
           }
         case response =>
+          logger.error(s"Request $request failed with header ${request.headerMap}")
+          println("=================>>>>>>>>>>>>>>>>>>>>>>>.")
           throw new Exception(s"Unexpected response from people api, Response Status: ${response.statusCode}, Response: ${response.toString}")
       }
   }
