@@ -462,7 +462,7 @@ CV Editor
    </template>
 
    <template is="dom-if" if="{{editable}}">
-     <paper-button hidden="{{!isOverviewVisible}}" title="Save Modifications" on-tap="save">Save</paper-button>
+     <paper-button hidden="{{isOverviewVisible}}" title="Save Modifications" on-tap="save">Save</paper-button>
      <paper-icon-button hidden="{{!isOverviewVisible}}"  title="Go to Edit" icon="icons:create" on-tap="doEdit" class="edit" mini></paper-icon-button>
    </template>
    <template is="dom-if" if="true">
@@ -567,8 +567,9 @@ CV Editor
 
      getPDF : function(e) {
        a = this.$.ajaxDownloadPDF;
+       console.log(this.$.meta.byKey("idToken"));
        a.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
-       employeeData = this.data;
+       employeeData = this.data.employee;
        metaData = {"client" : "test", "creationDate" : "2017-05-05", "office" : "Rotterdam", "language" : "EN" };
        cvData = {"employee": employeeData, "meta": metaData};
        a.body = cvData;
@@ -642,12 +643,16 @@ CV Editor
      },
 
      cvSaved: function(data) {
+       this.isEditableVisible=false;
+       this.isOverviewVisible=true;
        console.log("CV saved!");
        console.log(arguments);
      },
 
      save: function() {
        a = this.$.ajaxSave
+       console.log(JSON.stringify(this.data));
+
        a.body = this.data;
        a.generateRequest();
      },

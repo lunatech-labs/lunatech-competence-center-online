@@ -17,21 +17,21 @@ import org.slf4j.LoggerFactory._
 
 class CVController(tokenVerifier: TokenVerifier, cvService: CVService, peopleService: PeopleService, cvFormatter: CVFormatter) {
 
-  lazy val log: Logger = getLogger(getClass)
+  lazy val logger: Logger = getLogger(getClass)
 
   val `GET /employees`: Endpoint[Json] = get(employees :: tokenHeader) { (token: String) =>
-    log.debug(s"GET /employees with $token")
+    logger.debug(s"GET /employees with $token")
     auth(token)(_ => Ok(cvService.findAll.asJson))
   }
 
   val `GET /employees/me`: Endpoint[Json] = get(employees :: me :: tokenHeader) { (token: String) =>
     auth(token) { user =>
-      log.debug(s"GET /employees/me for $user")
+      logger.debug(s"GET /employees/me for $user")
       cvService.findByPerson(user) match {
         case Some(json) => Ok(json)
         case None => {
           val json = CV(user).asJson
-          log.debug(json.toString)
+          logger.debug(json.toString)
           Ok(json)
 //          NotFound(new RuntimeException("No CV found"))
         } //TODO: return empty CV filled with user data
@@ -41,7 +41,7 @@ class CVController(tokenVerifier: TokenVerifier, cvService: CVService, peopleSer
 
   val `GET /employees/employeeId`: Endpoint[Json] = get(employees :: string :: tokenHeader) { (employeeId: String, token: String) =>
     auth(token) { user =>
-      log.debug(s"GET /employees/$employeeId for $user")
+      logger.debug(s"GET /employees/$employeeId for $user")
 
       cvService.findById(employeeId) match {
         case Some(json) => Ok(json)
@@ -52,17 +52,21 @@ class CVController(tokenVerifier: TokenVerifier, cvService: CVService, peopleSer
 
   val `PUT /employees/me`: Endpoint[Json] = put(employees :: me :: tokenHeader :: jsonBody[Json]) { (token: String, employee: Json) =>
     auth(token) { user =>
-      employee.as[Employee] match {
+      employee.as[CV] match {
         case Right(_) =>
+          logger.debug("received data")
           cvService.insert(user.email, employee)
           Ok(employee)
-        case Left(e) => BadRequest(new RuntimeException(e))
+        case Left(e) =>
+          logger.debug(s"incorrect data $employee")
+          BadRequest(new RuntimeException(e))
       }
     }
   }
 
   val `POST /cvs`: Endpoint[Buf] = post(cvs :: tokenHeader :: jsonBody[Json]) { (token: String, cv: Json) =>
     authF(token) { _ =>
+      logger.debug(cv.toString)
       cv.as[CV] match {
         case Right(data) =>
           println(data)

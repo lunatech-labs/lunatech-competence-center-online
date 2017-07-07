@@ -27,7 +27,7 @@ class ApiPeopleService(apiKey: String, client: Service[Request, Response]) exten
 
 
     val request = RequestBuilder()
-      .url(Request.queryString("http://lunatech-people-api.cleverapps.io:80/people", Map("apiKey" -> apiKey)))
+      .url("http://people.lunatech.com:80/people?apiKey=s987ewj2lk08sfd98sg7u2jlkkhnvzbuy")
       .buildGet()
 
     client(request)
@@ -37,14 +37,13 @@ class ApiPeopleService(apiKey: String, client: Service[Request, Response]) exten
             json: Json => json.as[Seq[Person]].toValidated.toValidatedNel
           } valueOr {
             failures =>
-              val errormsg = s"Unexpected response from people api, Parsing failures: $failures, Response Status: ${response.statusCode}, Response: ${response.toString}"
+              val errormsg = s"Unexpected response from people api, Parsing failures: $failures, Response Status: ${response.statusCode}, Response: ${response.contentString}"
               logger.error(errormsg)
               throw new Exception(errormsg)
           }
         case response =>
-          logger.error(s"Request $request failed with header ${request.headerMap}")
-          println("=================>>>>>>>>>>>>>>>>>>>>>>>.")
-          throw new Exception(s"Unexpected response from people api, Response Status: ${response.statusCode}, Response: ${response.toString}")
+          logger.error(s"Request $request failed with header ${request.headerMap} and body ")
+          throw new Exception(s"Unexpected response from people api, Response Status: ${response.statusCode}, Response: ${response.contentString}")
       }
   }
 
