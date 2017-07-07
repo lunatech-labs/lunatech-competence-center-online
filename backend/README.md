@@ -15,7 +15,7 @@ Start docker on your machine. Then run:
 `docker build -t cco . `
 `docker run -p 8081:8080 -it cco`
 
-Open `http://localhost:8080`
+Open `http://localhost:8081`
 
 
 
