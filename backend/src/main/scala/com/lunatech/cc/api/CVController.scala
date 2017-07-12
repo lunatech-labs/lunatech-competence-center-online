@@ -96,6 +96,19 @@ class CVController(tokenVerifier: TokenVerifier, cvService: CVService, peopleSer
     }
   }
 
+
+  val `GET /cvs/employeeId`: Endpoint[Json] = get(cvs :: string :: tokenHeader) { (employeeId: String, token: String) =>
+    auth(token) { user =>
+      logger.debug(s"GET /cvs/$employeeId for $user")
+
+      cvService.findById(employeeId) match {
+        case Some(json) => Ok(json)
+        case None => NotFound(new RuntimeException("No CV found"))
+      }
+    }
+  }
+
+
   private def auth[A](token: String)(f: GoogleUser => Output[A]): Output[A] =
     tokenVerifier.verifyToken(token) match {
       case Some(user) => f(user)
