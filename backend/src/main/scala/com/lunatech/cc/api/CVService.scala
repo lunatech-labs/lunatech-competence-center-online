@@ -36,7 +36,9 @@ class PostgresCVService(transactor: Transactor[Task]) extends CVService {
     sql"SELECT cv FROM cvs WHERE person = ${user.email} ORDER BY created_on DESC LIMIT 1".query[Json].option.transact(transactor).unsafeRun()
 
   override def findById(email: String): Option[Json] =
-    sql"SELECT cv FROM cvs WHERE person = ${email} ORDER BY created_on DESC LIMIT 1".query[Json].option.transact(transactor).unsafeRun()
+    { println(email)
+      sql"SELECT cv FROM cvs WHERE person = ${email} ORDER BY created_on DESC LIMIT 1".query[Json].option.transact(transactor).unsafeRun()
+    }
 
   override def findAll: List[Json] = sql"SELECT cv FROM cvs".query[Json].list.transact(transactor).unsafeRun()
 

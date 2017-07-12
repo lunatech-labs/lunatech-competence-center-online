@@ -13,7 +13,7 @@ Go to `target/docker/stage`
 
 Start docker on your machine. Then run: 
 `docker build -t cco . `
-`docker run -p 8081:8080 -it cco`
+`docker run -p 8081:8080 -p 9000:9000 -ti cco`
 
 Open `http://localhost:8081`
 
