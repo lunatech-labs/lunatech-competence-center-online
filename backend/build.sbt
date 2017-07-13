@@ -79,12 +79,7 @@ daemonUser in Docker := "root"
 dockerEntrypoint := Seq("/usr/bin/supervisord")
 dockerExposedPorts := Seq(8080)
 
-mappings in Docker ++= {
-  val sourceDir = baseDirectory.value / ".." / "frontend" / "build" / "default"
-  ((sourceDir.*** --- sourceDir) pair relativeTo(sourceDir)).map { case (file, mapping) =>
-    file -> ("opt/docker/frontend/" + mapping)
-  }
-}
+
 
 mappings in Docker ++= Seq(
   baseDirectory.value / "nginx.conf" -> "nginx.conf",
@@ -93,6 +88,14 @@ mappings in Docker ++= Seq(
 val buildFrontend = TaskKey[File]("build-frontend", "Build the Polymer Frontend")
 
 buildFrontend := {
+
+  mappings in Docker ++= {
+    val sourceDir = baseDirectory.value / ".." / "frontend" / "build" / "default"
+    ((sourceDir.*** --- sourceDir) pair relativeTo(sourceDir)).map { case (file, mapping) =>
+      file -> ("opt/docker/frontend/" + mapping)
+    }
+  }
+
   val srcDir = baseDirectory.value / ".." / "frontend"
   val targetDir = srcDir / "build" / "default"
 
