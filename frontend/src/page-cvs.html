@@ -66,7 +66,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <template>{{item.person.email}}</template>
           </paper-datatable-column>
           <paper-datatable-column header="Title" property="item.cv"  type="String" sortable>
-            <template>{{item.cv.details.title}}</template>
+            <template>{{item.cv.employee.basics.label}}</template>
           </paper-datatable-column>
           <paper-datatable-column header="Skills">
             <template>{{formatSkills(item)}}</template>
@@ -187,10 +187,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.set('data', event.detail.response);
       },
       formatSkills: function(item) {
-        if(!item.cv || !item.cv.skills){
+        if(!item.cv || !item.cv.employee.skills){
           return "";
         }
-        return item.cv.skills.map(function(skill){ return skill.name}).join(", ");
+        return item.cv.employee.skills.map(function(skill){ return skill.name}).join(", ");
       },
       rowClicked: function(event) {
           if(!event.detail.item.cv){
