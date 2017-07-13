@@ -8,9 +8,13 @@ Erik Bakker is the initiator of the Competence Center and oversees all sub proje
 The Competence Center will become a portal in which Lunatech employees can track their development and where to improve their development via training or workshop. On the other side it gives Client directors / Sales insight into who will fit in which project based on experience and knowledge.
 
 ## Structure
-- Frontend: Polymer web application
+- Frontend: Polymer web application. 
 - Backend: Finch http service
 - Fonts: helper project containing fonts for the PDF generation
+
+The whole application is deployed as a Docker application on Clever Cloud. 
+
+The frontend is served via NGINX, the backend application on port 9000 is linked to /api in NGINX. The database is hosted on Clever Cloud as well. 
 
 ## How to run
 - The application can use a PostgreSQL db on Clever Cloud see [config](backend/src/main/resources/application.conf)

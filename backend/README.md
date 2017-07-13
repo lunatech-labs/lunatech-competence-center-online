@@ -13,16 +13,15 @@ Go to `target/docker/stage`
 
 Start docker on your machine. Then run: 
 `docker build -t cco . `
-`docker run -p 8081:8080 -p 9000:9000 -ti cco`
+`docker run -p 8081:8080 -ti cco`
 
 Open `http://localhost:8081`
 
 
 
-
 ## Useful Docker commands
  - Clean up system: `docker system prune`
- - Get access to shell inside container: `docker exec -i -t competence_center /bin/bash`
+ - Get access to shell inside container: `docker exec -i -t cco /bin/bash`
 
 
 ### TODO
