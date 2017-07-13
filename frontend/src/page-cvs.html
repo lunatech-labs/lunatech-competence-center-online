@@ -32,12 +32,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
     <iron-ajax id="ajaxLoadMe"
-        url="http://localhost:9000/employees/me"
+        url="http://localhost:8081/api/employees/me"
         handle-as="json"
         on-response="cvLoaded"></iron-ajax>
 
     <iron-ajax id="ajaxLoad"
-        url="http://localhost:9000/cvs"
+        url="http://localhost:8081/api/cvs"
         handle-as="json"
         on-response="cvsLoaded"></iron-ajax>
 
