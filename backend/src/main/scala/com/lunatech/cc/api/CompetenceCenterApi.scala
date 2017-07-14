@@ -12,6 +12,7 @@ import doobie.imports._
 import fs2._
 import io.finch._
 import io.finch.circe._
+import org.flywaydb.core.Flyway
 
 object CompetenceCenterApi extends App {
 
@@ -23,6 +24,17 @@ object CompetenceCenterApi extends App {
     user = config.getString("db.user"),
     pass = config.getString("db.password")
   )
+
+  val flyway = {
+    val datasource = new org.postgresql.ds.PGSimpleDataSource
+    datasource.setUrl(config.getString("db.url"))
+    datasource.setUser(config.getString("db.user"))
+    datasource.setPassword(config.getString("db.password"))
+    val flyway = new Flyway()
+    flyway.setDataSource(datasource)
+    flyway
+  }
+  flyway.migrate()
 
   val cvService = new PostgresCVService(transactor)
 

@@ -23,6 +23,7 @@ libraryDependencies ++= Seq(
 
   "org.tpolecat" %% "doobie-core-cats" % "0.4.1",
   "org.postgresql" % "postgresql" % "42.0.0",
+  "org.flywaydb" % "flyway-core" % "4.2.0",
 
   "org.apache.xmlgraphics" % "fop" % "2.2",
   "org.apache.xmlgraphics" % "batik-constants" % "1.9",
@@ -40,8 +41,11 @@ lazy val root = (project in file(".")).
   enablePlugins(ScalaxbPlugin).
   settings(
     scalaxbDispatchVersion in (Compile, scalaxb) := "0.11.3",
-    scalaxbPackageName in (Compile, scalaxb)     := "xml"
+    scalaxbPackageName in (Compile, scalaxb)     := "xml",
+    flywayUrl := "jdbc:postgresql:competence-center",
+    flywayUser := "postgres"
   )
+
 
 
 coverageExcludedPackages := "scalaxb;xml;"

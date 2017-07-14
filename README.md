@@ -13,11 +13,11 @@ The Competence Center will become a portal in which Lunatech employees can track
 - Fonts: helper project containing fonts for the PDF generation
 
 ## How to run
-- Configure a PostgreSQL server with the provided [schema](backend/src/main/resources/schema.sql)
-  - install PostgreSQL via `brew install postgres`
+- Configure a PostgreSQL server in `backend/src/main/resources/application.conf`
+  - Install PostgreSQL via `brew install postgres`
   - `/usr/local/Cellar/postgresql/<INSERT YOUR POSTGRES VERSION NUMBER (e.g., 9.6.2)>/bin/createuser -s postgres`
   - `createdb -O postgres competence-center` (if this returns `createdb: could not connect to database`, try `brew services stop postgresql; brew services start postgresql`)
-  - `psql -d competence-center -f backend/src/main/resources/schema.sql`
+  - The Schema will automatically be loaded by [Flyway](http://flaywaydb.org) when the application starts.
 - [Build and serve frontend](frontend/README.md)
 - [Run the backend](backend/README.md)
 - Open [http://localhost:8081](http://localhost:8081) in your browser
@@ -34,7 +34,7 @@ The Competence Center will become a portal in which Lunatech employees can track
 ## Sub projects
 
 ### CV editor and generator
-The CV editor and generator can be used to create a consistent set of CV information for all Lunatechies and make it easy to generate a CV for a spcific project. The 3 main functionalities are:
+The CV editor and generator can be used to create a consistent set of CV information for all Lunatechies and make it easy to generate a CV for a specific project. The 3 main functionalities are:
 1. List all Lunatech developers and show if they have updated CV data
 2. Edit / Create CV data for yourself
 3. Generate a CV based on (a subset of) CV data
