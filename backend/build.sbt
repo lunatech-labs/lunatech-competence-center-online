@@ -52,7 +52,6 @@ lazy val root = (project in file(".")).
     flywayUser := "postgres"
   )
 
-
 coverageExcludedPackages := "scalaxb;xml;"
 
 enablePlugins(JavaAppPackaging)
