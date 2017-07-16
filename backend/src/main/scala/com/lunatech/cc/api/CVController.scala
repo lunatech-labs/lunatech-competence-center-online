@@ -69,7 +69,6 @@ class CVController(tokenVerifier: TokenVerifier, cvService: CVService, peopleSer
       logger.debug(cv.toString)
       cv.as[CV] match {
         case Right(data) =>
-          println(data)
           cvFormatter.format(data) match {
             case Right(FormatResult(result, _)) =>
               Reader.readAll(result).map { content =>
@@ -85,12 +84,14 @@ class CVController(tokenVerifier: TokenVerifier, cvService: CVService, peopleSer
   val `GET /cvs`: Endpoint[Json] = get(cvs :: tokenHeader).mapAsync { token =>
     for {
       people <- peopleService.findByRole("developer")
-      employees <- Future.value(cvService.findAll.flatMap(_.as[Employee].toValidated.toOption))
+      cvs <- Future.value(cvService.findAll.flatMap(_.as[CV].toValidated.toOption))
+      _ = cvs.foreach(println)
     } yield {
+
       people.map { person =>
         Json.obj(
           "person" -> person.asJson,
-          "cv" -> employees.find(_.basics.email.toLowerCase == person.email.toLowerCase).asJson
+          "cv" -> cvs.find(_.employee.basics.email.toLowerCase == person.email.toLowerCase).getOrElse(CV(person)).asJson
         )
       }.asJson
     }

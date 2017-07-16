@@ -11,7 +11,7 @@ import doobie.imports._
 import fs2._
 import io.finch._
 import io.finch.circe._
-import org.flywaydb.core.Flyway
+//import org.flywaydb.core.Flyway
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory._
 
@@ -28,16 +28,17 @@ object CompetenceCenterApi extends App {
     pass = config.getString("db.password")
   )
 
-  val flyway = {
-    val datasource = new org.postgresql.ds.PGSimpleDataSource
-    datasource.setUrl(config.getString("db.url"))
-    datasource.setUser(config.getString("db.user"))
-    datasource.setPassword(config.getString("db.password"))
-    val flyway = new Flyway()
-    flyway.setDataSource(datasource)
-    flyway
-  }
-  flyway.migrate()
+  //TODO: Crashes docker image
+//  val flyway = {
+//    val datasource = new org.postgresql.ds.PGSimpleDataSource
+//    datasource.setUrl(config.getString("db.url"))
+//    datasource.setUser(config.getString("db.user"))
+//    datasource.setPassword(config.getString("db.password"))
+//    val flyway = new Flyway()
+//    flyway.setDataSource(datasource)
+//    flyway
+//  }
+//  flyway.migrate()
 
   val port = config.getInt("server.port")
 

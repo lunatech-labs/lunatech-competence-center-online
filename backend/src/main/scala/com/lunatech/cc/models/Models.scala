@@ -1,6 +1,7 @@
 package com.lunatech.cc.models
 
 import com.lunatech.cc.api.GoogleUser
+import com.lunatech.cc.api.services.Person
 
 import scala.language.implicitConversions
 import io.circe.generic.semiauto._
@@ -56,6 +57,17 @@ case class CV(employee: Employee,
 object CV {
   def apply(user:GoogleUser): CV = {
     val bd: BasicDetails = BasicDetails(user.givenName,user.familyName,"","",user.email,"","",Contact("","","","","","",""))
+    basicCV(bd)
+  }
+
+  def apply(person: Person): CV = {
+    val bd: BasicDetails = BasicDetails(person.name.givenName,person.name.familyName,"","",person.email,"","",Contact("","","","","","",""))
+    basicCV(bd)
+  }
+
+  def apply(employee: Employee): CV = CV(employee,Meta("","","",""))
+
+  private def basicCV(bd: BasicDetails) = {
     val employee = Employee(bd,Seq(),Seq(),Seq(),Seq())
     val meta = Meta("","","","")
     new CV(employee, meta)
