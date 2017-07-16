@@ -1,6 +1,10 @@
 package com.lunatech.cc.models
 
+import com.lunatech.cc.api.GoogleUser
+import com.lunatech.cc.api.services.Person
+
 import scala.language.implicitConversions
+import io.circe.generic.semiauto._
 
 case class Contact(name: String,
                    address: String,
@@ -50,6 +54,26 @@ case class Meta(client: String,
 case class CV(employee: Employee,
               meta: Meta)
 
+object CV {
+  def apply(user:GoogleUser): CV = {
+    val bd: BasicDetails = BasicDetails(user.givenName,user.familyName,"","",user.email,"","",Contact("","","","","","",""))
+    basicCV(bd)
+  }
+
+  def apply(person: Person): CV = {
+    val bd: BasicDetails = BasicDetails(person.name.givenName,person.name.familyName,"","",person.email,"","",Contact("","","","","","",""))
+    basicCV(bd)
+  }
+
+  def apply(employee: Employee): CV = CV(employee,Meta("","","",""))
+
+  private def basicCV(bd: BasicDetails) = {
+    val employee = Employee(bd,Seq(),Seq(),Seq(),Seq())
+    val meta = Meta("","","","")
+    new CV(employee, meta)
+  }
+}
+
 case class Error(internalCode: Int,
                  errorMessage: String,
                  httpStatusCode: Integer,
@@ -65,6 +89,8 @@ package object Models {
     projects = cv.employee.projects,
     meta = cv.meta)
 
+
+
   implicit def toXML(basicDetails: BasicDetails): xml.Basics = xml.Basics(
     givenName = basicDetails.givenName,
     familyName = basicDetails.familyName,
@@ -75,6 +101,12 @@ package object Models {
     profile = basicDetails.profile,
     contact = basicDetails.contact)
 
+  implicit val ctEncoder = deriveEncoder[Contact]
+  implicit val ctDecoder = deriveDecoder[Contact]
+
+  implicit val bdEncoder = deriveEncoder[BasicDetails]
+  implicit val bdDecoder = deriveDecoder[BasicDetails]
+
   implicit def toXML(contact: Contact): xml.Contact = xml.Contact(
     name = contact.name,
     address = contact.address,
@@ -84,6 +116,7 @@ package object Models {
     email = contact.email,
     countryCode = contact.countryCode)
 
+
   implicit def toXML(education: Education): xml.Education = xml.Education(
     country = education.country,
     institution = education.institution,
@@ -92,12 +125,20 @@ package object Models {
     endDate = education.endDate,
     description = education.description)
 
+  implicit val edEncoder = deriveEncoder[Education]
+  implicit val edDecoder = deriveDecoder[Education]
+
+
   implicit def toXML(educations: Seq[Education]): xml.Educations = xml.Educations(educations.map(toXML))
 
   implicit def toXML(skill: Skill): xml.Skill = xml.Skill(
     name = skill.name,
     level = skill.level,
     category = skill.category)
+
+  implicit val skEncoder = deriveEncoder[Skill]
+  implicit val skDecoder = deriveDecoder[Skill]
+
 
   implicit def toXML(skills: Seq[Skill]): xml.Skills = xml.Skills(skills.map(toXML))
 
@@ -112,6 +153,11 @@ package object Models {
     role = project.role,
     summary = project.summary)
 
+  implicit val pjEncoder = deriveEncoder[Project]
+  implicit val pjDecoder = deriveDecoder[Project]
+
+
+
   implicit def toXML(projects: Seq[Project]): xml.Projects = xml.Projects(projects.map(toXML))
 
   implicit def toXML(meta: Meta): xml.Meta = xml.Meta(
@@ -120,4 +166,15 @@ package object Models {
     office = xml.OfficeType.fromString(meta.office, xml.defaultScope),
     language = xml.LanguageType.fromString(meta.language, xml.defaultScope)
   )
+
+  implicit val emEncoder = deriveEncoder[Employee]
+  implicit val emDecoder = deriveDecoder[Employee]
+  implicit val mtEncoder = deriveEncoder[Meta]
+  implicit val mtDecoder = deriveDecoder[Meta]
+
+
+  implicit val cvEncoder = deriveEncoder[CV]
+  implicit val cvDecoder = deriveDecoder[CV]
+
+
 }

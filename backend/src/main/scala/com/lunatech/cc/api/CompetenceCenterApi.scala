@@ -1,6 +1,5 @@
 package com.lunatech.cc.api
 
-import com.lunatech.cc.api.CompetenceCenterApi.cvController
 import com.lunatech.cc.api.services.ApiPeopleService
 import com.lunatech.cc.formatter.PdfCVFormatter
 import com.twitter.finagle.http.filter.Cors
@@ -12,11 +11,15 @@ import doobie.imports._
 import fs2._
 import io.finch._
 import io.finch.circe._
-import org.flywaydb.core.Flyway
+//import org.flywaydb.core.Flyway
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory._
 
 object CompetenceCenterApi extends App {
 
   val config = ConfigFactory.load()
+
+  lazy val logger: Logger = getLogger(getClass)
 
   val transactor = DriverManagerTransactor[Task](
     driver = config.getString("db.driver"),
@@ -25,16 +28,19 @@ object CompetenceCenterApi extends App {
     pass = config.getString("db.password")
   )
 
-  val flyway = {
-    val datasource = new org.postgresql.ds.PGSimpleDataSource
-    datasource.setUrl(config.getString("db.url"))
-    datasource.setUser(config.getString("db.user"))
-    datasource.setPassword(config.getString("db.password"))
-    val flyway = new Flyway()
-    flyway.setDataSource(datasource)
-    flyway
-  }
-  flyway.migrate()
+  //TODO: Crashes docker image
+//  val flyway = {
+//    val datasource = new org.postgresql.ds.PGSimpleDataSource
+//    datasource.setUrl(config.getString("db.url"))
+//    datasource.setUser(config.getString("db.user"))
+//    datasource.setPassword(config.getString("db.password"))
+//    val flyway = new Flyway()
+//    flyway.setDataSource(datasource)
+//    flyway
+//  }
+//  flyway.migrate()
+
+  val port = config.getInt("server.port")
 
   val cvService = new PostgresCVService(transactor)
 
@@ -54,10 +60,11 @@ object CompetenceCenterApi extends App {
 
   val cvController = new CVController(tokenVerifier, cvService, apiPeopleService, cvFormatter)
 
-  val service = (cvController.`GET /employees` :+: cvController.`GET /employees/me` :+: cvController.`GET /employees/employeeId` :+: cvController.`PUT /employees/me` :+: cvController.`POST /cvs` :+: cvController.`GET /cvs`).toServiceAs[Application.Json]
+  val service = (cvController.`GET /employees` :+: cvController.`GET /employees/me` :+: cvController.`GET /employees/employeeId` :+: cvController.`PUT /employees/me` :+: cvController.`POST /cvs` :+: cvController.`GET /cvs` :+: cvController.`GET /cvs/employeeId`).toServiceAs[Application.Json]
 
   val corsService: Service[Request, Response] = new Cors.HttpFilter(policy).andThen(service)
 
-  val server = Http.server.serve(":9000", corsService)
+  val server = Http.server.serve(s":$port", corsService)
+  logger.info(s"Server running on port $port")
   Await.ready(server)
 }

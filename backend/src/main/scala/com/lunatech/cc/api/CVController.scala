@@ -12,27 +12,38 @@ import io.circe.syntax._
 import io.finch._
 import io.finch.circe._
 import cats.implicits._
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory._
 
 class CVController(tokenVerifier: TokenVerifier, cvService: CVService, peopleService: PeopleService, cvFormatter: CVFormatter) {
 
+  lazy val logger: Logger = getLogger(getClass)
+
   val `GET /employees`: Endpoint[Json] = get(employees :: tokenHeader) { (token: String) =>
+    logger.debug(s"GET /employees with $token")
     auth(token)(_ => Ok(cvService.findAll.asJson))
   }
 
   val `GET /employees/me`: Endpoint[Json] = get(employees :: me :: tokenHeader) { (token: String) =>
     auth(token) { user =>
-      cvService.findByPerson(user.email) match {
+      logger.debug(s"GET /employees/me for $user")
+      cvService.findByPerson(user) match {
         case Some(json) => Ok(json)
-        case None => NotFound(new RuntimeException("No CV found"))
+        case None => {
+          val json = CV(user).asJson
+          logger.debug(json.toString)
+          Ok(json)
+//          NotFound(new RuntimeException("No CV found"))
+        } //TODO: return empty CV filled with user data
       }
     }
   }
 
   val `GET /employees/employeeId`: Endpoint[Json] = get(employees :: string :: tokenHeader) { (employeeId: String, token: String) =>
     auth(token) { user =>
-      println(employeeId)
-      println(user)
-      cvService.findByPerson(employeeId) match {
+      logger.debug(s"GET /employees/$employeeId for $user")
+
+      cvService.findById(employeeId) match {
         case Some(json) => Ok(json)
         case None => NotFound(new RuntimeException("No CV found"))
       }
@@ -41,17 +52,21 @@ class CVController(tokenVerifier: TokenVerifier, cvService: CVService, peopleSer
 
   val `PUT /employees/me`: Endpoint[Json] = put(employees :: me :: tokenHeader :: jsonBody[Json]) { (token: String, employee: Json) =>
     auth(token) { user =>
-      employee.as[Employee] match {
+      employee.as[CV] match {
         case Right(_) =>
+          logger.debug("received data")
           cvService.insert(user.email, employee)
           Ok(employee)
-        case Left(e) => BadRequest(new RuntimeException(e))
+        case Left(e) =>
+          logger.debug(s"incorrect data $employee")
+          BadRequest(new RuntimeException(e))
       }
     }
   }
 
   val `POST /cvs`: Endpoint[Buf] = post(cvs :: tokenHeader :: jsonBody[Json]) { (token: String, cv: Json) =>
     authF(token) { _ =>
+      logger.debug(cv.toString)
       cv.as[CV] match {
         case Right(data) =>
           cvFormatter.format(data) match {
@@ -69,16 +84,31 @@ class CVController(tokenVerifier: TokenVerifier, cvService: CVService, peopleSer
   val `GET /cvs`: Endpoint[Json] = get(cvs :: tokenHeader).mapAsync { token =>
     for {
       people <- peopleService.findByRole("developer")
-      employees <- Future.value(cvService.findAll.flatMap(_.as[Employee].toValidated.toOption))
+      cvs <- Future.value(cvService.findAll.flatMap(_.as[CV].toValidated.toOption))
+      _ = cvs.foreach(println)
     } yield {
+
       people.map { person =>
         Json.obj(
           "person" -> person.asJson,
-          "cv" -> employees.find(_.basics.email.toLowerCase == person.email.toLowerCase).asJson
+          "cv" -> cvs.find(_.employee.basics.email.toLowerCase == person.email.toLowerCase).getOrElse(CV(person)).asJson
         )
       }.asJson
     }
   }
+
+
+  val `GET /cvs/employeeId`: Endpoint[Json] = get(cvs :: string :: tokenHeader) { (employeeId: String, token: String) =>
+    auth(token) { user =>
+      logger.debug(s"GET /cvs/$employeeId for $user")
+
+      cvService.findById(employeeId) match {
+        case Some(json) => Ok(json)
+        case None => NotFound(new RuntimeException("No CV found"))
+      }
+    }
+  }
+
 
   private def auth[A](token: String)(f: GoogleUser => Output[A]): Output[A] =
     tokenVerifier.verifyToken(token) match {

@@ -1,8 +1,9 @@
 <!-- Imports polymer -->
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/google-signin/google-signin-aware.html">
-<link rel="import" href="../bower_components/google-signin/google-signin.html">
-<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/google-signin/google-signin-aware.html">
+<link rel="import" href="/bower_components/google-signin/google-signin.html">
+<link rel="import" href="/bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="/src/my-app.html">
 <!-- Defines element markup -->
 <dom-module id="auth-guard">
@@ -61,6 +62,10 @@ Polymer({
       googleAuth = gapi.auth2.getAuthInstance();
       currentUser = googleAuth.currentUser.get();
       basicProfile = currentUser.getBasicProfile();
+      imageUrl = basicProfile.getImageUrl();
+      console.log(currentUser);
+      console.log(basicProfile);
+      console.log(imageUrl);
 
       // TODO, do a domain check?
       domain = currentUser.getHostedDomain();
