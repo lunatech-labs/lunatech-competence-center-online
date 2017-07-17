@@ -14,8 +14,8 @@ import org.scalatest.concurrent.Futures
 object PeopleServiceSpec {
   private val config = ConfigFactory
     .load()
-    .withValue("services.people.name", ConfigValueFactory.fromAnyRef("lunatech-people-api.cleverapps.io:80"))
-    .withValue("services.people.apiKey", ConfigValueFactory.fromAnyRef("s987ewj2lk08sfd98sg7u2jlkkhnvzbuy"))
+//    .withValue("services.people.name", ConfigValueFactory.fromAnyRef("lunatech-people-api.cleverapps.io:80"))
+//    .withValue("services.people.apiKey", ConfigValueFactory.fromAnyRef("s987ewj2lk08sfd98sg7u2jlkkhnvzbuy"))
   val apiPeopleService: ApiPeopleService = ApiPeopleService(config)
 }
 

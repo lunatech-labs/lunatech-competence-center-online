@@ -6,7 +6,7 @@ import com.google.api.client.json.jackson.JacksonFactory
 
 import scala.collection.JavaConverters._
 
-case class GoogleUser(userId: String, email: String, name: String, familyName: String, givenName: String)
+case class GoogleUser(userId: String, email: String, name: String, familyName: String, givenName: String, imageUrl: String)
 
 trait TokenVerifier {
   def verifyToken(idTokenString: String): Option[GoogleUser]
@@ -32,7 +32,8 @@ class GoogleTokenVerifier(clientId: String) extends TokenVerifier {
         payload.getEmail,
         payload.get("name").asInstanceOf[String],
         payload.get("family_name").asInstanceOf[String],
-        payload.get("given_name").asInstanceOf[String])
+        payload.get("given_name").asInstanceOf[String],
+        payload.get("imageUrl").asInstanceOf[String])
     }
   }
 }
@@ -44,5 +45,6 @@ class StaticTokenVerifier extends TokenVerifier {
       email = "developer@lunatech.com",
       name = "Lunatech Developer",
       givenName = "Developer",
-      familyName = "Lunatech"))
+      familyName = "Lunatech",
+      imageUrl = ""))
 }
