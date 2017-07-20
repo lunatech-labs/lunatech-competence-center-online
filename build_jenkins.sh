@@ -11,7 +11,7 @@ polymer build
 
 # BUILD BACKEND & DOCKER
 cd ../backend
-sbt buildFrontend docker:stage
+sbt clean buildFrontend docker:stage
 # END
 
 # ADD FRONTEND FILES TO DOCKER

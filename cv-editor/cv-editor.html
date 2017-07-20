@@ -112,7 +112,7 @@ CV Editor
    <iron-meta id="meta"></iron-meta>
 
    <iron-ajax id="ajaxSave"
-      url="http://localhost:8081/api/employees/me"
+      url="/api/employees/me"
       method="PUT"
       content-type="application/json"
       on-response="cvSaved"></iron-ajax>
@@ -474,7 +474,7 @@ CV Editor
 
 
    <iron-ajax id="ajaxDownloadPDF"
-      url="http://localhost:8081/api/cvs"
+      url="/api/cvs"
       handle-as="blob"
       method="POST"
       content-type="application/json"

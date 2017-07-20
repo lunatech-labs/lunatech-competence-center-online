@@ -5,10 +5,10 @@
 #mv frontend/build/default/* dockerdir/opt/docker/frontend
 #chmod 755 dockerdir/opt/docker/bin/*
 
-cd backend/target/docker/stage
-#mkdir -p opt/docker/frontend
-mkdir -p opt/docker/logs
+
+mv backend/target/docker/stage/* .
 chmod 755 opt/docker/bin/*
+mkdir -p opt/docker/logs
 
 rm -rf target
 git add .
