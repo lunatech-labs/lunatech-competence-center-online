@@ -47,9 +47,9 @@ lazy val root = (project in file(".")).
   enablePlugins(ScalaxbPlugin).
   settings(
     scalaxbDispatchVersion in (Compile, scalaxb) := "0.11.3",
-    scalaxbPackageName in (Compile, scalaxb)     := "xml"
-//    flywayUrl := "jdbc:postgresql:competence-center",
-//    flywayUser := "postgres"
+    scalaxbPackageName in (Compile, scalaxb)     := "xml",
+    flywayUrl := "jdbc:postgresql:competence-center",
+    flywayUser := "postgres"
   )
 
 coverageExcludedPackages := "scalaxb;xml;"
