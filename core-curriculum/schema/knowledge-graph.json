@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "id": "lunatech-core-curriculum-knowledge-graph-schema",
+  "properties": {
+    "description": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "image": {
+      "type": "string"
+    }
+    "name": {
+      "type": "string"
+    },
+    "tags": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "topics": {
+      "items": {
+        "properties": {
+          "abilities": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "assessment-questions": {
+            "items": {
+              "properties": {
+                "answer": {
+                  "type": "string"
+                },
+                "question": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "answer",
+                "question"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "dependencies": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "description": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "resources": {
+            "items": {
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "notes": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": ["video", "article", "book", "other"]
+                },
+                "url": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "url",
+                "type",
+                "name"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "description",
+          "id",
+          "name"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "description",
+    "id",
+    "topics",
+    "name"
+  ],
+  "type": "object"
+}
