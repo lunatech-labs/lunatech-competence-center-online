@@ -23,7 +23,8 @@
     "iron-ajax": "^1.4.3",
     "iron-meta": "^1.1.3",
     "vaadin-date-picker": "^1.2.3",
-    "paper-datatable": "^0.9.8"
+    "paper-datatable": "^0.9.8",
+    "paper-spinner": "^2.0.0"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
@@ -32,6 +33,7 @@
   "resolutions": {
     "paper-icon-button": "^1.0.0",
     "polymer": "^1.6.1",
-    "paper-styles": "^1.1.5"
+    "paper-styles": "^1.1.5",
+    "paper-spinner": "^1.0.0"
   }
 }

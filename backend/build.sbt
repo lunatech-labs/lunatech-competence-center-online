@@ -7,7 +7,7 @@ organization := "com.lunatech.cc"
 name := "cco-backend"
 
 lazy val catsVersion = "0.9.0"
-lazy val circeVersion = "0.7.0"
+lazy val circeVersion = "0.8.0"
 lazy val finchVersion = "0.14.0"
 lazy val googleHttpVersion = "1.22.0"
 lazy val logbackVersion       = "1.2.2"
@@ -19,6 +19,7 @@ libraryDependencies ++= Seq(
 
   "io.circe" %% "circe-generic" % circeVersion,
   "io.circe" %% "circe-parser" % circeVersion,
+  "io.circe" %% "circe-optics" % circeVersion,
 
   "org.typelevel" %% "cats" % catsVersion,
 
