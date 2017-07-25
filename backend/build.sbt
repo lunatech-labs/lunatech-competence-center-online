@@ -8,9 +8,9 @@ name := "cco-backend"
 
 lazy val catsVersion = "0.9.0"
 lazy val circeVersion = "0.8.0"
-lazy val finchVersion = "0.14.0"
+lazy val finchVersion = "0.15.1"
 lazy val googleHttpVersion = "1.22.0"
-lazy val logbackVersion       = "1.2.2"
+lazy val logbackVersion = "1.2.3"
 
 
 libraryDependencies ++= Seq(
@@ -27,7 +27,7 @@ libraryDependencies ++= Seq(
   "com.google.api-client" % "google-api-client" % googleHttpVersion,
 
   "org.tpolecat" %% "doobie-core-cats" % "0.4.1",
-  "org.postgresql" % "postgresql" % "42.0.0",
+  "org.postgresql" % "postgresql" % "42.1.3",
   "org.flywaydb" % "flyway-core" % "4.2.0",
 
   "org.apache.xmlgraphics" % "fop" % "2.2",
@@ -35,7 +35,7 @@ libraryDependencies ++= Seq(
   "org.apache.xmlgraphics" % "batik-i18n" % "1.9",
 
   "org.scala-lang.modules" %% "scala-xml" % "1.0.6",
-  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5",
+  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.6",
   "net.databinder.dispatch" %% "dispatch-core" % "0.13.1",
 
   "ch.qos.logback" % "logback-classic" % logbackVersion,
