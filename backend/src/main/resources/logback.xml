@@ -19,8 +19,10 @@
         <!--<file>logs/${API_NAME}-monitor.log</file>-->
         <file>logs/${API_NAME}-monitor.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${API_NAME}-monitor.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <fileNamePattern>logs/${API_NAME}-monitor.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
             <maxHistory>30</maxHistory>
+            <maxFileSize>5MB</maxFileSize>
+            <totalSizeCap>500MB</totalSizeCap>
         </rollingPolicy>
         <encoder>
             <pattern>%d{ISO8601} ${HOSTNAME} ${API_NAME} ${ENVIRONMENT} %msg%n</pattern>
