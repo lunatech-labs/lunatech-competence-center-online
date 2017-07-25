@@ -41,3 +41,11 @@ Open `http://localhost:8081`
  Documentation about Docker is available!
  
  
+ 
+ # Running database using docker image
+ - The following command will run the db and adminer docker images
+ `docker-compose -f db-stack.yml up` - [more options](https://docs.docker.com/compose/reference/up/)
+ - Postgres will listen to the port 5432 and adminer will listen to the port 8088
+ - Database username: `postgres` and password: `secret`
+ - rename the file [src/main/resources/environment-specific-template.conf](src/main/resources/environment-specific-template.conf) to `environment-specific.conf` for the local development
+ 

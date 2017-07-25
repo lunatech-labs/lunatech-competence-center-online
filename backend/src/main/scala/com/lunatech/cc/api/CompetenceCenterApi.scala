@@ -2,6 +2,7 @@ package com.lunatech.cc.api
 
 import com.lunatech.cc.api.services.{ ApiPeopleService, EventBriteWorkshopService }
 import com.lunatech.cc.formatter.PdfCVFormatter
+import com.lunatech.cc.utils.DBMigration
 import com.twitter.finagle.http.filter.Cors
 import com.twitter.finagle.http.{Request, Response}
 import com.twitter.finagle.{Http, Service}
@@ -28,17 +29,7 @@ object CompetenceCenterApi extends App {
     pass = config.getString("db.password")
   )
 
-
-  val flyway = {
-    val datasource = new org.postgresql.ds.PGSimpleDataSource
-    datasource.setUrl(config.getString("db.url"))
-    datasource.setUser(config.getString("db.user"))
-    datasource.setPassword(config.getString("db.password"))
-    val flyway = new Flyway()
-    flyway.setDataSource(datasource)
-    flyway
-  }
-  flyway.migrate()
+  new DBMigration(config).migrate()
 
   val port = config.getInt("server.port")
 
