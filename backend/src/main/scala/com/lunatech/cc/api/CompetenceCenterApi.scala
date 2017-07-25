@@ -29,7 +29,7 @@ object CompetenceCenterApi extends App {
     pass = config.getString("db.password")
   )
 
-  DBMigration.migrate()
+  new DBMigration(config).migrate()
 
   val port = config.getInt("server.port")
 

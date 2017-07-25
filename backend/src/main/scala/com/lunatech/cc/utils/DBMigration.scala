@@ -1,10 +1,9 @@
 package com.lunatech.cc.utils
 
-import com.typesafe.config.ConfigFactory
+import com.typesafe.config.{Config, ConfigFactory}
 import org.flywaydb.core.Flyway
 
-object DBMigration extends Flyway {
-  lazy val config = ConfigFactory.load()
+class DBMigration(config: Config) extends Flyway {
   setDataSource(config.getString("db.url"), config.getString("db.user"), config.getString("db.password"))
 }
 
