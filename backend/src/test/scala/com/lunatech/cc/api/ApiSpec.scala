@@ -86,11 +86,8 @@ class ApiSpec extends FlatSpec with Matchers {
   }
 
   it should "return Some(json) when putting json" in {
-    /*
-    val input = withToken(Input.put("/employees/me").withBody(employeeJson))
-    cvController.`PUT /employees/me`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
-    */
-    pending
+    val input = withToken(Input.put("/employees/me").withBody(cvJson))
+    cvController.`PUT /employees/me`(input).awaitValueUnsafe() shouldBe Some(cvJson)
   }
 
   it should "throw exception when putting invalid json" in {
