@@ -90,6 +90,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
             <a name="home" href="/">Home</a>
+            <a name="workshops" href="/workshops">Workshops</a>
             <a name="cvs/me" href="/cvs/me">Developer Passport</a>
             <a name="cvs" href="/cvs">CVS List</a>
           </iron-selector>
@@ -116,8 +117,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               attr-for-selected="name"
               fallback-selection="view404"
               role="main">
-            <page-home title="Home" name="home"></page-home>
-            <page-cvs title="CVS List" route=[[subroute]] name="cvs"></page-cvs>
+            <page-home name="home" title="Home"></page-home>
+            <page-workshops name="workshops" title="Workshops"></page-workshops>
+            <page-cvs name="cvs" title="CVS List" route=[[subroute]]></page-cvs>
             <page-view404 name="view404"></page-view404>
           </iron-pages>
         </app-header-layout>

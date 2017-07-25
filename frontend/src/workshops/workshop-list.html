@@ -1,0 +1,90 @@
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+
+<dom-module id="workshop-list">
+  <template>
+
+    <style>
+    div.main {
+    max-width: 1080px;
+    margin: 0 auto !important;
+    float: none !important;
+    text-align: center;
+    }
+
+    paper-card {
+      margin:20px;
+      max-width: 400px;
+    }
+
+    paper-button a {
+      text-decoration: none;
+    }
+
+    .workshop-description {
+      height: 70px;
+    }
+
+    .card-actions paper-button,
+    .card-actions paper-icon-button {
+      margin-left: 3px;
+      margin-right: 3px;
+    }
+
+    paper-spinner {
+      position: absolute;
+      height: 50px;
+      width: 50px;
+      top: 50%;
+      left: 50%;
+      margin-left: -50px;
+      margin-top: -50px;
+    }
+    </style>
+
+    <iron-meta id="meta"></iron-meta>
+    <iron-ajax
+      id="ajaxLoad"
+      url="/api/workshops"
+      loading="{{loading}}"
+      last-response="{{workshops}}"></iron-ajax>
+
+    <paper-spinner active=[[loading]]></paper-spinner>
+
+    <template is="dom-repeat" items="{{workshops}}">
+
+      <paper-card image="{{item.eventDetails.logoUrl}}">
+        <div class="card-content">
+          <h2>{{item.eventDetails.name}}</h2>
+          <div class="workshop-description">{{item.eventDetails.description}}</div>
+        </div>
+        <div class="card-actions">
+          <div class="horizontal justified">
+            <paper-icon-button icon="icons:event"></paper-icon-button>
+            <paper-button>{{item.eventDetails.date}}</paper-button>
+            <paper-button>{{item.eventDetails.startTime}}</paper-button> -
+            <paper-button>{{item.eventDetails.endTime}}</paper-button>
+            <paper-button>{{item.ticketDetails.availableTickets}}/{{item.ticketDetails.totalTickets}} tickets</paper-button>
+            <paper-button noink>
+              <a href="{{item.url}}">More info &amp; Register</a>
+            </paper-button>
+          </div>
+        </div>
+      </paper-card>
+    </template>
+  </template>
+</dom-module>
+<script>
+    Polymer({
+        is: "workshop-list",
+
+        ready: function() {
+          this.$.ajaxLoad.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
+          this.$.ajaxLoad.generateRequest();
+        },
+    });
+</script>
