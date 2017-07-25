@@ -1,6 +1,6 @@
 import com.typesafe.sbt.packager.docker._
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.12.2"
 
 organization := "com.lunatech.cc"
 
@@ -36,11 +36,11 @@ libraryDependencies ++= Seq(
 
   "org.scala-lang.modules" %% "scala-xml" % "1.0.6",
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5",
-  "net.databinder.dispatch" %% "dispatch-core" % "0.11.3",
+  "net.databinder.dispatch" %% "dispatch-core" % "0.13.1",
 
   "ch.qos.logback" % "logback-classic" % logbackVersion,
 
-  "org.scalatest" %% "scalatest" % "2.2.4" % "test",
+  "org.scalatest" %% "scalatest" % "3.0.3" % "test",
   "com.typesafe" % "config" % "1.3.1"
 )
 
