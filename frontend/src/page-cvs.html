@@ -31,10 +31,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <iron-location id="csvList"></iron-location>
 
 
-    <iron-ajax id="ajaxLoadMe"
-        url="/api/employees/me"
+    <iron-ajax id="ajaxLoadPassport"
+        url="/api/passport"
         handle-as="json"
-        on-response="cvLoaded"></iron-ajax>
+        on-response="passportLoaded"></iron-ajax>
 
     <iron-ajax id="ajaxLoad"
         url="/api/cvs"
@@ -142,9 +142,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return true;
         } else if (route.base.prefix === "/cvs" && route.base.path === "/me") {
           if(this.mycv){this.set('cv', this.mycv);}
-          else{
-            this.$.ajaxLoadMe.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
-            var dataRequest = this.$.ajaxLoadMe.generateRequest();
+        else {
+            this.$.ajaxLoadPassport.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
+            var dataRequest = this.$.ajaxLoadPassport.generateRequest();
             Promise.all([dataRequest.completes])
               .then(function(requests) { 
                 this.set('mycv' , requests[0].response);
@@ -180,7 +180,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.ajaxLoad.generateRequest();
       },
 
-      cvLoaded: function(data) {
+      passportLoaded: function(data) {
+        console.log(data);
         this.set('mycv', data.detail.response);
       },
 

@@ -5,7 +5,7 @@ info:
   title: "Competence Center API"
   description: Store data for awesome people
 # the domain of the service
-host: localhost:8081
+host: localhost:8080
 # will be prefixed to all paths
 basePath: /
 # array of all schemes that your API supports

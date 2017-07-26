@@ -1,17 +1,20 @@
 package com.lunatech.cc.api
 
-import java.io.ByteArrayInputStream
+import java.io.{ByteArrayInputStream, Serializable}
 
 import com.lunatech.cc.api.Data._
+import com.lunatech.cc.api.services.{CVService, PassportService}
 import com.lunatech.cc.formatter.{CVFormatter, DefaultTemplate, FormatResult, Template}
 import com.lunatech.cc.models._
 import com.twitter.io.Reader
-import io.circe.Json
+import io.circe.Decoder.Result
+import io.circe.{Decoder, DecodingFailure, Json}
 import io.circe.generic.auto._
 import io.circe.syntax._
 import io.finch.Error.NotPresent
 import io.finch.Input
 import org.scalatest.{Matchers, _}
+import cats.implicits._
 
 import scala.collection.mutable
 
@@ -19,91 +22,129 @@ class ApiSpec extends FlatSpec with Matchers {
 
   import PeopleServiceSpec._
 
-  private val tokenVerifier = new StaticTokenVerifier()
+  private implicit val tokenVerifier = new StaticTokenVerifier()
   private val cvService = new StaticCVService
+  private val passportService = new StaticPassportService
   private val cvFormatter = new StaticCVFormatter
-  private val cvController = new CVController(tokenVerifier, cvService, apiPeopleService, cvFormatter)
+  private val cvController = new CVController(cvService, apiPeopleService, cvFormatter)
+  private val passportController = new PassportController(passportService, apiPeopleService)
 
   private def withToken(input: Input) = input.withHeaders("X-ID-Token" -> "Token")
 
   "API" should "throw exception when token header is not present" in {
-    val input = Input.get("/employees/me")
+    val input = Input.get("/passport")
     val error = intercept[NotPresent] {
-      cvController.`GET /employees/me`(input).awaitValueUnsafe()
+      passportController.`GET /passport`(input).awaitValueUnsafe()
     }
     error.getMessage shouldBe "Required header 'X-ID-Token' not present in the request."
   }
 
   it should "throw exception when header is not valid" in {
     val noTokenVerifier = new NoneTokenVerifier
-    val cvController = new CVController(noTokenVerifier, cvService, apiPeopleService, cvFormatter)
-    val input = withToken(Input.get("/employees/me"))
+    val cvCtrl = new CVController(cvService, apiPeopleService, cvFormatter)(noTokenVerifier)
+    val pctrl = new PassportController(passportService, apiPeopleService)(noTokenVerifier)
+
+    val input = withToken(Input.get("/passport"))
     val error = intercept[RuntimeException] {
-      cvController.`GET /employees/me`(input).awaitValueUnsafe()
+      pctrl.`GET /passport`(input).awaitValueUnsafe()
     }
     error.getMessage shouldBe "Invalid token"
 
     val inputF = withToken(Input.post("/cvs").withBody(cvJson))
     val errorF = intercept[RuntimeException] {
-      cvController.`POST /cvs`(inputF).awaitValueUnsafe()
+      cvCtrl.`POST /cvs`(inputF).awaitValueUnsafe()
     }
     errorF.getMessage shouldBe "Invalid token"
   }
 
-  it should "throw exception when cv is not found for me" in {
-    /*
-    val input = withToken(Input.get("/employees/me"))
-    val error = intercept[RuntimeException] {
-      cvController.`GET /employees/me`(input).awaitValueUnsafe()
-    }
-    error.getMessage shouldBe "No CV found"
-    */
+
+  it should "throw exception when passport is not found for logged in user" in {
+
     pending
   }
 
-  it should "throw exception when employee is not found" in {
-    val input = withToken(Input.get("/employees/unknown@lunatech.com"))
-    val error = intercept[RuntimeException] {
-      cvController.`GET /employees/employeeId`(input).awaitValueUnsafe()
-    }
-    error.getMessage shouldBe "No CV found"
+  it should "return UnAuthorized when header is not valid" in {
+    val noTokenVerifier = new NoneTokenVerifier
+    val cvctrl = new CVController(cvService, apiPeopleService, cvFormatter)(noTokenVerifier)
+    val pctrl = new PassportController(passportService, apiPeopleService)(noTokenVerifier)
+
+    val input = withToken(Input.get("/passport"))
+    val output = pctrl.`GET /passport`(input).awaitOutputUnsafe()
+
+    assert(output.exists(_.status.code == 401))
+
+    val inputC = withToken(Input.post("/cvs").withBody(cvJson))
+    val errorC = cvctrl.`POST /cvs`(inputC).awaitOutputUnsafe()
+    assert(errorC.exists(_.status.code == 401))
+
   }
 
-  it should "return Some(employee) on get /employees/me" in {
-    val input = withToken(Input.get("/employees/me"))
-    cvService.insert("developer@lunatech.com", employeeJson.asJson)
-    cvController.`GET /employees/me`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
-  }
 
-  it should "return List(employee) on get /employees" in {
-    val input = withToken(Input.get("/employees"))
-    cvController.`GET /employees`(input).awaitValueUnsafe() shouldBe Some(List(employeeJson).asJson)
+  "PassportAPI" should "return Some(json) when putting json" in {
+    val input = withToken(Input.put("/passport").withBody(employeeJson))
+    passportController.`PUT /passport`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
   }
 
   it should "return Some(employee) when employee is found" in {
     val input = withToken(Input.get("/employees/developer@lunatech.com"))
-    cvController.`GET /employees/employeeId`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
+    passportController.`GET /employees/employeeId`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
   }
 
-  it should "return Some(json) when putting json" in {
-    val input = withToken(Input.put("/employees/me").withBody(cvJson))
-    cvController.`PUT /employees/me`(input).awaitValueUnsafe() shouldBe Some(cvJson)
+  it should "return Some(employee) on get /employees/me" in {
+    val input = withToken(Input.get("/passport"))
+    cvService.insert("developer@lunatech.com", employeeJson.asJson)
+    passportController.`GET /passport`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
+  }
+
+  it should "return List(employee) with all Lunatech developers on get /employees" in {
+    val input = withToken(Input.get("/employees"))
+    val value: Option[Json] = passportController.`GET /employees`(input).awaitValueUnsafe()
+
+    val l: Result[List[Employee]] = value.map(_.as[List[Employee]]).getOrElse(Right(List()))
+    l match {
+      case Left(a) => fail()
+      case Right(b) => assert(b.size > 30)
+    }
   }
 
   it should "throw exception when putting invalid json" in {
-    val input = withToken(Input.put("/employees/me").withBody("invalid".asJson))
+    val input = withToken(Input.put("/passport").withBody("invalid".asJson))
     val error = intercept[RuntimeException] {
-      cvController.`PUT /employees/me`(input).awaitValueUnsafe()
+      passportController.`PUT /passport`(input).awaitValueUnsafe()
     }
     error.getMessage should startWith("DecodingFailure")
   }
 
-  it should "throw exception when putting invalid json to cvs" in {
+  it should "throw exception when body is not present for /passport" in {
+    val input = withToken(Input.put("/passport"))
+    val error = intercept[NotPresent] {
+      passportController.`PUT /passport`(input).awaitValueUnsafe()
+    }
+    error.getMessage shouldBe "Required body not present in the request."
+  }
+
+
+  "CVAPI" should "throw exception when putting invalid json to cvs" in {
     val input = withToken(Input.post("/cvs").withBody("invalid".asJson))
     val error = intercept[RuntimeException] {
       cvController.`POST /cvs`(input).awaitValueUnsafe()
     }
     error.getMessage should startWith("DecodingFailure")
+  }
+
+  it should "return an empty cv when a cv is not found for me" in {
+    val input = withToken(Input.get("/employees/me"))
+    val error = passportController.`GET /passport`(input).awaitOutputUnsafe()
+    error.exists(_.status.code == 200) // .getMessage shouldBe "No CV found"
+  }
+
+  it should "throw exception when employee is not found" in {
+    val employeeId = "unknown@lunatech.com"
+    val input = withToken(Input.get(s"/employees/$employeeId"))
+    val error = intercept[RuntimeException] {
+      passportController.`GET /employees/employeeId`(input).awaitValueUnsafe()
+    }
+    error.getMessage shouldBe s"No data found for $employeeId"
   }
 
   it should "return bytes when putting json for cvs" in {
@@ -117,14 +158,6 @@ class ApiSpec extends FlatSpec with Matchers {
       cvController.`POST /cvs`(input).awaitValueUnsafe()
     }
     error.getMessage should startWith("error generating file")
-  }
-
-  it should "throw exception when body is not present for /employees/me" in {
-    val input = withToken(Input.put("/employees/me"))
-    val error = intercept[NotPresent] {
-      cvController.`PUT /employees/me`(input).awaitValueUnsafe()
-    }
-    error.getMessage shouldBe "Required body not present in the request."
   }
 
   it should "throw exception when body is not present for /cvs" in {
@@ -171,16 +204,35 @@ class NoneTokenVerifier extends TokenVerifier {
 }
 
 class StaticCVService extends CVService {
+
+  private val db: mutable.Map[String, List[Json]] = mutable.Map.empty[String, List[Json]]
+
+  override def findByPerson(user: GoogleUser): List[Json] = findById(user.email)
+
+  override def findById(email: String): List[Json] = db.getOrElse(email,List())
+
+  override def findAll: List[Json] = db.values.toList.flatten
+
+  override def insert(email: String, cv: Json): Int = {
+    val cvs: List[Json] = cv :: findById(email)
+    db += (email -> cvs)
+    1
+  }
+
+}
+
+class StaticPassportService extends PassportService {
+
   private val db: mutable.Map[String, Json] = mutable.Map.empty[String, Json]
+
+  override def findAll: List[Json] = db.values.toList
 
   override def findByPerson(user: GoogleUser): Option[Json] = findById(user.email)
 
   override def findById(email: String): Option[Json] = db.get(email)
 
-  override def findAll: List[Json] = db.values.toList
-
-  override def insert(email: String, cv: Json): Int = {
-    db += (email -> cv)
+  override def save(email: String, passport: Json): Int = {
+    db += (email -> passport)
     1
   }
 

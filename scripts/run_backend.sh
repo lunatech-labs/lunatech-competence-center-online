@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 set -e
+set -x
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR/..
-
-cd backend/target/docker/stage
-docker build -t learn .
-docker run -p 8080:8080 -ti learn
+cd backend
+sbt run
+#sbt ~re-start
