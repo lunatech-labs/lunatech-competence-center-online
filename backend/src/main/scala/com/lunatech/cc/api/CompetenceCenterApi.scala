@@ -35,7 +35,8 @@ object CompetenceCenterApi extends App {
 
   val cvService = new PostgresCVService(transactor)
   val workshopService = EventBriteWorkshopService(config)
-  val apiPeopleService = ApiPeopleService(config)
+  val peopleService = ApiPeopleService(config)
+
   val tokenVerifier = config.getString("application.mode") match {
     case "dev" => new StaticTokenVerifier()
     case "prod" => new GoogleTokenVerifier(config.getString("google.clientId"))
@@ -49,8 +50,9 @@ object CompetenceCenterApi extends App {
     allowsMethods = _ => Some(Seq("GET", "POST", "PUT")),
     allowsHeaders = x => Some(x))
 
-  val cvController = new CVController(tokenVerifier, cvService, apiPeopleService, cvFormatter)
+  val cvController = new CVController(tokenVerifier, cvService, peopleService, cvFormatter)
   val workshopController = new WorkshopController(tokenVerifier, workshopService)
+  val peopleController = new PeopleController(tokenVerifier, peopleService)
   val service = (
     cvController.`GET /employees` :+:
     cvController.`GET /employees/me` :+:
@@ -59,7 +61,8 @@ object CompetenceCenterApi extends App {
     cvController.`POST /cvs` :+:
     cvController.`GET /cvs` :+:
     cvController.`GET /cvs/employeeId` :+:
-    workshopController.`GET /workshops`
+    workshopController.`GET /workshops` :+:
+    peopleController.`GET /people/me`
   ).toServiceAs[Application.Json]
 
   val corsService: Service[Request, Response] = new Cors.HttpFilter(policy).andThen(service)

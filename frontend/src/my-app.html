@@ -72,8 +72,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
     </style>
-     <app-location route="{{route}}"></app-location>
+    <app-location route="{{route}}"></app-location>
     <iron-meta key="idToken" value="{{idToken}}"></iron-meta>
+
       <app-route
           route="{{route}}"
           pattern="/:page"
@@ -141,6 +142,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Object
         },
 
+        lunatechProfile: {
+          type: Object
+        },
+
         idToken: {
           type: String
         },
@@ -150,6 +155,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
       },
+
       ready: function() {
         console.log("on ready...");
       },

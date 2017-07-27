@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory._
 
 trait PeopleService {
   def findAll: Future[Seq[Person]]
-
   def findByRole(role: String): Future[Seq[Person]]
+  def findByEmail(email: String): Future[Option[Person]]
 }
 
 class ApiPeopleService(apiKey: String, client: Service[Request, Response]) extends PeopleService {
@@ -47,6 +47,28 @@ class ApiPeopleService(apiKey: String, client: Service[Request, Response]) exten
 
   override def findByRole(role: String): Future[Seq[Person]] = {
     findAll.map(_.filter(_.roles.contains(role)))
+  }
+
+  override def findByEmail(email: String): Future[Option[Person]] = {
+    val request = RequestBuilder()
+      .url(s"http://people.lunatech.com:80/people/${email}?apiKey=$apiKey")
+      .buildGet()
+
+    client(request)
+    .map {
+      case response: Response if response.status == Status.Ok =>
+        parse(response.getContentString()).toValidated.toValidatedNel andThen {
+          json: Json => json.as[Option[Person]].toValidated.toValidatedNel
+        } valueOr {
+          failures =>
+            val errormsg = s"Unexpected response from people api, Parsing failures: $failures, Response Status: ${response.statusCode}, Response: ${response.contentString}"
+            logger.error(errormsg)
+            throw new Exception(errormsg)
+        }
+      case response =>
+        logger.error(s"Request $request failed with header ${request.headerMap} and body ")
+        throw new Exception(s"Unexpected response from people api, Response Status: ${response.statusCode}, Response: ${response.contentString}")
+      }
   }
 }
 
