@@ -85,9 +85,7 @@ class CVController(tokenVerifier: TokenVerifier, cvService: CVService, peopleSer
     for {
       people <- peopleService.findByRole("developer")
       cvs <- Future.value(cvService.findAll.flatMap(_.as[CV].toValidated.toOption))
-      _ = cvs.foreach(println)
     } yield {
-
       people.map { person =>
         Json.obj(
           "person" -> person.asJson,
