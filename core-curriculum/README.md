@@ -28,4 +28,34 @@ Please consider the following, and add this to the PR comments:
 - Does it improve the explaination of the concept?
 - Should it remove an old resource?
 
+## Subjects
+The contributed subjects so far are:
 
+- Scala
+- SBT (or Scala Build Tool)
+
+### Subject tags
+Each *subject* can be annotated to describe it, if the subject is related to a particular programming language, environment or knowledge base.
+
+So far, the defined tags are:
+
+- scala: This subject is related to the Scala programming language (eg. SBT).
+- java: This subject is related to the Java programming language (eg. Maven).
+- frontend: This subject is related to frontend techonlogies (eg. Polymer).
+- backend: This subject is related to backend technologies (eg. SQL).
+- big-data: This subject is related to BigData (eg. Cassandra).
+- dev-ops: This subject is related to DevOps (eg. Jenkins).
+- tool: Use this tag when the subject is a tool (eg. SBT or Maven).
+
+
+### Topic tags
+Also, *topics* can be annotated, describing if such topic is required, or if it belongs to a certain specialisation.
+
+- required-for-junior: This topic should be known by a Junior Software Developer, whether she or he intends to specialize in Java or Scala.
+- required-for-medior: This topic should be known by a Medior Software Developer, whether she or he intends to specialize in Java or Scala.
+- required-for-senior: This topic should be known by a Senior Software Developer, whether she or he intends to specialize in Java or Scala.
+- required-for-scala-medior: This topic should be known by a Medior Scala Developer.
+- required-for-scala-senior: This topic should be known by a Senior Scala Developer.
+- required-for-java-medior: This topic should be known by a Medior Java Developer.
+- required-for-java-senior: This topic should be known by a Senior Java Developer.
+- fp: for Functional Programming.
