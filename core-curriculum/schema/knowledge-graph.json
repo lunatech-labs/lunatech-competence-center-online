@@ -33,7 +33,7 @@
           "assessment-questions": {
             "items": {
               "properties": {
-                "answer": {
+                "answer-hint": {
                   "type": "string"
                 },
                 "question": {
@@ -41,7 +41,6 @@
                 }
               },
               "required": [
-                "answer",
                 "question"
               ],
               "type": "object"
@@ -74,7 +73,7 @@
                 },
                 "type": {
                   "type": "string",
-                  "enum": ["video", "article", "book", "other"]
+                  "enum": ["video", "article", "book", "documentation", "other"]
                 },
                 "url": {
                   "type": "string"
