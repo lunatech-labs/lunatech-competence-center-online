@@ -63,9 +63,6 @@ Polymer({
       currentUser = googleAuth.currentUser.get();
       basicProfile = currentUser.getBasicProfile();
       imageUrl = basicProfile.getImageUrl();
-      console.log(currentUser);
-      console.log(basicProfile);
-      console.log(imageUrl);
 
       // TODO, do a domain check?
       domain = currentUser.getHostedDomain();
