@@ -41,7 +41,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         url="/api/employees/me"
         handle-as="json"
         last-response="{{passport}}"
-        headers='{ "X-ID-Token": [[idToken]] }'
         loading={{loading}}></iron-ajax>
 
     <template is="dom-if" if="{{passport}}">
