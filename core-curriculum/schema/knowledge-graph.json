@@ -11,7 +11,7 @@
     },
     "image": {
       "type": "string"
-    }
+    },
     "name": {
       "type": "string"
     },
