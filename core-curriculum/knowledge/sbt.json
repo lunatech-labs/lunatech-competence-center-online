@@ -1,0 +1,100 @@
+{
+	"id": "sbt",
+  "name": "SBT, interactive build tool",
+  "description": "The industry-standard build tool for Scala",
+  "tags": ["tool"],
+  "topics": [
+    {
+      "id": "basic-usage",
+      "name": "Basic usage of SBT",
+      "description": "Creating new SBT projects, and using the most common tasks for compiling, running and testing your code.",
+      "resources": [
+        {
+          "name": "SBT Documentation",
+          "type": "documentation",
+          "url": "http://www.scala-sbt.org/documentation.html",
+          "tags": ["official"]
+        }
+      ],
+      "abilities": [
+        "Create a new SBT project with a 'hello-world' scala program",
+        "Automatically recompile, run or execute tests when the code changes",
+        "Run only a single test",
+        "Use dependencies from Maven Central"
+      ],
+
+      "assessment-questions": [
+        { "question": "How do you execute a task on every code change?" },
+        { "question": "What's the normal directory structure; where do you put scala source code and tests?" },
+        { "question": "How do you set the scala version of the project?" },
+        { "question": "What's the difference in syntax between depending on a Scala and a Java library? Why is it different?", "answer-hint": "One '%' for Java, and two for Scala dependencies between group id and artifact id. The reason is that during publishing, the Scala binary version is added to the artifact id."},
+        { "question": "Can you use a library compiled for Scala 2.11 with Scala 2.12?" },
+        { "question": "What's the difference between `update` and `reload`? When do you use them?", "answer-hint": "`update` fetches the dependencies, `reload` reloads the sbt configuration. You need to use `reload` after you changed the sbt configuration. `update` is almost never needed, when you run or compile it's automatically executed."}
+      ]
+    },
+    {
+      "id": "plugins",
+      "name": "Using Plugins",
+      "description": "SBT has many plugins. Some important plugins to know are `scalafmt`, `sbt-updates` and `sbt-dependency-graph`, `sbt-buildinfo`.",
+      "dependencies": ["basic-usage"],
+      "resources": [],
+      "abilities": [
+        "Install a plugin in the project, or globally",
+        "Have your code automatically formatted on every compile",
+        "Check if all your dependencies are at the latest version",
+        "Figure out how your application depends on a particular dependency that ends up on the classpath",
+        "Use the BuildInfo plugin to add the application version to your compiled application"
+      ],
+
+      "assessment-questions": [
+        { "question": "How do you install a plugin for a single project?" },
+        { "question": "How do you install a plugin globally?" },
+        { "question": "Which kind of plugins would you install globally? Which ones locally?", "answer-hint": "Plugins that the project requires (like sbt-scalaxb for example) should be installed in the project. Plugins that are for you as a developer (like sbt-updates, sbt-ensime) are preferably installed globally." }
+      ]
+    },
+    {
+      "id": "publishing",
+      "name": "Publishing libraries",
+      "description": "Libraries can be published",
+      "resources": [],
+      "dependencies": ["using-plugins"],
+      "abilities": [
+        "Publish a library to Artifactory",
+        "Configure a project to be cross-published for multiple Scala-versions",
+        "Use the `sbt-release` plugin to structure deployment"
+      ],
+      "assessment-questions": [
+        { "question": "What is the proper order of bumping the version, publishing, tagging in Git and pushing to Git?", "answer-hint": "* Bump the version to the release version\n* Publish and tag in Git\n*Bump to the next development version\n*Push to Git" },
+        { "question": "What do you need to do if your code needs to be slightly different between multiple Scala versions?" },
+        { "question": "How do you publish a library for use from ScalaJS?" }
+      ]
+    },
+    {
+      "id": "creating-tasks",
+      "name": "Creating custom tasks",
+      "description": "Make your own tasks to automate stuff",
+      "resources": [],
+      "dependencies": ["basic-usage"],
+      "abilities": [
+        "Create a task that runs a shell command",
+        "Create a task that generates some source code which gets used by the main application sources, and which gets automatically triggered by `compile`"
+      ],
+      "assessment-questions": [
+        { "question": "What's the difference between a TaskKey and a SettingKey?", "answer-hint": "SettingKey is only evaluated once, TaskKey everytime the task runs" },
+        { "question": "How do you make a task that depends on the result of another task?", "answer-hint": "Using the other task name, and then `.value` (which is a macro that only works inside task definitions)"}
+      ]
+    },
+    {
+      "id": "creating-plugins",
+      "name": "Creating plugins",
+      "description": "How to create plugins",
+      "resources": [],
+      "dependencies": ["creating-tasks", "using-plugins", "publishing"],
+      "abilities": [
+        "Create an SBT plugin",
+        "Publish an SBT plugin on Artifactory",
+        "Make a plugin automatically insert new tasks into the project that it's added to"
+      ]
+    }
+  ]
+}
