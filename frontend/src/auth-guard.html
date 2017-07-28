@@ -42,6 +42,7 @@ Polymer({
     is: 'auth-guard',
     properties: {
 
+      // Authenticated means authenticated with Google Signin + lunatech profile fetched.
       authenticated: {
         type: Boolean,
         value: false,
@@ -100,6 +101,7 @@ Polymer({
       this.authenticated = false;
       this.basicProfile = null;
       this.idToken = null;
+      this.lunatechProfile = null;
     }
 
 });
