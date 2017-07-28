@@ -1,5 +1,5 @@
 {
-	"id": "scala",
+  "id": "scala",
   "name": "Scala programming language",
   "description": "The Scala programming language, invented by Martin Odersky.",
   "tags": ["programming-language"],
@@ -8,6 +8,7 @@
       "id": "expressions",
       "name": "Control flow opposed to expressions",
       "description": "Scala prefers expressions over statements, we should know the differences between both.",
+      "tags": ["required-for-junior", "fp"],
       "resources": [
         {
           "name": "Stackoverflow: What is the difference between Expressions and Statements in Scala",
@@ -21,6 +22,7 @@
       "id": "functions-as-values",
       "name": "Functions as values",
       "description": "Scala has functions as first class citizens, that means that can be pass around like any other type, with this will should be able to use/declare:\n - Functions.\n - Methods.\n -Local functions.\n -Partial application & Currying.\n -Closures.\n - By-Value and By-Name.",
+      "tags": ["required-for-junior", "fp"],
       "dependencies": ["expressions"],
       "resources": [
         {
@@ -35,6 +37,7 @@
       "id": "pattern-matching",
       "name": "Pattern matching",
       "description": "Pattern matching is a powerful method for checking a value against a pattern.",
+      "tags": ["required-for-junior", "fp"],
       "resources": [
         {
           "name": "ScalaDoc: Pattern matching",
@@ -54,6 +57,7 @@
       "id": "hof",
       "name": "High-order Functions",
       "description": "As mentioned in Hughes paper \"Why functional programming matters\", HOF give us the perfect tool for composing code.",
+      "tags": ["required-for-junior", "fp"],
       "dependencies": ["wikipedia"],
       "resources": [
         {
@@ -74,6 +78,7 @@
       "id": "object-oriented-i",
       "name": "Object Oriented I",
       "description": "Scala combines OO and FP seamlessly, we should know how to define:\n - Classes.\n - Class modifiers.\n - Visibility modifiers.\n - Composition and inheritance.\n - Traits.\n - Value classes.",
+      "tags": ["required-for-junior"],
       "resources": [
         {
           "name": "ScalaDoc: Styleguide",
@@ -87,6 +92,7 @@
       "id": "type-parameters",
       "name": "Type parameters",
       "description": "Type parameters allow us to define:\n - Generic functions.\n - Generic data structures.",
+      "tags": ["required-for-junior", "fp"],
       "resources": [
         {
           "name": "Type basics",
@@ -104,12 +110,13 @@
       "id": "implicit-parameters",
       "name": "Implicit parameters",
       "description": "Implicit parameters allow us to define a way of not explicitly passing parameters to a function. This is very useful when defining a context.\n\nIncludes context bounds and implicit conversions.",
+      "tags": ["required-for-junior"],
       "resources": [
         {
           "name": "ScalaDoc: Implicit parameters",
           "type": "article",
-         	"url": "http://docs.scala-lang.org/tutorials/tour/implicit-parameters.html",
-	        "tags": ["official"]
+           "url": "http://docs.scala-lang.org/tutorials/tour/implicit-parameters.html",
+          "tags": ["official"]
         },
         {
           "name": "ScalaSpec: Implicit parameters",
@@ -123,6 +130,7 @@
       "id": "adt",
       "name": "Algebraic data types",
       "description": "Or ADT, the provide a way to structure our classes in an algebraic way",
+      "tags": ["required-for-scala-medior", "fp"],
       "dependencies": ["object-oriented-i"],
       "resources": [
         {
@@ -147,12 +155,14 @@
       "id": "object-oriented-ii",
       "name": "Object oriented II",
       "description": "Scala allows for more advanced OO concepts such as:\n - Type parameters (similar to type parameters).\n - Existencial types.\n - Trait composition, Mixins.\n - Existencial types.\n - Static duck typing, or structural types.\n - Double dispatch.\n - Path dependent types.",
+      "tags": ["required-for-scala-medior"],
       "dependencies": ["object-oriented-i", "type-parameters"]
     },
     {
       "id": "type-constructors",
       "name": "Type constructors",
       "description": "A type constructor is a type that when combined with another type gives us a new type (eg. String → Option[String]).",
+      "tags": ["required-for-junior", "fp"],
       "dependencies": ["type-parameters"],
       "resources": [
         {
@@ -166,36 +176,42 @@
       "id": "error-handling",
       "name": "Error handling",
       "description": "Error and bugs are ubiquitous in software, Scala provides several ways to handle this:\n - try-catch.\n - Option.\n - Either.\n - Try",
+      "tags": ["required-for-junior"],
       "dependencies": ["hof", "pattern-matching"]
     },
     {
       "id": "concurrency",
       "name": "Concurrency",
       "description": "Backed by the JVM, Scala has support for concurrency, this means:\n - Synchronised methods.\n - Futures.",
+      "tags": ["required-for-scala-medior"],
       "dependencies": ["hof"]
     },
     {
       "id": "laziness",
       "name": "Laziness",
       "description": "Scala provides syntax level laziness, allowing us to delay evaluation.\n - Lazy modifier.\n - Thunk.",
+      "tags": ["required-for-scala-medior", "fp"],
       "dependencies": ["functions-as-values"]
     },
     {
       "id": "collections-i",
       "name": "Collections I",
       "description": "Collections allow us to define a container for a bunch of things. Different collection have different semantics and properties.\n\nHere we define the basic collections, like Seq, List, Set and Map.",
+      "tags": ["required-for-junior"],
       "dependencies": ["hof"]
     },
     {
       "id": "collections-ii",
       "name": "Collections II",
       "description": "Scala provides a nice façade for each collection, allowing you to don't worry about the actual implementation. But usually this is very important, we should know the underlying data structures and which are their trade offs.",
+      "tags": ["required-for-scala-medior"],
       "dependencies": ["collections-i", "type-constructors", "implicit-parameters"]
     },
     {
       "id": "collections-iii",
       "name": "Collections III",
       "description": "Collections are the bread and butter of developers, after knowing about actual implementations, you should know about Traversable, Iterator, Iterable, TraversableLike, CanBuildFrom, etc.",
+      "tags": ["required-for-scala-senior"],
       "dependencies": ["collections-ii"]
     },
     {
@@ -208,44 +224,50 @@
       "id": "variance",
       "name": "Variance",
       "description": "With type parameters and type constructors comes variance, which defines for a give type A that extends B, how is the relationship of C[A] and C[B], given a type constructor C.",
+      "tags": ["required-for-scala-senior"],
       "dependencies": ["type-parameters", "type-constructors", "collections-i"]
     },
     {
       "id": "extractors",
       "name": "Extractors",
       "description": "Extractors let us declare how our classes will be decomposed in pattern matching.",
+      "tags": ["required-for-scala-medior"],
       "dependencies": ["pattern-matching", "error-handling"]
     },
     {
       "id": "type-classes",
       "name": "Type classes",
       "description": "A type class is a type system construct that supports ad-hoc polymorphism.",
+      "tags": ["required-for-scala-medior", "fp"],
       "dependencies": ["implicit-parameters", "object-oriented-i", "type-parameters"]
     },
     {
       "id": "extension-methods",
       "name": "Extension methods",
       "description": "Extension methods (a.k.a. Type Enrichment or Pimp my library).",
+      "tags": ["required-for-scala-medior"],
       "dependencies": ["implicit-parameters"]
     },
     {
       "id": "functors",
       "name": "Functors",
+      "tags": ["fp"],
       "description": "Functors are things that can be mapped.",
       "dependencies": ["type-parameters", "type-constructors"]
     },
     {
       "id": "monads",
       "name": "Monads",
+      "tags": ["fp"],
       "description": "A Monad is a burrito.",
       "dependencies": ["functors", "expressions"]
     },
     {
       "id": "monad-transformers",
       "name": "Monad transformers",
+      "tags": ["fp"],
       "description": "A Monad transformer is like a regular monad, but the act in conjunction with another monad to make possible interop with a third one.",
       "dependencies": ["monads", "error-handling", "concurrency"]
     }
   ]
 }
-

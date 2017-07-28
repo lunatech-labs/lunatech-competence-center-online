@@ -1,13 +1,14 @@
 {
-	"id": "sbt",
+  "id": "sbt",
   "name": "SBT, interactive build tool",
   "description": "The industry-standard build tool for Scala",
-  "tags": ["tool"],
+  "tags": ["tool", "scala"],
   "topics": [
     {
       "id": "basic-usage",
       "name": "Basic usage of SBT",
       "description": "Creating new SBT projects, and using the most common tasks for compiling, running and testing your code.",
+      "tags": ["required-for-junior"],
       "resources": [
         {
           "name": "SBT Documentation",
@@ -36,6 +37,7 @@
       "id": "plugins",
       "name": "Using Plugins",
       "description": "SBT has many plugins. Some important plugins to know are `scalafmt`, `sbt-updates` and `sbt-dependency-graph`, `sbt-buildinfo`.",
+      "tags": ["required-for-junior"],
       "dependencies": ["basic-usage"],
       "resources": [],
       "abilities": [
@@ -56,6 +58,7 @@
       "id": "publishing",
       "name": "Publishing libraries",
       "description": "Libraries can be published",
+      "tags": ["required-for-scala-medior"],
       "resources": [],
       "dependencies": ["using-plugins"],
       "abilities": [
@@ -73,6 +76,7 @@
       "id": "creating-tasks",
       "name": "Creating custom tasks",
       "description": "Make your own tasks to automate stuff",
+      "tags": ["required-for-scala-medior"],
       "resources": [],
       "dependencies": ["basic-usage"],
       "abilities": [
@@ -94,6 +98,18 @@
         "Create an SBT plugin",
         "Publish an SBT plugin on Artifactory",
         "Make a plugin automatically insert new tasks into the project that it's added to"
+      ]
+    },
+    {
+      "id": "multi-module-builds",
+      "name": "Multi-module builds",
+      "description": "Making SBT projects with multiple modules",
+      "tags": ["required-for-scala-medior"],
+      "resources": [],
+      "dependencies": ["basic-usage"],
+      "abilities": [
+        "Create a project with multiple modules, where one modules depends on another module",
+        "Run tasks aggregated over all projects"
       ]
     }
   ]
