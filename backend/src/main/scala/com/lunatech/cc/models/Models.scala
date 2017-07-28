@@ -29,6 +29,23 @@ case class Employee(basics: BasicDetails,
                     projects: Seq[Project],
                     educations: Seq[Education])
 
+object Employee {
+  def apply(user:GoogleUser): Employee = {
+    val bd: BasicDetails = BasicDetails(user.givenName,user.familyName,"","",user.email,"","",Contact("","","","","","",""))
+    basicEmployee(bd)
+  }
+
+  def apply(person: Person): Employee = {
+    val bd: BasicDetails = BasicDetails(person.name.givenName,person.name.familyName,"","",person.email,"","",Contact("","","","","","",""))
+    basicEmployee(bd)
+  }
+
+  private def basicEmployee(bd: BasicDetails) = {
+    Employee(bd,Seq(),Seq(),Seq(),Seq())
+
+  }
+}
+
 case class Skill(category: String,
                  name: String,
                  level: Int)

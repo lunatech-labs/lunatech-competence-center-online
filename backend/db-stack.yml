@@ -8,6 +8,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: competence-center
+#      POSTGRES_INITDB_ARGS: dump.sql
+#    volumes:
+#      - /dump:/docker-entrypoint-initdb.d
 
   adminer:
     image: adminer

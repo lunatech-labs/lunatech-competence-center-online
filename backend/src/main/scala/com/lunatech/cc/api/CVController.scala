@@ -1,7 +1,9 @@
 package com.lunatech.cc.api
 
+import java.util.UUID
+
 import com.lunatech.cc.api.Routes._
-import com.lunatech.cc.api.services.{PeopleService, Person}
+import com.lunatech.cc.api.services.{CVService, PeopleService}
 import com.lunatech.cc.formatter.{CVFormatter, FormatResult}
 import com.lunatech.cc.models.{CV, Employee}
 import com.twitter.io.{Buf, Reader}
@@ -15,55 +17,13 @@ import cats.implicits._
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory._
 
-class CVController(tokenVerifier: TokenVerifier, cvService: CVService, peopleService: PeopleService, cvFormatter: CVFormatter) {
+class CVController(cvService: CVService, peopleService: PeopleService, cvFormatter: CVFormatter)(implicit val tokenVerifier: TokenVerifier ) {
 
   lazy val logger: Logger = getLogger(getClass)
 
-  val `GET /employees`: Endpoint[Json] = get(employees :: tokenHeader) { (token: String) =>
-    logger.debug(s"GET /employees with $token")
-    auth(token)(_ => Ok(cvService.findAll.asJson))
-  }
-
-  val `GET /employees/me`: Endpoint[Json] = get(employees :: me :: tokenHeader) { (token: String) =>
-    auth(token) { user =>
-      logger.debug(s"GET /employees/me for $user")
-      cvService.findByPerson(user) match {
-        case Some(json) => Ok(json)
-        case None => {
-          val json = CV(user).asJson
-          logger.debug(json.toString)
-          Ok(json)
-//          NotFound(new RuntimeException("No CV found"))
-        } //TODO: return empty CV filled with user data
-      }
-    }
-  }
-
-  val `GET /employees/employeeId`: Endpoint[Json] = get(employees :: string :: tokenHeader) { (employeeId: String, token: String) =>
-    auth(token) { user =>
-      logger.debug(s"GET /employees/$employeeId for $user")
-
-      cvService.findById(employeeId) match {
-        case Some(json) => Ok(json)
-        case None => NotFound(new RuntimeException("No CV found"))
-      }
-    }
-  }
-
-  val `PUT /employees/me`: Endpoint[Json] = put(employees :: me :: tokenHeader :: jsonBody[Json]) { (token: String, employee: Json) =>
-    auth(token) { user =>
-      employee.as[CV] match {
-        case Right(_) =>
-          logger.debug("received data")
-          cvService.insert(user.email, employee)
-          Ok(employee)
-        case Left(e) =>
-          logger.debug(s"incorrect data $employee")
-          BadRequest(new RuntimeException(e))
-      }
-    }
-  }
-
+  /**
+    * Generates a PDF and stores the CV as a new version.
+    */
   val `POST /cvs`: Endpoint[Buf] = post(cvs :: tokenHeader :: jsonBody[Json]) { (token: String, cv: Json) =>
     authF(token) { _ =>
       logger.debug(cv.toString)
@@ -72,7 +32,11 @@ class CVController(tokenVerifier: TokenVerifier, cvService: CVService, peopleSer
           cvFormatter.format(data) match {
             case Right(FormatResult(result, _)) =>
               Reader.readAll(result).map { content =>
-                Ok(content).withHeader("Content-type" -> "application/pdf").withHeader("ACCESS_CONTROL_ALLOW_ORIGIN" -> "*")
+                val result: Int = cvService.insert(data.employee.basics.email,cv)
+                //Return PDF
+                //TODO: Handle result of saving better
+                if(result > 0) Ok(content).withHeader("Content-type" -> "application/pdf").withHeader("ACCESS_CONTROL_ALLOW_ORIGIN" -> "*")
+                else InternalServerError(new RuntimeException("Couldn't save CV version"))
               }
             case Left(e) => Future(InternalServerError(e))
           }
@@ -81,44 +45,56 @@ class CVController(tokenVerifier: TokenVerifier, cvService: CVService, peopleSer
     }
   }
 
+  /**
+    * Returns a list of all CVs sorted by developer
+    */
   val `GET /cvs`: Endpoint[Json] = get(cvs :: tokenHeader).mapAsync { token =>
     for {
       people <- peopleService.findByRole("developer")
       cvs <- Future.value(cvService.findAll.flatMap(_.as[CV].toValidated.toOption))
-      _ = cvs.foreach(println)
     } yield {
-
       people.map { person =>
-        Json.obj(
-          "person" -> person.asJson,
-          "cv" -> cvs.find(_.employee.basics.email.toLowerCase == person.email.toLowerCase).getOrElse(CV(person)).asJson
-        )
+        cvs.find(_.employee.basics.email.toLowerCase == person.email.toLowerCase).getOrElse(CV(person)).asJson
       }.asJson
     }
   }
 
 
-  val `GET /cvs/employeeId`: Endpoint[Json] = get(cvs :: string :: tokenHeader) { (employeeId: String, token: String) =>
+  /**
+    * Returns list of CVs for this developer
+    */
+  val `GET /cvs/employeeId`: Endpoint[List[Json]] = get(cvs :: string :: tokenHeader) { (employeeId: String, token: String) =>
     auth(token) { user =>
       logger.debug(s"GET /cvs/$employeeId for $user")
+      val json = cvService.findById(employeeId)
 
-      cvService.findById(employeeId) match {
-        case Some(json) => Ok(json)
-        case None => NotFound(new RuntimeException("No CV found"))
-      }
+      Ok(json)
+    }
+  }
+
+  /**
+    * Returns list of CVs for this developer
+    */
+  val `GET /cvs/me`: Endpoint[List[Json]] = get(cvs :: me :: tokenHeader) { (token: String) =>
+    auth(token) { user =>
+      logger.debug(s"GET /cvs/me for $user")
+      val json = cvService.findById(user.email)
+
+      Ok(json)
+    }
+  }
+
+  /**
+    * Returns list of CVs for this developer
+    */
+  val `GET /cvs/uuid`: Endpoint[Option[Json]] = get(cvs :: uuid :: tokenHeader) { (uuid: UUID, token: String) =>
+    auth(token) { user =>
+      logger.debug(s"GET /cvs/${uuid.toString} for $user")
+      val json = cvService.findByUUID(uuid.toString)
+
+      Ok(json)
     }
   }
 
 
-  private def auth[A](token: String)(f: GoogleUser => Output[A]): Output[A] =
-    tokenVerifier.verifyToken(token) match {
-      case Some(user) => f(user)
-      case None => Unauthorized(new RuntimeException("Invalid token"))
-    }
-
-  private def authF[A](token: String)(f: GoogleUser => Future[Output[A]]): Future[Output[A]] =
-    tokenVerifier.verifyToken(token) match {
-      case Some(user) => f(user)
-      case None => Future(Unauthorized(new RuntimeException("Invalid token")))
-    }
 }
