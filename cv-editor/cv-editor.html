@@ -220,7 +220,7 @@ CV Editor
            </template>
          </div>
        </div>
-     </paper-card>      
+     </paper-card>
    </template>
 
    <!-- editable view -->
@@ -286,7 +286,7 @@ CV Editor
                  <paper-textarea label="Summary" value="{{item.summary}}" ></paper-textarea>
                </div>
                <div class="card-content">
-                 <paper-input label="Role" value="{{item.role}}"></paper-input> 
+                 <paper-input label="Role" value="{{item.role}}"></paper-input>
                  <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
                </div>
                <div class="card-actions">
@@ -316,7 +316,7 @@ CV Editor
 
                  <div class="card-actions">
                    <paper-icon-button icon="delete" title="Delete skill" on-click="removeSkill"></paper-icon-button>
-                 </div>                  
+                 </div>
                </paper-card>
              </template>
            </div class="card-group">
@@ -342,7 +342,7 @@ CV Editor
            <paper-button icon="add-circle" title="Add achievement" on-click="addAchievement"></paper-icon-button>
          </div>
        </div>
-     </paper-card>      
+     </paper-card>
 
    </template>
 
@@ -402,7 +402,7 @@ CV Editor
                  <paper-textarea label="Summary" value="{{item.summary}}" ></paper-textarea>
                </div>
                <div class="card-content">
-                 <paper-input label="Role" value="{{item.role}}"></paper-input> 
+                 <paper-input label="Role" value="{{item.role}}"></paper-input>
                  <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
                </div>
                <div class="card-actions">
@@ -432,7 +432,7 @@ CV Editor
 
                  <div class="card-actions">
                    <paper-icon-button icon="delete" title="Delete skill" on-click="removeSkill"></paper-icon-button>
-                 </div>                  
+                 </div>
                </paper-card>
              </template>
            </div class="card-group">
@@ -458,7 +458,7 @@ CV Editor
            <paper-button icon="add-circle" title="Add achievement" on-click="addAchievement"></paper-icon-button>
          </div>
        </div>
-     </paper-card>      
+     </paper-card>
    </template>
 
    <template is="dom-if" if="{{editable}}">
@@ -511,24 +511,22 @@ CV Editor
 
        isOverviewVisible: {
                type: Boolean,
-               value: true	
+               value: true
        },
 
        isGeneratingVisible: {
                type: Boolean,
-               value: false	
+               value: false
        },
 
        isEditableVisible: {
                type: Boolean,
-               value: false	
+               value: false
        }
      },
 
      attached: function() {
        this.$.ajaxSave.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
-       console.log(this.$.meta.byKey("idToke"));
-       console.log(this.data);
        if(this.data.employee.basics === undefined) {
          this.set('data.employee.basics', {});
        }
@@ -548,7 +546,7 @@ CV Editor
        this.isOverviewVisible=false;
        this.isGeneratingVisible=false;
      },
-     
+
      doOverview: function(e){
        this.isOverviewVisible=true;
        this.isEditableVisible=false;
@@ -568,7 +566,6 @@ CV Editor
 
      getPDF : function(e) {
        a = this.$.ajaxDownloadPDF;
-       console.log(this.$.meta.byKey("idToken"));
        a.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
        employeeData = this.data.employee;
        metaData = {"client" : "test", "creationDate" : "2017-05-05", "office" : "Rotterdam", "language" : "EN" };
@@ -594,7 +591,6 @@ CV Editor
      },
 
      removeSummary: function(e) {
-       console.log(this.data);
        this.data.employee.basics.profile='';
        this.$.summaryTextarea.update('');
      },
