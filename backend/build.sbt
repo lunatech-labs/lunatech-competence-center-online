@@ -41,6 +41,8 @@ libraryDependencies ++= Seq(
   "ch.qos.logback" % "logback-classic" % logbackVersion,
 
   "org.scalatest" %% "scalatest" % "3.0.3" % "test",
+  "org.scalatest" %% "scalatest" % "2.2.4" % "test",
+//  "org.tpolecat" % "doobie-contrib-scalatest-cats_2.12" % "0.4.1" % "test",
   "com.typesafe" % "config" % "1.3.1"
 )
 

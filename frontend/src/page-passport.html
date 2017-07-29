@@ -38,7 +38,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <paper-spinner active=[[loading]]></paper-spinner>
 
     <iron-ajax id="ajaxLoad"
-        url="/api/employees/me"
+        url="/api/passport/me"
         handle-as="json"
         last-response="{{passport}}"
         loading={{loading}}></iron-ajax>
