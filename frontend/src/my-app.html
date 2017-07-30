@@ -92,6 +92,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
             <a name="home" href="/">Home</a>
             <a name="workshops" href="/workshops">Workshops</a>
+            <a name="techmatrix" href="http://techmatrix.lunatech.com" target="_new">Tech Matrix</a>
             <a name="passport" href="/passport/me">Developer Passport</a>
             <a name="cvs" href="/cvs">CVs</a>
           </iron-selector>
@@ -156,7 +157,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
       },
-      
+
       observers: [
         '_routePageChanged(routeData.page)',
         '_basicProfileChanged(basicProfile)'
