@@ -66,7 +66,10 @@ class PassportController(passportService: PassportService, peopleService: People
     }
   }
 
-
+  val endpoints = `GET /employees` :+:
+    `GET /passport/me` :+:
+    `GET /passport/employeeId` :+:
+    `PUT /passport`
 
 
 }

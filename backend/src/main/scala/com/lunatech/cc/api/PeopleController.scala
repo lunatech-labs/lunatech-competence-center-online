@@ -29,4 +29,6 @@ class PeopleController(peopleService: PeopleService)(implicit val tokenVerifier:
     }
   }
 
+  val endpoints = `GET /people/me`
+
 }

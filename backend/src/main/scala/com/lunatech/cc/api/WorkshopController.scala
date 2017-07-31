@@ -31,4 +31,6 @@ class WorkshopController(workshopService: WorkshopService)(implicit val tokenVer
     }
   }
 
+  val endpoints = `GET /workshops`
+
 }

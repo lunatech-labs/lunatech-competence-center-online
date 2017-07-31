@@ -1,5 +1,6 @@
 package com.lunatech.cc.api
 
+import com.lunatech.cc.api.filters.AuthFilter
 import com.lunatech.cc.api.services.{ApiPeopleService, EventBriteWorkshopService, PostgresCVService, PostgresPassportService}
 import com.lunatech.cc.formatter.PdfCVFormatter
 import com.lunatech.cc.utils.DBMigration
@@ -68,17 +69,12 @@ object CompetenceCenterApi extends App {
   /**
     * API
     */
-  val service = (passportController.`GET /employees` :+:
-    passportController.`GET /passport/me` :+:
-    passportController.`GET /passport/employeeId` :+:
-    passportController.`PUT /passport` :+: cvController.`POST /cvs` :+:
-    cvController.`GET /cvs` :+:
-    cvController.`GET /cvs/employeeId` :+:
-    workshopController.`GET /workshops` :+:
-    peopleController.`GET /people/me`
+  val service = (passportController.endpoints :+: cvController.endpoints :+:
+    workshopController.endpoints :+:
+    peopleController.endpoints
   ).toServiceAs[Application.Json]
 
-  val corsService: Service[Request, Response] = new Cors.HttpFilter(policy).andThen(service)
+  val corsService: Service[Request, Response] = new Cors.HttpFilter(policy).andThen(AuthFilter).andThen(service)
 
   val server = Http.server.serve(s":$port", corsService)
   logger.info(s"Server running on port $port")

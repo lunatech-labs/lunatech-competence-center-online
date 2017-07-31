@@ -96,5 +96,9 @@ class CVController(cvService: CVService, peopleService: PeopleService, cvFormatt
     }
   }
 
+  val endpoints = `POST /cvs` :+:
+    `GET /cvs` :+:
+    `GET /cvs/employeeId`
+
 
 }
