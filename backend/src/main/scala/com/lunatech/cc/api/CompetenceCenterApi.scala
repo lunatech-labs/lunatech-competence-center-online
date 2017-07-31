@@ -1,6 +1,6 @@
 package com.lunatech.cc.api
 
-import com.lunatech.cc.api.services.{ ApiPeopleService, EventBriteWorkshopService }
+import com.lunatech.cc.api.services.{ApiPeopleService, EventBriteWorkshopService, PostgresCVService, PostgresPassportService}
 import com.lunatech.cc.formatter.PdfCVFormatter
 import com.lunatech.cc.utils.DBMigration
 import com.twitter.finagle.http.filter.Cors
@@ -18,30 +18,19 @@ import org.slf4j.LoggerFactory._
 
 object CompetenceCenterApi extends App {
 
+  /**
+    * Configs
+    */
   val config = ConfigFactory.load()
 
   lazy val logger: Logger = getLogger(getClass)
 
-  val transactor = DriverManagerTransactor[Task](
-    driver = config.getString("db.driver"),
-    url = config.getString("db.url"),
-    user = config.getString("db.user"),
-    pass = config.getString("db.password")
-  )
+  val transactor = transactorBuilder(config)
 
   new DBMigration(config).migrate()
 
   val port = config.getInt("server.port")
 
-  val cvService = new PostgresCVService(transactor)
-  val workshopService = EventBriteWorkshopService(config)
-  val peopleService = ApiPeopleService(config)
-
-  val tokenVerifier = config.getString("application.mode") match {
-    case "dev" => new StaticTokenVerifier()
-    case "prod" => new GoogleTokenVerifier(config.getString("google.clientId"))
-    case _ => throw new RuntimeException("no valid application mode found")
-  }
 
   val cvFormatter = new PdfCVFormatter()
 
@@ -50,15 +39,39 @@ object CompetenceCenterApi extends App {
     allowsMethods = _ => Some(Seq("GET", "POST", "PUT")),
     allowsHeaders = x => Some(x))
 
-  val cvController = new CVController(tokenVerifier, cvService, peopleService, cvFormatter)
-  val workshopController = new WorkshopController(tokenVerifier, workshopService)
-  val peopleController = new PeopleController(tokenVerifier, peopleService)
-  val service = (
-    cvController.`GET /employees` :+:
-    cvController.`GET /employees/me` :+:
-    cvController.`GET /employees/employeeId` :+:
-    cvController.`PUT /employees/me` :+:
-    cvController.`POST /cvs` :+:
+
+
+  /**
+    * Services
+    */
+  val cvService = new PostgresCVService(transactor)
+  val passportService = new PostgresPassportService(transactor)
+  val peopleService =  ApiPeopleService(config)
+  val workshopService = EventBriteWorkshopService(config)
+
+
+
+  /**
+    * Controllers
+    */
+  implicit val tokenVerifier: TokenVerifier = config.getString("application.mode") match {
+    case "dev" => new StaticTokenVerifier()
+    case "prod" => new GoogleTokenVerifier(config.getString("google.clientId"))
+    case _ => throw new RuntimeException("no valid application mode found")
+  }
+
+  val cvController = new CVController(cvService, peopleService, cvFormatter)
+  val passportController = new PassportController(passportService, peopleService)
+  val workshopController = new WorkshopController(workshopService)
+  val peopleController = new PeopleController(peopleService)
+
+  /**
+    * API
+    */
+  val service = (passportController.`GET /employees` :+:
+    passportController.`GET /passport/me` :+:
+    passportController.`GET /passport/employeeId` :+:
+    passportController.`PUT /passport` :+: cvController.`POST /cvs` :+:
     cvController.`GET /cvs` :+:
     cvController.`GET /cvs/employeeId` :+:
     workshopController.`GET /workshops` :+:

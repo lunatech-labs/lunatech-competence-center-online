@@ -16,7 +16,7 @@ import io.finch.circe._
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory._
 
-class PeopleController(tokenVerifier: TokenVerifier, peopleService: PeopleService) {
+class PeopleController(peopleService: PeopleService)(implicit val tokenVerifier: TokenVerifier ) {
 
   lazy val logger: Logger = getLogger(getClass)
 
@@ -29,17 +29,4 @@ class PeopleController(tokenVerifier: TokenVerifier, peopleService: PeopleServic
     }
   }
 
-  // FIXME, reuse of this shizzle between controllers
-  private def auth[A](token: String)(f: GoogleUser => Output[A]): Output[A] =
-    tokenVerifier.verifyToken(token) match {
-      case Some(user) => f(user)
-      case None => Unauthorized(new RuntimeException("Invalid token"))
-    }
-
-  // FIXME, reuse of this shizzle between controllers
-  private def authF[A](token: String)(f: GoogleUser => Future[Output[A]]): Future[Output[A]] =
-    tokenVerifier.verifyToken(token) match {
-      case Some(user) => f(user)
-      case None => Future(Unauthorized(new RuntimeException("Invalid token")))
-    }
 }
