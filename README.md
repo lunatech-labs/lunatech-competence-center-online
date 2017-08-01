@@ -1,3 +1,6 @@
+
+[![Build Status](http://jenkins.lunatech.com/job/competence-center-online-build/badge/icon)](http://jenkins.lunatech.com/job/competence-center-online-build/)
+
 # lunatech-competence-center-online
 CCO is the Competence Center Online for Lunatech employees.
 
