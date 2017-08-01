@@ -23,4 +23,8 @@ sbt clean buildFrontend docker:stage
 mkdir -p target/docker/stage/opt/docker/frontend
 cd ../frontend
 mv -f build/default/** ../backend/target/docker/stage/opt/docker/frontend/
+
+# VALIDATE CC SCHEMA
+cd ../core-curriculum
+sbt clean validateSchema
 # END
