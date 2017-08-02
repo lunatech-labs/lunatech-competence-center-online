@@ -13,9 +13,9 @@ Go to `target/docker/stage`
 
 Start docker on your machine. Then run: 
 `docker build -t cco . `
-`docker run -p 8081:8080 -ti cco`
+`docker run -p 8080:8080 -ti cco`
 
-Open `http://localhost:8081`
+Open `http://localhost:8080`
 
 
 
@@ -39,7 +39,6 @@ Open `http://localhost:8081`
  A file named Dockerfile is required, with "CMD " (this is the command that starts your application).
  The application must listen on port 8080.
  Documentation about Docker is available!
- 
  
  
  # Running database using docker image
