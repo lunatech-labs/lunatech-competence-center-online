@@ -15,6 +15,7 @@ import io.finch.Error.NotPresent
 import io.finch.Input
 import org.scalatest.{Matchers, _}
 import cats.implicits._
+import com.twitter.util.Try
 
 import scala.collection.mutable
 
@@ -36,6 +37,7 @@ class ApiSpec extends FlatSpec with Matchers {
     val error = intercept[NotPresent] {
       passportController.`GET /passport/me`(input).awaitValueUnsafe()
     }
+
     error.getMessage shouldBe "Required header 'X-ID-Token' not present in the request."
   }
 
