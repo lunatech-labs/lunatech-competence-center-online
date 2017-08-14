@@ -1,0 +1,46 @@
+{
+  "id": "http",
+  "name": "HTTP",
+  "description": "The Hypertext Transfer Protocol, the transport layer of web application.",
+  "tags": [],
+  "topics": [
+    {
+      "id": "http1-basics",
+      "name": "HTTP Basics",
+      "description": "HTTP is the language between browsers or other clients and web applications. Designing web applications involves thinking about the requests that a client will make, and debugging often starts at looking at HTTP requests and responses. Understanding the structure of an HTTP request and response is vital. Dexterity with a tool to create requests and inspect responses is important for every web developer.",
+      "tags": ["required-for-junior"],
+      "resources": [],
+      "abilities": [
+        "Send requests with an arbitrary verb, arbitrary headers and a JSON body to a server",
+        "Inspect the request and response that a web application makes in the browser",
+        "Do a GET-request without headers using telnet"
+      ],
+      "assessment-questions": [
+        { "question": "What are the four most common HTTP verbs?" },
+        { "question": "What are the three components of an HTTP request? Which ones are optional?", "answer-hint": "Request-Line, headers (optional), body (optional)" },
+        { "question": "What are the three components of an HTTP response? Which ones are optional?", "answer-hint": "Status-Line, headers (optional), body (optional)" },
+        { "question": "What are two common encodings of request bodies?", "answer-hint": "E.g. application/json, application/x-www-form-urlencoded (default for an HTML form) or multipart/form-data" }
+      ]
+    },
+
+    {
+      "id": "common-statuscodes",
+      "name": "Common Status Codes",
+      "description": "HTTP statuscodes are standardized and grouped. Knowing the most common status codes and the grouping helps interpret and design restful APIs",
+      "tags": ["required-for-junior"],
+      "dependencies": ["http1-basics"],
+      "resources": [{
+        "name": "HTTP/1.1: Status Code Definitions",
+        "type": "documentation",
+        "url": "https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html"}],
+      "abilities": [],
+      "assessment-questions": [
+        { "question": "What's a 200 response? 403? 500?" },
+        { "question": "What the class of 3xx respnses? And 4xx? 5xx?" },
+        { "question": "You are making an API andpoint where a resource can be created. What's a suitable response-code if the creation succeeded?", "answer-hint": "201 Created. But 200 is probably also acceptable." },
+        { "question": "You are making an API andpoint where a resource can be created. What's a suitable response-code if the creation failed because the client sent wrong JSON?", "answer-hint": "Client failure, so must be 4xx. Probably 400 Bad Request." },
+        { "question": "You are making an API andpoint where a resource can be retrieved. What's a suitable response-code if the retrieval failed because the database is down?", "answer-hint": "Server failure, so must be 5xx. Probably 500 Internal Server Error, but 502 Bad Gateway or 503 Service Unavailable are also acceptable." }
+      ]
+    }
+  ]
+}
