@@ -25,7 +25,7 @@ class ApiPeopleService(apiKey: String, client: Service[Request, Response]) exten
     //TODO check why getting 404 when full url is not specified
 
     val request = RequestBuilder()
-      .url(s"http://people.lunatech.com:80/people?apiKey=$apiKey")
+      .url(s"http://people.lunatech.com:80/api/people?apiKey=$apiKey")
       .buildGet()
 
     client(request)
@@ -51,7 +51,7 @@ class ApiPeopleService(apiKey: String, client: Service[Request, Response]) exten
 
   override def findByEmail(email: String): Future[Option[Person]] = {
     val request = RequestBuilder()
-      .url(s"http://people.lunatech.com:80/people/${email}?apiKey=$apiKey")
+      .url(s"http://people.lunatech.com:80/api/people/${email}?apiKey=$apiKey")
       .buildGet()
 
     client(request)
