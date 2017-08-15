@@ -12,7 +12,6 @@ lazy val finchVersion = "0.15.1"
 lazy val googleHttpVersion = "1.22.0"
 lazy val logbackVersion = "1.2.3"
 
-
 libraryDependencies ++= Seq(
   "com.github.finagle" %% "finch-core" % finchVersion,
   "com.github.finagle" %% "finch-circe" % finchVersion,
@@ -56,45 +55,41 @@ lazy val root = (project in file(".")).
 coverageExcludedPackages := "scalaxb;xml;"
 
 enablePlugins(JavaAppPackaging)
+enablePlugins(AshScriptPlugin)
 
 maintainer := "Erik Bakker <erik.bakker@lunatech.com>"
 packageSummary := "Competence Center Online"
 packageDescription := "Competence Center main application"
 
-dockerBaseImage := "openjdk:latest"
+dockerBaseImage := "openjdk:jre-alpine"
 dockerCommands := {
   val from :: remainder = dockerCommands.value
   from ::
-    Cmd("RUN", "apt-get update") ::
-    Cmd("RUN", "apt-get install -y nginx-light") ::
-    Cmd("RUN", "apt-get install -y supervisor") ::
+    Cmd("RUN", "apk update") ::
+    Cmd("RUN", "apk add nginx supervisor") ::
+    Cmd("RUN", "mkdir -p /run/nginx") :: // See https://github.com/gliderlabs/docker-alpine/issues/185
     Cmd("ADD", "nginx.conf", "/etc/nginx/nginx.conf") ::
-    Cmd("VOLUME", "/logs") ::
-    Cmd("EXPOSE", "9000") ::
     Cmd("ADD", "supervisord.conf", "/etc/supervisor/conf.d/supervisord.conf") ::
     remainder
 }
 daemonUser in Docker := "root"
-dockerEntrypoint := Seq("/usr/bin/supervisord")
+dockerEntrypoint := Seq("/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf")
 dockerExposedPorts := Seq(8080)
-
-
 
 mappings in Docker ++= Seq(
   baseDirectory.value / "nginx.conf" -> "nginx.conf",
   baseDirectory.value / "supervisord.conf" -> "supervisord.conf")
 
+mappings in Docker ++= {
+  val sourceDir = baseDirectory.value / ".." / "frontend" / "build" / "default"
+  ((sourceDir.*** --- sourceDir) pair relativeTo(sourceDir)).map { case (file, mapping) =>
+    file -> ("opt/docker/frontend/" + mapping)
+  }
+}
+
 val buildFrontend = TaskKey[File]("build-frontend", "Build the Polymer Frontend")
 
 buildFrontend := {
-
-  mappings in Docker ++= {
-    val sourceDir = baseDirectory.value / ".." / "frontend" / "build" / "default"
-    ((sourceDir.*** --- sourceDir) pair relativeTo(sourceDir)).map { case (file, mapping) =>
-      file -> ("opt/docker/frontend/" + mapping)
-    }
-  }
-
   val srcDir = baseDirectory.value / ".." / "frontend"
   val targetDir = srcDir / "build" / "default"
 
