@@ -7,7 +7,7 @@
     {
       "id": "http1-basics",
       "name": "HTTP Basics",
-      "description": "HTTP is the language between browsers or other clients and web applications. Designing web applications involves thinking about the requests that a client will make, and debugging often starts at looking at HTTP requests and responses. Understanding the structure of an HTTP request and response is vital. Dexterity with a tool to create requests and inspect responses is important for every web developer.",
+      "description": "HTTP is the protocol between browsers or other clients and web applications. Designing web applications involves thinking about the requests that a client will make, and debugging often starts at looking at HTTP requests and responses. Understanding the structure of an HTTP request and response is vital. Dexterity with a tool to create requests and inspect responses is important for every web developer.",
       "tags": ["required-for-junior"],
       "resources": [],
       "abilities": [
@@ -35,8 +35,12 @@
         "url": "https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html"}],
       "abilities": [],
       "assessment-questions": [
-        { "question": "What's a 200 response? 403? 500?" },
-        { "question": "What the class of 3xx respnses? And 4xx? 5xx?" },
+        { "question": "What's a 200 response?" },
+        { "question": "What's a 403 response?" },
+        { "question": "What's a 500 response?" },
+        { "question": "What does a 3xx series response code imply?" },
+        { "question": "What does a 4xx series response code imply?" },
+        { "question": "What does a 5xx series response code imply?" },
         { "question": "You are making an API andpoint where a resource can be created. What's a suitable response-code if the creation succeeded?", "answer-hint": "201 Created. But 200 is probably also acceptable." },
         { "question": "You are making an API andpoint where a resource can be created. What's a suitable response-code if the creation failed because the client sent wrong JSON?", "answer-hint": "Client failure, so must be 4xx. Probably 400 Bad Request." },
         { "question": "You are making an API andpoint where a resource can be retrieved. What's a suitable response-code if the retrieval failed because the database is down?", "answer-hint": "Server failure, so must be 5xx. Probably 500 Internal Server Error, but 502 Bad Gateway or 503 Service Unavailable are also acceptable." }
