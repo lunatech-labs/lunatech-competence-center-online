@@ -3,6 +3,7 @@
   "name": "SBT, interactive build tool",
   "description": "The industry-standard build tool for Scala",
   "tags": ["tool", "scala"],
+  "image": "/images/sbt.png",
   "topics": [
     {
       "id": "basic-usage",

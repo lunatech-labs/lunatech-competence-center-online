@@ -1,0 +1,95 @@
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
+<dom-module id="graph-list">
+    <template>
+        <style include="iron-flex iron-flex-alignment">
+        <style>
+         div.main {
+             max-width: 1080px;
+             margin: 0 auto !important;
+             float: none !important;
+             text-align: center;
+         }
+
+         paper-card {
+             --paper-card-header-image: {
+                 max-height: 250px;
+                 padding: 0 10% 10%;
+                 width: auto;
+             };
+             margin: 20px;
+             max-width: 400px;
+
+         }
+
+         paper-button a {
+             text-decoration: none;
+         }
+
+         .workshop-description {
+             height: 70px;
+         }
+
+         .card-actions paper-button,
+         .card-actions paper-icon-button {
+             margin-left: 3px;
+             margin-right: 3px;
+         }
+
+         paper-spinner {
+             position: absolute;
+             height: 50px;
+             width: 50px;
+             top: 50%;
+             left: 50%;
+             margin-left: -50px;
+             margin-top: -50px;
+         }
+        </style>
+
+        <iron-meta></iron-meta>
+        <iron-ajax
+            id="ajaxLoad"
+            url="/core-curriculum/summary.json"
+            loading="{{loading}}"
+            last-response="{{graphs}}"></iron-ajax>
+
+        <paper-spinner active=[[loading]]></paper-spinner>
+
+        <div class="layout horizontal wrap">
+        <template is="dom-repeat" items="{{graphs}}">
+
+            <paper-card image="{{item.image}}" class="layout vertical">
+                <div class="card-content flex">
+                    <h2>{{item.name}}</h2>
+                    <div class="subject-description">{{item.description}}</div>
+                </div>
+                <div class="card-actions layout horizontal center-justified">
+                    <div class="cent">
+                        <paper-button noink>
+                            <a href="{{item.url}}">Learn more</a>
+                        </paper-button>
+                    </div>
+                </div>
+            </paper-card>
+
+        </template>
+        </div>
+    </template>
+</dom-module>
+<script>
+ Polymer({
+     is: "graph-list",
+
+     ready: function() {
+         //this.$.ajaxLoad.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
+         this.$.ajaxLoad.generateRequest();
+     },
+ });
+</script>

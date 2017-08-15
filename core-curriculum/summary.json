@@ -1,0 +1,21 @@
+[
+  {
+    "id": "sbt",
+    "name": "SBT, interactive build tool",
+    "description": "The industry-standard build tool for Scala",
+    "tags": [
+      "tool",
+      "scala"
+    ],
+    "image": "/images/sbt.png"
+  },
+  {
+    "id": "scala",
+    "name": "Scala programming language",
+    "description": "The Scala programming language, invented by Martin Odersky.",
+    "tags": [
+      "programming-language"
+    ],
+    "image": "/images/scala.png"
+  }
+]

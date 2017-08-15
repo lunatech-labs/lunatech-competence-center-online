@@ -3,6 +3,7 @@
   "name": "Scala programming language",
   "description": "The Scala programming language, invented by Martin Odersky.",
   "tags": ["programming-language"],
+  "image": "/images/scala.png",
   "topics": [
     {
       "id": "expressions",
