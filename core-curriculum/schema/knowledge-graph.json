@@ -4,39 +4,62 @@
   "id": "lunatech-core-curriculum-knowledge-graph-schema",
   "properties": {
     "description": {
+      "description": "Provides a description of the subject, how does it fit in the Software Development environment, can be a summary or short introduction.",
+      "id": "/properties/description",
+      "maxLength": 500,
       "type": "string"
     },
     "id": {
+      "description": "A unique identifier for this subject, allowing to refer the subject by it.",
+      "id": "/properties/id",
       "type": "string"
     },
     "image": {
+      "description": "A URL pointing to an easily recognizable image about the subject.",
+      "id": "/properties/image",
       "type": "string"
     },
     "name": {
+      "description": "A simple, short name for the subject described.",
+      "id": "/properties/name",
       "type": "string"
     },
     "tags": {
+      "id": "/properties/tags",
       "items": {
+        "description": "A way of tagging or categorising the subject, suitable for grouping.",
+        "id": "/properties/tags/items",
         "type": "string"
       },
       "type": "array"
     },
     "topics": {
+      "id": "/properties/topics",
       "items": {
+        "id": "/properties/topics/items",
         "properties": {
           "abilities": {
+            "id": "/properties/topics/items/properties/abilities",
             "items": {
+              "description": "What should the student be able to do once he or she learns this topic.",
+              "id": "/properties/topics/items/properties/abilities/items",
               "type": "string"
             },
             "type": "array"
           },
           "assessment-questions": {
+            "id": "/properties/topics/items/properties/assessment-questions",
             "items": {
+              "id": "/properties/topics/items/properties/assessment-questions/items",
               "properties": {
                 "answer-hint": {
+                  "description": "Not a proper answer but some hint that might point the student in the right direction in case of doubt.",
+                  "id": "/properties/topics/items/properties/assessment-questions/items/properties/answer-hint",
                   "type": "string"
                 },
                 "question": {
+                  "description": "An assessment question targeted to test the knowledge of the student regarding the topic at hand.",
+                  "id": "/properties/topics/items/properties/assessment-questions/items/properties/question",
                   "type": "string"
                 }
               },
@@ -48,34 +71,62 @@
             "type": "array"
           },
           "dependencies": {
+            "id": "/properties/topics/items/properties/dependencies",
             "items": {
+              "description": "This denotes a dependency between this subject an another, which should be tackled first in order to understand this. Encoded as the topic's ID.",
+              "id": "/properties/topics/items/properties/dependencies/items",
               "type": "string"
             },
             "type": "array"
           },
           "description": {
+            "description": "A description of the topic, considering how does it relate to the subject at hand.",
+            "id": "/properties/topics/items/properties/description",
             "type": "string"
           },
           "id": {
+            "description": "An unique topic identifier (it might be repeated in a different subject.)",
+            "id": "/properties/topics/items/properties/id",
             "type": "string"
           },
           "name": {
+            "description": "Topic's short name.",
+            "id": "/properties/topics/items/properties/name",
             "type": "string"
           },
           "resources": {
+            "id": "/properties/topics/items/properties/resources",
             "items": {
+              "id": "/properties/topics/items/properties/resources/items",
               "properties": {
                 "name": {
+                  "description": "The resource's name, for example the book's  or article's name.",
+                  "id": "/properties/topics/items/properties/resources/items/properties/name",
                   "type": "string"
                 },
                 "notes": {
+                  "description": "Some notes further clarifying the resource (for example, pointing to specific book section).",
+                  "id": "/properties/topics/items/properties/resources/items/properties/notes",
                   "type": "string"
                 },
+                "tags": {
+                  "id": "/properties/topics/items/properties/resources/items/properties/tags",
+                  "items": {
+                    "description": "A list of tag for categorising the resource.",
+                    "id": "/properties/topics/items/properties/resources/items/properties/tags/items",
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
                 "type": {
+                  "description": "The resource's type",
+                  "id": "/properties/topics/items/properties/resources/items/properties/type",
                   "type": "string",
                   "enum": ["video", "article", "book", "documentation", "other"]
                 },
                 "url": {
+                  "description": "A URL pointing to the resource (either to a book's home-page, youtube video, article page, etc.)",
+                  "id": "/properties/topics/items/properties/resources/items/properties/url",
                   "type": "string"
                 }
               },
@@ -90,6 +141,8 @@
           },
           "tags": {
             "items": {
+              "description": "A list of tag for categorising the topic.",
+              "id": "/properties/topics/items/properties/tags/items",
               "type": "string"
             },
             "type": "array"
