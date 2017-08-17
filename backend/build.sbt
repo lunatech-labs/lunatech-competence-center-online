@@ -93,9 +93,9 @@ buildFrontend := {
   val srcDir = baseDirectory.value / ".." / "frontend"
   val targetDir = srcDir / "build" / "default"
 
-  println(s"Running 'bower install' in directory $targetDir")
-  val bowerOut = Process("bower install", Some(srcDir)).!
-  if(bowerOut != 0) sys.exit(bowerOut)
+  println(s"Running 'npm install' in directory $targetDir")
+  val npmOut = Process("npm install", Some(srcDir)).!
+  if(npmOut != 0) sys.exit(npmOut)
 
   println(s"Running 'polymer build' in directory $srcDir")
   val polymerOut = Process("polymer build", Some(srcDir)).!
@@ -105,8 +105,8 @@ buildFrontend := {
   // There seems to be a bug in Polymer-cli preventing all dependencies to be properly copied to
   // the build directory. We were missing the google-signin buttons.
   println(s"Running 'bower install' in directory $targetDir")
-  val bower2Out = Process("bower install", Some(targetDir)).!
-  if(bower2Out != 0) sys.exit(bower2Out)
+  val bowerOut = Process("bower install", Some(targetDir)).!
+  if(bowerOut != 0) sys.exit(bowerOut)
 
   targetDir
 }
