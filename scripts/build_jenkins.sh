@@ -7,11 +7,12 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR/..
 
 # VALIDATE CC SCHEMA
-cd ../core-curriculum
+cd core-curriculum
 sbt clean validateSchema
+cd ..
 # END
 
 # BUILD BACKEND & DOCKER
-cd ../backend
+cd backend
 sbt clean buildFrontend docker:stage
 # END
