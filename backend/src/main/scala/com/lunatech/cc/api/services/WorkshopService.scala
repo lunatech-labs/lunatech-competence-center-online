@@ -4,7 +4,6 @@ import cats._
 import com.twitter.util.Future
 import com.twitter.finagle.http.{ Request, RequestBuilder, Response }
 import com.twitter.finagle.{ Http, Service }
-import com.typesafe.config.Config
 import com.twitter.util.Duration
 import io.circe._
 import io.circe.parser._
@@ -21,6 +20,7 @@ trait WorkshopService {
 }
 
 object WorkshopService {
+  final case class Config(name: String, token: String)
 
   final case class Workshop(
       eventDetails: EventDetails,
@@ -45,13 +45,13 @@ object WorkshopService {
 
 object EventBriteWorkshopService {
 
-  def apply(config: Config): EventBriteWorkshopService = {
-    val eventBriteToken = config.getString("services.workshops.token")
+  def apply(config: WorkshopService.Config): EventBriteWorkshopService = {
+    val eventBriteToken = config.token
 
     val client = Http.client
       .withRequestTimeout(Duration.fromSeconds(15))
       .withTls("www.eventbriteapi.com") // Fix config
-      .newService(config.getString("services.workshops.name"), "workshops-service")
+      .newService(config.name, "workshops-service")
 
     new EventBriteWorkshopService(eventBriteToken, client)
 
