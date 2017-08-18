@@ -22,6 +22,8 @@ libraryDependencies ++= Seq(
 
   "org.typelevel" %% "cats" % catsVersion,
 
+  "com.github.pureconfig" %% "pureconfig" % "0.7.0",
+
   "com.google.http-client" % "google-http-client-jackson" % googleHttpVersion,
   "com.google.api-client" % "google-api-client" % googleHttpVersion,
 

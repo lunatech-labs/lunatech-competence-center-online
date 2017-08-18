@@ -17,6 +17,10 @@ trait PeopleService {
   def findByEmail(email: String): Future[Option[Person]]
 }
 
+object PeopleService {
+  case class Config(name: String, apiKey: String)
+}
+
 class ApiPeopleService(apiKey: String, client: Service[Request, Response]) extends PeopleService {
 
   lazy val logger: Logger = getLogger(getClass)
@@ -73,12 +77,12 @@ class ApiPeopleService(apiKey: String, client: Service[Request, Response]) exten
 }
 
 object ApiPeopleService {
-  def apply(config: Config): ApiPeopleService = {
+  def apply(config: PeopleService.Config): ApiPeopleService = {
     val client = Http.client
       .withRequestTimeout(Duration.fromSeconds(15))
-      .newService(config.getString("services.people.name"), "people-api")
+      .newService(config.name, "people-api")
 
-    new ApiPeopleService(config.getString("services.people.apiKey"), client)
+    new ApiPeopleService(config.apiKey, client)
   }
 }
 

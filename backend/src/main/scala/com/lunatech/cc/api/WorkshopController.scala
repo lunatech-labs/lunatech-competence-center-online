@@ -16,32 +16,14 @@ import io.finch.circe._
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory._
 
-class WorkshopController(tokenVerifier: TokenVerifier, workshopService: WorkshopService) {
+class WorkshopController(workshopService: WorkshopService, authenticated: Endpoint[ApiUser]) {
 
   lazy val logger: Logger = getLogger(getClass)
 
-  val `GET /workshops`: Endpoint[Json] = get("workshops" :: tokenHeader) { (token: String) =>
-    logger.debug(s"GET /workshops with $token")
-    authF(token) { _ =>
-
-      for {
-        workshops <- workshopService.listWorkshops
-      } yield Ok(workshops.asJson)
-
-    }
+  val `GET /workshops`: Endpoint[Json] = get("workshops" :: authenticated) { (_: ApiUser) =>
+    for {
+      workshops <- workshopService.listWorkshops
+    } yield Ok(workshops.asJson)
   }
 
-  // FIXME, reuse of this shizzle between controllers
-  private def auth[A](token: String)(f: GoogleUser => Output[A]): Output[A] =
-    tokenVerifier.verifyToken(token) match {
-      case Some(user) => f(user)
-      case None => Unauthorized(new RuntimeException("Invalid token"))
-    }
-
-  // FIXME, reuse of this shizzle between controllers
-  private def authF[A](token: String)(f: GoogleUser => Future[Output[A]]): Future[Output[A]] =
-    tokenVerifier.verifyToken(token) match {
-      case Some(user) => f(user)
-      case None => Future(Unauthorized(new RuntimeException("Invalid token")))
-    }
 }
