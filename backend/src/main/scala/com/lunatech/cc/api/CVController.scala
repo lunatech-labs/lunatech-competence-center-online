@@ -1,7 +1,7 @@
 package com.lunatech.cc.api
 
 import com.lunatech.cc.api.Routes._
-import com.lunatech.cc.api.services.{PeopleService, Person}
+import com.lunatech.cc.api.services.{CVService, PeopleService, Person}
 import com.lunatech.cc.formatter.{CVFormatter, FormatResult}
 import com.lunatech.cc.models.{CV, Employee}
 import com.twitter.io.{Buf, Reader}
@@ -15,6 +15,7 @@ import io.finch.circe._
 import cats.implicits._
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory._
+
 import scalaz._
 
 class CVController(cvService: CVService, peopleService: PeopleService, cvFormatter: CVFormatter, authenticated: Endpoint[ApiUser], authenticatedUser: Endpoint[GoogleUser]) {

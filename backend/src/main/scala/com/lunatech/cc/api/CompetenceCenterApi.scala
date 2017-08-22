@@ -1,6 +1,6 @@
 package com.lunatech.cc.api
 
-import com.lunatech.cc.api.services.{ PeopleService, ApiPeopleService, WorkshopService, EventBriteWorkshopService }
+import com.lunatech.cc.api.services._
 import com.lunatech.cc.formatter.PdfCVFormatter
 import com.lunatech.cc.utils.DBMigration
 import com.twitter.finagle.http.filter.Cors
@@ -15,7 +15,7 @@ import io.finch.circe._
 import org.flywaydb.core.Flyway
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory._
-import pureconfig._
+
 import scalaz._
 
 object CompetenceCenterApi extends App {

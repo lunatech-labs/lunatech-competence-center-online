@@ -1,8 +1,9 @@
-package com.lunatech.cc.api
+package com.lunatech.cc.api.services
 
 import java.util.UUID
 
 import cats.implicits._
+import com.lunatech.cc.api.GoogleUser
 import doobie.imports.{Meta, _}
 import fs2.Task
 import io.circe.Json

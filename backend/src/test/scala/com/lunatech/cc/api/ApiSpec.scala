@@ -3,6 +3,7 @@ package com.lunatech.cc.api
 import java.io.ByteArrayInputStream
 
 import com.lunatech.cc.api.Data._
+import com.lunatech.cc.api.services.CVService
 import com.lunatech.cc.formatter.{CVFormatter, DefaultTemplate, FormatResult, Template}
 import com.lunatech.cc.models._
 import com.twitter.io.Reader
