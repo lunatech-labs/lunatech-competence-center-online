@@ -74,7 +74,7 @@ class ApiSpec extends FlatSpec with Matchers {
     val error = intercept[RuntimeException] {
       cvController.`GET /employees/me`(input).awaitValueUnsafe()
     }
-    error.getMessage shouldBe "Required header 'X-ID-Token' not present in the request."
+    error.getMessage shouldBe "API Key or ID-Token required"
   }
 
   it should "throw exception when header is not valid" in {
