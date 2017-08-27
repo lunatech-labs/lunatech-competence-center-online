@@ -71,7 +71,7 @@ class ApiSpec extends FlatSpec with Matchers {
 
   "API" should "throw exception when token header is not present" in {
     val input = Input.get("/employees/me")
-    val error = intercept[NotPresent] {
+    val error = intercept[RuntimeException] {
       cvController.`GET /employees/me`(input).awaitValueUnsafe()
     }
     error.getMessage shouldBe "Required header 'X-ID-Token' not present in the request."
@@ -85,13 +85,13 @@ class ApiSpec extends FlatSpec with Matchers {
     val error = intercept[RuntimeException] {
       cvController.`GET /employees/me`(input).awaitValueUnsafe()
     }
-    error.getMessage shouldBe "Invalid token"
+    error.getMessage shouldBe "Invalid ID-Token"
 
     val inputF = withToken(Input.post("/cvs").withBody(cvJson))
     val errorF = intercept[RuntimeException] {
       cvController.`POST /cvs`(inputF).awaitValueUnsafe()
     }
-    errorF.getMessage shouldBe "Invalid token"
+    errorF.getMessage shouldBe "Invalid ID-Token"
   }
 
   it should "throw exception when cv is not found for me" in {
