@@ -2,30 +2,72 @@ package com.lunatech.cc.api
 
 import java.io.ByteArrayInputStream
 
+import com.lunatech.cc.api.CompetenceCenterApi.{Config}
 import com.lunatech.cc.api.Data._
-import com.lunatech.cc.api.services.CVService
+import com.lunatech.cc.api.services.{ApiPeopleService, CVService, PassportService}
 import com.lunatech.cc.formatter.{CVFormatter, DefaultTemplate, FormatResult, Template}
 import com.lunatech.cc.models._
+import com.twitter.finagle.http.Status
 import com.twitter.io.Reader
 import io.circe.Json
 import io.circe.generic.auto._
 import io.circe.syntax._
 import io.finch.Error.NotPresent
-import io.finch.Input
+import io.finch.{Endpoint, Input, Output}
 import org.scalatest.{Matchers, _}
+import pureconfig._
 
 import scala.collection.mutable
+import scalaz.{-\/, \/-}
 
 class ApiSpec extends FlatSpec with Matchers {
 
   import PeopleServiceSpec._
 
   private val tokenVerifier = new StaticTokenVerifier()
-  private val cvService = new StaticCVService
-  private val cvFormatter = new StaticCVFormatter
-  private val cvController = new CVController(tokenVerifier, cvService, apiPeopleService, cvFormatter)
+  private val noTokenVerifier = new NoneTokenVerifier
 
+
+  val config = loadConfig[Config].fold(
+    errors => sys.error(errors.toString),
+    identity)
+
+  private val authenticated = authenticatedBuilder(config.auth, tokenVerifier)
+  private val unauthenticated: Endpoint[ApiUser] = authenticatedBuilder(config.auth, noTokenVerifier)
+
+  private def authenticateUser(user: Endpoint[ApiUser]): Endpoint[GoogleUser] = user.mapOutput {
+    case -\/(_) => Output.failure(new RuntimeException("This endpoint only accepts an ID-Token"), Status.Unauthorized)
+    case \/-(googleUser) => Output.payload(googleUser)
+  }
+  val authenticatedUser = authenticateUser(authenticated)
+  val unAuthenticatedUser = authenticateUser(unauthenticated)
+
+  private val cvService = new StaticCVService
+  val peopleService = ApiPeopleService(config.services.people)
+
+  private val passportService: PassportService = new StaticPassportService()
+  private val cvFormatter = new StaticCVFormatter
+  private val cvController = new CVController(cvService, peopleService, cvFormatter,authenticated, authenticatedUser)
+  private val passportController = new PassportController(passportService,peopleService, authenticatedUser)
   private def withToken(input: Input) = input.withHeaders("X-ID-Token" -> "Token")
+
+    "PassportAPI" should "return Some(json) when putting json" in {
+    val input = withToken(Input.put("/passport").withBody(employeeJson))
+    passportController.`PUT /passport`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
+  }
+
+  it should "return Some(employee) when employee is found" in {
+    val input = withToken(Input.get("/passport/developer@lunatech.com"))
+    passportController.`GET /passport/employeeId`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
+  }
+
+  it should "return None when employee is NOT found" in {
+    val input = withToken(Input.get("/passport/staff@lunatech.com"))
+    val error = intercept[RuntimeException] {
+      passportController.`GET /passport/employeeId`(input).awaitValueUnsafe() shouldBe None
+    }
+    error.getMessage should startWith("No data found for staff@lunatech.com")
+  }
 
   "API" should "throw exception when token header is not present" in {
     val input = Input.get("/employees/me")
@@ -36,8 +78,9 @@ class ApiSpec extends FlatSpec with Matchers {
   }
 
   it should "throw exception when header is not valid" in {
-    val noTokenVerifier = new NoneTokenVerifier
-    val cvController = new CVController(noTokenVerifier, cvService, apiPeopleService, cvFormatter)
+
+    val cvController = new CVController(cvService, peopleService, cvFormatter,unauthenticated, unAuthenticatedUser)
+
     val input = withToken(Input.get("/employees/me"))
     val error = intercept[RuntimeException] {
       cvController.`GET /employees/me`(input).awaitValueUnsafe()
@@ -181,6 +224,22 @@ class StaticCVService extends CVService {
   override def findAll: List[Json] = db.values.toList
 
   override def insert(email: String, cv: Json): Int = {
+    db += (email -> cv)
+    1
+  }
+
+}
+
+class StaticPassportService extends PassportService {
+  private val db: mutable.Map[String, Json] = mutable.Map.empty[String, Json]
+
+  override def findByPerson(user: GoogleUser): Option[Json] = findById(user.email)
+
+  override def findById(email: String): Option[Json] = db.get(email)
+
+  override def findAll: List[Json] = db.values.toList
+
+  override def save(email: String, cv: Json): Int = {
     db += (email -> cv)
     1
   }

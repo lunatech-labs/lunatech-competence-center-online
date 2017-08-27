@@ -15,7 +15,7 @@ import io.finch.circe._
 import org.flywaydb.core.Flyway
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory._
-
+import pureconfig._
 import scalaz._
 
 object CompetenceCenterApi extends App {

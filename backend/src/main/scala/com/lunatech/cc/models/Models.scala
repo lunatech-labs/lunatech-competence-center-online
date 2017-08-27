@@ -42,7 +42,6 @@ object Employee {
 
   private def basicEmployee(bd: BasicDetails) = {
     Employee(bd,Seq(),Seq(),Seq(),Seq())
-
   }
 }
 
