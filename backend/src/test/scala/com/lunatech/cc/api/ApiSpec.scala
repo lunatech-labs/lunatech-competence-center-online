@@ -51,7 +51,7 @@ class ApiSpec extends FlatSpec with Matchers {
   private val passportController = new PassportController(passportService,peopleService, authenticatedUser)
   private def withToken(input: Input) = input.withHeaders("X-ID-Token" -> "Token")
 
-    "PassportAPI" should "return Some(json) when putting json" in {
+  "PassportAPI" should "return Some(json) when putting json" in {
     val input = withToken(Input.put("/passport").withBody(employeeJson))
     passportController.`PUT /passport`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
   }
@@ -68,6 +68,44 @@ class ApiSpec extends FlatSpec with Matchers {
     }
     error.getMessage should startWith("No data found for staff@lunatech.com")
   }
+
+  it should "throw exception when putting invalid json" in {
+    val input = withToken(Input.put("/passport").withBody("invalid".asJson))
+    val error = intercept[RuntimeException] {
+      passportController.`PUT /passport`(input).awaitValueUnsafe()
+    }
+    error.getMessage should startWith("DecodingFailure")
+  }
+
+  it  should "throw exception when token header is not present" in {
+    val input = Input.get("/employees/me")
+    val error = intercept[RuntimeException] {
+      cvController.`GET /employees/me`(input).awaitValueUnsafe()
+    }
+    error.getMessage shouldBe "API Key or ID-Token required"
+  }
+
+//  it should "throw exception when header is not valid" in {
+//
+//    val cvController = new CVController(cvService, peopleService, cvFormatter,unauthenticated, unAuthenticatedUser)
+//
+//    val input = withToken(Input.get("/employees/me"))
+//    val error = intercept[RuntimeException] {
+//      cvController.`GET /employees/me`(input).awaitValueUnsafe()
+//    }
+//    error.getMessage shouldBe "Invalid ID-Token"
+//
+//    val inputF = withToken(Input.post("/cvs").withBody(cvJson))
+//    val errorF = intercept[RuntimeException] {
+//      cvController.`POST /cvs`(inputF).awaitValueUnsafe()
+//    }
+//    errorF.getMessage shouldBe "Invalid ID-Token"
+//  }
+
+
+
+
+
 
   "API" should "throw exception when token header is not present" in {
     val input = Input.get("/employees/me")
@@ -215,16 +253,16 @@ class NoneTokenVerifier extends TokenVerifier {
 }
 
 class StaticCVService extends CVService {
-  private val db: mutable.Map[String, Json] = mutable.Map.empty[String, Json]
+  private val db: mutable.Map[String, List[Json]] = mutable.Map.empty[String, List[Json]]
 
-  override def findByPerson(user: GoogleUser): Option[Json] = findById(user.email)
+  override def findByPerson(user: GoogleUser): List[Json] = findById(user.email)
 
-  override def findById(email: String): Option[Json] = db.get(email)
+  override def findById(email: String): List[Json] = db.getOrElse(email,List())
 
-  override def findAll: List[Json] = db.values.toList
+  override def findAll: List[List[Json]] = db.values.toList
 
   override def insert(email: String, cv: Json): Int = {
-    db += (email -> cv)
+    cv :: findById(email)
     1
   }
 
