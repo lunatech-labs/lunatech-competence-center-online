@@ -9,7 +9,7 @@
   <template>
 
     <style>
-    div.main {
+  div.main {
     max-width: 1080px;
     margin: 0 auto !important;
     float: none !important;
@@ -70,7 +70,7 @@
             <paper-button>{{item.eventDetails.endTime}}</paper-button>
             <paper-button>{{item.ticketDetails.availableTickets}}/{{item.ticketDetails.totalTickets}} tickets</paper-button>
             <paper-button noink>
-              <a href="{{item.url}}">More info &amp; Register</a>
+              <a href="{{item.eventDetails.url}}">More info &amp; Register</a>
             </paper-button>
           </div>
         </div>

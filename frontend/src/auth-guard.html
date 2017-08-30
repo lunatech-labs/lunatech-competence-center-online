@@ -4,20 +4,17 @@
 <link rel="import" href="/bower_components/google-signin/google-signin.html">
 <link rel="import" href="/bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="/src/my-app.html">
 <!-- Defines element markup -->
 <dom-module id="auth-guard">
     <template>
         <google-signin-aware hosted-domain="lunatech.com" client-id="172845937673-smq0kn52ie1spg9irdrhk4stgk7nrp0g.apps.googleusercontent.com"></google-signin-aware>
-
         <iron-ajax
           id="lunatechProfileLoader"
           url="/api/people/me"
           content-type="application/json"
           handle-as="json"
           last-response="{{lunatechProfile}}"></iron-ajax>
-
         <template is="dom-if" if="{{!authenticated}}">
           <paper-dialog id="login-dialog" modal="true" opened="true">
             <h2>Lunatech Competence Center</h2>
@@ -25,84 +22,71 @@
               Please sign in with your Lunatech G-Suite account!
             </paper-dialog-scrollable>
             <div class="buttons">
-              <google-signin width="wide" height="tall" hosted-domain="lunatech.com" client-id="172845937673-smq0kn52ie1spg9irdrhk4stgk7nrp0g.apps.googleusercontent.com"></google-signin>
+              <google-signin on-google-signin-success="_signinSuccess" on-google-signed-out="_signedOut" width="wide" height="tall" hosted-domain="lunatech.com" client-id="172845937673-smq0kn52ie1spg9irdrhk4stgk7nrp0g.apps.googleusercontent.com"></google-signin>
             </div>
           </paper-dialog>
         </template>
-
         <template is="dom-if" if="{{authenticated}}">
-          <my-app basic-profile={{basicProfile}} lunatech-profile={{lunatechProfile}} id-token={{idToken}}></my-app>
+          <my-app
+            basic-profile={{basicProfile}}
+            lunatech-profile={{lunatechProfile}}
+            id-token={{idToken}}
+            on-logout=_handleLogout></my-app>
         </template>
     </template>
 </dom-module>
 
 <!-- Registers custom element -->
 <script>
-Polymer({
-    is: 'auth-guard',
-    properties: {
+  class AuthGuard extends Polymer.Element {
+    static get is() { return 'auth-guard'; }
 
-      // Authenticated means authenticated with Google Signin + lunatech profile fetched.
-      authenticated: {
-        type: Boolean,
-        value: false,
-        computed: 'computeAuthenticated(basicProfile, lunatechProfile)'
-      },
+    static get properties() {
+      return {
+        authenticated: {
+          type: Boolean,
+          value: false
+        },
 
-      basicProfile: {
-        type: Object
-      },
+        basicProfile: {
+          type: Object
+        },
 
-      lunatechProfile: {
-        type: Object
-      },
-
-      idToken: {
-        type: String
+        idToken: {
+          type: String
+        }
       }
-    },
+    }
 
-    listeners: {
-      'google-signin-success': '_signinSuccess',
-      'google-signed-out': '_signedOut',
-      'logout': '_handleLogout'
-    },
-
-    computeAuthenticated: function(googleAuthenticated, profileLoaded) {
-      return (googleAuthenticated !== null) && (profileLoaded !== null);
-    },
-
-    _handleLogout: function() {
-      this.basicProfile = null;
-      this.$$('google-signin-aware').signOut();
-    },
+    _handleLogout() {
+      this.authenticated = false;
+      this.shadowRoot.querySelector('google-signin-aware').signOut();
+    }
 
     // TODO, google-signin-aware docs says: "You can bind to isAuthorized property to monitor authorization state."
-    _signinSuccess: function() {
+    _signinSuccess() {
+
       // See the reference: https://developers.google.com/identity/sign-in/web/reference
-      googleAuth = gapi.auth2.getAuthInstance();
-      currentUser = googleAuth.currentUser.get();
-      basicProfile = currentUser.getBasicProfile();
-      imageUrl = basicProfile.getImageUrl();
+      var googleAuth = gapi.auth2.getAuthInstance();
+      var currentUser = googleAuth.currentUser.get();
+      var basicProfile = currentUser.getBasicProfile();
 
       // TODO, do a domain check?
-      domain = currentUser.getHostedDomain();
+      var domain = currentUser.getHostedDomain();
 
+      this.authenticated = true;
       this.basicProfile = basicProfile;
       this.idToken = currentUser.getAuthResponse().id_token;
 
-      this.$.lunatechProfileLoader.headers = { "X-ID-Token": this.idToken }
-      this.$.lunatechProfileLoader.generateRequest();
+      this.shadowRoot.querySelector("#login-dialog").close();
+    }
 
-      this.$$("#login-dialog").close();
-    },
-
-    _signedOut: function() {
+    _signedOut() {
       this.authenticated = false;
       this.basicProfile = null;
       this.idToken = null;
-      this.lunatechProfile = null;
     }
 
-});
+  }
+  customElements.define(AuthGuard.is, AuthGuard);
 </script>

@@ -71,6 +71,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin: 10px 0 10px 0;
       }
 
+      app-drawer-layout:not([narrow]) [drawer-toggle] {
+        display: none;
+      }
+
     </style>
     <app-location route="{{route}}"></app-location>
     <iron-meta key="idToken" value="{{idToken}}"></iron-meta>
@@ -85,7 +89,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <!-- Drawer content -->
 
 
-        <app-drawer id="drawer">
+        <app-drawer id="drawer" slot="drawer">
 
           <iron-image id="logo" src="/images/competence-center-logo.svg" sizing="contain"></iron-image>
 
@@ -101,7 +105,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <!-- Main content -->
         <app-header-layout has-scrolling-region>
 
-          <app-header condenses reveals effects="waterfall">
+          <app-header id="header" slot="header" condenses reveals effects="waterfall">
             <app-toolbar>
               <paper-icon-button icon="icons:menu" drawer-toggle></paper-icon-button>
               <div main-title>{{pageTitle}}</div>
@@ -162,8 +166,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         '_routePageChanged(routeData.page)',
         '_basicProfileChanged(basicProfile)'
       ],
+
       handleLogoutTap: function() {
-        this.fire("logout")
+        this.dispatchEvent(new CustomEvent('logout'));
       },
 
       _basicProfileChanged: function(basicProfile) {
