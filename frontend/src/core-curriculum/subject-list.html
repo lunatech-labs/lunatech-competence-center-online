@@ -1,12 +1,12 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
-<dom-module id="graph-list">
+<dom-module id="subject-list">
     <template>
         <style include="iron-flex iron-flex-alignment">
         <style>
@@ -53,10 +53,9 @@
          }
         </style>
 
-        <iron-meta></iron-meta>
         <iron-ajax
             id="ajaxLoad"
-            url="/core-curriculum/summary.json"
+            url="/data/core-curriculum/summary.json"
             loading="{{loading}}"
             last-response="{{graphs}}"></iron-ajax>
 
@@ -73,7 +72,7 @@
                 <div class="card-actions layout horizontal center-justified">
                     <div class="cent">
                         <paper-button noink>
-                            <a href="{{item.url}}">Learn more</a>
+                            <a href="/core-curriculum/{{item.id}}">Learn more</a>
                         </paper-button>
                     </div>
                 </div>
@@ -85,10 +84,9 @@
 </dom-module>
 <script>
  Polymer({
-     is: "graph-list",
+     is: "subject-list",
 
      ready: function() {
-         //this.$.ajaxLoad.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
          this.$.ajaxLoad.generateRequest();
      },
  });

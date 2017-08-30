@@ -9,9 +9,10 @@
    -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="/src/core-curriculum/graph-list.html">
+<link rel="import" href="core-curriculum/subject-list.html">
+<link rel="import" href="core-curriculum/subject-details.html">
 
-<dom-module id="page-cc-list">
+<dom-module id="page-core-curriculum">
     <template>
         <style>
          :host {
@@ -19,12 +20,39 @@
              padding: 10px 20px;
          }
         </style>
+
+        <app-route
+            route="{{route}}"
+            pattern="/:id"
+            data="{{routeData}}"
+            active="{{graphSelected}}">
+        </app-route>
+
+        <iron-pages
+            selected="[[page]]"
+            attr-for-selected="id"
+            role="main">
+          <subject-list id="list"></subject-list>
+          <subject-details id="details" subject="{{routeData.id}}"></subject-details>
+        </iron-pages
+
         <graph-list></graph-list>
     </template>
 
     <script>
      Polymer({
-         is: 'page-cc-list',
+         is: 'page-core-curriculum',
+
+         properties: {
+           page: {
+             type: String,
+             computed: '_computePage(graphSelected)'
+           }
+         },
+
+         _computePage: function(graphSelected) {
+           return graphSelected ? 'details' : 'list';
+         }
      });
     </script>
 </dom-module>
