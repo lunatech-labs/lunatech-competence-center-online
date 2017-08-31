@@ -82,10 +82,19 @@ mappings in Docker ++= Seq(
   baseDirectory.value / "nginx.conf" -> "nginx.conf",
   baseDirectory.value / "supervisord.conf" -> "supervisord.conf")
 
+// Add frontend files to Docker
 mappings in Docker ++= {
   val sourceDir = baseDirectory.value / ".." / "frontend" / "build" / "default"
   ((sourceDir.*** --- sourceDir) pair relativeTo(sourceDir)).map { case (file, mapping) =>
     file -> ("opt/docker/frontend/" + mapping)
+  }
+}
+
+// Add core curriculum to Docker
+mappings in Docker ++= {
+  val sourceDir = baseDirectory.value / ".." / "core-curriculum"
+  ((sourceDir.*** --- sourceDir) pair relativeTo(sourceDir)).map { case (file, mapping) =>
+    file -> ("opt/docker/core-curriculum/" + mapping)
   }
 }
 
@@ -95,7 +104,7 @@ buildFrontend := {
   val srcDir = baseDirectory.value / ".." / "frontend"
   val targetDir = srcDir / "build" / "default"
 
-  println(s"Running 'npm install' in directory $targetDir")
+  println(s"Running 'npm install' in directory $srcDir")
   val npmOut = Process("npm install", Some(srcDir)).!
   if(npmOut != 0) sys.exit(npmOut)
 
@@ -107,7 +116,7 @@ buildFrontend := {
   // There seems to be a bug in Polymer-cli preventing all dependencies to be properly copied to
   // the build directory. We were missing the google-signin buttons.
   println(s"Running 'bower install' in directory $targetDir")
-  val bowerOut = Process("bower install", Some(targetDir)).!
+  val bowerOut = Process("bower install --force", Some(targetDir)).!
   if(bowerOut != 0) sys.exit(bowerOut)
 
   targetDir

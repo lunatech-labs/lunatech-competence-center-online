@@ -31,22 +31,5 @@
   "devDependencies": {
     "web-component-tester": "^4.0.0"
   },
-  "private": true,
-  "resolutions": {
-    "iron-flex-layout": "^2.0.0",
-    "iron-media-query": "^2.0.0",
-    "iron-resizable-behavior": "^2.0.0",
-    "polymer": "^2.0",
-    "iron-icon": "^2.0.0",
-    "paper-behaviors": "^2.0.0",
-    "paper-styles": "^2.0.0",
-    "iron-image": "^2.0.0",
-    "iron-overlay-behavior": "^2.0.0",
-    "iron-a11y-keys-behavior": "^2.0.0",
-    "paper-material": "^2.0.0",
-    "iron-meta": "^2.0.0",
-    "webcomponentsjs": "^v1.0.2",
-    "iron-iconset-svg": "^2.0.0",
-    "iron-selector": "^2.0.0"
-  }
+  "private": true
 }
