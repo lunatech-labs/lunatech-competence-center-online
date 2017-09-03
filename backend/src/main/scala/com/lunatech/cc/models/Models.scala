@@ -2,10 +2,26 @@ package com.lunatech.cc.models
 
 import com.lunatech.cc.api.GoogleUser
 import com.lunatech.cc.api.services.Person
+import io.circe.{Decoder, Encoder, Json}
 
 import scala.language.implicitConversions
 import io.circe.generic.semiauto._
 
+
+ /*
+  * Developer => GoogleUser with Developer role
+  * Passport => Portfolio of Employee
+  * Manager => GoogleUser with Direct Reports
+  * User => GoogleUser with Edit Access
+  *
+  * @param name
+  * @param address
+  * @param postalCode
+  * @param city
+  * @param phone
+  * @param email
+  * @param countryCode
+  */
 case class Contact(name: String,
                    address: String,
                    postalCode: String,
@@ -66,6 +82,14 @@ case class Meta(client: String,
                 creationDate: String,
                 office: String,
                 language: String)
+
+
+case class CVData(email: String, cvs: List[Json])
+object CVData {
+  import io.circe.generic.semiauto._
+  implicit val enc: Encoder[CVData] = deriveEncoder[CVData]
+  implicit val dec: Decoder[CVData] = deriveDecoder[CVData]
+}
 
 case class CV(employee: Employee,
               meta: Meta)

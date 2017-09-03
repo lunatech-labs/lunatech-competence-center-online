@@ -4,23 +4,18 @@ import java.util.UUID
 
 import cats.implicits._
 import com.lunatech.cc.api.GoogleUser
+import com.lunatech.cc.models.CVData
+
 import scala.reflect.runtime.universe.TypeTag
 import doobie.imports.{Meta, _}
 import fs2.Task
 import io.circe.{Decoder, Encoder, Json}
 import io.circe.parser.parse
 import io.circe.syntax._
-
 import org.postgresql.util.PGobject
 
 trait CVService {
 
-  case class CVData(email: String, cvs: List[Json])
-  object CVData {
-    import io.circe.generic.semiauto._
-    implicit val enc: Encoder[CVData] = deriveEncoder[CVData]
-    implicit val dec: Decoder[CVData] = deriveDecoder[CVData]
-  }
 
   def findByPerson(user: GoogleUser): List[Json]
 
@@ -49,21 +44,8 @@ class PostgresCVService(transactor: Transactor[Task]) extends CVService {
       _.as[A].fold(p => sys.error(p.message), identity),
       _.asJson
     )
-//  implicit def PersonCodecJson =
-//    casecodec3(Person.apply, Person.unapply)("name", "age", "things")
 
   implicit val PersonMeta = codecMeta[CVData]
-
-//  implicit val CVDataMeta: Meta[CVData] =
-//    Meta.other[PGobject]("json").nxmap[CVData](
-//      a => parse(a.getValue).leftMap[CVData](e => throw e).merge, // failure raises an exception
-//      a => {
-//        val o = new PGobject
-//        o.setType("json")
-//        o.setValue(a.noSpaces)
-//        o
-//      }
-//    )
 
   override def findByPerson(user: GoogleUser): List[Json] = findById(user.email)
 

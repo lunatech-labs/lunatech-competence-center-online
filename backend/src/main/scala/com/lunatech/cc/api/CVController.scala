@@ -3,10 +3,9 @@ package com.lunatech.cc.api
 import com.lunatech.cc.api.Routes._
 import com.lunatech.cc.api.services.{CVService, PeopleService, Person}
 import com.lunatech.cc.formatter.{CVFormatter, FormatResult}
-import com.lunatech.cc.models.{CV, Employee}
+import com.lunatech.cc.models.{CV, CVData, Employee}
 import com.twitter.io.{Buf, Reader}
 import com.twitter.util.Future
-import com.twitter.finagle.http.Status
 import io.circe._
 import io.circe.generic.auto._
 import io.circe.syntax._
@@ -16,27 +15,27 @@ import cats.implicits._
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory._
 
-import scalaz._
 
 class CVController(cvService: CVService, peopleService: PeopleService, cvFormatter: CVFormatter, authenticated: Endpoint[ApiUser], authenticatedUser: Endpoint[GoogleUser]) {
 
   lazy val logger: Logger = getLogger(getClass)
+
+  val me = "me":: authenticatedUser
 
   val `GET /employees`: Endpoint[Json] = get(employees :: authenticated) { (user: ApiUser) =>
     logger.debug(s"GET /employees by user $user")
     Ok(cvService.findAll.asJson)
   }
 
-  val `GET /employees/me`: Endpoint[Json] = get(employees :: me :: authenticatedUser) { (user: GoogleUser) =>
+  val `GET /employees/me`: Endpoint[Json] = get(employees :: me ) { (user: GoogleUser) =>
     logger.debug(s"GET /employees/me for $user")
     cvService.findByPerson(user) match {
-      case Some(json) => Ok(json)
-      case None => {
+      case l:List[Json] if l.nonEmpty => Ok(l.asJson)
+      case empty => {
         val json = CV(user).asJson
         logger.debug(json.toString)
-        Ok(json)
-        // NotFound(new RuntimeException("No CV found"))
-      } //TODO: return empty CV filled with user data
+        Ok(List(json).asJson)
+      }
 
     }
   }
@@ -45,12 +44,12 @@ class CVController(cvService: CVService, peopleService: PeopleService, cvFormatt
     logger.debug(s"GET /employees/$employeeId for $apiUser")
 
     cvService.findById(employeeId) match {
-      case Some(json) => Ok(json)
-      case None => NotFound(new RuntimeException("No CV found"))
+      case l:List[Json] if l.nonEmpty => Ok(l.asJson)
+      case empty => NotFound(new RuntimeException("No CV found"))
     }
   }
 
-  val `PUT /employees/me`: Endpoint[Json] = put(employees :: me :: authenticatedUser :: jsonBody[Json]) { (user: GoogleUser, employee: Json) =>
+  val `PUT /employees/me`: Endpoint[Json] = put(employees :: me :: jsonBody[Json]) { (user: GoogleUser, employee: Json) =>
     employee.as[CV] match {
       case Right(_) =>
         logger.debug("received data")
@@ -77,30 +76,45 @@ class CVController(cvService: CVService, peopleService: PeopleService, cvFormatt
     }
   }
 
-  val `GET /cvs`: Endpoint[Json] = get(cvs :: authenticated).mapAsync { (_: ApiUser) =>
-    for {
-      people <- peopleService.findByRole("developer")
-      cvs <- Future.value(cvService.findAll.flatMap(_.as[CV].toValidated.toOption))
-      _ = cvs.foreach(println)
-    } yield {
-
-      people.map { person =>
-        Json.obj(
-          "person" -> person.asJson,
-          "cv" -> cvs.find(_.employee.basics.email.toLowerCase == person.email.toLowerCase).getOrElse(CV(person)).asJson
-        )
-      }.asJson
-    }
-  }
+//  val `GET /cvs`: Endpoint[Json] = get(cvs :: authenticated) { (user: ApiUser) =>
+//    for {
+//      people <- peopleService.findByRole("developer")
+//      cvs <- Future.value(cvService.findAll)
+////      _ = cvs.foreach(println)
+//    } yield Ok(people,cvs)
+//  }
+//
+//      people.map { person =>
+//        Json.obj(
+//          "person" -> person.asJson,
+//          "cv" -> cvs.find(_.employee.basics.email.toLowerCase == person.email.toLowerCase).getOrElse(CV(person)).asJson
+//        )
+//      }.asJson
+//    }
+//  }
 
   val `GET /cvs/employeeId`: Endpoint[Json] = get(cvs :: string :: authenticated) { (employeeId: String, apiUser: ApiUser) =>
     logger.debug(s"GET /cvs/$employeeId for $apiUser")
 
     cvService.findById(employeeId) match {
-      case Some(json) => Ok(json)
-      case None => NotFound(new RuntimeException("No CV found"))
+      case l:List[Json] if l.nonEmpty => Ok(l.asJson)
+      case empty => NotFound(new RuntimeException("No CV found"))
     }
 
   }
+
+
+  val `GET /cvs`: Endpoint[Seq[CVData]] = get(cvs :: authenticated) { (user: ApiUser) =>
+    val people = peopleService.findByRole("developer")
+    val cvs = Future.value(cvService.findAll)
+
+    val data: Future[Seq[CVData]] = for {
+      pp <- people
+      cc <- cvs
+    } yield pp.flatMap( p => cc.find(_.email == p.email))
+
+    data.map(Ok)
+  }
+
 
 }

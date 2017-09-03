@@ -48,3 +48,14 @@ class StaticTokenVerifier extends TokenVerifier {
       familyName = "Lunatech",
       imageUrl = ""))
 }
+
+class StaticManagerTokenVerifier extends TokenVerifier {
+  override def verifyToken(idTokenString: String): Option[GoogleUser] =
+    Some(GoogleUser(
+      userId = "manager@lunatech.com",
+      email = "manager@lunatech.com",
+      name = "Lunatech Manager",
+      givenName = "Manager",
+      familyName = "Lunatech",
+      imageUrl = ""))
+}

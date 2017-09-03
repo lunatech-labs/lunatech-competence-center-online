@@ -2,21 +2,22 @@ package com.lunatech.cc.api
 
 import java.io.ByteArrayInputStream
 
-import com.lunatech.cc.api.CompetenceCenterApi.{Config}
-import com.lunatech.cc.api.Data._
-import com.lunatech.cc.api.services.{ApiPeopleService, CVService, PassportService}
+import com.lunatech.cc.api.CompetenceCenterApi.Config
+import com.lunatech.cc.api.services.TestData._
+import com.lunatech.cc.api.services._
 import com.lunatech.cc.formatter.{CVFormatter, DefaultTemplate, FormatResult, Template}
 import com.lunatech.cc.models._
 import com.twitter.finagle.http.Status
 import com.twitter.io.Reader
+import com.twitter.util.Future
 import io.circe.Json
 import io.circe.generic.auto._
 import io.circe.syntax._
 import io.finch.Error.NotPresent
 import io.finch.{Endpoint, Input, Output}
 import org.scalatest.{Matchers, _}
+import org.slf4j.Logger
 import pureconfig._
-
 import scala.collection.mutable
 import scalaz.{-\/, \/-}
 
@@ -25,6 +26,7 @@ class ApiSpec extends FlatSpec with Matchers {
   import PeopleServiceSpec._
 
   private val tokenVerifier = new StaticTokenVerifier()
+  private val managerTokenVerifier = new StaticManagerTokenVerifier()
   private val noTokenVerifier = new NoneTokenVerifier
 
 
@@ -32,6 +34,7 @@ class ApiSpec extends FlatSpec with Matchers {
     errors => sys.error(errors.toString),
     identity)
 
+  private val authenticatedManager = authenticatedBuilder(config.auth, managerTokenVerifier)
   private val authenticated = authenticatedBuilder(config.auth, tokenVerifier)
   private val unauthenticated: Endpoint[ApiUser] = authenticatedBuilder(config.auth, noTokenVerifier)
 
@@ -59,6 +62,11 @@ class ApiSpec extends FlatSpec with Matchers {
   it should "return Some(employee) when employee is found" in {
     val input = withToken(Input.get("/passport/developer@lunatech.com"))
     passportController.`GET /passport/employeeId`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
+  }
+
+  it should "return Some(employee) when me is found" in {
+    val input = withToken(Input.get("/passport/me"))
+    passportController.`GET /passport/me`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
   }
 
   it should "return None when employee is NOT found" in {
@@ -101,10 +109,6 @@ class ApiSpec extends FlatSpec with Matchers {
 //    }
 //    errorF.getMessage shouldBe "Invalid ID-Token"
 //  }
-
-
-
-
 
 
   "API" should "throw exception when token header is not present" in {
@@ -159,6 +163,7 @@ class ApiSpec extends FlatSpec with Matchers {
 
   it should "return List(employee) on get /employees" in {
     val input = withToken(Input.get("/employees"))
+    cvService.insert("developer@lunatech.com", employeeJson.asJson)
     cvController.`GET /employees`(input).awaitValueUnsafe() shouldBe Some(List(employeeJson).asJson)
   }
 
@@ -170,6 +175,11 @@ class ApiSpec extends FlatSpec with Matchers {
   it should "return Some(json) when putting json" in {
     val input = withToken(Input.put("/employees/me").withBody(cvJson))
     cvController.`PUT /employees/me`(input).awaitValueUnsafe() shouldBe Some(cvJson)
+  }
+
+  it should "return Seq[CVData] on GET /cvs" in {
+    val input = withToken(Input.get("/cvs"))
+    cvController.`GET /cvs`(input).awaitValueUnsafe() shouldBe Some(cvJson)
   }
 
   it should "throw exception when putting invalid json" in {
@@ -218,39 +228,22 @@ class ApiSpec extends FlatSpec with Matchers {
   }
 }
 
-object Data {
-  val employee = Employee(
-    basics = BasicDetails(
-      givenName = "Developer",
-      familyName = "Lunatech",
-      label = "Software Engineer",
-      startYear = "Employee since 1992",
-      email = "developer@lunatech.com",
-      image = "developer.jpg",
-      profile = "Awesome developer",
-      contact = Contact(
-        name = "Lunatech Labs",
-        address = "Baan 74",
-        postalCode = "3011 CD",
-        city = "Rotterdam",
-        phone = "010",
-        email = "info@lunatech.com",
-        countryCode = "NL"
-      )
-    ),
-    skills = Nil,
-    achievements = Nil,
-    projects = Nil,
-    educations = Nil
-  )
-  val employeeJson: Json = employee.asJson
-  val cv: CV = CV(employee, Meta("test", "today", "Rotterdam", "EN"))
-  val cvJson: Json = cv.asJson
-}
-
 class NoneTokenVerifier extends TokenVerifier {
   override def verifyToken(idTokenString: String): Option[GoogleUser] = None
 }
+
+class StaticPeopleService extends PeopleService {
+  private val db: mutable.Map[String, Person] = mutable.Map.empty[String, Person]
+
+  def load( data: mutable.Map[String, Person]): mutable.Map[String, Person] = db ++ data
+  override def findAll: Future[Seq[Person]] = Future.value(db.values.toSeq)
+
+  override def findByRole(role: String): Future[Seq[Person]] = Future.value(db.values.filter(p => p.roles.contains(role)).toSeq)
+
+  override def findByEmail(email: String): Future[Option[Person]] = Future.value(db.values.find(_.email == email))
+
+}
+
 
 class StaticCVService extends CVService {
   private val db: mutable.Map[String, List[Json]] = mutable.Map.empty[String, List[Json]]
@@ -259,7 +252,7 @@ class StaticCVService extends CVService {
 
   override def findById(email: String): List[Json] = db.getOrElse(email,List())
 
-  override def findAll: List[List[Json]] = db.values.toList
+  override def findAll: List[CVData] = db.map( (data) => CVData(data._1,data._2)).toList
 
   override def insert(email: String, cv: Json): Int = {
     cv :: findById(email)

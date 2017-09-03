@@ -7,7 +7,6 @@ object Routes {
 
   val employees: Endpoint[HNil] = "employees"
   val passport: Endpoint[HNil] = "passport"
-  val me: Endpoint[HNil] = "me"
   val cvs: Endpoint[HNil] = "cvs"
   val tokenHeader: Endpoint[String] = header("X-ID-Token")
 }

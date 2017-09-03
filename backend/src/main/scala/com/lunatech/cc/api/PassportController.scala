@@ -15,7 +15,7 @@ class PassportController(passportService: PassportService, peopleService: People
 
   lazy val logger: Logger = getLogger(getClass)
 
-  val `GET /passport/me`: Endpoint[Json] = get(passport :: me :: authenticatedUser) { (user: GoogleUser) =>
+  val `GET /passport/me`: Endpoint[Json] = get(passport :: "me":: authenticatedUser) { (user: GoogleUser) =>
       logger.debug(s"GET /passport for $user")
       passportService.findByPerson(user) match {
         case Some(json) => Ok(json)

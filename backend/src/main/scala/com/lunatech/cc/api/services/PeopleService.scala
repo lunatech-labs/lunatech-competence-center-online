@@ -35,14 +35,7 @@ class ApiPeopleService(apiKey: String, client: Service[Request, Response]) exten
     client(request)
       .map {
         case response: Response if response.status == Status.Ok =>
-          parse(response.getContentString()).toValidated.toValidatedNel andThen {
-            json: Json => json.as[Seq[Person]].toValidated.toValidatedNel
-          } valueOr {
-            failures =>
-              val errormsg = s"Unexpected response from people api, Parsing failures: $failures, Response Status: ${response.statusCode}, Response: ${response.contentString}"
-              logger.error(errormsg)
-              throw new Exception(errormsg)
-          }
+         ApiPeopleService.parseResponse[Seq[Person]](response)
         case response =>
           logger.error(s"Request $request failed with header ${request.headerMap} and body ")
           throw new Exception(s"Unexpected response from people api, Response Status: ${response.statusCode}, Response: ${response.contentString}")
@@ -61,14 +54,7 @@ class ApiPeopleService(apiKey: String, client: Service[Request, Response]) exten
     client(request)
     .map {
       case response: Response if response.status == Status.Ok =>
-        parse(response.getContentString()).toValidated.toValidatedNel andThen {
-          json: Json => json.as[Option[Person]].toValidated.toValidatedNel
-        } valueOr {
-          failures =>
-            val errormsg = s"Unexpected response from people api, Parsing failures: $failures, Response Status: ${response.statusCode}, Response: ${response.contentString}"
-            logger.error(errormsg)
-            throw new Exception(errormsg)
-        }
+        ApiPeopleService.parseResponse[Option[Person]](response)
       case response =>
         logger.error(s"Request $request failed with header ${request.headerMap} and body ")
         throw new Exception(s"Unexpected response from people api, Response Status: ${response.statusCode}, Response: ${response.contentString}")
@@ -83,6 +69,14 @@ object ApiPeopleService {
       .newService(config.name, "people-api")
 
     new ApiPeopleService(config.apiKey, client)
+  }
+
+  def parseResponse[A](response:Response)(implicit decoder: Decoder[A]) = parse(response.getContentString()).toValidatedNel andThen {
+    json: Json => json.as[A].toValidatedNel
+  } valueOr {
+    failures =>
+      val errormsg = s"Unexpected response from people api, Parsing failures: $failures, Response Status: ${response.statusCode}, Response: ${response.contentString}"
+      throw new Exception(errormsg)
   }
 }
 
