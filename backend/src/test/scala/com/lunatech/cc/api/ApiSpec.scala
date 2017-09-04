@@ -85,13 +85,14 @@ class ApiSpec extends FlatSpec with Matchers {
     error.getMessage should startWith("DecodingFailure")
   }
 
-  it  should "throw exception when token header is not present" in {
-    val input = Input.get("/employees/me")
-    val error = intercept[RuntimeException] {
-      cvController.`GET /employees/me`(input).awaitValueUnsafe()
-    }
-    error.getMessage shouldBe "API Key or ID-Token required"
-  }
+  behavior of "CV API"
+//  it  should "throw exception when token header is not present" in {
+//    val input = Input.get("/employees/me")
+//    val error = intercept[RuntimeException] {
+//      cvController.`GET /employees/me`(input).awaitValueUnsafe()
+//    }
+//    error.getMessage shouldBe "API Key or ID-Token required"
+//  }
 
 //  it should "throw exception when header is not valid" in {
 //
@@ -111,84 +112,72 @@ class ApiSpec extends FlatSpec with Matchers {
 //  }
 
 
-  "API" should "throw exception when token header is not present" in {
-    val input = Input.get("/employees/me")
-    val error = intercept[RuntimeException] {
-      cvController.`GET /employees/me`(input).awaitValueUnsafe()
-    }
-    error.getMessage shouldBe "API Key or ID-Token required"
-  }
+//  "API" should "throw exception when token header is not present" in {
+//    val input = Input.get("/employees/me")
+//    val error = intercept[RuntimeException] {
+//      cvController.`GET /employees/me`(input).awaitValueUnsafe()
+//    }
+//    error.getMessage shouldBe "API Key or ID-Token required"
+//  }
 
-  it should "throw exception when header is not valid" in {
+//  it should "throw exception when header is not valid" in {
+//
+//    val cvController = new CVController(cvService, peopleService, cvFormatter,unauthenticated, unAuthenticatedUser)
+//
+//    val input = withToken(Input.get("/employees/me"))
+//    val error = intercept[RuntimeException] {
+//      cvController.`GET /employees/me`(input).awaitValueUnsafe()
+//    }
+//    error.getMessage shouldBe "Invalid ID-Token"
+//
+//    val inputF = withToken(Input.post("/cvs").withBody(cvJson))
+//    val errorF = intercept[RuntimeException] {
+//      cvController.`POST /cvs`(inputF).awaitValueUnsafe()
+//    }
+//    errorF.getMessage shouldBe "Invalid ID-Token"
+//  }
 
-    val cvController = new CVController(cvService, peopleService, cvFormatter,unauthenticated, unAuthenticatedUser)
+//  it should "throw exception when cv is not found for me" in {
+//    /*
+//    val input = withToken(Input.get("/employees/me"))
+//    val error = intercept[RuntimeException] {
+//      cvController.`GET /employees/me`(input).awaitValueUnsafe()
+//    }
+//    error.getMessage shouldBe "No CV found"
+//    */
+//    pending
+//  }
 
-    val input = withToken(Input.get("/employees/me"))
-    val error = intercept[RuntimeException] {
-      cvController.`GET /employees/me`(input).awaitValueUnsafe()
-    }
-    error.getMessage shouldBe "Invalid ID-Token"
+//  it should "throw exception when employee is not found" in {
+//    val input = withToken(Input.get("/employees/unknown@lunatech.com"))
+//    val error = intercept[RuntimeException] {
+//      cvController.`GET /employees/employeeId`(input).awaitValueUnsafe()
+//    }
+//    error.getMessage shouldBe "No CV found"
+//  }
 
-    val inputF = withToken(Input.post("/cvs").withBody(cvJson))
-    val errorF = intercept[RuntimeException] {
-      cvController.`POST /cvs`(inputF).awaitValueUnsafe()
-    }
-    errorF.getMessage shouldBe "Invalid ID-Token"
-  }
+//  it should "return Some(employee) on get /employees/me" in {
+//    val input = withToken(Input.get("/employees/me"))
+//    cvService.insert("developer@lunatech.com", employeeJson.asJson)
+//    cvController.`GET /employees/me`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
+//  }
+//
+//  it should "return List(employee) on get /employees" in {
+//    val input = withToken(Input.get("/employees"))
+//    cvService.insert("developer@lunatech.com", employeeJson.asJson)
+//    cvController.`GET /employees`(input).awaitValueUnsafe() shouldBe Some(List(employeeJson).asJson)
+//  }
 
-  it should "throw exception when cv is not found for me" in {
-    /*
-    val input = withToken(Input.get("/employees/me"))
-    val error = intercept[RuntimeException] {
-      cvController.`GET /employees/me`(input).awaitValueUnsafe()
-    }
-    error.getMessage shouldBe "No CV found"
-    */
-    pending
-  }
+//  it should "return Some(employee) when employee is found" in {
+//    val input = withToken(Input.get("/employees/developer@lunatech.com"))
+//    cvController.`GET /employees/employeeId`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
+//  }
+//
+//  it should "return Some(json) when putting json" in {
+//    val input = withToken(Input.put("/employees/me").withBody(cvJson))
+//    cvController.`PUT /employees/me`(input).awaitValueUnsafe() shouldBe Some(cvJson)
+//  }
 
-  it should "throw exception when employee is not found" in {
-    val input = withToken(Input.get("/employees/unknown@lunatech.com"))
-    val error = intercept[RuntimeException] {
-      cvController.`GET /employees/employeeId`(input).awaitValueUnsafe()
-    }
-    error.getMessage shouldBe "No CV found"
-  }
-
-  it should "return Some(employee) on get /employees/me" in {
-    val input = withToken(Input.get("/employees/me"))
-    cvService.insert("developer@lunatech.com", employeeJson.asJson)
-    cvController.`GET /employees/me`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
-  }
-
-  it should "return List(employee) on get /employees" in {
-    val input = withToken(Input.get("/employees"))
-    cvService.insert("developer@lunatech.com", employeeJson.asJson)
-    cvController.`GET /employees`(input).awaitValueUnsafe() shouldBe Some(List(employeeJson).asJson)
-  }
-
-  it should "return Some(employee) when employee is found" in {
-    val input = withToken(Input.get("/employees/developer@lunatech.com"))
-    cvController.`GET /employees/employeeId`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
-  }
-
-  it should "return Some(json) when putting json" in {
-    val input = withToken(Input.put("/employees/me").withBody(cvJson))
-    cvController.`PUT /employees/me`(input).awaitValueUnsafe() shouldBe Some(cvJson)
-  }
-
-  it should "return Seq[CVData] on GET /cvs" in {
-    val input = withToken(Input.get("/cvs"))
-    cvController.`GET /cvs`(input).awaitValueUnsafe() shouldBe Some(cvJson)
-  }
-
-  it should "throw exception when putting invalid json" in {
-    val input = withToken(Input.put("/employees/me").withBody("invalid".asJson))
-    val error = intercept[RuntimeException] {
-      cvController.`PUT /employees/me`(input).awaitValueUnsafe()
-    }
-    error.getMessage should startWith("DecodingFailure")
-  }
 
   it should "throw exception when putting invalid json to cvs" in {
     val input = withToken(Input.post("/cvs").withBody("invalid".asJson))
@@ -196,11 +185,6 @@ class ApiSpec extends FlatSpec with Matchers {
       cvController.`POST /cvs`(input).awaitValueUnsafe()
     }
     error.getMessage should startWith("DecodingFailure")
-  }
-
-  it should "return bytes when putting json for cvs" in {
-    val input = withToken(Input.post("/cvs").withBody(cvJson))
-    cvController.`POST /cvs`(input).awaitValueUnsafe() should not be empty
   }
 
   it should "throw exception when error occurs during processing" in {
@@ -211,14 +195,6 @@ class ApiSpec extends FlatSpec with Matchers {
     error.getMessage should startWith("error generating file")
   }
 
-  it should "throw exception when body is not present for /employees/me" in {
-    val input = withToken(Input.put("/employees/me"))
-    val error = intercept[NotPresent] {
-      cvController.`PUT /employees/me`(input).awaitValueUnsafe()
-    }
-    error.getMessage shouldBe "Required body not present in the request."
-  }
-
   it should "throw exception when body is not present for /cvs" in {
     val input = withToken(Input.post("/cvs"))
     val error = intercept[NotPresent] {
@@ -226,6 +202,37 @@ class ApiSpec extends FlatSpec with Matchers {
     }
     error.getMessage shouldBe "Required body not present in the request."
   }
+
+  it should "return bytes when putting json for cvs" in {
+    val input = withToken(Input.post("/cvs").withBody(cvJson))
+    cvController.`POST /cvs`(input).awaitValueUnsafe() should not be empty
+  }
+
+  it should "return Seq[CVData] on GET /cvs" in {
+    val input = withToken(Input.post("/cvs").withBody(cvJson))
+
+    val output = withToken(Input.get("/cvs"))
+    cvController.`GET /cvs`(output).awaitValueUnsafe() shouldBe Some(cvJson)
+  }
+
+//  it should "throw exception when putting invalid json" in {
+//    val input = withToken(Input.put("/employees/me").withBody("invalid".asJson))
+//    val error = intercept[RuntimeException] {
+//      cvController.`PUT /employees/me`(input).awaitValueUnsafe()
+//    }
+//    error.getMessage should startWith("DecodingFailure")
+//  }
+
+
+
+//  it should "throw exception when body is not present for /employees/me" in {
+//    val input = withToken(Input.put("/employees/me"))
+//    val error = intercept[NotPresent] {
+//      cvController.`PUT /employees/me`(input).awaitValueUnsafe()
+//    }
+//    error.getMessage shouldBe "Required body not present in the request."
+//  }
+
 }
 
 class NoneTokenVerifier extends TokenVerifier {

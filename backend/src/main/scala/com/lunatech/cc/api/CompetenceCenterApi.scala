@@ -43,6 +43,7 @@ object CompetenceCenterApi extends App {
   new DBMigration(config.database).migrate()
 
   val cvService = new PostgresCVService(transactor)
+  val passportService = new PostgresPassportService(transactor)
   val workshopService = EventBriteWorkshopService(config.services.workshops)
   val peopleService = ApiPeopleService(config.services.people)
 
@@ -69,11 +70,15 @@ object CompetenceCenterApi extends App {
   val cvController = new CVController(cvService, peopleService, cvFormatter, authenticated, authenticatedUser)
   val workshopController = new WorkshopController(workshopService, authenticated)
   val peopleController = new PeopleController(peopleService, authenticatedUser)
+  val passportController = new PassportController(passportService ,peopleService, authenticatedUser)
   val service = (
-    cvController.`GET /employees` :+:
-    cvController.`GET /employees/me` :+:
-    cvController.`GET /employees/employeeId` :+:
-    cvController.`PUT /employees/me` :+:
+//    cvController.`GET /employees` :+:
+//    cvController.`GET /employees/me` :+:
+//    cvController.`GET /employees/employeeId` :+:
+//    cvController.`PUT /employees/me` :+:
+    passportController.`PUT /passport` :+:
+    passportController.`GET /passport/me` :+:
+    passportController.`GET /passport/employeeId` :+:
     cvController.`POST /cvs` :+:
     cvController.`GET /cvs` :+:
     cvController.`GET /cvs/employeeId` :+:

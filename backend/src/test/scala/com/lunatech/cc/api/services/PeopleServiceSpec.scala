@@ -1,7 +1,6 @@
 package com.lunatech.cc.api.services
 
 import com.lunatech.cc.api.CompetenceCenterApi.config
-import com.lunatech.cc.api.services.TestData
 import com.twitter.finagle.http.{Response, Status}
 import io.circe.generic.auto._
 import org.scalatest.{Matchers, _}
