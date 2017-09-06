@@ -61,13 +61,20 @@ class CVController(cvService: CVService, peopleService: PeopleService, cvFormatt
 //    }
 //  }
 
+
+
   val `POST /cvs`: Endpoint[Buf] = post(cvs :: authenticated :: jsonBody[Json]) { (_: ApiUser, cv: Json) =>
     logger.debug(cv.toString)
     cv.as[CV] match {
       case Right(data) =>
+
+        //Create PDF
         cvFormatter.format(data) match {
           case Right(FormatResult(result, _)) =>
             Reader.readAll(result).map { content =>
+              //Store CV for future usage
+              val __ = cvService.insert(data.employee.basics.email,cv)
+
               Ok(content).withHeader("Content-type" -> "application/pdf").withHeader("ACCESS_CONTROL_ALLOW_ORIGIN" -> "*")
             }
           case Left(e) => Future(InternalServerError(e))
@@ -88,15 +95,19 @@ class CVController(cvService: CVService, peopleService: PeopleService, cvFormatt
 
 
   val `GET /cvs`: Endpoint[Json] = get(cvs :: authenticated) { (user: ApiUser) =>
-    val people = peopleService.findByRole("developer")
-    val cvs = Future.value(cvService.findAll)
+    for {
+      dev <- peopleService.findByRole("developer")
 
-    val data: Future[Seq[CVData]] = for {
-      pp <- people
-      cc <- cvs
-    } yield pp.flatMap( p => cc.find(_.email == p.email))
+      cvs <- Future.value(cvService.findAll)
+      _ = println(cvs.find(_.email == "developer@lunatech.com"))
+      output = dev.flatMap( p => {
+        println(p)
+        cvs.find(_.email == p.email)
+      }).asJson
+     _ = println("output")
+      _ = println(output)
+    } yield Ok(output)
 
-    data.map( x => Ok(x.asJson))
   }
 
 

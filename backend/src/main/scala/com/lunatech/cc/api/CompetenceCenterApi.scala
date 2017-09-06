@@ -72,10 +72,6 @@ object CompetenceCenterApi extends App {
   val peopleController = new PeopleController(peopleService, authenticatedUser)
   val passportController = new PassportController(passportService ,peopleService, authenticatedUser)
   val service = (
-//    cvController.`GET /employees` :+:
-//    cvController.`GET /employees/me` :+:
-//    cvController.`GET /employees/employeeId` :+:
-//    cvController.`PUT /employees/me` :+:
     passportController.`PUT /passport` :+:
     passportController.`GET /passport/me` :+:
     passportController.`GET /passport/employeeId` :+:

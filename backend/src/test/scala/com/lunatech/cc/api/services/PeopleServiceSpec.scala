@@ -21,15 +21,10 @@ class PeopleServiceSpec extends FlatSpec with Matchers {
       response.setContentString(data)
     val result: Seq[Person] = ApiPeopleService.parseResponse[Seq[Person]](response)
 
-    result shouldBe a[Seq[_]]
     assert(result.nonEmpty)
-    assert(result.head.name.fullName == "Adrien Haxaire")
+    assert(result.head.name.fullName == "Developer Lunatech")
   }
 
-//  it should "be correctly mocked for local testing" in {
-//    PeopleServiceSpec.apiPeopleService.findByEmail("adrien.haxaire@lunatech.com")
-//    pending
-//  }
 }
 
 
