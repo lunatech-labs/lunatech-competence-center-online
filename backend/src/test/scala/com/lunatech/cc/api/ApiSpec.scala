@@ -80,14 +80,24 @@ class ApiSpec extends FlatSpec with Matchers {
     pg_passportController.`PUT /passport`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
   }
 
-  it should "return Some(employee) when employee is found" in {
+  it should "return Some(employee) when passport is found by id" in {
     val input = withToken(Input.get("/passport/developer@lunatech.com"))
     passportController.`GET /passport/employeeId`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
   }
 
-  it should "return Some(employee) when me is found" in {
+  it should "return Some(employee) when passport is found by id in db" in {
+    val input = withToken(Input.get("/passport/developer@lunatech.com"))
+    pg_passportController.`GET /passport/employeeId`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
+  }
+
+  it should "return Some(employee) when passport for me is found" in {
     val input = withToken(Input.get("/passport/me"))
     passportController.`GET /passport/me`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
+  }
+
+  it should "return Some(employee) when passport for me is found in db" in {
+    val input = withToken(Input.get("/passport/me"))
+    pg_passportController.`GET /passport/me`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
   }
 
   it should "return None when employee is NOT found" in {
