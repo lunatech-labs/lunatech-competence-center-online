@@ -2,7 +2,7 @@ package com.lunatech.cc.api
 
 import java.io.ByteArrayInputStream
 
-import com.lunatech.cc.api.CompetenceCenterApi.Config
+import com.lunatech.cc.api.CompetenceCenterApi.{Config, config, createTransactor}
 import com.lunatech.cc.api.services.TestData._
 import com.lunatech.cc.api.services._
 import com.lunatech.cc.formatter.{CVFormatter, DefaultTemplate, FormatResult, Template}
@@ -10,6 +10,8 @@ import com.lunatech.cc.models._
 import com.twitter.finagle.http.Status
 import com.twitter.io.Reader
 import com.twitter.util.Future
+import doobie.imports.DriverManagerTransactor
+import fs2.Task
 import io.circe.Json
 import io.circe.generic.auto._
 import io.circe.syntax._
@@ -18,6 +20,7 @@ import io.finch.{Endpoint, Input, Output}
 import org.scalatest.{Matchers, _}
 import org.slf4j.Logger
 import pureconfig._
+
 import scala.collection.mutable
 import scalaz.{-\/, \/-}
 
@@ -34,6 +37,14 @@ class ApiSpec extends FlatSpec with Matchers {
     errors => sys.error(errors.toString),
     identity)
 
+
+  val transactor = DriverManagerTransactor[Task](
+    driver = config.database.driver,
+    url = config.database.url,
+    user = config.database.user,
+    pass = config.database.password)
+
+
   private val authenticatedManager = authenticatedBuilder(config.auth, managerTokenVerifier)
   private val authenticated = authenticatedBuilder(config.auth, tokenVerifier)
   private val unauthenticated: Endpoint[ApiUser] = authenticatedBuilder(config.auth, noTokenVerifier)
@@ -49,9 +60,11 @@ class ApiSpec extends FlatSpec with Matchers {
   val peopleService = ApiPeopleService(config.services.people)
 
   private val passportService: PassportService = new StaticPassportService()
+  private val pg_passportService: PassportService = new PostgresPassportService(transactor)
   private val cvFormatter = new StaticCVFormatter
   private val cvController = new CVController(cvService, peopleService, cvFormatter,authenticated, authenticatedUser)
   private val passportController = new PassportController(passportService,peopleService, authenticatedUser)
+  private val pg_passportController = new PassportController(pg_passportService,peopleService, authenticatedUser)
   private def withToken(input: Input) = input.withHeaders("X-ID-Token" -> "Token")
 
 
@@ -60,6 +73,11 @@ class ApiSpec extends FlatSpec with Matchers {
   it should "return Some(json) when putting json" in {
     val input = withToken(Input.put("/passport").withBody(employeeJson))
     passportController.`PUT /passport`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
+  }
+
+  it should "return Some(json) when putting json in db" in {
+    val input = withToken(Input.put("/passport").withBody(employeeJson))
+    pg_passportController.`PUT /passport`(input).awaitValueUnsafe() shouldBe Some(employeeJson)
   }
 
   it should "return Some(employee) when employee is found" in {

@@ -21,47 +21,6 @@ class CVController(cvService: CVService, peopleService: PeopleService, cvFormatt
   lazy val logger: Logger = getLogger(getClass)
 
   val me = "me":: authenticatedUser
-//
-//  val `GET /employees`: Endpoint[Json] = get(employees :: authenticated) { (user: ApiUser) =>
-//    logger.debug(s"GET /employees by user $user")
-//    Ok(cvService.findAll.asJson)
-//  }
-//
-//  val `GET /employees/me`: Endpoint[Json] = get(employees :: me ) { (user: GoogleUser) =>
-//    logger.debug(s"GET /employees/me for $user")
-//    cvService.findByPerson(user) match {
-//      case l:List[Json] if l.nonEmpty => Ok(l.asJson)
-//      case empty => {
-//        val json = CV(user).asJson
-//        logger.debug(json.toString)
-//        Ok(List(json).asJson)
-//      }
-//
-//    }
-//  }
-
-//  val `GET /employees/employeeId`: Endpoint[Json] = get(employees :: string :: authenticated) { (employeeId: String, apiUser: ApiUser) =>
-//    logger.debug(s"GET /employees/$employeeId for $apiUser")
-//
-//    cvService.findById(employeeId) match {
-//      case l:List[Json] if l.nonEmpty => Ok(l.asJson)
-//      case empty => NotFound(new RuntimeException("No CV found"))
-//    }
-//  }
-//
-//  val `PUT /employees/me`: Endpoint[Json] = put(employees :: me :: jsonBody[Json]) { (user: GoogleUser, employee: Json) =>
-//    employee.as[CV] match {
-//      case Right(_) =>
-//        logger.debug("received data")
-//        cvService.insert(user.email, employee)
-//        Ok(employee)
-//      case Left(e) =>
-//        logger.debug(s"incorrect data $employee")
-//        BadRequest(new RuntimeException(e))
-//    }
-//  }
-
-
 
   val `POST /cvs`: Endpoint[Buf] = post(cvs :: authenticated :: jsonBody[Json]) { (_: ApiUser, cv: Json) =>
     logger.debug(cv.toString)
@@ -90,25 +49,16 @@ class CVController(cvService: CVService, peopleService: PeopleService, cvFormatt
       case l:List[Json] if l.nonEmpty => Ok(l.asJson)
       case empty => NotFound(new RuntimeException("No CV found"))
     }
-
   }
-
 
   val `GET /cvs`: Endpoint[Json] = get(cvs :: authenticated) { (user: ApiUser) =>
     for {
-      dev <- peopleService.findByRole("developer")
-
+      devs <- peopleService.findByRole("developer")
       cvs <- Future.value(cvService.findAll)
-      _ = println(cvs.find(_.email == "developer@lunatech.com"))
-      output = dev.flatMap( p => {
-        println(p)
+      output = devs.flatMap( p =>
         cvs.find(_.email == p.email)
-      }).asJson
-     _ = println("output")
-      _ = println(output)
+      ).asJson
     } yield Ok(output)
-
   }
-
 
 }

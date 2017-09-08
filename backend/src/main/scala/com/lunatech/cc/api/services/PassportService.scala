@@ -1,5 +1,7 @@
 package com.lunatech.cc.api.services
 
+import java.util.UUID
+
 import com.lunatech.cc.api.GoogleUser
 import doobie.imports._
 import fs2.Task
@@ -48,7 +50,7 @@ object PassportQueries {
   def findByIDQuery(email: String) = sql"SELECT passport FROM passports WHERE person = ${email} ORDER BY created_on DESC".query[Json]
   def findAllQuery:Query0[Json] = sql"SELECT passport FROM passports".query[Json]
   def saveQuery(email: String, passport: Json) =
-    sql"INSERT INTO passports (person, passport, created_on, last_modified_on) VALUES ($email, $passport, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) ON CONFLICT (person) DO UPDATE SET passport = EXCLUDED.passport,last_modified_on = CURRENT_TIMESTAMP".update
+    sql"INSERT INTO passports (id, person, passport, created_on, modified_on) VALUES (${UUID.randomUUID.toString} :: UUID, $email, $passport, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) ON CONFLICT (person) DO UPDATE SET passport = EXCLUDED.passport,modified_on = CURRENT_TIMESTAMP".update
 
 
 }

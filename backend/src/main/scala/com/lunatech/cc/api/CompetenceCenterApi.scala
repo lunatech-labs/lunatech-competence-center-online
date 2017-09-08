@@ -34,13 +34,16 @@ object CompetenceCenterApi extends App {
 
   lazy val logger: Logger = getLogger(getClass)
 
-  val transactor = DriverManagerTransactor[Task](
+  val createTransactor = (config: Config) =>  DriverManagerTransactor[Task](
     driver = config.database.driver,
     url = config.database.url,
     user = config.database.user,
     pass = config.database.password)
 
-  new DBMigration(config.database).migrate()
+  val transactor = createTransactor(config)
+
+  val dbm: Int = new DBMigration(config.database).migrate()
+  println(dbm)
 
   val cvService = new PostgresCVService(transactor)
   val passportService = new PostgresPassportService(transactor)
