@@ -2,7 +2,7 @@ package com.lunatech.cc.api
 
 import java.io.ByteArrayInputStream
 
-import com.lunatech.cc.api.CompetenceCenterApi.{Config, config, createTransactor}
+import com.lunatech.cc.api.CompetenceCenterApi.{Config, config, createTransactor, transactor}
 import com.lunatech.cc.api.services.TestData._
 import com.lunatech.cc.api.services._
 import com.lunatech.cc.formatter.{CVFormatter, DefaultTemplate, FormatResult, Template}
@@ -12,6 +12,7 @@ import com.twitter.io.Reader
 import com.twitter.util.Future
 import doobie.imports.DriverManagerTransactor
 import fs2.Task
+import io.circe.Decoder.Result
 import io.circe.Json
 import io.circe.generic.auto._
 import io.circe.syntax._
@@ -57,12 +58,16 @@ class ApiSpec extends FlatSpec with Matchers {
   val unAuthenticatedUser = authenticateUser(unauthenticated)
 
   private val cvService = new StaticCVService
+  private val pg_cvService = new PostgresCVService(transactor)
+
+
   val peopleService = ApiPeopleService(config.services.people)
 
   private val passportService: PassportService = new StaticPassportService()
   private val pg_passportService: PassportService = new PostgresPassportService(transactor)
   private val cvFormatter = new StaticCVFormatter
   private val cvController = new CVController(cvService, peopleService, cvFormatter,authenticated, authenticatedUser)
+  private val pg_cvController = new CVController(pg_cvService, peopleService, cvFormatter,authenticated, authenticatedUser)
   private val passportController = new PassportController(passportService,peopleService, authenticatedUser)
   private val pg_passportController = new PassportController(pg_passportService,peopleService, authenticatedUser)
   private def withToken(input: Input) = input.withHeaders("X-ID-Token" -> "Token")
@@ -151,7 +156,14 @@ class ApiSpec extends FlatSpec with Matchers {
     val input = withToken(Input.post("/cvs").withBody(cvJson))
     cvController.`POST /cvs`(input).awaitValueUnsafe()
     val output = withToken(Input.get("/cvs"))
-    cvController.`GET /cvs`(output).awaitValueUnsafe() shouldBe Some(List(CVData(employee.basics.email,List(cvJson))).asJson)
+    cvController.`GET /cvs`(output).awaitValueUnsafe().getOrElse(Json.fromString("[]")).as[List[CVData]] should be ('right)
+  }
+
+  it should "return Seq[CVData] on GET /cvs from db" in {
+    val input = withToken(Input.post("/cvs").withBody(cvJson))
+    pg_cvController.`POST /cvs`(input).awaitValueUnsafe()
+    val output = withToken(Input.get("/cvs"))
+    pg_cvController.`GET /cvs`(output).awaitValueUnsafe().getOrElse(Json.fromString("[]")).as[List[CVData]] should be ('right)
   }
 
   it should "throw exception when putting invalid json to cvs" in {
@@ -209,7 +221,7 @@ class StaticCVService extends CVService {
 
   override def findById(email: String): List[Json] = db.getOrElse(email,List())
 
-  override def findAll: List[CVData] = db.map( (data) => CVData(data._1,data._2)).toList
+  override def findAll: List[CVData] = db.flatMap( (data) => data._2.map(j => CVData(data._1,j))).toList
 
   override def insert(email: String, cv: Json): Int = {
     db(email) = cv :: findById(email)

@@ -42,8 +42,7 @@ object CompetenceCenterApi extends App {
 
   val transactor = createTransactor(config)
 
-  val dbm: Int = new DBMigration(config.database).migrate()
-  println(dbm)
+  new DBMigration(config.database).migrate()
 
   val cvService = new PostgresCVService(transactor)
   val passportService = new PostgresPassportService(transactor)

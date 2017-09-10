@@ -32,6 +32,7 @@ class PostgresCVService(transactor: Transactor[Task]) extends CVService {
     Meta.other[PGobject]("json").nxmap[Json](
       a => parse(a.getValue).leftMap[Json](e => throw e).merge, // failure raises an exception
       a => {
+        println(a)
         val o = new PGobject
         o.setType("json")
         o.setValue(a.noSpaces)
@@ -39,20 +40,19 @@ class PostgresCVService(transactor: Transactor[Task]) extends CVService {
       }
     )
 
-  def codecMeta[A >: Null : Encoder : Decoder : TypeTag]: Meta[A] =
-    Meta[Json].nxmap[A](
-      _.as[A].fold(p => sys.error(p.message), identity),
-      _.asJson
-    )
-
-  implicit val PersonMeta = codecMeta[CVData]
+//  def codecMeta[A >: Null : Encoder : Decoder : TypeTag]: Meta[A] =
+//    Meta[Json].nxmap[A](
+//      _.as[A].fold(p => sys.error(p.message), identity),
+//      _.asJson
+//    )
 
   override def findByPerson(user: GoogleUser): List[Json] = findById(user.email)
 
   override def findById(email: String): List[Json] =
       sql"SELECT cv FROM cvs WHERE person = ${email} ORDER BY created_on DESC".query[Json].list.transact(transactor).unsafeRun()
 
-  override def findAll: List[CVData] = sql"SELECT email, cv FROM cvs GROUP BY email ORDER BY email, timestamp".query[CVData].list.transact(transactor).unsafeRun()
+//  override def findAll: List[CVData] = sql"SELECT person, cv FROM cvs ORDER BY person, created_on".query[(String,Json)].map(CVData.apply(_,_)).list.transact(transactor).unsafeRun()
+  override def findAll: List[CVData] = sql"SELECT person, cv FROM cvs ORDER BY person, created_on".query[CVData].process.list.transact(transactor).unsafeRun()
 
 
   override def insert(email: String, cv: Json): Int =

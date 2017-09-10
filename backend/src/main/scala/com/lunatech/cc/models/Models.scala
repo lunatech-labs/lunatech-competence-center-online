@@ -84,7 +84,7 @@ case class Meta(client: String,
                 language: String)
 
 
-case class CVData(email: String, cvs: List[Json])
+case class CVData(email: String, cvs: Json)
 object CVData {
   import io.circe.generic.semiauto._
   implicit val enc: Encoder[CVData] = deriveEncoder[CVData]

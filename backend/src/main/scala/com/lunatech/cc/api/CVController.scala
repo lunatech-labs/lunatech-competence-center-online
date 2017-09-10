@@ -55,8 +55,8 @@ class CVController(cvService: CVService, peopleService: PeopleService, cvFormatt
     for {
       devs <- peopleService.findByRole("developer")
       cvs <- Future.value(cvService.findAll)
-      output = devs.flatMap( p =>
-        cvs.find(_.email == p.email)
+      output = devs.map( p =>
+        cvs.find(_.email == p.email).getOrElse(CVData(p.email,CV(p).asJson))
       ).asJson
     } yield Ok(output)
   }
