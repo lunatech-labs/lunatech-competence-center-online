@@ -7,8 +7,8 @@
   "topics": [
     {
       "id": "expressions",
-      "name": "Control flow opposed to expressions",
-      "description": "Scala prefers expressions over statements, we should know the differences between both.",
+      "name": "Control flow and expressions",
+      "description": "Scala prefers expressions over statements. The substitution model can be used to reason about evaluation of Scala programs. Methods automatically return the last expression in the method body, so using the `return` keyword is not necessary.",
       "tags": ["required-for-junior", "fp"],
       "resources": [
         {
@@ -32,15 +32,14 @@
       ],
 
       "abilities": [
-        "Code basic Scala scripts.",
-        "Refactor code away from Statements into Expression based.",
+        "Code basic Scala scripts and run them.",
+        "Refactor code that depends heavily on statements into an equivalent program that uses expressions.",
         "Remove `return` statements.",
-        "Understand how the substitution model works, and how it is applied in Scala."
       ],
 
       "assessment-questions": [
-        { "question": "How does `if/else if/else` differs between Java and Scala?" },
-        { "question": "Can you explain how does the substitution model works for\n```scala \nval x = \"foo\"\nval y =\"bar\"\n\ndef concat(a: String, b: String) = a + b```"}
+        { "question": "How does `if/else` differ between Java and Scala?", "answer-hint": "In Java it's a statement, in Scala an expression." },
+        { "question": "Can you use the substitution model to reduce the following expression: ```scala \nval x = \"foo\"\nval y =\"bar\"\nconcat(x, y)```, given `def concat(a: String, b: String) = a + b`"}
       ]
     },
     {
@@ -60,14 +59,13 @@
 
       "abilities": [
         "Declare functions and methods.",
-        "Hide implementation details within a method using nested functions, without making a new private method (i.e. the Java way).",
+        "Hide implementation details within a method using nested functions.",
         "Prevent parameter evaluation to promote laziness."
       ],
 
       "assessment-questions": [
-        { "question": "How is a function modeled or represented in Scala?", "answer-hint": "They are actually syntactic sugar (previous to v2.12)." },
         { "question": "Given the substitution model,\n ```scala \ndef foo(x: => Int, y: => String) = if (x == 7) y else (y + y)```\nCan you explain how many times `y` is evaluated when `foo(7, \"bar\")`? And what about `foo(8, \"bar\")`?" },
-        { "question": "How do you prevent a by-name parameter that you use multiple times to be evaluated more than once?", "answer-hint": "Using the `lazy` modifier." }
+        { "question": "How do you prevent a by-name parameter that you use multiple times to be evaluated more than once?", "answer-hint": "By assigning it to a `lazy val` and using that one in the remainder of the method body." }
       ]
     },
     {
@@ -99,19 +97,19 @@
       "abilities": [
         "Decompose code by matching in a more descriptive way.",
         "Recognise when use Pattern matching over if/else expressions.",
-        "Define partial functions which adhere to certain cases, making code more readable."
+        "Define partial functions using a block of case statements."
       ],
 
       "assessment-questions": [
-        { "question": "Is there a limit for how deep or nested can a pattern go?" },
+        { "question": "Is there a limit on how deep or nested a pattern can go?" },
         { "question": "What will happen in case the pattern isn't exhaustive?", "answer-hint": "The compile will issue a warning, and an exception will be thrown if it doesn't match at runtime (`MatchError`)." },
-        { "question": "If we've ```scala \nList(\"first_name\" -> \"Alonzo\", \"last_name\" -> \"Church\").foldLeft(\"\")((acc, kv) -> acc + kv._1 + \":\" + kv._2)```\nHow can we better express the key/value relationship?" }
+        { "question": "If we have ```scala \nList(\"first_name\" -> \"Alonzo\", \"last_name\" -> \"Church\").foldLeft(\"\")((acc, kv) -> acc + kv._1 + \":\" + kv._2)```\nHow can we better express the key/value relationship?" }
       ]
     },
     {
       "id": "hof",
       "name": "Higher-order Functions",
-      "description": "As mentioned in Hughes paper \"Why functional programming matters\", HOF give us the perfect tool for composing code. Introducing also terms like:\n- Partial application & Currying.\n- Closures.\n",
+      "description": "As mentioned in Hughes paper \"Why functional programming matters\", higher order functions (HOF) give us the perfect tool for composing code. Introducing also terms like:\n- Partial application & Currying.\n- Closures.\n",
       "tags": ["required-for-junior", "fp"],
       "dependencies": ["wikipedia"],
       "resources": [
@@ -143,13 +141,12 @@
 
       "abilities": [
         "Replace Anonymous classes with lambdas.",
-        "Simplify code by using factory functions.",
-        "Simplify some GoF's Design Patterns."
       ],
 
       "assessment-questions": [
-        { "question": "Which are the most common higher-order functions?" },
-        { "question": "Can you define what is a **Combinator**?" }
+        { "question": "Which are some common higher-order functions?", "answer-hint": "`map`, `flatMap` and `filter` for example." },
+        { "question": "Can you define what a **Combinator** is?" },
+        { "question": "What is a closure?", "answer-hint": "A function that _closes over_ variables defined outside the function, capturing them."}
       ]
     },
     {
@@ -202,7 +199,7 @@
       ],
 
       "assessment-questions": [
-        { "question": "Given the definition:\n```scala \ndef foo[A](a: A) = ...```\nHow many possible implementation are there?" }
+        { "question": "Given the definition:\n```scala \ndef foo[A](a: A) = ...```\nHow many possible implementation are there?", "answer-hint": "This is a trick question: in Scala there are infinitely many possible implementations, for example by pattern matching on `a`, or throwing an arbitrary exception. Assuming a _proper_ generic language, there would be only a single implementation: We have no methods on `a`, and it's the only instance of `A` that we have and can obtain no others, so we must return it." }
       ]
     },
     {
@@ -226,7 +223,6 @@
       ],
 
       "abilities": [
-        "Define methods with implicit parameters that leverage from the context.",
         "Define implicit conversions, such as `Int -> String`",
         "Use context bounds for making the method signature leaner."
       ],
@@ -276,7 +272,7 @@
     {
       "id": "object-oriented-ii",
       "name": "Object oriented II",
-      "description": "Scala allows for more advanced OO concepts such as:\n - Type parameters (similar to type parameters).\n - Existencial types.\n - Trait composition, Mixins.\n - Existencial types.\n - Static duck typing, or structural types.\n - Double dispatch.\n - Path dependent types.",
+      "description": "Scala allows for more advanced OO concepts such as:\n - Type parameters (similar to type parameters).\n - Existencial types.\n - Trait composition, Mixins.\n - Existencial types.\n - Static duck typing, or structural types.\n - Double dispatch.\n - Path dependent types.\n - The expression problem.",
       "tags": ["required-for-scala-medior"],
       "dependencies": ["object-oriented-i", "type-parameters"],
       "resources": [
@@ -375,7 +371,7 @@
       "abilities": [
         "Use Exception catching, specially when interfacing against Java or Java-like code.",
         "Avoid `NullPointerException`, using `Option` instead.",
-        "Use `Either` when `Exception` don't fit nicely on the design of the application.",
+        "Use `Either` when `Exception` doesn't fit nicely on the design of the application.",
         "Understand the difference between `Try` and `Either`, and when to use one or the other."
       ],
 
@@ -411,13 +407,12 @@
       ],
 
       "abilities": [
-        "Code a typical Producer/Consumer.",
-        "Use `Future` and `Promise`, and `flatMap` to escape from callback hell.",
-        "Understand how a `ThreadExecutor` comes to be and which function does it fulfill.",
+        "Use `Future`, `Promise`.",
         "Work with asynchronous code, taking full advantage of the JVM."
       ],
 
       "assessment-questions": [
+        { "question": "What is a `ThreadExecutor`?"}
         { "question": "What problems might be introduced in your code when combining `Future` with HOFs?" },
         { "question": "How would you deal with blocking I/O?" },
         { "question": "In which situations is synchronous code more suitable?" }
