@@ -1,6 +1,7 @@
 package com.lunatech.cc.api
 
 import java.io.ByteArrayInputStream
+import java.util.UUID
 
 import com.lunatech.cc.api.CompetenceCenterApi.{Config, config, createTransactor, transactor}
 import com.lunatech.cc.api.services.TestData._
@@ -62,12 +63,13 @@ class ApiSpec extends FlatSpec with Matchers {
 
 
   val peopleService = ApiPeopleService(config.services.people)
+  val static_peopleService = new StaticPeopleService() //ApiPeopleService(config.services.people)
 
   private val passportService: PassportService = new StaticPassportService()
   private val pg_passportService: PassportService = new PostgresPassportService(transactor)
   private val cvFormatter = new StaticCVFormatter
   private val cvController = new CVController(cvService, peopleService, cvFormatter,authenticated, authenticatedUser)
-  private val pg_cvController = new CVController(pg_cvService, peopleService, cvFormatter,authenticated, authenticatedUser)
+  private val pg_cvController = new CVController(pg_cvService, static_peopleService, cvFormatter,authenticated, authenticatedUser)
   private val passportController = new PassportController(passportService,peopleService, authenticatedUser)
   private val pg_passportController = new PassportController(pg_passportService,peopleService, authenticatedUser)
   private def withToken(input: Input) = input.withHeaders("X-ID-Token" -> "Token")
@@ -152,18 +154,22 @@ class ApiSpec extends FlatSpec with Matchers {
 
   behavior of "CV API"
 
-  it should "return Seq[CVData] on GET /cvs" in {
+
+  it should "return bytes when posting json for cvs" in {
     val input = withToken(Input.post("/cvs").withBody(cvJson))
-    cvController.`POST /cvs`(input).awaitValueUnsafe()
-    val output = withToken(Input.get("/cvs"))
-    cvController.`GET /cvs`(output).awaitValueUnsafe().getOrElse(Json.fromString("[]")).as[List[CVData]] should be ('right)
+    cvController.`POST /cvs`(input).awaitValueUnsafe() should not be empty
   }
 
-  it should "return Seq[CVData] on GET /cvs from db" in {
+  it should "return Seq[CVS] on GET /cvs" in {
+    val output = withToken(Input.get("/cvs"))
+    cvController.`GET /cvs`(output).awaitValueUnsafe().getOrElse(Json.fromString("[]")).as[List[CVS]] should be ('right)
+  }
+
+  it should "return Seq[CVS] on GET /cvs from db" in {
     val input = withToken(Input.post("/cvs").withBody(cvJson))
     pg_cvController.`POST /cvs`(input).awaitValueUnsafe()
     val output = withToken(Input.get("/cvs"))
-    pg_cvController.`GET /cvs`(output).awaitValueUnsafe().getOrElse(Json.fromString("[]")).as[List[CVData]] should be ('right)
+    pg_cvController.`GET /cvs`(output).awaitValueUnsafe().getOrElse(Json.fromString("[]")).as[List[CVS]] should be ('right)
   }
 
   it should "throw exception when putting invalid json to cvs" in {
@@ -190,10 +196,16 @@ class ApiSpec extends FlatSpec with Matchers {
     error.getMessage shouldBe "Required body not present in the request."
   }
 
-  it should "return bytes when posting json for cvs" in {
-    val input = withToken(Input.post("/cvs").withBody(cvJson))
-    cvController.`POST /cvs`(input).awaitValueUnsafe() should not be empty
+  it should "throw exception when cv with id can't be deleted from DB" in {
+    val id = "972aafac-e5e2-4564-87b6-48c62b5f19d2"
+    val input = withToken(Input.delete(s"/cvs/$id"))
+    val error = intercept[RuntimeException] {
+      pg_cvController.`DELETE /cvs/uuid`(input).awaitValueUnsafe()
+    }
+
+    error.getMessage should startWith(s"Can't delete cv with id $id")
   }
+
 
 }
 
@@ -221,13 +233,16 @@ class StaticCVService extends CVService {
 
   override def findById(email: String): List[Json] = db.getOrElse(email,List())
 
-  override def findAll: List[CVData] = db.flatMap( (data) => data._2.map(j => CVData(data._1,j))).toList
+  override def findAll: Map[String, List[Json]] = db.toMap //.flatMap((data) => data._2.map(j => CVData(data._1,j))).toList
 
   override def insert(email: String, cv: Json): Int = {
     db(email) = cv :: findById(email)
     1
   }
 
+  override def delete(cvid: UUID): Int = ???
+
+  override def get(cvid: UUID): Option[Json] = ???
 }
 
 class StaticPassportService extends PassportService {

@@ -21,9 +21,13 @@ trait CVService {
 
   def findById(email: String): List[Json]
 
-  def findAll: List[CVData]
+  def findAll: Map[String, List[Json]]
 
   def insert(email: String, cv: Json): Int
+
+  def delete(cvid: UUID): Int
+
+  def get(cvid: UUID): Option[Json]
 }
 
 class PostgresCVService(transactor: Transactor[Task]) extends CVService {
@@ -40,22 +44,32 @@ class PostgresCVService(transactor: Transactor[Task]) extends CVService {
       }
     )
 
-//  def codecMeta[A >: Null : Encoder : Decoder : TypeTag]: Meta[A] =
-//    Meta[Json].nxmap[A](
-//      _.as[A].fold(p => sys.error(p.message), identity),
-//      _.asJson
-//    )
 
   override def findByPerson(user: GoogleUser): List[Json] = findById(user.email)
 
   override def findById(email: String): List[Json] =
       sql"SELECT cv FROM cvs WHERE person = ${email} ORDER BY created_on DESC".query[Json].list.transact(transactor).unsafeRun()
 
-//  override def findAll: List[CVData] = sql"SELECT person, cv FROM cvs ORDER BY person, created_on".query[(String,Json)].map(CVData.apply(_,_)).list.transact(transactor).unsafeRun()
-  override def findAll: List[CVData] = sql"SELECT person, cv FROM cvs ORDER BY person, created_on".query[CVData].process.list.transact(transactor).unsafeRun()
+  override def findAll: Map[String, List[Json]] = {
+
+    val folder: (List[CVData]) => Map[String, List[Json]] = (x: List[CVData]) => x.foldRight(Map[String, List[Json]]()) ((cvd: CVData, aggr: Map[String, List[Json]]) => {
+      val l =   aggr.get(cvd.email).map( l => cvd.cv :: l).getOrElse(List(cvd.cv))
+      aggr + (cvd.email -> l)
+    } )
+    val out = sql"SELECT person, cv FROM cvs ORDER BY person, created_on".query[CVData].process.list.transact(transactor).unsafeRun()
+    folder(out)
+  }
 
 
   override def insert(email: String, cv: Json): Int =
     sql"INSERT INTO cvs (id, person, cv, created_on) VALUES (${UUID.randomUUID.toString} :: UUID, $email, $cv, CURRENT_TIMESTAMP)".update.run.transact(transactor).unsafeRun()
+
+  override def delete(cvid: UUID): Int = {
+    val query = sql"DELETE FROM cvs WHERE id=${cvid.toString} :: UUID"
+      query.update.run.transact(transactor).unsafeRun()
+  }
+
+  override def get(cvid: UUID): Option[Json] = sql"SELECT cv FROM cvs WHERE id=${cvid.toString} :: UUID".query[Json].option.transact(transactor).unsafeRun()
+
 }
 

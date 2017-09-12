@@ -1,9 +1,11 @@
 package com.lunatech.cc.api
 
+import java.util.UUID
+
 import com.lunatech.cc.api.Routes._
 import com.lunatech.cc.api.services.{CVService, PeopleService, Person}
 import com.lunatech.cc.formatter.{CVFormatter, FormatResult}
-import com.lunatech.cc.models.{CV, CVData, Employee}
+import com.lunatech.cc.models.{CV, CVData, CVS, Employee}
 import com.twitter.io.{Buf, Reader}
 import com.twitter.util.Future
 import io.circe._
@@ -51,12 +53,32 @@ class CVController(cvService: CVService, peopleService: PeopleService, cvFormatt
     }
   }
 
+  val `DELETE /cvs/uuid`: Endpoint[Unit] = delete(cvs :: uuid :: authenticated) { (cvid: UUID, apiUser: ApiUser) =>
+    logger.debug(s"DELETE /cvs/$cvid for $apiUser")
+
+    val result = cvService.delete(cvid)
+    if(result == 1) NoContent[Unit]
+    else BadRequest(new RuntimeException(s"Can't delete cv with id ${cvid.toString}"))
+  }
+
+  val `GET /cvs/uuid`: Endpoint[Json] = get(cvs :: uuid :: authenticated) { (cvid: UUID, apiUser: ApiUser) =>
+    logger.debug(s"GET /cvs/$cvid for $apiUser")
+
+    val result = cvService.get(cvid)
+
+    result match {
+      case Some(value) => Ok(value)
+      case None => NotFound(new RuntimeException(s"Can't find CV with ID: ${cvid.toString}"))
+    }
+
+  }
+
   val `GET /cvs`: Endpoint[Json] = get(cvs :: authenticated) { (user: ApiUser) =>
     for {
       devs <- peopleService.findByRole("developer")
       cvs <- Future.value(cvService.findAll)
       output = devs.map( p =>
-        cvs.find(_.email == p.email).getOrElse(CVData(p.email,CV(p).asJson))
+        cvs.get(p.email).map(CVS(p.email,_)).getOrElse(CVS(p.email,Nil))
       ).asJson
     } yield Ok(output)
   }

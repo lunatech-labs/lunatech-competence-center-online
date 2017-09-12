@@ -8,20 +8,6 @@ import scala.language.implicitConversions
 import io.circe.generic.semiauto._
 
 
- /*
-  * Developer => GoogleUser with Developer role
-  * Passport => Portfolio of Employee
-  * Manager => GoogleUser with Direct Reports
-  * User => GoogleUser with Edit Access
-  *
-  * @param name
-  * @param address
-  * @param postalCode
-  * @param city
-  * @param phone
-  * @param email
-  * @param countryCode
-  */
 case class Contact(name: String,
                    address: String,
                    postalCode: String,
@@ -84,11 +70,17 @@ case class Meta(client: String,
                 language: String)
 
 
-case class CVData(email: String, cvs: Json)
+case class CVData(email: String, cv: Json)
+case class CVS(email: String, cvs: List[Json])
+
 object CVData {
+
   import io.circe.generic.semiauto._
   implicit val enc: Encoder[CVData] = deriveEncoder[CVData]
   implicit val dec: Decoder[CVData] = deriveDecoder[CVData]
+  implicit val enccvs: Encoder[CVS] = deriveEncoder[CVS]
+  implicit val deccvs: Decoder[CVS] = deriveDecoder[CVS]
+
 }
 
 case class CV(employee: Employee,
