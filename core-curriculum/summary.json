@@ -1,5 +1,12 @@
 [
   {
+    "id": "http",
+    "name": "HTTP",
+    "description": "The Hypertext Transfer Protocol, the transport layer of web application.",
+    "tags": [],
+    "image": null
+  },
+  {
     "id": "sbt",
     "name": "SBT, interactive build tool",
     "description": "The industry-standard build tool for Scala",

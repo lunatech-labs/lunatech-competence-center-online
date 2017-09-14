@@ -1,18 +1,45 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="knowledge_graph.html">
+<link rel="import" href="knowledge_node.html">
 
 <dom-module id="subject-details">
-    <template>
-        <h1>Details page for subject [[subject]]
-    </template>
-</dom-module>
-<script>
- Polymer({
-     is: "subject-details",
+  <template>
+    <iron-ajax id="ajaxLoad"
+               loading="{{loading}}"
+               url="/data/core-curriculum/knowledge/[[subject]].json"
+               last-response="{{knowledge}}"></iron-ajax>
 
-     properties: {
-       subject: {
-         type: String
-       }
-     }
- });
-</script>
+    <paper-spinner active=[[loading]]></paper-spinner>
+    <h1>Details page for subject [[subject]]</h1>
+
+    <knowledge-graph graph="{{knowledge}}" nodes="topics"></knowledge-graph>
+
+  </template>
+  <script>
+    Polymer({
+      is: "subject-details",
+
+      properties: {
+        subject: {
+          observer: '_onSubjectChange',
+          type: String
+        },
+
+        knowledge: {
+          type: Object
+        }
+      },
+
+      _onSubjectChange: function () {
+        if (this.subject) {
+          this.$.ajaxLoad.generateRequest();
+        }
+      },
+
+      ready: function() {
+      },
+    });
+  </script>
+</dom-module>

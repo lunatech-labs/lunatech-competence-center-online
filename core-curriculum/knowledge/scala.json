@@ -34,7 +34,7 @@
       "abilities": [
         "Code basic Scala scripts and run them.",
         "Refactor code that depends heavily on statements into an equivalent program that uses expressions.",
-        "Remove `return` statements.",
+        "Remove `return` statements."
       ],
 
       "assessment-questions": [
@@ -111,7 +111,7 @@
       "name": "Higher-order Functions",
       "description": "As mentioned in Hughes paper \"Why functional programming matters\", higher order functions (HOF) give us the perfect tool for composing code. Introducing also terms like:\n- Partial application & Currying.\n- Closures.\n",
       "tags": ["required-for-junior", "fp"],
-      "dependencies": ["wikipedia"],
+      "dependencies": ["functions-as-values"],
       "resources": [
         {
           "name": "Wikipedia: Higher-order functions",
@@ -140,7 +140,7 @@
       ],
 
       "abilities": [
-        "Replace Anonymous classes with lambdas.",
+        "Replace Anonymous classes with lambdas."
       ],
 
       "assessment-questions": [
@@ -229,7 +229,7 @@
 
       "assessment-questions": [
         { "question": "Can you explain how the implicit resolution works? In which order?" },
-        { "question": "Given the following compiler error `error: could not find implicit value`, can you explain what went wrong and how to fix it?"}
+        { "question": "Given the following compiler error `error: could not find implicit value`, can you explain what went wrong and how to fix it?" },
         { "question": "How many argument lists are allowed in Scala? How many of those are allowed for implicit argument lists? And, in which position must it appear?" },
         { "question": "Is there a way of by-passing the implicit resolution by making it explicit?" }
       ]
@@ -412,7 +412,7 @@
       ],
 
       "assessment-questions": [
-        { "question": "What is a `ThreadExecutor`?"}
+        { "question": "What is a `ThreadExecutor`?"},
         { "question": "What problems might be introduced in your code when combining `Future` with HOFs?" },
         { "question": "How would you deal with blocking I/O?" },
         { "question": "In which situations is synchronous code more suitable?" }
