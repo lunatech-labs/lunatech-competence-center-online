@@ -1,0 +1,101 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
+
+<dom-module id="knowledge-node">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      #node {
+        background-color: #EEE;
+        border: 1px solid #000;
+        border-radius: 8px;
+        box-sizing: border-box;
+        min-width: 200px;
+        padding: 8px;
+        padding-left: 23px;
+        position: relative;
+        text-align: center;
+      }
+
+      .label {
+        background-color: #F00;
+        border-bottom-left-radius: 7px;
+        border-right: 1px solid black;
+        border-top-left-radius: 7px;
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 15px;
+      }
+
+      .resources {
+        margin-top: 10px;
+      }
+
+      .resource iron-icon {
+        --iron-icon-height: 18px;
+        --iron-icon-width: 18px;
+      }
+    </style>
+    <div id="node">
+      <div class="label"></div>
+
+      <div class="title">{{topic.name}}</div>
+
+      <div class="resources" hidden$="{{expanded}}">
+        <span class="resource"><iron-icon icon="maps:local-movies" size="12"></iron-icon>[[videoResourceAmount]]</span>
+        <span class="resource"><iron-icon icon="maps:av:library-books" size="12"></iron-icon>[[bookResourceAmount]]</span>
+      </div>
+    </div>
+
+  </template>
+  <script>
+    Polymer({
+
+      is: 'knowledge-node',
+
+      properties: {
+        topic: {
+          type: Object
+        },
+
+        videoResourceAmount: {
+            type: Number,
+            computed: '_computeVideoResourceAmount(topic)'
+        },
+
+        bookResourceAmount: {
+            type: Number,
+            computed: '_computeBookResourceAmount(topic)'
+        },
+
+        expanded: {
+          type: Boolean,
+          value: false
+        }
+      },
+
+      listeners: {
+        "node.tap": "_expand"
+      },
+
+      _expand: function() {
+        this.expanded = true;
+      },
+
+      _computeVideoResourceAmount: function (topic) {
+        return (topic.resources || []).filter(r => r.type === 'video').length
+      },
+
+      _computeBookResourceAmount: function (topic) {
+        return (topic.resources || []).filter(r => r.type !== 'video').length
+      },
+    });
+  </script>
+</dom-module>
