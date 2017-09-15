@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>knowledge-graph demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../knowledge-graph.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic knowledge-graph demo</h3>
+      <demo-snippet>
+        <template>
+          <knowledge-graph graph='{ "nodes": [
+            { "id": "traits-classes", "name": "Traits &amp; Classes" },
+            { "id": "functions-as-values", "name": "Functions as Values" },
+            { "id": "type-parameters", "name": "Type Parameters" },
+            { "id": "higher-kinded-types", "name": "Higher Kinded Types", "dependencies": ["type-parameters"] },
+            { "id": "type-classes", "name": "Type Classes", "dependencies": ["higher-kinded-types", "traits-classes", "implicits", "type-parameters"] },
+            { "id": "implicits", "name": "Implicits" },
+            { "id": "monads", "name": "Monads", "dependencies": ["type-classes"] },
+            { "id": "recursion", "name": "Recursion" },
+            { "id": "free-monads", "name": "Free Monads", "dependencies": ["recursion", "monads"] }
+          ]}'></knowledge-graph>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>

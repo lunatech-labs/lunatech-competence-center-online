@@ -26,11 +26,7 @@
     "iron-ajax": "^2.0.0",
     "iron-meta": "^2.0.0",
     "vaadin-date-picker": "^2.0.0",
-    "paper-spinner": "^2.0.0",
-    "lodash": "^3.10.1",
-    "graphlib": "^1.0.7",
-    "dagre": "^0.7.4",
-    "polymer-svg-template": "^1.0.2"
+    "paper-spinner": "^2.0.0"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

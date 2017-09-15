@@ -1,8 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
-<link rel="import" href="knowledge_graph.html">
-<link rel="import" href="knowledge_node.html">
+<link rel="import" href="../../bower_components/knowledge-graph/knowledge-graph.html">
 
 <dom-module id="subject-details">
   <template>
@@ -11,10 +10,8 @@
                url="/data/core-curriculum/knowledge/[[subject]].json"
                last-response="{{knowledge}}"></iron-ajax>
 
-    <paper-spinner active=[[loading]]></paper-spinner>
-    <h1>Details page for subject [[subject]]</h1>
-
-    <knowledge-graph graph="{{knowledge}}" nodes="topics"></knowledge-graph>
+    <h1>[[subject]]</h1>
+    <knowledge-graph hidden=[[loading]] graph="{{knowledge}}" nodes="topics"></knowledge-graph>
 
   </template>
   <script>

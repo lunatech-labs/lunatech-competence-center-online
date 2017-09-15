@@ -1,0 +1,180 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer-svg-template/polymer-svg-template.html">
+<link rel="import" href="src/knowledge-node.html">
+<script src="dagre.js"></script>
+
+<!--
+`knowledge-graph`
+Displays a knowledge graph
+
+@demo demo/index.html
+-->
+<dom-module id="knowledge-graph">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      #node-container {
+        position: relative;
+      }
+
+      svg {
+         position: absolute;
+      }
+
+      path {
+        stroke-width: 2;
+        stroke: black;
+        stroke-linecap: none;
+        fill: none;
+      }
+
+      .node {
+       position: absolute;
+      }
+    </style>
+
+    <svg style="width:{{width}}px;height:{{height}}px">
+      <defs>
+        <marker id="markerArrow" markerWidth="13" markerHeight="13" refX="2" refY="6"
+                orient="auto">
+          <path d="M2,2 L2,11 L10,6 L2,2" style="fill: #000000;" />
+        </marker>
+      </defs>
+      <template is="dom-repeat" items="{{edges}}">
+        <path d$="{{item.path}}" />
+      </template>
+    </svg>
+    <div id="node-container" style="width:{{width}}px;height:{{height}}px">
+      <template is="dom-repeat" items="{{graphNodes}}">
+        <div class="node" style="left:{{item.left}}px;top:{{item.top}}px;width:{{item.width}}px;height:{{item.height}}px">
+          <knowledge-node topic="{{item}}"></knowledge-node>
+        </div>
+      </template>
+    </div>
+  </template>
+  <script>
+    (function () {
+      const GRAPH_PADDING = 100;
+
+      function computeNodeDimensions (nodes) {
+        nodes.forEach(function (node) {
+          // Create the element, so we can compute the size
+          var elem = document.createElement("knowledge-node") // FIXME this should be refactored externally.
+          elem.setAttribute("topic", node);
+          elem.setAttribute("style", "display: inline-block; visibility: hidden");
+
+          node.elem = elem;
+          document.body.appendChild(elem);
+        });
+
+        nodes.forEach(function (node) {
+          const {width, height} = node.elem.getBoundingClientRect();
+
+          node.width = width;
+          node.height = height;
+
+          document.body.removeChild(node.elem);
+        });
+      }
+
+      function computeEdgePaths (edges) {
+        edges.forEach(function(edge) {
+          const points = edge.points;
+
+          edge.path = "M" + points[0].x + "," + points[0].y
+          for(i = 1; i < points.length; i += 2) {
+            edge.path += " Q" + points[i].x + "," + points[i].y + " " + points[i+1].x + "," + points[i+1].y
+          }
+        });
+      }
+
+      function computeEdges (nodes) {
+        return nodes.reduce(function (acc, node) {
+          const dependencies = node.dependencies || [];
+          const edges = dependencies.map(function (dependency) {
+            return {
+              from: dependency,
+              to: node.id
+            };
+          });
+
+          return acc.concat(edges);
+        }, []);
+      }
+
+      function computeLayout (nodes, edges) {
+        const g = new dagre.graphlib.Graph();
+
+        g.setGraph({ rankdir: "LR", align: "UL" });
+        g.setDefaultEdgeLabel(function() { return {}; });
+
+        nodes.forEach(function(node) {
+          g.setNode(node.id, node);
+        });
+
+        edges.forEach(function(edge) {
+          g.setEdge(edge.from, edge.to);
+        });
+
+        dagre.layout(g);
+
+        // Dagre output is the center of the node; for the CSS we need the corner coordinates.
+        nodes.forEach(function(node) {
+          node.left = node.x - node.width / 2;
+          node.top = node.y - node.height / 2;
+        });
+
+        return g;
+      }
+
+      // This is terrible. I know. See https://github.com/garryyao/polymer-svg-template/issues/1
+      window.currentImport = window.currentImport || document.currentScript.ownerDocument;
+      PolymerSvgTemplate('knowledge-graph');
+
+      Polymer({
+
+        is: 'knowledge-graph',
+
+        properties: {
+          graph: {
+            type: Object,
+            observer: '_computeGraphVisualization',
+            value: {}
+          },
+
+          nodes: {
+            type: String,
+            value: 'nodes'
+          },
+        },
+
+        _computeLayout: function (nodes, edges) {
+          const g = computeLayout(nodes, edges);
+
+          this.height = g.graph().height + GRAPH_PADDING;
+          this.width = g.graph().width + GRAPH_PADDING;
+
+          this.graphNodes = nodes;
+          this.edges = g.edges().map(e => g.edge(e));
+        },
+
+        _computeGraphVisualization: function(newValue, oldValue) {
+          if (!newValue || !newValue[this.nodes]) {
+            console.warn('Empty graph', newValue);
+            return;
+          }
+          let nodes = this.graph[this.nodes];
+
+          computeNodeDimensions(nodes);
+          this.graph.edges = computeEdges(nodes);
+
+          this._computeLayout(nodes, this.graph.edges);
+          computeEdgePaths(this.edges || []);
+        }
+     });
+    }());
+  </script>
+</dom-module>
