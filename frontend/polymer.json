@@ -3,6 +3,9 @@
   "shell": "src/my-app.html",
   "fragments": [
     "src/page-cvs.html",
+    "src/page-workshops.html",
+    "src/page-passport.html",
+    "src/page-core-curriculum.html",
     "src/page-view404.html"
   ],
   "sources": [
