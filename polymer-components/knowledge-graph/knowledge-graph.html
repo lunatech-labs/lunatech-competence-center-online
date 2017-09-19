@@ -148,7 +148,23 @@ Displays a knowledge graph
           },
         },
 
-        attached: function() {
+        _drawEdges: function() {
+
+          // Find old paths
+          var oldPaths = [];
+          for(var i = 0; i < this.$.edges.childNodes.length; i++) {
+            var node = this.$.edges.childNodes[i];
+            if(node.tagName == "path") {
+              oldPaths.push(node);
+            }
+          }
+
+          // Remove old paths
+          oldPaths.forEach(function(path) {
+            this.$.edges.removeChild(path);
+          }.bind(this));
+
+          // Draw new ones
           this.edges.forEach(function(edge) {
             var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             path.setAttribute('d', edge.path);
@@ -178,6 +194,8 @@ Displays a knowledge graph
 
           this._computeLayout(nodes, this.graph.edges);
           computeEdgePaths(this.edges || []);
+
+          this._drawEdges();
         }
      });
     }());

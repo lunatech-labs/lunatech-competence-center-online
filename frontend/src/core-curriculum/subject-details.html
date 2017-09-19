@@ -11,7 +11,9 @@
                last-response="{{knowledge}}"></iron-ajax>
 
     <h1>[[subject]]</h1>
-    <knowledge-graph hidden=[[loading]] graph="{{knowledge}}" nodes="topics"></knowledge-graph>
+    <template is="dom-if" if=[[!loading]]>
+      <knowledge-graph graph="{{knowledge}}" nodes="topics"></knowledge-graph>
+    </template>
 
   </template>
   <script>
