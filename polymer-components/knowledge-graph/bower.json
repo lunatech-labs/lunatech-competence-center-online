@@ -5,7 +5,6 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0",
     "dagre": "^0.7.4",
-    "polymer-svg-template": "^1.0.2",
     "iron-icon": "^2.0.0",
     "iron-icons": "^2.0.1"
   },

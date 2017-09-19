@@ -1,5 +1,4 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../polymer-svg-template/polymer-svg-template.html">
 <link rel="import" href="src/knowledge-node.html">
 <script src="dagre.js"></script>
 
@@ -36,17 +35,19 @@ Displays a knowledge graph
       }
     </style>
 
-    <svg style="width:{{width}}px;height:{{height}}px">
+    <!-- Polymer doesn't support templating in SVG elements, see https://github.com/Polymer/polymer/issues/1976
+         We played around with the polyfill, but with unsatisfactory results: https://github.com/garryyao/polymer-svg-template
+         So now we just add the 'path' elements imperatively in the 'attached' callback. Hopefully in the future
+         we can just template them here. -->
+    <svg id="edges" style="width:{{width}}px;height:{{height}}px">
       <defs>
         <marker id="markerArrow" markerWidth="13" markerHeight="13" refX="2" refY="6"
                 orient="auto">
           <path d="M2,2 L2,11 L10,6 L2,2" style="fill: #000000;" />
         </marker>
       </defs>
-      <template is="dom-repeat" items="{{edges}}">
-        <path d$="{{item.path}}" />
-      </template>
     </svg>
+
     <div id="node-container" style="width:{{width}}px;height:{{height}}px">
       <template is="dom-repeat" items="{{graphNodes}}">
         <div class="node" style="left:{{item.left}}px;top:{{item.top}}px;width:{{item.width}}px;height:{{item.height}}px">
@@ -130,10 +131,6 @@ Displays a knowledge graph
         return g;
       }
 
-      // This is terrible. I know. See https://github.com/garryyao/polymer-svg-template/issues/1
-      window.currentImport = window.currentImport || document.currentScript.ownerDocument;
-      PolymerSvgTemplate('knowledge-graph');
-
       Polymer({
 
         is: 'knowledge-graph',
@@ -149,6 +146,14 @@ Displays a knowledge graph
             type: String,
             value: 'nodes'
           },
+        },
+
+        attached: function() {
+          this.edges.forEach(function(edge) {
+            var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', edge.path);
+            this.$.edges.appendChild(path);
+          }.bind(this));
         },
 
         _computeLayout: function (nodes, edges) {
