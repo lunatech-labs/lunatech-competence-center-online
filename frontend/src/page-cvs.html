@@ -35,15 +35,16 @@
                            on-response="_handleResponse"></iron-ajax>
 
 
-                <paper-card heading="Simple demo">
+                <paper-card heading="Lunatech CVs">
                     <div class="horizontal center-justified center layout">
                         <iron-icon icon="icons:search" prefix></iron-icon>
-                        <paper-input id="searchInput" value="{{searchTerm}}" on-input="_handleFilter" label="Search..." style="display:inline-block" no-label-float></paper-input>
+                        <paper-input id="searchInput" value="{{searchTerm}}" on-input="_handleFilter" label="Search..."
+                                     style="display:inline-block" no-label-float></paper-input>
                     </div>
                     <div class="card-content">
-                        <paper-datatable-api data="[[data]]" on-sort="_handleSort" on-filter="_handleFilter">
+                        <paper-datatable-api data="[[dataTable]]" on-sort="_handleSort" on-filter="_handleFilter">
                             <paper-datatable-api-column header="Name" property="person.name.fullName" type="String"
-                                                         sortable>
+                                                        sortable>
                                 <template>[[value]]</template>
                             </paper-datatable-api-column>
                             <paper-datatable-api-column header="Email" property="person.email" type="String"
@@ -72,6 +73,10 @@
                 data: {
                     type: Array,
                     notify: true
+                },
+                dataTable: {
+                    type: Array,
+                    notify: true
                 }
             },
             ready: function() {
@@ -82,28 +87,53 @@
                 if (!cv || !cv.employee.skills) {
                     return '';
                 }
-                return cv.employee.skills.map(function (skill) {
+                return cv.employee.skills.map(function(skill) {
                     return skill.name;
                 }).join(', ');
             },
             _handleResponse: function(event) {
                 this.data = event.detail.response;
+                this.dataTable = this.data;
             },
             _handleFilter: function(event) {
-                var keyword = this.searchTerm
-                this.data = this.data.filter(function(item) {
+                var keyword = this.searchTerm;
+                this.dataTable = this.data.filter(function(item) {
                     return item.person.email.match(keyword, 'i');
                 });
-                console.log(this.data);
             },
             _handleSort: function(event) {
-                this.data = this.data.sort(function (a, b) {
-                    return (a.person.name.fullName < b.person.name.fullName) ? 1 : ((b.person.name.fullName < a.person.name.fullName) ? -1 : 0);
+                function index(obj,is, value) {
+                    if (typeof is == 'string')
+                        return index(obj,is.split('.'), value);
+                    else if (is !==undefined && is.length==1 && value!==undefined)
+                        return obj[is[0]] = value;
+                    else if (is !==undefined && is.length==0)
+                        return obj;
+                    else if(is !==undefined)
+                        return index(obj[is[0]],is.slice(1), value);
+                }
+
+                this.dataTable = this.data.sort(function(a, b) {
+                    if(typeof event.detail.sort.property !==undefined){
+                        var aString = index(a,event.detail.sort.property);
+                        var bString = index(b,event.detail.sort.property);
+                    }else{
+                        var aString = a.person.name.fullName;
+                        var bString = b.person.name.fullName;
+                    }
+
+                    if(event.detail.sort.direction == 'desc'){
+                        return (aString < bString) ? 1 : ((bString < aString) ? -1 : 0);
+                    } else {
+                        return -1 * ((aString < bString) ? 1 : ((bString < aString) ? -1 : 0));
+                    }
                 });
-                console.log(this.data);
-                console.log("Sort" + event.detail.sort.property + event.detail.sort.direction);
-//                this.sortProperty = event.detail.sort.property + ',' + event.detail.sort.direction;
-            },
+                console.log(event.detail.sort.property, event.detail.sort.direction);
+                //for some reason this's needed to trigger the data table refresh
+                this.dataTable = this.dataTable.filter(function(item) {
+                    return item.person.email.match('', 'i');
+                });
+            }
         });
     </script>
 </dom-module>
