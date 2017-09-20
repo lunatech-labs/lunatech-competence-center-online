@@ -11,12 +11,14 @@ Displays a knowledge node
     <style>
       :host {
         display: block;
+        @apply --knowledge-node-theme;
       }
 
       #node {
-        background-color: #EEE;
+        background-color: #FFF;
         border: 1px solid #000;
         border-radius: 8px;
+        box-shadow: #000 2px 2px 2px;
         box-sizing: border-box;
         min-width: 200px;
         padding: 8px;
@@ -85,11 +87,11 @@ Displays a knowledge node
       },
 
       listeners: {
-        "node.tap": "_expand"
+        'tap': '_expand'
       },
 
       _expand: function() {
-        this.expanded = true;
+        this.dispatchEvent(new CustomEvent('knowledge-node--clicked', { detail: this.topic, bubbles: true, composed: true }));
       },
 
       _computeVideoResourceAmount: function (topic) {

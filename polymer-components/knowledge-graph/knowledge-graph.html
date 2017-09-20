@@ -13,6 +13,7 @@ Displays a knowledge graph
     <style>
       :host {
         display: block;
+
       }
 
       #node-container {
@@ -20,7 +21,7 @@ Displays a knowledge graph
       }
 
       svg {
-         position: absolute;
+        position: absolute;
       }
 
       path {
@@ -31,7 +32,7 @@ Displays a knowledge graph
       }
 
       .node {
-       position: absolute;
+        position: absolute;
       }
     </style>
 
@@ -64,8 +65,8 @@ Displays a knowledge graph
         nodes.forEach(function (node) {
           // Create the element, so we can compute the size
           var elem = document.createElement("knowledge-node") // FIXME this should be refactored externally.
-          elem.setAttribute("topic", node);
-          elem.setAttribute("style", "display: inline-block; visibility: hidden");
+          elem.set("topic", node);
+          elem.setAttribute("style", "display: inline-block");
 
           node.elem = elem;
           document.body.appendChild(elem);

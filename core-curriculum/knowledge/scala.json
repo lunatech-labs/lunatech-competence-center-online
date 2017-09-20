@@ -111,7 +111,7 @@
       "name": "Higher-order Functions",
       "description": "As mentioned in Hughes paper \"Why functional programming matters\", higher order functions (HOF) give us the perfect tool for composing code. Introducing also terms like:\n- Partial application & Currying.\n- Closures.\n",
       "tags": ["required-for-junior", "fp"],
-      "dependencies": ["wikipedia"],
+      "dependencies": ["expressions"],
       "resources": [
         {
           "name": "Wikipedia: Higher-order functions",
