@@ -1,0 +1,107 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-behavior.html">
+
+<dom-module id="topic-details">
+  <template>
+    <style>
+      #i-know-this {
+          position: absolute;
+          right: 5%;
+          top: 5%;
+      }
+
+      paper-card {
+        display: block;
+        margin: 0 auto;
+        padding: 2%;
+        position: relative;
+        width: 500px;
+      }
+
+      .resources,
+      .tags {
+        list-style: none;
+        padding: 0;
+      }
+
+      .resource {
+        margin-bottom: 5px;
+      }
+
+      .resource > iron-icon {
+        margin-right: 5px;
+      }
+
+      .tags {
+        border-top: 1px solid #EEE;
+        margin-top: 2%;
+        padding-top: 2%;
+      }
+
+      .tag {
+        background-color: #0B55BE;
+        box-shadow: var(--paper-material-elevation-1_-_box-shadow);
+        color: #FFF;
+        display: inline-block;
+        padding: 2px 5px;
+      }
+    </style>
+    <paper-card>
+      <card-content>
+        <h1>{{selected.name}}</h1>
+        <p>{{selected.description}}</p>
+
+        <template is="dom-if" if="{{_hasResources(selected)}}">
+          <h2>Resources</h2>
+          <ul class="resources">
+            <template is="dom-repeat" items="[[selected.resources]]">
+              <li class="resource">
+                <iron-icon icon="{{_resourceIcon(item)}}" size="12"></iron-icon><a href="{{item.url}}" target="_blank">{{item.name}}</a>
+              </li>
+            </template>
+          </ul>
+        </template>
+
+        <ul class="tags">
+          <template is="dom-repeat" items="[[selected.tags]]">
+            <li class="tag">[[item]]</li>
+          </template>
+        </ul>
+
+        <paper-checkbox id="i-know-this">I know this</paper-checkbox>
+      </card-content>
+      <card-actions>
+
+      </card-actions>
+    </paper-card>
+  </template>
+  <script>
+    class TopicDetails extends Polymer.mixinBehaviors([Polymer.IronOverlayBehavior], Polymer.Element) {
+
+      static get is () { return 'topic-details'; }
+
+      static get properties () {
+        return {
+          selected: {
+            type: Object,
+          },
+        }
+      }
+
+      _hasResources(topic) {
+        return topic && topic.resources && topic.resources.length;
+      }
+
+      _resourceIcon (resource) {
+        return resource && resource.type === 'video' ? 'maps:local-movies' : 'maps:av:library-books';
+      }
+    }
+
+    customElements.define(TopicDetails.is, TopicDetails);
+  </script>
+</dom-module>

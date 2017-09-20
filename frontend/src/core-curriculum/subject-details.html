@@ -2,19 +2,28 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../../bower_components/knowledge-graph/knowledge-graph.html">
+<link rel="import" href="./topic-details.html">
 
 <dom-module id="subject-details">
   <template>
+    <style>
+      :host {
+        --knowledge-node-theme: {
+          cursor: pointer;
+        };
+      }
+    </style>
     <iron-ajax id="ajaxLoad"
                loading="{{loading}}"
                url="/data/core-curriculum/knowledge/[[subject]].json"
                last-response="{{knowledge}}"></iron-ajax>
 
-    <h1>[[subject]]</h1>
+    <h1>[[knowledge.name]]</h1>
+    <p>[[knowledge.description]]</p>
     <template is="dom-if" if=[[!loading]]>
       <knowledge-graph graph="{{knowledge}}" nodes="topics"></knowledge-graph>
     </template>
-
+    <topic-details id="topicDetail"></topic-details>
   </template>
   <script>
     Polymer({
@@ -31,10 +40,19 @@
         }
       },
 
+      listeners: {
+        'knowledge-node--clicked': '_onKnowledgeNodeClicked',
+      },
+
       _onSubjectChange: function () {
         if (this.subject) {
           this.$.ajaxLoad.generateRequest();
         }
+      },
+
+      _onKnowledgeNodeClicked: function (event) {
+        this.$.topicDetail.selected = event.detail;
+        this.$.topicDetail.open();
       },
 
       ready: function() {
