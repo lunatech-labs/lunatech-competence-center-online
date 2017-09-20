@@ -27,7 +27,13 @@
         },
 
         knowledge: {
-          type: Object
+          type: Object,
+          observer: '_onKnowledgeChange'
+        },
+
+        title: {
+          type: String,
+          notify: true
         }
       },
 
@@ -37,8 +43,9 @@
         }
       },
 
-      ready: function() {
-      },
+      _onKnowledgeChange: function(knowledge) {
+        this.title = knowledge.name
+      }
     });
   </script>
 </dom-module>

@@ -24,6 +24,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/lunatech-breadcrumbs/lunatech-breadcrumbs.html">
 
 <dom-module id="my-app">
   <template>
@@ -119,17 +120,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </app-toolbar>
           </app-header>
 
+          <lunatech-breadcrumbs bread-crumbs=[[breadCrumbs]]></lunatech-breadcrumbs>
           <iron-pages
               selected="[[page]]"
               attr-for-selected="name"
               fallback-selection="view404"
               role="main">
-            <page-home name="home" title="Home"></page-home>
-            <page-workshops name="workshops" title="Workshops"></page-workshops>
-            <page-passport name="passport" title="Developer Passport" route=[[subroute]]></page-passport>
-            <page-cvs name="cvs" title="CVs" route=[[subroute]]></page-cvs>
-            <page-core-curriculum name="core-curriculum" title="Core Curriculum" route=[[subroute]]></page-core-curriculum>
-            <page-view404 name="view404"></page-view404>
+            <page-home            on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" name="home"></page-home>
+            <page-workshops       on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" name="workshops" title="Workshops"></page-workshops>
+            <page-passport        on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" name="passport" title="Developer Passport" route=[[subroute]]></page-passport>
+            <page-cvs             on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" name="cvs" title="CVs" route=[[subroute]]></page-cvs>
+            <page-core-curriculum on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" name="core-curriculum" route=[[subroute]]></page-core-curriculum>
+            <page-view404         on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" name="view404"></page-view404>
           </iron-pages>
         </app-header-layout>
       </app-drawer-layout>
@@ -160,8 +162,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         pageTitle: {
           type: String
+        },
+
+        breadCrumbs: {
+          type: Array
         }
 
+      },
+
+      titleChanged: function(e, v) {
+        if(e.path[0].classList.contains('iron-selected')) {
+          console.debug("Updating title to ", v.value);
+          this.pageTitle = v.value;
+        } else {
+          console.debug("Not updating title; change came from inactive page.");
+        }
+      },
+
+      breadCrumbsChanged: function(e, v) {
+        if(e.path[0].classList.contains('iron-selected')) {
+          console.debug("Updating bread crumbs to ", v.value);
+          this.breadCrumbs = v.value;
+        } else {
+          console.debug("Not updating bread crumbs; change came from inactive page.");
+        }
       },
 
       observers: [
@@ -184,7 +208,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _routePageChanged: function(page) {
         this.page = page || 'home';
 
-        this.pageTitle = this.$$("iron-pages [name=" + this.page +"]").title
+        var selectedPageElement = this.$$("iron-pages [name=" + this.page +"]")
+        this.pageTitle = selectedPageElement.title;
+        this.breadCrumbs = selectedPageElement.breadCrumbs;
 
         if (!this.$.drawer.persistent) {
           this.$.drawer.close();
