@@ -2,7 +2,7 @@
     "id": "maven",
     "name": "Apache Maven, a software project management and comprehension tool",
     "description": "",
-    "tags": ["tool", "java", "scala", "build"],
+    "tags": ["tool", "java", "build"],
     "topics": [
         {
             "id": "introduction",

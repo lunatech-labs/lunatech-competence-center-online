@@ -1,10 +1,9 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../../bower_components/paper-card/paper-card.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="./subject-card.html">
 
 <dom-module id="subject-list">
   <template>
@@ -15,30 +14,6 @@
         margin: 0 auto !important;
         float: none !important;
         text-align: center;
-      }
-
-      paper-card {
-        --paper-card-header-image: {
-          max-height: 250px;
-          padding: 0 10% 10%;
-          width: auto;
-        };
-        margin: 20px;
-        max-width: 400px;
-      }
-
-      paper-button a {
-        text-decoration: none;
-      }
-
-      .workshop-description {
-        height: 70px;
-      }
-
-      .card-actions paper-button,
-      .card-actions paper-icon-button {
-        margin-left: 3px;
-        margin-right: 3px;
       }
 
       paper-spinner {
@@ -60,22 +35,14 @@
     <paper-spinner active=[[loading]]></paper-spinner>
 
     <div class="layout horizontal wrap">
-      <template is="dom-repeat" items="{{graphs}}">
+      <template is="dom-repeat" items="{{graphs}}" filter="isPrimary">
+        <subject-card item=[[item]]></subject-card>
+      </template>
+    </div>
 
-        <paper-card image="{{item.image}}" class="layout vertical">
-          <div class="card-content flex">
-            <h2>{{item.name}}</h2>
-            <div class="subject-description">{{item.description}}</div>
-          </div>
-          <div class="card-actions layout horizontal center-justified">
-            <div class="cent">
-              <paper-button noink>
-                <a href="/core-curriculum/{{item.id}}">Learn more</a>
-              </paper-button>
-            </div>
-          </div>
-        </paper-card>
-
+    <div class="layout horizontal wrap">
+      <template is="dom-repeat" items="{{graphs}}" filter="isNonPrimary">
+        <subject-card item=[[item]]></subject-card>
       </template>
     </div>
   </template>
@@ -89,6 +56,15 @@
       ready: function() {
         this.$.ajaxLoad.generateRequest();
       },
+
+      isPrimary: function(item) {
+        return !!item.primary;
+      },
+
+      isNonPrimary: function(item) {
+        return !item.primary;
+      }
+
     });
   }());
   </script>

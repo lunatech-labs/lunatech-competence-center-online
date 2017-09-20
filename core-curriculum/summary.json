@@ -1,10 +1,32 @@
 [
   {
+    "id": "scala",
+    "name": "Scala programming language",
+    "description": "The Scala programming language.",
+    "tags": [
+      "programming-language",
+      "scala"
+    ],
+    "image": "/images/scala.png",
+    "primary": true
+  },
+  {
+    "id": "java",
+    "name": "Java programming language",
+    "description": "The Java programming language.",
+    "tags": [
+      "programming-language",
+      "java"
+    ],
+    "image": "/images/java.png",
+    "primary": true
+  },
+  {
     "id": "http",
     "name": "HTTP",
     "description": "The Hypertext Transfer Protocol, the transport layer of web application.",
     "tags": [],
-    "image": null
+    "image": "/images/http.png"
   },
   {
     "id": "sbt",
@@ -17,12 +39,14 @@
     "image": "/images/sbt.png"
   },
   {
-    "id": "scala",
-    "name": "Scala programming language",
-    "description": "The Scala programming language, invented by Martin Odersky.",
+    "id": "maven",
+    "name": "Apache Maven",
+    "description": "A software project management and comprehension tool",
     "tags": [
-      "programming-language"
+      "tool",
+      "java",
+      "build"
     ],
-    "image": "/images/scala.png"
+    "image": "/images/maven.png"
   }
 ]

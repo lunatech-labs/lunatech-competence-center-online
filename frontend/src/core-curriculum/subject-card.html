@@ -1,0 +1,65 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<dom-module id="subject-card">
+  <template>
+    <style>
+      :host {
+        --knowledge-node-theme: {
+          cursor: pointer;
+        };
+      }
+
+      paper-card {
+        --paper-card-header-image: {
+          padding: 0 10px;
+          width: auto;
+        };
+        margin: 20px;
+        max-width: 230px;
+      }
+
+      paper-card[primary] {
+        max-width: 500px;
+        height: auto;
+      }
+
+      paper-button a {
+        text-decoration: none;
+      }
+
+      .card-actions paper-button,
+      .card-actions paper-icon-button {
+        margin-left: 3px;
+        margin-right: 3px;
+      }
+
+    </style>
+    <paper-card primary$="[[item.primary]]" image="{{item.image}}" class="layout vertical">
+      <div class="card-content flex">
+        <h2>{{item.name}}</h2>
+        <div class="subject-description">{{item.description}}</div>
+      </div>
+      <div class="card-actions layout horizontal center-justified">
+        <div class="cent">
+          <paper-button noink>
+            <a href="/core-curriculum/{{item.id}}">Learn more</a>
+          </paper-button>
+        </div>
+      </div>
+    </paper-card>
+  </template>
+  <script>
+    Polymer({
+      is: "subject-card",
+
+      properties: {
+        item: {
+          type: Object
+        }
+      }
+
+    });
+  </script>
+</dom-module>
