@@ -7,6 +7,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR/..
 
 # VALIDATE CC SCHEMA
+scripts/cc_check_dependencies.sh
 cd core-curriculum
 sbt clean validateSchema
 cd ..
