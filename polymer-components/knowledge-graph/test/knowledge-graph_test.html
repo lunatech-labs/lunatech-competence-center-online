@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>knowledge-graph test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../knowledge-graph.html">
+  </head>
+  <body>
+    <test-fixture id="basic">
+      <template>
+        <knowledge-graph></knowledge-graph>
+      </template>
+    </test-fixture>
+
+    <script>
+      suite('knowledge-graph', function() {
+        test('instantiating the element works', function() {
+          var element = fixture('basic');
+          assert.equal(element.is, 'knowledge-graph');
+        });
+      });
+    </script>
+  </body>
+</html>

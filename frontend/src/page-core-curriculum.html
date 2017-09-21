@@ -11,6 +11,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="core-curriculum/subject-list.html">
 <link rel="import" href="core-curriculum/subject-details.html">
+<link rel="import" href="util/page-behavior.html">
 
 <dom-module id="page-core-curriculum">
     <template>
@@ -33,21 +34,49 @@
             attr-for-selected="id"
             role="main">
           <subject-list id="list"></subject-list>
-          <subject-details id="details" subject="{{routeData.id}}"></subject-details>
-        </iron-pages>
+          <subject-details id="details" subject="{{routeData.id}}" title="{{subjectTitle}}"></subject-details>
+        </iron-pages
 
         <graph-list></graph-list>
     </template>
 
     <script>
-     Polymer({
+      Polymer({
          is: 'page-core-curriculum',
+
+         behaviors: [PageBehavior],
 
          properties: {
            page: {
              type: String,
              computed: '_computePage(graphSelected)'
+           },
+
+           title: {
+             value: "Core Curriculum"
+           },
+
+           subjectTitle: {
+             type: String,
+             value: ""
+           },
+
+           breadCrumbs: {
+             value: [],
+             computed: "computeBreadCrumbs(page, routeData.id, subjectTitle)"
            }
+         },
+
+        computeBreadCrumbs: function(page, subjectId, subjectTitle) {
+           if(page == "details" && subjectTitle != "") {
+             return [{
+               "title": "Core Curriculum", "link": "/core-curriculum"
+             }, {
+               "title": subjectTitle, "link": "/core-curriculum/" + subjectId
+             }]
+            } else {
+              return [];
+            }
          },
 
          _computePage: function(graphSelected) {

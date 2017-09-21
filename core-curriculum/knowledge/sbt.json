@@ -16,6 +16,11 @@
           "type": "documentation",
           "url": "http://www.scala-sbt.org/documentation.html",
           "tags": ["official"]
+        },
+        {
+          "name": "Scala SBT - a short video tutorial",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=dF9l15WMrxg"
         }
       ],
       "abilities": [
@@ -35,12 +40,19 @@
       ]
     },
     {
-      "id": "plugins",
+      "id": "using-plugins",
       "name": "Using Plugins",
       "description": "SBT has many plugins. Some important plugins to know are `scalafmt`, `sbt-updates` and `sbt-dependency-graph`, `sbt-buildinfo`.",
       "tags": ["required-for-junior"],
       "dependencies": ["basic-usage"],
-      "resources": [],
+      "resources": [
+        {
+          "name": "Using plugins",
+          "type": "documentation",
+          "url": "http://www.scala-sbt.org/0.13/docs/Using-Plugins.html",
+          "tags": ["official"]
+        }
+      ],
       "abilities": [
         "Install a plugin in the project, or globally",
         "Have your code automatically formatted on every compile",
@@ -60,7 +72,25 @@
       "name": "Publishing libraries",
       "description": "Libraries can be published",
       "tags": ["required-for-scala-medior"],
-      "resources": [],
+      "resources": [
+        {
+          "name": "Publishing",
+          "type": "documentation",
+          "url": "http://www.scala-sbt.org/0.13/docs/Publishing.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Using Sonatype",
+          "type": "documentation",
+          "url": "http://www.scala-sbt.org/0.13/docs/Using-Sonatype.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Publishing sbt projects to nexus",
+          "type": "article",
+          "url": "http://www.cakesolutions.net/teamblogs/2012/01/28/publishing-sbt-projects-to-nexus"
+        }
+      ],
       "dependencies": ["using-plugins"],
       "abilities": [
         "Publish a library to Artifactory",
@@ -78,7 +108,19 @@
       "name": "Creating custom tasks",
       "description": "Make your own tasks to automate stuff",
       "tags": ["required-for-scala-medior"],
-      "resources": [],
+      "resources": [
+        {
+          "name": "Custom settings and tasks",
+          "type": "documentation",
+          "url": "http://www.scala-sbt.org/0.13/docs/Custom-Settings.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "SBT: the missing manual",
+          "type": "article",
+          "url": "https://github.com/shekhargulati/52-technologies-in-2016/blob/master/02-sbt/README.md#writing-your-own-tasks"
+        }
+      ],
       "dependencies": ["basic-usage"],
       "abilities": [
         "Create a task that runs a shell command",
@@ -93,7 +135,19 @@
       "id": "creating-plugins",
       "name": "Creating plugins",
       "description": "How to create plugins",
-      "resources": [],
+      "resources": [
+        {
+          "name": "SBT Plugins: How and Why",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=adKT7doSEAA",
+          "tags": ["scala-central"]
+        },
+        {
+          "name": "Writing an SBT plugin",
+          "type": "article",
+          "url": "https://tersesystems.com/2014/06/24/writing-an-sbt-plugin/"
+        }
+      ],
       "dependencies": ["creating-tasks", "using-plugins", "publishing"],
       "abilities": [
         "Create an SBT plugin",
@@ -106,7 +160,14 @@
       "name": "Multi-module builds",
       "description": "Making SBT projects with multiple modules",
       "tags": ["required-for-scala-medior"],
-      "resources": [],
+      "resources": [
+        {
+          "name": "Multi-project builds",
+          "type": "documentation",
+          "url": "http://www.scala-sbt.org/0.13/docs/Multi-Project.html",
+          "tags": ["official"]
+        }
+      ],
       "dependencies": ["basic-usage"],
       "abilities": [
         "Create a project with multiple modules, where one modules depends on another module",

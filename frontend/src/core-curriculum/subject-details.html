@@ -1,18 +1,72 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../bower_components/knowledge-graph/knowledge-graph.html">
+<link rel="import" href="./topic-details.html">
 
 <dom-module id="subject-details">
-    <template>
-        <h1>Details page for subject [[subject]]
-    </template>
-</dom-module>
-<script>
- Polymer({
-     is: "subject-details",
+  <template>
+    <style>
+      :host {
+        --knowledge-node-theme: {
+          cursor: pointer;
+        };
+      }
+    </style>
+    <iron-ajax id="ajaxLoad"
+               loading="{{loading}}"
+               url="/data/core-curriculum/knowledge/[[subject]].json"
+               last-response="{{knowledge}}"></iron-ajax>
 
-     properties: {
-       subject: {
-         type: String
-       }
-     }
- });
-</script>
+    <h1>[[knowledge.name]]</h1>
+    <p>[[knowledge.description]]</p>
+    <template is="dom-if" if=[[!loading]]>
+      <knowledge-graph graph="{{knowledge}}" nodes="topics"></knowledge-graph>
+    </template>
+    <topic-details id="topicDetail"></topic-details>
+  </template>
+  <script>
+    Polymer({
+      is: "subject-details",
+
+      properties: {
+        subject: {
+          observer: '_onSubjectChange',
+          type: String
+        },
+
+        knowledge: {
+          type: Object,
+          observer: '_onKnowledgeChange'
+        },
+
+        title: {
+          type: String,
+          notify: true
+        }
+      },
+
+      listeners: {
+        'knowledge-node--clicked': '_onKnowledgeNodeClicked',
+      },
+
+      _onSubjectChange: function () {
+        if (this.subject) {
+          this.$.ajaxLoad.generateRequest();
+        }
+      },
+
+      _onKnowledgeNodeClicked: function (event) {
+        this.$.topicDetail.selected = event.detail;
+        this.$.topicDetail.open();
+      },
+
+      ready: function() {
+      },
+
+      _onKnowledgeChange: function(knowledge) {
+        this.title = knowledge.name
+      }
+    });
+  </script>
+</dom-module>

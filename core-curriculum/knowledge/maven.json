@@ -1,0 +1,190 @@
+{
+    "id": "maven",
+    "name": "Apache Maven, a software project management and comprehension tool",
+    "description": "",
+    "tags": ["tool", "java", "build"],
+    "topics": [
+        {
+            "id": "introduction",
+            "name": "basics",
+            "description": "",
+            "tags": ["required-for-junior"],
+            "resources": [
+                {
+                    "name": "Maven Documentation",
+                    "type": "documentation",
+                    "url": "https://maven.apache.org/what-is-maven.html",
+                    "tags": ["official"]
+                }],
+            "abilities": [
+                "Understand the purpose of Maven, what it does.",
+                "Install and run maven.",
+                "Create a maven project using the standardised folder structure.",
+                "Add simple dependency to the maven project."],
+            "assessment-questions": [
+                {"question": "What are the basic components of a Maven project?"},
+                {"question": "Where are the dependencies (libraries) downloaded from?"}]
+        },
+        {
+            "id": "project-build-lifecycle",
+            "name": "basics",
+            "description": "Build Lifecycle of a maven project",
+            "tags": ["required-for-junior"],
+            "resources": [
+                {
+                    "name": "Maven Documentation",
+                    "type": "documentation",
+                    "url": "https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html",
+                    "tags": ["official"]
+                }],
+            "abilities": [
+                "Understand the build lifecycle of a maven project ",
+                "Run and combine different steps of lifecycle"],
+            "assessment-questions": [
+                {"question": "What is the difference between build phase and goal?" },
+                {"question": "How can you run a build lifecycle?"}]
+        },
+        {
+            "id": "dependency-management",
+            "name": "basics",
+            "description": "Managing dependencies of a maven project",
+            "tags": ["required-for-junior"],
+            "resources": [
+                {
+                    "name": "Maven Documentation",
+                    "type": "documentation",
+                    "url": "https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html",
+                    "tags": ["official"]
+                }],
+            "abilities": [
+                "Understand types of dependencies, versioning, and scopes",
+                "Identify the pitfalls with Transitive dependencies and use exclusions"],
+            "assessment-questions": [
+                {"question": "What types of 'scopes' available for a dependency?"},
+                {"question": "How can you restrict a dependencies to a specific scope?" },
+                {"question": "What is a transitive dependency?"}]
+        },
+        {
+            "id": "build-profiles",
+            "name": "basics",
+            "description": "Using multiple profiles in a maven project",
+            "tags": ["required-for-junior"],
+            "resources": [
+                {
+                    "name": "Maven Documentation",
+                    "type": "documentation",
+                    "url": "https://maven.apache.org/guides/introduction/introduction-to-profiles.html",
+                    "tags": ["official"]
+                }],
+            "abilities": [],
+            "assessment-questions": [
+                {"question": "Can you give an example where profiles will be useful?" },
+                {"question": "How do you run a project with multiple profiles enabled?"}]
+        },
+        {
+            "id": "project-websites",
+            "name": "basics",
+            "description": "Using maven to generate project website",
+            "tags": ["required-for-senior"],
+            "resources": [
+                {
+                    "name": "Maven Documentation",
+                    "type": "documentation",
+                    "url": "https://maven.apache.org/guides/mini/guide-site.html",
+                    "tags": ["official"]
+                }],
+            "abilities": [],
+            "assessment-questions": [
+                {"question": "How can you generate a project website (with documentation) for a maven project?" }]
+        },
+        {
+            "id": "maven-archetypes",
+            "name": "basics",
+            "description": "Using archetypes to generate a maven project",
+            "tags": ["required-for-junior"],
+            "resources": [
+                {
+                    "name": "Maven Documentation",
+                    "type": "documentation",
+                    "url": "https://maven.apache.org/guides/introduction/introduction-to-archetypes.html",
+                    "tags": ["official"]
+                }],
+            "abilities": [],
+            "assessment-questions": [
+                {"question": "What is a maven archetype and how is it useful?" },
+                {"question": "Can you create a quick start java project using archetypes?"},
+                {"question": "How can you get a list of archetypes available using mvn command?"}]
+        },
+        {
+            "id": "using-plugins",
+            "name": "basics",
+            "description": "Maven plugins that enhance the lifeycle by providing various features",
+            "tags": ["required-for-junior"],
+            "resources": [
+                {
+                    "name": "Maven Documentation",
+                    "type": "documentation",
+                    "url": "https://maven.apache.org/guides/introduction/introduction-to-plugins.html",
+                    "tags": ["official"]
+                }],
+            "abilities": [],
+            "assessment-questions": [
+                {"question": "What is the purpose of a plugin? Can you give some example plugins that are useful?"},
+                {"question": "How do you add a plugin to a maven project?" },
+                {"question": "How can you know which build phase a plugin will 'plug-in' to? "}]
+        },
+        {
+            "id": "writing-maven-plugins",
+            "name": "basics",
+            "description": "Creating custom plugins for maven",
+            "tags": ["required-for-senior"],
+            "resources": [
+                {
+                    "name": "Maven Documentation",
+                    "type": "documentation",
+                    "url": "https://maven.apache.org/guides/plugin/guide-java-plugin-development.html",
+                    "tags": ["official"]
+                }],
+            "abilities": [],
+            "assessment-questions": [
+                {"question": "What is the structure of maven plugin?" },
+                {"question": "Can you describe a maven plugin life cycle?"}]
+        },
+        {
+            "id": "artifact-publication",
+            "name": "basics",
+            "description": "Publishing artifacts in public and private repositories",
+            "tags": ["required-for-senior"],
+            "resources": [
+                {
+                    "name": "Maven Documentation",
+                    "type": "documentation",
+                    "url": "https://maven.apache.org/guides/introduction/introduction-to-repositories.html",
+                    "tags": ["official"]
+                }],
+            "abilities": [],
+            "assessment-questions": [
+                {"question": "How can you publish an artifact to the public maven repositories?" },
+                {"question": "What is the difference between snapshot and release repositories?"},
+                {"question": "How can you restirct access to a repository?"}]
+        },
+        {
+            "id": "custom-archetypes",
+            "name": "basics",
+            "description": "Making custom archetypes that can be used to generate new projects",
+            "tags": ["required-for-senior"],
+            "resources": [
+                {
+                    "name": "Maven Documentation",
+                    "type": "documentation",
+                    "url": "https://maven.apache.org/guides/mini/guide-creating-archetypes.html",
+                    "tags": ["official"]
+                }],
+            "abilities": [],
+            "assessment-questions": [
+                {"question": "How can you create a skeleton archetype project?" },
+                {"question": "How can you publish and share an archetype?"},
+                {"question": "What is a prototype pom?"}]
+        }
+    ]
+}

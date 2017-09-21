@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>lunatech-breadcrumbs demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../lunatech-breadcrumbs.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic lunatech-breadcrumbs demo</h3>
+      <demo-snippet>
+        <template>
+          <lunatech-breadcrumbs bread-crumbs='[{"title":"Core Curriculum", "link":"http://foo.com"}, {"title": "Scala", "link":"http://bar.com"}]'></lunatech-breadcrumbs>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>

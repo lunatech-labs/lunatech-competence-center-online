@@ -1,14 +1,14 @@
 {
   "id": "scala",
   "name": "Scala programming language",
-  "description": "The Scala programming language, invented by Martin Odersky.",
+  "description": "The Scala programming language, invented by Martin Odersky, is a general-purpose programming language providing support for functional programming and a strong static type system.",
   "tags": ["programming-language"],
   "image": "/images/scala.png",
   "topics": [
     {
       "id": "expressions",
-      "name": "Control flow opposed to expressions",
-      "description": "Scala prefers expressions over statements, we should know the differences between both.",
+      "name": "Control flow and expressions",
+      "description": "Scala prefers expressions over statements. The substitution model can be used to reason about evaluation of Scala programs. Methods automatically return the last expression in the method body, so using the `return` keyword is not necessary.",
       "tags": ["required-for-junior", "fp"],
       "resources": [
         {
@@ -16,13 +16,36 @@
           "type": "other",
           "url": "https://stackoverflow.com/a/34964507",
           "tags": ["stackoverflow"]
+        },
+        {
+          "name": "Evaluation Strategies and Termination",
+          "type": "video",
+          "url": "https://www.coursera.org/learn/progfun1/lecture/eervR/lecture-1-3-evaluation-strategies-and-termination",
+          "tags": ["coursera", "mooc"]
+        },
+        {
+          "name": "Scala Syntax Summary",
+          "type": "video",
+          "url": "https://www.coursera.org/learn/progfun1/lecture/0AMxq/lecture-2-4-scala-syntax-summary",
+          "tags": ["coursera", "mooc"]
         }
+      ],
+
+      "abilities": [
+        "Code basic Scala scripts and run them.",
+        "Refactor code that depends heavily on statements into an equivalent program that uses expressions.",
+        "Remove `return` statements."
+      ],
+
+      "assessment-questions": [
+        { "question": "How does `if/else` differ between Java and Scala?", "answer-hint": "In Java it's a statement, in Scala an expression." },
+        { "question": "Can you use the substitution model to reduce the following expression: ```scala \nval x = \"foo\"\nval y =\"bar\"\nconcat(x, y)```, given `def concat(a: String, b: String) = a + b`"}
       ]
     },
     {
       "id": "functions-as-values",
       "name": "Functions as values",
-      "description": "Scala has functions as first class citizens, that means that can be pass around like any other type, with this will should be able to use/declare:\n - Functions.\n - Methods.\n -Local functions.\n -Partial application & Currying.\n -Closures.\n - By-Value and By-Name.",
+      "description": "Scala has functions as first class citizens, that means that functions can be pass around like any other value, with this you should be able to use/declare:\n- Functions.\n- Methods.\n- Local functions.\n- By-Value and By-Name.",
       "tags": ["required-for-junior", "fp"],
       "dependencies": ["expressions"],
       "resources": [
@@ -32,6 +55,17 @@
           "url": "https://en.wikipedia.org/wiki/First-class_function",
           "tags": ["wikipedia"]
         }
+      ],
+
+      "abilities": [
+        "Declare functions and methods.",
+        "Hide implementation details within a method using nested functions.",
+        "Prevent parameter evaluation to promote laziness."
+      ],
+
+      "assessment-questions": [
+        { "question": "Given the substitution model,\n ```scala \ndef foo(x: => Int, y: => String) = if (x == 7) y else (y + y)```\nCan you explain how many times `y` is evaluated when `foo(7, \"bar\")`? And what about `foo(8, \"bar\")`?" },
+        { "question": "How do you prevent a by-name parameter that you use multiple times to be evaluated more than once?", "answer-hint": "By assigning it to a `lazy val` and using that one in the remainder of the method body." }
       ]
     },
     {
@@ -51,42 +85,95 @@
           "type": "article",
           "url": "https://www.scala-lang.org/files/archive/spec/2.11/08-pattern-matching.html",
           "tags": ["official"]
+        },
+        {
+          "name": "Pattern matching",
+          "type": "video",
+          "url": "https://www.coursera.org/learn/progfun1/lecture/cdHAM/lecture-4-6-pattern-matching",
+          "tags": ["coursera", "mooc"]
         }
+      ],
+
+      "abilities": [
+        "Decompose code by matching in a more descriptive way.",
+        "Recognise when use Pattern matching over if/else expressions.",
+        "Define partial functions using a block of case statements."
+      ],
+
+      "assessment-questions": [
+        { "question": "Is there a limit on how deep or nested a pattern can go?" },
+        { "question": "What will happen in case the pattern isn't exhaustive?", "answer-hint": "The compile will issue a warning, and an exception will be thrown if it doesn't match at runtime (`MatchError`)." },
+        { "question": "If we have ```scala \nList(\"first_name\" -> \"Alonzo\", \"last_name\" -> \"Church\").foldLeft(\"\")((acc, kv) -> acc + kv._1 + \":\" + kv._2)```\nHow can we better express the key/value relationship?" }
       ]
     },
     {
       "id": "hof",
-      "name": "High-order Functions",
-      "description": "As mentioned in Hughes paper \"Why functional programming matters\", HOF give us the perfect tool for composing code.",
+      "name": "Higher-order Functions",
+      "description": "As mentioned in Hughes paper \"Why functional programming matters\", higher order functions (HOF) give us the perfect tool for composing code. Introducing also terms like:\n- Partial application & Currying.\n- Closures.\n",
       "tags": ["required-for-junior", "fp"],
-      "dependencies": ["wikipedia"],
+      "dependencies": ["expressions"],
       "resources": [
         {
-          "name": "Wikipedia: High-order functions",
+          "name": "Wikipedia: Higher-order functions",
           "type": "article",
           "url": "https://en.wikipedia.org/wiki/Higher-order_function#Scala",
           "tags": ["wikipedia"]
         },
         {
-          "name": "ScalaDoc: High-order functions",
+          "name": "ScalaDoc: Higher-order functions",
           "type": "article",
           "url": "http://docs.scala-lang.org/tutorials/tour/higher-order-functions.html",
           "tags": ["official"]
+        },
+        {
+          "name": "Higher-Order functions",
+          "type": "video",
+          "url": "https://www.coursera.org/learn/progfun1/lecture/xuM1M/lecture-2-1-higher-order-functions",
+          "tags": ["coursera", "mooc"]
+        },
+        {
+          "name": "Currying",
+          "type": "video",
+          "url": "https://www.coursera.org/learn/progfun1/lecture/fOuQ9/lecture-2-2-currying",
+          "tags": ["coursera", "mooc"]
         }
+      ],
+
+      "abilities": [
+        "Replace Anonymous classes with lambdas."
+      ],
+
+      "assessment-questions": [
+        { "question": "Which are some common higher-order functions?", "answer-hint": "`map`, `flatMap` and `filter` for example." },
+        { "question": "Can you define what a **Combinator** is?" },
+        { "question": "What is a closure?", "answer-hint": "A function that _closes over_ variables defined outside the function, capturing them."}
       ]
     },
     {
       "id": "object-oriented-i",
       "name": "Object Oriented I",
-      "description": "Scala combines OO and FP seamlessly, we should know how to define:\n - Classes.\n - Class modifiers.\n - Visibility modifiers.\n - Composition and inheritance.\n - Traits.\n - Value classes.",
+      "description": "Scala combines OO and FP seamlessly, we should know how to define:\n- Classes.\n- Class modifiers.\n- Visibility modifiers.\n- Composition and inheritance.\n- Traits.\n- Value classes.",
       "tags": ["required-for-junior"],
       "resources": [
         {
-          "name": "ScalaDoc: Styleguide",
+          "name": "ScalaDoc: Style guide",
           "type": "article",
           "url": "http://docs.scala-lang.org/style/scaladoc.html#classes-objects-and-traits",
           "tags": ["official"]
         }
+      ],
+
+      "abilities": [
+        "Implement simple object oriented designs.",
+        "Define contracts that an implementation must abide.",
+        "Hide implementation details through visibility modifiers."
+      ],
+
+      "assessment-questions": [
+        { "question": "What's the difference between an `abstract class` and a `trait`?" },
+        { "question": "How does Scala deal with the Diamond Problem in regards to trait default implementations?" },
+        { "question": "Every class in Scala has a primary constructor, where is it defined?" },
+        { "question": "Scala lets you define secondary constructors, how do you define them and what is the only requirement in their bodies?" }
       ]
     },
     {
@@ -105,12 +192,20 @@
           "type": "article",
           "url": "https://blog.codecentric.de/en/2015/03/scala-type-system-parameterized-types-variances-part-1/"
         }
+      ],
+
+      "abilities": [
+        "Implement your own version of `List` or `Map`, with methods such as `map`, `fold` and `filter`."
+      ],
+
+      "assessment-questions": [
+        { "question": "Given the definition:\n```scala \ndef foo[A](a: A) = ...```\nHow many possible implementation are there?", "answer-hint": "This is a trick question: in Scala there are infinitely many possible implementations, for example by pattern matching on `a`, or throwing an arbitrary exception. Assuming a _proper_ generic language, there would be only a single implementation: We have no methods on `a`, and it's the only instance of `A` that we have and can obtain no others, so we must return it." }
       ]
     },
     {
       "id": "implicit-parameters",
       "name": "Implicit parameters",
-      "description": "Implicit parameters allow us to define a way of not explicitly passing parameters to a function. This is very useful when defining a context.\n\nIncludes context bounds and implicit conversions.",
+      "description": "Implicit parameters allows to define a way of not explicitly passing parameters to a function. This is very useful when defining a context.\n\nIncludes context bounds and implicit conversions.",
       "tags": ["required-for-junior"],
       "resources": [
         {
@@ -125,12 +220,24 @@
           "url": "http://www.scala-lang.org/files/archive/spec/2.11/07-implicit-parameters-and-views.html",
           "tags": ["official"]
         }
+      ],
+
+      "abilities": [
+        "Define implicit conversions, such as `Int -> String`",
+        "Use context bounds for making the method signature leaner."
+      ],
+
+      "assessment-questions": [
+        { "question": "Can you explain how the implicit resolution works? In which order?" },
+        { "question": "Given the following compiler error `error: could not find implicit value`, can you explain what went wrong and how to fix it?" },
+        { "question": "How many argument lists are allowed in Scala? How many of those are allowed for implicit argument lists? And, in which position must it appear?" },
+        { "question": "Is there a way of by-passing the implicit resolution by making it explicit?" }
       ]
     },
     {
       "id": "adt",
       "name": "Algebraic data types",
-      "description": "Or ADT, the provide a way to structure our classes in an algebraic way",
+      "description": "Algebraic data types (ADT) provide a way to structure code in an algebraic way.",
       "tags": ["required-for-scala-medior", "fp"],
       "dependencies": ["object-oriented-i"],
       "resources": [
@@ -150,14 +257,73 @@
           "type": "other",
           "url": "http://tpolecat.github.io/presentations/algebraic_types.html"
         }
+      ],
+
+      "abilities": [
+        "Structure types in term of an algebra, in terms of Sum and Product types."
+      ],
+
+      "assessment-questions": [
+        { "question": "What's the standard Scala way of implementing ADTs?" },
+        { "question": "Given the task of modeling a deck of cards, can you model such with ADTs?" },
+        { "question": "Can you explain why a `List` is a Recursive data type?" }
       ]
     },
     {
       "id": "object-oriented-ii",
       "name": "Object oriented II",
-      "description": "Scala allows for more advanced OO concepts such as:\n - Type parameters (similar to type parameters).\n - Existencial types.\n - Trait composition, Mixins.\n - Existencial types.\n - Static duck typing, or structural types.\n - Double dispatch.\n - Path dependent types.",
+      "description": "Scala allows for more advanced OO concepts such as:\n - Type parameters (similar to type parameters).\n - Existencial types.\n - Trait composition, Mixins.\n - Existencial types.\n - Static duck typing, or structural types.\n - Double dispatch.\n - Path dependent types.\n - The expression problem.",
       "tags": ["required-for-scala-medior"],
-      "dependencies": ["object-oriented-i", "type-parameters"]
+      "dependencies": ["object-oriented-i", "type-parameters"],
+      "resources": [
+        {
+          "name": "Existential types in Scala",
+          "type": "article",
+          "url": "http://www.cakesolutions.net/teamblogs/existential-types-in-scala"
+        },
+        {
+          "name": "Existential types are not raw types",
+          "type": "article",
+          "url": "http://www.cakesolutions.net/teamblogs/existential-types-in-scala"
+        },
+        {
+          "name": "Class composition with Mixins",
+          "type": "article",
+          "url": "https://docs.scala-lang.org/tour/mixin-class-composition.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Duck Typing in Scala: Structural Typing",
+          "type": "article",
+          "url": "https://dzone.com/articles/duck-typing-scala-structural"
+        },
+        {
+          "name": "Why No One Uses Scala’s Structural Typing",
+          "type": "article",
+          "url": "http://www.draconianoverlord.com/2011/10/04/why-no-one-uses-scala-structural-typing.html"
+        },
+        {
+          "name": "Lecture 26 - Double dispatch",
+          "type": "video",
+          "url": "https://es.coursera.org/learn/programming-languages-part-c/lecture/7Jaov/double-dispatch",
+          "tags": ["coursera"]
+        },
+        {
+          "name": "Scala Types of Types: Path Dependent Type",
+          "type": "article",
+          "url": "http://ktoso.github.io/scala-types-of-types/#path-dependent-type"
+        }
+      ],
+
+      "abilities": [
+        "Define Mixins that can be reused in multiple scenarios.",
+        "Take advantage of structural typing, allowing you to perform *adapters* ad-hoc.",
+        "Approach the expression problem through double dispatch."
+      ],
+
+      "assessment-questions": [
+        { "question": "Given a class definition:\n```scala \ntrait Bar\ntrait Baz\nclass Foo extends Bar with Baz\nclass Tar extends Baz with Bar```\nDoes `Foo` and `Tar` resolve inheritance the same order?" }
+      ]
     },
     {
       "id": "type-constructors",
@@ -171,6 +337,10 @@
           "type": "article",
           "url": "http://ktoso.github.io/scala-types-of-types/#type-constructor-span-style-color-red-span"
         }
+      ],
+
+      "assessment-questions": [
+        { "question": "Why do we say that `List` is a type constructor." }
       ]
     },
     {
@@ -178,97 +348,419 @@
       "name": "Error handling",
       "description": "Error and bugs are ubiquitous in software, Scala provides several ways to handle this:\n - try-catch.\n - Option.\n - Either.\n - Try",
       "tags": ["required-for-junior"],
-      "dependencies": ["hof", "pattern-matching"]
+      "dependencies": ["hof", "pattern-matching"],
+      "resources": [
+        {
+          "name": "Error handling in Scala",
+          "type": "article",
+          "url": "https://tersesystems.com/2012/12/27/error-handling-in-scala/"
+        },
+        {
+          "name": "Easing into functional error handling in Scala",
+          "type": "article",
+          "url": "http://longcao.org/2015/06/15/easing-into-functional-error-handling-in-scala"
+        },
+        {
+          "name": "Handling errors without exceptions",
+          "type": "book",
+          "notes": "Chapter 4: 'Handling errors without exceptions', section 4.1",
+          "url": "https://www.manning.com/books/functional-programming-in-scala"
+        }
+      ],
+
+      "abilities": [
+        "Use Exception catching, specially when interfacing against Java or Java-like code.",
+        "Avoid `NullPointerException`, using `Option` instead.",
+        "Use `Either` when `Exception` doesn't fit nicely on the design of the application.",
+        "Understand the difference between `Try` and `Either`, and when to use one or the other."
+      ],
+
+      "assessment-questions": [
+        { "question": "How would you implement `Try` in term of `Either`? Can you do the same in the opposite direction?" },
+        { "question": "How can you lift a function that may return `null`?" },
+        { "question": "How can you wrap code that throws exceptions to make it explicit?" }
+      ]
     },
     {
       "id": "concurrency",
       "name": "Concurrency",
       "description": "Backed by the JVM, Scala has support for concurrency, this means:\n - Synchronised methods.\n - Futures.",
       "tags": ["required-for-scala-medior"],
-      "dependencies": ["hof"]
+      "dependencies": ["hof"],
+      "resources": [
+        {
+          "name": "ScalaDoc: Futures and Promises",
+          "type": "article",
+          "url": "http://docs.scala-lang.org/overviews/core/futures.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "The Neophyte's Guide to Scala Part 8: Welcome to the Future",
+          "type": "article",
+          "url": "http://danielwestheide.com/blog/2013/01/09/the-neophytes-guide-to-scala-part-8-welcome-to-the-future.html"
+        },
+        {
+          "name": "Concurrency",
+          "type": "article",
+          "url": "https://twitter.github.io/scala_school/concurrency.html"
+        }
+      ],
+
+      "abilities": [
+        "Use `Future`, `Promise`.",
+        "Work with asynchronous code, taking full advantage of the JVM."
+      ],
+
+      "assessment-questions": [
+        { "question": "What is a `ThreadExecutor`?" },
+        { "question": "What problems might be introduced in your code when combining `Future` with HOFs?" },
+        { "question": "How would you deal with blocking I/O?" },
+        { "question": "In which situations is synchronous code more suitable?" }
+      ]
     },
     {
       "id": "laziness",
       "name": "Laziness",
       "description": "Scala provides syntax level laziness, allowing us to delay evaluation.\n - Lazy modifier.\n - Thunk.",
       "tags": ["required-for-scala-medior", "fp"],
-      "dependencies": ["functions-as-values"]
+      "dependencies": ["functions-as-values"],
+      "resources": [
+        {
+          "name": "Strictness and laziness",
+          "type": "book",
+          "notes": "Chapter 5: 'Strictness and laziness', section 5.1",
+          "url": "https://www.manning.com/books/functional-programming-in-scala"
+        },
+        {
+          "name": "Understand and implement laziness with examples in Scala, JavaScript, Swift and Racket",
+          "type": "article",
+          "url": "http://matt.might.net/articles/implementing-laziness/"
+        },
+        {
+          "name": "16 months of functional programming",
+          "type": "article",
+          "url": "http://www.vasinov.com/blog/16-months-of-functional-programming/#toc-laziness"
+        },
+        {
+          "name": "Lazy Vals in Scala: A Look Under the Hood",
+          "type": "article",
+          "url": "https://blog.codecentric.de/en/2016/02/lazy-vals-scala-look-hood/"
+        }
+      ],
+
+      "abilities": [
+        "Use `lazy` modifier in conjunction with `by-name` syntax to avoid re-evaluating the argument multiple times."
+      ]
     },
     {
       "id": "collections-i",
       "name": "Collections I",
-      "description": "Collections allow us to define a container for a bunch of things. Different collection have different semantics and properties.\n\nHere we define the basic collections, like Seq, List, Set and Map.",
+      "description": "Collections allows to define containers for a bunch of values. Different collection have different semantics and properties.\n\nHere we define the basic collections, like Seq, List, Set and Map.",
       "tags": ["required-for-junior"],
-      "dependencies": ["hof"]
+      "dependencies": ["hof"],
+      "resources": [
+        {
+          "name": "ScalaDoc: Collections",
+          "type": "article",
+          "notes": "Read the following sections: Introduction, Mutable vs Immutable, Seqs, Sets and Maps.",
+          "url": "https://docs.scala-lang.org/overviews/collections/introduction.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Collections",
+          "type": "article",
+          "notes": "See *Basic Data Structures* section.",
+          "url": "https://twitter.github.io/scala_school/collections.html"
+        }
+      ],
+
+      "abilities": [
+        "Use basic collections.",
+        "Understand what are the conceptual differences between collection types.",
+        "Use basic combinators on each of the collections, transforming or filtering for example."
+      ],
+
+      "assessment-questions": [
+        { "question": "What's the conceptual difference between a `List` and a `Set`? When should you use one or the other?" },
+        { "question": "Some collections, such as `Set` or `Map` can be used as functions, what are their semantics?" },
+        { "question": "Is it possible to substitute a `Function` for a `Map`? If so, what are the type signature of both?" }
+      ]
     },
     {
       "id": "collections-ii",
       "name": "Collections II",
-      "description": "Scala provides a nice façade for each collection, allowing you to don't worry about the actual implementation. But usually this is very important, we should know the underlying data structures and which are their trade offs.",
+      "description": "Scala provides a nice façade for each collection, but usually implementation is very important, knowing the underlying data structures and which are their trade offs.",
       "tags": ["required-for-scala-medior"],
-      "dependencies": ["collections-i", "type-constructors", "implicit-parameters"]
+      "dependencies": ["collections-i", "type-constructors", "implicit-parameters"],
+      "resources": [
+        {
+          "name": "ScalaDoc: Collections",
+          "type": "article",
+          "notes": "Read the following sections: 'Concrete immutable and mutable collections' and 'Performance characteristics'.",
+          "url": "https://docs.scala-lang.org/overviews/collections/introduction.html"
+        },
+        {
+          "name": "Understanding the Scala collections hierarchy",
+          "type": "book",
+          "url": "https://alvinalexander.com/scala/understanding-scala-collections-hierarchy-cookbook"
+        }
+      ]
     },
     {
       "id": "collections-iii",
       "name": "Collections III",
       "description": "Collections are the bread and butter of developers, after knowing about actual implementations, you should know about Traversable, Iterator, Iterable, TraversableLike, CanBuildFrom, etc.",
       "tags": ["required-for-scala-senior"],
-      "dependencies": ["collections-ii"]
+      "dependencies": ["collections-ii"],
+      "resources": [
+        {
+          "name": "ScalaDoc: The Architecture of Scala Collections",
+          "type": "article",
+          "url": "http://docs.scala-lang.org/overviews/core/architecture-of-scala-collections.html",
+          "tags": ["official"]
+        }
+      ]
     },
     {
       "id": "streams",
       "name": "Streams",
       "description": "Streams allow us to work with potentially infinite data structures.",
-      "dependecies": ["collections-i", "functions-as-values", "laziness"]
+      "dependecies": ["collections-i", "functions-as-values", "laziness"],
+      "resources": [
+        {
+          "name": "An extended example: lazy lists",
+          "type": "book",
+          "notes": "Chapter 5: 'Strictness and lazyness', section 5.2",
+          "url": "https://www.manning.com/books/functional-programming-in-scala"
+        },
+        {
+          "name": "Understanding Scala streams through Finbonacci",
+          "type": "article",
+          "url": "http://derekwyatt.org/2011/07/29/understanding-scala-streams-through-fibonacci/"
+        }
+      ],
+
+      "abilities": [
+        "Use Scala Streams API",
+        "Create custom Streams, using a thunk to generate them indefinitely."
+      ],
+
+      "assessment-questions": [
+        { "question": "Why do we use thunk or by-name arguments in lazy structures? Why cannot just use strict evaluation?" },
+        { "question": "Normally, what happens with the data that already has been processed over a stream? Why? Which are the pros and cons?" }
+      ]
     },
     {
       "id": "variance",
       "name": "Variance",
       "description": "With type parameters and type constructors comes variance, which defines for a give type A that extends B, how is the relationship of C[A] and C[B], given a type constructor C.",
       "tags": ["required-for-scala-senior"],
-      "dependencies": ["type-parameters", "type-constructors", "collections-i"]
+      "dependencies": ["type-parameters", "type-constructors", "collections-i"],
+      "resources": [
+        {
+          "name": "Wikipedia: Covariance and contravariance",
+          "type": "article",
+          "url": "https://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science)",
+          "tags": ["wikipedia"]
+        },
+        {
+          "name": "Variance",
+          "type": "video",
+          "url": "https://www.coursera.org/learn/progfun1/lecture/dnreZ/lecture-4-4-variance-optional",
+          "tags": ["coursera", "mooc"]
+        },
+        {
+          "name": "The Scala Type System: Parameterized Types and Variances, Part 1",
+          "type": "article",
+          "url": "https://blog.codecentric.de/en/2015/03/scala-type-system-parameterized-types-variances-part-1/"
+        }
+      ],
+
+      "abilities": [
+        "Recognize what's does it mean for a value to be in covariant or contravariant position",
+        "Understand why in Scala we've `List[+A]`, what are the pitfalls that could've arose and how were they solved."
+      ],
+
+      "assessment-questions": [
+        { "question": "Can you explain with an example how an argument can be not in contravariant position?" },
+        { "question": "Can you just simply flip covariant and contravariant position? Why not?" }
+      ]
     },
     {
       "id": "extractors",
       "name": "Extractors",
-      "description": "Extractors let us declare how our classes will be decomposed in pattern matching.",
+      "description": "Extractors declares how objects will be decomposed in pattern matching.",
       "tags": ["required-for-scala-medior"],
-      "dependencies": ["pattern-matching", "error-handling"]
+      "dependencies": ["pattern-matching", "error-handling"],
+      "resources": [
+        {
+          "name": "The Neophyte's Guide to Scala Part 1: Extractors",
+          "type": "article",
+          "url": "http://danielwestheide.com/blog/2012/11/21/the-neophytes-guide-to-scala-part-1-extractors.html"
+        },
+        {
+          "name": "ScalaDoc: Extractor Objects",
+          "type": "article",
+          "url": "http://docs.scala-lang.org/tutorials/tour/extractor-objects.html",
+          "tags": ["official"]
+        }
+      ],
+
+      "abilities": [
+        "In case of a regular class, define custom extractors that don't involve the constructor extractor.",
+        "In case of a case class, override the default extractor.",
+        "Implement *syntax* objects to allow for infix extraction."
+      ],
+
+      "assessment-questions": [
+        { "question": "Which is the method that must me implemented? And where must it be implemented?" },
+        { "question": "Why does the extractor must return an instance of `Option`?" }
+      ]
     },
     {
       "id": "type-classes",
       "name": "Type classes",
       "description": "A type class is a type system construct that supports ad-hoc polymorphism.",
       "tags": ["required-for-scala-medior", "fp"],
-      "dependencies": ["implicit-parameters", "object-oriented-i", "type-parameters"]
+      "dependencies": ["implicit-parameters", "object-oriented-i", "type-parameters"],
+      "resources": [
+        {
+          "name": "The Typeclass Pattern in Scala",
+          "type": "article",
+          "url": "http://www.openforce.com/2016/02/the-typeclass-pattern-in-scala"
+        },
+        {
+          "name": "Anatomy of a Type Class",
+          "type": "book",
+          "notes": "Chapter 1: 'Introduction', section 1.1",
+          "url": "http://underscore.io/books/advanced-scala/"
+        },
+        {
+          "name": "Don't Fear the Implicits: Everything You Need to Know About Typeclasses",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=1e9tcymPl7w"
+        },
+        {
+          "name": "The Typeclass Pattern - An Alternative to Inheritance",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=yYo0gANYViE"
+        }
+      ],
+
+      "abilities": [
+        "Use ad-hoc polymorphism.",
+        "Refactor code using the GoF's Adapter Pattern to use Type classes."
+      ],
+
+      "assessment-questions": [
+        { "question": "Which parts compose a Type class pattern?" },
+        { "question": "Would it be possible to have Type Classes without implicit parameters? If so, how and at what cost?" }
+      ]
     },
     {
       "id": "extension-methods",
       "name": "Extension methods",
       "description": "Extension methods (a.k.a. Type Enrichment or Pimp my library).",
       "tags": ["required-for-scala-medior"],
-      "dependencies": ["implicit-parameters"]
+      "dependencies": ["implicit-parameters"],
+      "resources": [
+        {
+          "name": "Pimp my library",
+          "type": "article",
+          "url": "http://www.artima.com/weblogs/viewpost.jsp?thread=179766",
+          "tags": ["odersky"]
+        },
+        {
+          "name": "Extension methods in Scala",
+          "type": "article",
+          "url": "https://coderwall.com/p/4clu3a/extension-methods-in-scala"
+        }
+      ],
+
+      "abilities": [
+        "Extend classes, even closed ones, to include new methods in a type safe way (without byte code instrumentation or macros).",
+        "Implement the GoF's Decorator Pattern through extension methods."
+      ],
+
+      "assessment-questions": [
+        { "question": "What are the two main requirements that an extension method implementation must fulfill?" }
+      ]
     },
     {
       "id": "functors",
       "name": "Functors",
       "tags": ["fp"],
       "description": "Functors are things that can be mapped.",
-      "dependencies": ["type-parameters", "type-constructors"]
+      "dependencies": ["type-parameters", "type-constructors"],
+      "resources": [
+        {
+          "name": "Funtors: generalizing the map",
+          "type": "book",
+          "notes": "Chapter 11: 'Monads' , section 11.1",
+          "url": "https://www.manning.com/books/functional-programming-in-scala"
+        },
+        {
+          "name": "Functors in Scala",
+          "type": "article",
+          "url": "https://dzone.com/articles/functors-in-scala"
+        }
+      ]
     },
     {
       "id": "monads",
       "name": "Monads",
       "tags": ["fp"],
       "description": "A Monad is a burrito.",
-      "dependencies": ["functors", "expressions"]
+      "dependencies": ["functors", "expressions"],
+      "resources": [
+        {
+          "name": "Monads: generalizing the flatMap and unit functions",
+          "type": "book",
+          "notes": "Chapter 11: 'Monads' , section 11.2",
+          "url": "https://www.manning.com/books/functional-programming-in-scala"
+        },
+        {
+          "name": "Demystifying the Monad in Scala",
+          "type": "article",
+          "url": "https://medium.com/@sinisalouc/demystifying-the-monad-in-scala-cc716bb6f534"
+        },
+        {
+          "name": "Don't fear the Monad",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=Mw_Jnn_Y5iA"
+        },
+        {
+          "name": "Don't fear the Monad",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=ZhuHCtR3xq8"
+        }
+      ]
     },
     {
       "id": "monad-transformers",
       "name": "Monad transformers",
       "tags": ["fp"],
       "description": "A Monad transformer is like a regular monad, but the act in conjunction with another monad to make possible interop with a third one.",
-      "dependencies": ["monads", "error-handling", "concurrency"]
+      "dependencies": ["monads", "error-handling", "concurrency"],
+      "resources": [
+        {
+          "name": "Monad transformers down to earth",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=jd5e71nFEZM",
+          "tags": ["scala-days"]
+        },
+        {
+          "name": "Invasion of the Monad Transformers",
+          "type": "article",
+          "url": "http://www.openforce.com/2016/03/invasion-of-the-monad-transformers"
+        },
+        {
+          "name": "Monad composition",
+          "type": "book",
+          "notes": "Chapter 12: 'Applicative and traversable functors' , section 12.7.6",
+          "url": "https://www.manning.com/books/functional-programming-in-scala"
+        }
+      ]
     }
   ]
 }
