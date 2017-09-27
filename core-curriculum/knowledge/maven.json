@@ -1,7 +1,7 @@
 {
     "id": "maven",
-    "name": "Apache Maven, a software project management and comprehension tool",
-    "description": "",
+    "name": "Apache Maven",
+    "description": "A software project management and comprehension tool",
     "tags": ["tool", "java", "build"],
     "topics": [
         {
