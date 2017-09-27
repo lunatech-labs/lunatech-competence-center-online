@@ -15,6 +15,7 @@
 <link rel="import" href="../vaadin-date-picker/vaadin-date-picker.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../iron-meta/iron-meta.html">
+<link rel="import" href="../img-mask/img-mask.html">
 
 <!--
 `cv-editor`
@@ -128,7 +129,7 @@ CV Editor
          </div>
        </div>
        <div class="card-content">
-         <image-mask id="photoImage" src="{{data.employee.basics.image}}" size="200"></image-mask>
+         <img-mask id="photoImage" src="{{data.employee.basics.image}}" size="200"></img-mask>
        </div>
      </paper-card>
      <paper-card elevation="0">
@@ -240,7 +241,7 @@ CV Editor
          </div>
        </div>
        <div class="card-content">
-         <image-mask id="photoImage" src="{{data.employee.basics.image}}" size="200" on-tap="photoSelected"></image-mask>
+         <img-mask id="photoImage" src="{{data.employee.basics.image}}" size="200" on-tap="photoSelected"></img-mask>
          <paper-input label="Photo address" value="{{data.employee.basics.image}}"></paper-input>
          <paper-button hidden$=[[!photoChanged]] on-tap="resetPhoto">Reset Photo</paper-button>
        </div>
@@ -358,7 +359,7 @@ CV Editor
          </div>
        </div>
        <div class="card-content">
-         <image-mask id="photoImage" src="{{data.employee.basics.image}}" size="200"></image-mask>
+         <img-mask id="photoImage" src="{{data.employee.basics.image}}" size="200"></img-mask>
        </div>
      </paper-card>
      <paper-card elevation="0">

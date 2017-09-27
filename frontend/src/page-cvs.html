@@ -1,105 +1,139 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/cv-editor/cv-editor.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-meta/iron-meta.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-datatable-api/paper-datatable-api.html">
+<link rel="import" href="../bower_components/paper-datatable-api/paper-datatable-api-column.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="page-cvs">
-  <template>
-    <style include="shared-styles">
-      :host {
-        display: block;
-        padding: 10px;
-      }
-    </style>
-    <iron-meta id="meta"></iron-meta>
 
-    <iron-ajax id="ajaxLoad"
-        url="/api/cvs"
-        handle-as="json"
-        loading={{loading}}
-        last-response={{cvs}}></iron-ajax>
+    <template>
+
+        <style include="iron-flex iron-flex-alignment"></style>
+        <style>
+            div.layout > div {
+                width: 90%;
+            }
+
+            paper-card {
+                width: 100%;
+            }
+        </style>
+
+        <iron-meta id="meta"></iron-meta>
+
+        <div class="layout horizontal center-justified">
+            <div>
+                <iron-ajax id="ajaxLoad"
+                           url="/api/cvs"
+                           handle-as="json"
+                           loading={{loading}}
+                           on-response="_handleResponse"></iron-ajax>
 
 
+                <paper-card heading="Lunatech CVs">
+                    <div class="horizontal center-justified center layout">
+                        <iron-icon icon="icons:search" prefix></iron-icon>
+                        <paper-input id="searchInput" value="{{searchTerm}}" on-input="_handleFilter" label="Search..."
+                                     style="display:inline-block" no-label-float></paper-input>
+                    </div>
+                    <div class="card-content">
+                        <paper-datatable-api data="[[dataTable]]" on-sort="_handleSort" on-filter="_handleFilter">
+                            <paper-datatable-api-column header="Name" property="person.name.fullName" type="String"
+                                                        sortable>
+                                <template>[[value]]</template>
+                            </paper-datatable-api-column>
+                            <paper-datatable-api-column header="Email" property="person.email" type="String"
+                                                        sortable>
+                                <template>{{value}}</template>
+                            </paper-datatable-api-column>
+                            <paper-datatable-api-column header="Title" property="cv.employee.basics.label" type="String"
+                                                        sortable>
+                                <template>[[value]]</template>
+                            </paper-datatable-api-column>
+                            <paper-datatable-api-column header="Skills" property="cv">
+                                <template>{{formatSkills(item)}}</template>
+                            </paper-datatable-api-column>
+                            <div no-results>Loading or no more items...</div>
+                        </paper-datatable-api>
+                    </div>
+                </paper-card>
+            </div>
+        </div>
+    </template>
 
-    <paper-datatable-card heading="Just a normal data table" page-size="1000">
-      <div toolbar-main>
-        <paper-input id="searchInput" value="{{searchTerm}}" on-input="applyFilter" label="Search..." style="display:inline-block" no-label-float>
-          <div prefix>
-            <iron-icon icon="search"></iron-icon>
-          </div>
-        </paper-input>
-      </div>
-      <paper-datatable id="cvsDatatable" data={{cvs}} progress="[[loading]]" filter="{{tableFilter}}" on-row-tap="rowClicked">
-        <paper-datatable-column header="Name" property="item.person.name.fullName" type="String" sortable>
-          <template is="dom-if" if="{{item.cv}}">
-            {{item.person.name.fullName}}
-          </template>
-        </paper-datatable-column>
-        <paper-datatable-column header="Email" property="item.person.email"  type="String" sortable>
-          <template>{{item.person.email}}</template>
-        </paper-datatable-column>
-        <paper-datatable-column header="Title" property="item.cv"  type="String" sortable>
-          <template>{{item.cv.employee.basics.label}}</template>
-        </paper-datatable-column>
-        <paper-datatable-column header="Skills">
-          <template>{{formatSkills(item)}}</template>
-        </paper-datatable-column>
-        <div no-results>Loading or no more items...</div>
-      </paper-datatable>
-    </paper-datatable-card>
+    <script>
+        Polymer({
+            is: 'page-cvs',
+            properties: {
+                data: {
+                    type: Array,
+                    notify: true
+                },
+                dataTable: {
+                    type: Array,
+                    notify: true
+                }
+            },
+            ready: function() {
+                this.$.ajaxLoad.headers = {'X-ID-Token': this.$.meta.byKey('idToken')};
+                this.$.ajaxLoad.generateRequest();
+            },
+            formatSkills: function(cv) {
+                if (!cv || !cv.employee.skills) {
+                    return '';
+                }
+                return cv.employee.skills.map(function(skill) {
+                    return skill.name;
+                }).join(', ');
+            },
+            _handleResponse: function(event) {
+                this.data = event.detail.response;
+                this.dataTable = this.data;
+            },
+            _handleFilter: function(event) {
+                var keyword = this.searchTerm;
+                this.dataTable = this.data.filter(function(item) {
+                    return item.person.email.match(keyword, 'i');
+                });
+            },
+            _handleSort: function(event) {
+                function index(obj,is, value) {
+                    if (typeof is == 'string')
+                        return index(obj,is.split('.'), value);
+                    else if (is !==undefined && is.length==1 && value!==undefined)
+                        return obj[is[0]] = value;
+                    else if (is !==undefined && is.length==0)
+                        return obj;
+                    else if(is !==undefined)
+                        return index(obj[is[0]],is.slice(1), value);
+                }
 
-  </template>
+                this.dataTable = this.data.sort(function(a, b) {
+                    if(typeof event.detail.sort.property !==undefined){
+                        var aString = index(a,event.detail.sort.property);
+                        var bString = index(b,event.detail.sort.property);
+                    }else{
+                        var aString = a.person.name.fullName;
+                        var bString = b.person.name.fullName;
+                    }
 
-  <script>
-    Polymer({
-      is: 'page-cvs',
-      properties: {
-        cvs: {
-          type: Array
-        },
-      },
-
-      applyFilter: function() {
-        this.$.cvsDatatable.reload();
-      },
-
-      ready: function() {
-        this.$.cvsDatatable.filter = function(item, key, items) {
-          return item.person.email.match(new RegExp(this.searchTerm, 'i'))
-        }.bind(this);
-
-        this.$.ajaxLoad.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
-        this.$.ajaxLoad.generateRequest();
-      },
-
-      formatSkills: function(item) {
-        if(!item.cv || !item.cv.employee.skills){
-          return "";
-        }
-        return item.cv.employee.skills.map(function(skill){ return skill.name}).join(", ");
-      },
-
-      rowClicked: function(event) {
-          if(!event.detail.item.cv){
-            return false;
-          }
-          this.person = event.detail.item.person;
-          this.set('cv', event.detail.item.cv);
-          this.$.csvList.set('path', '/cvs/'+this.person.email.replace(/\./g,"-"));
-      }
-    });
-  </script>
+                    if(event.detail.sort.direction == 'desc'){
+                        return (aString < bString) ? 1 : ((bString < aString) ? -1 : 0);
+                    } else {
+                        return -1 * ((aString < bString) ? 1 : ((bString < aString) ? -1 : 0));
+                    }
+                });
+                console.log(event.detail.sort.property, event.detail.sort.direction);
+                //for some reason this's needed to trigger the data table refresh
+                this.dataTable = this.dataTable.filter(function(item) {
+                    return item.person.email.match('', 'i');
+                });
+            }
+        });
+    </script>
 </dom-module>

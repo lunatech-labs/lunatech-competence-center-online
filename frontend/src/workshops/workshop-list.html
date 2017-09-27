@@ -56,7 +56,7 @@
 
     <paper-spinner active=[[loading]]></paper-spinner>
 
-    <template is="dom-repeat" items="{{workshops}}">
+    <template is="dom-repeat" items="{{workshops}}" rendered-item-count="{{workshopsCount}}">
 
       <paper-card image="{{item.eventDetails.logoUrl}}">
         <div class="card-content">
@@ -76,6 +76,9 @@
           </div>
         </div>
       </paper-card>
+    </template>
+    <template is="dom-if" if="{{!workshopsCount}}">
+      There's no Lunatech Workshops at the moment, please visit us later!
     </template>
   </template>
 </dom-module>
