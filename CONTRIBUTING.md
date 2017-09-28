@@ -46,26 +46,28 @@ Once you have API keys for EventBrite and the People API, do the following:
 
 ### Frontend
 
+    scripts/link_local_polymer_components.sh
+    
     cd frontend
     npm install
     polymer serve
+    
+In case of conflicts, remove the bower_components and redo steps described above. 
 
 ### nginx
 
     scripts/run_local_nginx.sh
 
-- [Build and serve frontend](frontend/README.md)
-- [Run the backend](backend/README.md)
-- Open [http://localhost:8081](http://localhost:8081) in your browser
-- Use the provided [Postman](https://www.getpostman.com/) [collection](backend/resources/CCO.postman_collection.json) and [environment](backend/resources/OCC.postman_environment.json) to try the API.
 
 ### Observe
 
-Browse to http://localhost:8080/ to see the application. There is also a GUI running on top of the Postgres database, reach it on http://localhost:8088/ and login with username `postgres`, password `secret` and database `competence-center`.
+Browse to http://localhost:8080/ to see the application. 
+There is also a GUI running on top of the Postgres database, reach it on http://localhost:8088/ and login with username `postgres`, password `secret` and database `competence-center`.
 
-## Documentation
 
-- [Swagger REST API documentation](backend/resources/swagger.yml)
+## API Documentation
+
+- WIP [Swagger REST API documentation](backend/resources/swagger.yml)
 
   Copy/paste the swagger.yml content into http://editor.swagger.io/ to
   view the documentation for the REST API
