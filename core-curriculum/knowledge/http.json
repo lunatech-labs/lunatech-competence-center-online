@@ -33,7 +33,9 @@
         "name": "HTTP/1.1: Status Code Definitions",
         "type": "documentation",
         "url": "https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html"}],
-      "abilities": [],
+      "abilities": [
+        "Decide on suitable response status codes for a RESTful API that you design."
+      ],
       "assessment-questions": [
         { "question": "What's a 200 response?" },
         { "question": "What's a 403 response?" },
@@ -44,6 +46,63 @@
         { "question": "You are making an API andpoint where a resource can be created. What's a suitable response-code if the creation succeeded?", "answer-hint": "201 Created. But 200 is probably also acceptable." },
         { "question": "You are making an API andpoint where a resource can be created. What's a suitable response-code if the creation failed because the client sent wrong JSON?", "answer-hint": "Client failure, so must be 4xx. Probably 400 Bad Request." },
         { "question": "You are making an API andpoint where a resource can be retrieved. What's a suitable response-code if the retrieval failed because the database is down?", "answer-hint": "Server failure, so must be 5xx. Probably 500 Internal Server Error, but 502 Bad Gateway or 503 Service Unavailable are also acceptable." }
+      ]
+    },
+
+    {
+      "id": "cli-tooling",
+      "name": "Command Line tooling",
+      "description": "Many tools exist to create and execute arbitrary HTTP requests. cURL and HTTPie are popular ones. They are very useful when experimenting with or debugging APIs",
+      "tags": ["required-for-junior"],
+      "dependencies": ["http1-basics"],
+      "resources": [{
+        "name": "HTTPie website",
+        "type": "documentation",
+        "url": "https://httpie.org/"
+      }, {
+        "name": "cURL website",
+        "type": "documentation",
+        "url": "https://curl.haxx.se/"
+      }],
+      "abilities": [
+        "Inspect the response headers of a GET request to google.com",
+        "Send a request with a JSON body and the appropriate Content-Type header to an API endpoint."
+      ]
+    },
+
+    {
+      "id": "tls",
+      "name": "Transport Layer Security",
+      "description": "Transport Layer security is the standard security layer on the web. Prohibitively computationally expensive in the past, it's now getting omnipresent. Java and Scala applications can use TLS, support is built into the standard library. Tools like Java's `keytool` or the friendlier GUI tool Keystore Explorer are essential in creating, inspecting and understanding keystores and trust stores. A good conceptual grasp of TLS, the handshake in TLS and mutual authentication are beneficial when connection issues need to be debugged.",
+      "tags": [],
+      "assessment-questions": [
+        { "question": "What alternative could you think of in the absense of Transport Layer Security?", "answer-hint": "Application layer security for example" },
+        { "question": "What does client authentication mean in the context of TLS?", "answer-hint": "It means that the client also uses a certificate to prove its identity to the server" },
+        { "question": "What is a Certificate Authority? Why do they exist?", "answer-hint": "A certificate authority is a trusted party that signs certificates. They exist to avoid having to exchange certificates with every party that you want to communicate with." },
+        { "question": "What's the difference between SSL and TLS?", "answer-hint": "SSL (Secure Sockets Layer) is very outdated. TLS is the successor, but colloquially still called SSL sometimes." },
+        { "question": "How does HTTPS relate to TLS?", "answer-hint": "HTTPS is HTTP over a connection secured by TLS." },
+        { "question": "What's the default port for an HTTPS server?", "answer-hint": "443" },
+        { "question": "What's the normal procedure to obtain a CA-signed certificate?", "answer-hint": "Create a private key, create a Certificate Signing Request (CSR), submit the CSR to the CA which will verify your identity and supply you with the certificate." },
+        { "question": "In a Java Key Store file, what's the difference between a PrivateKeyEntry and a TrustedCertEntry?", "answer-hint": "Private Key Entry contains a private key that you can use to prove your own identity, or to sign things. A Trusted Cert Entry is a certificate that you trust."}
+      ],
+      "abilities": [
+        "Use the `keytool` command to inspect a JKS keystore.",
+        "Use KeyStore Explorer to create self-signed certificates."
+      ]
+    },
+
+    {
+      "id": "browser-tooling",
+      "name": "Browser Tooling",
+      "description": "All modern browsers have advanced tooling for inspecting requests and responses between browser and server. They make visible the headers of requests and responses, their body content and how long requests take.",
+      "tags": ["required-for-junior"],
+      "assessment-questions": [],
+      "dependencies": ["http1-basics"],
+      "abilities": [
+        "Use the tooling in your preferred browser to inspect request headers",
+        "Find the request that you are looking for on pages that do many requests",
+        "Determine how many Ajax calls the frontpage of Amazon.com makes",
+        "Use your browser to determine the response headers of the 302 response you get when you browse to http://google.com"
       ]
     }
   ]
