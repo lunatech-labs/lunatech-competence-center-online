@@ -2,9 +2,11 @@ package com.lunatech.cc.models
 
 import com.lunatech.cc.api.GoogleUser
 import com.lunatech.cc.api.services.Person
+import io.circe.{Decoder, Encoder, Json}
 
 import scala.language.implicitConversions
 import io.circe.generic.semiauto._
+
 
 case class Contact(name: String,
                    address: String,
@@ -29,6 +31,22 @@ case class Employee(basics: BasicDetails,
                     projects: Seq[Project],
                     educations: Seq[Education])
 
+object Employee {
+  def apply(user:GoogleUser): Employee = {
+    val bd: BasicDetails = BasicDetails(user.givenName,user.familyName,"","",user.email,"","",Contact("","","","","","",""))
+    basicEmployee(bd)
+  }
+
+  def apply(person: Person): Employee = {
+    val bd: BasicDetails = BasicDetails(person.name.givenName,person.name.familyName,"","",person.email,"","",Contact("","","","","","",""))
+    basicEmployee(bd)
+  }
+
+  private def basicEmployee(bd: BasicDetails) = {
+    Employee(bd,Seq(),Seq(),Seq(),Seq())
+  }
+}
+
 case class Skill(category: String,
                  name: String,
                  level: Int)
@@ -50,6 +68,20 @@ case class Meta(client: String,
                 creationDate: String,
                 office: String,
                 language: String)
+
+
+case class CVData(email: String, cv: Json)
+case class CVS(email: String, cvs: List[Json])
+
+object CVData {
+
+  import io.circe.generic.semiauto._
+  implicit val enc: Encoder[CVData] = deriveEncoder[CVData]
+  implicit val dec: Decoder[CVData] = deriveDecoder[CVData]
+  implicit val enccvs: Encoder[CVS] = deriveEncoder[CVS]
+  implicit val deccvs: Decoder[CVS] = deriveDecoder[CVS]
+
+}
 
 case class CV(employee: Employee,
               meta: Meta)
