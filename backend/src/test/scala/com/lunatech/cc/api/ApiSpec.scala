@@ -3,7 +3,7 @@ package com.lunatech.cc.api
 import java.io.ByteArrayInputStream
 import java.util.UUID
 
-import com.lunatech.cc.api.CompetenceCenterApi.{Config, config, createTransactor, transactor}
+import com.lunatech.cc.api.CompetenceCenterApi.Config
 import com.lunatech.cc.api.services.TestData._
 import com.lunatech.cc.api.services._
 import com.lunatech.cc.formatter.{CVFormatter, DefaultTemplate, FormatResult, Template}
@@ -13,14 +13,12 @@ import com.twitter.io.Reader
 import com.twitter.util.Future
 import doobie.imports.DriverManagerTransactor
 import fs2.Task
-import io.circe.Decoder.Result
 import io.circe.Json
 import io.circe.generic.auto._
 import io.circe.syntax._
 import io.finch.Error.NotPresent
 import io.finch.{Endpoint, Input, Output}
 import org.scalatest.{Matchers, _}
-import org.slf4j.Logger
 import pureconfig._
 
 import scala.collection.mutable
@@ -28,7 +26,6 @@ import scalaz.{-\/, \/-}
 
 class ApiSpec extends FlatSpec with Matchers {
 
-  import PeopleServiceSpec._
 
   private val tokenVerifier = new StaticTokenVerifier()
   private val managerTokenVerifier = new StaticManagerTokenVerifier()

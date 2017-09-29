@@ -6,12 +6,10 @@ import cats.implicits._
 import com.lunatech.cc.api.GoogleUser
 import com.lunatech.cc.models.CVData
 
-import scala.reflect.runtime.universe.TypeTag
 import doobie.imports.{Meta, _}
 import fs2.Task
-import io.circe.{Decoder, Encoder, Json}
+import io.circe.Json
 import io.circe.parser.parse
-import io.circe.syntax._
 import org.postgresql.util.PGobject
 
 trait CVService {

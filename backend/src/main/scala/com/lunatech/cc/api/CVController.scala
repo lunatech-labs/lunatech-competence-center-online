@@ -3,9 +3,9 @@ package com.lunatech.cc.api
 import java.util.UUID
 
 import com.lunatech.cc.api.Routes._
-import com.lunatech.cc.api.services.{CVService, PeopleService, Person}
+import com.lunatech.cc.api.services.{CVService, PeopleService}
 import com.lunatech.cc.formatter.{CVFormatter, FormatResult}
-import com.lunatech.cc.models.{CV, CVData, CVS, Employee}
+import com.lunatech.cc.models.{CV, CVS}
 import com.twitter.io.{Buf, Reader}
 import com.twitter.util.Future
 import io.circe._
@@ -13,7 +13,6 @@ import io.circe.generic.auto._
 import io.circe.syntax._
 import io.finch._
 import io.finch.circe._
-import cats.implicits._
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory._
 

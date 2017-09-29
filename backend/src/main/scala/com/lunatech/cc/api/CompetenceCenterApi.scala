@@ -1,6 +1,5 @@
 package com.lunatech.cc.api
 
-import com.lunatech.cc.api.CompetenceCenterApi.passportController
 import com.lunatech.cc.api.services._
 import com.lunatech.cc.formatter.PdfCVFormatter
 import com.lunatech.cc.utils.DBMigration
