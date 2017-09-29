@@ -44,6 +44,9 @@ Once you have API keys for EventBrite and the People API, do the following:
     cd backend
     sbt "~re-start"
 
+Use `scalafix RemoveUnusedImports` for cleaning up imports
+
+
 ### Frontend
 
     scripts/link_local_polymer_components.sh

@@ -5,9 +5,7 @@ import scalaz._
 import shapeless._
 import io.circe.parser._
 import io.circe.generic.auto._
-import com.twitter.util.Future
 import com.twitter.finagle.http.Status
-import com.lunatech.cc.api.TokenVerifier
 
 package object api {
   case class AuthConfig(clientsJson: String) {

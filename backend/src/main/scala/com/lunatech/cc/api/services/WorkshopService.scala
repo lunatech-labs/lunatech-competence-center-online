@@ -1,6 +1,5 @@
 package com.lunatech.cc.api.services
 
-import cats._
 import com.twitter.util.Future
 import com.twitter.finagle.http.{ Request, RequestBuilder, Response }
 import com.twitter.finagle.{ Http, Service }
@@ -9,8 +8,6 @@ import io.circe._
 import io.circe.parser._
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import scalaz._
-import scalaz.Scalaz._
 import scala.util.control.NonFatal
 
 trait WorkshopService {
