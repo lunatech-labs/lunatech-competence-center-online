@@ -6,13 +6,11 @@ import com.lunatech.cc.utils.DBMigration
 import com.twitter.finagle.http.filter.Cors
 import com.twitter.finagle.http.{Request, Response, Status}
 import com.twitter.finagle.{Http, Service}
-import com.twitter.util.{Await, Future}
-import com.typesafe.config.ConfigFactory
+import com.twitter.util.Await
 import doobie.imports._
 import fs2._
 import io.finch._
 import io.finch.circe._
-import org.flywaydb.core.Flyway
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory._
 import pureconfig._

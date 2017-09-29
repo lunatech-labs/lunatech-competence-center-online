@@ -3,7 +3,6 @@ package com.lunatech.cc.api.services
 import com.twitter.finagle.{Http, Service}
 import com.twitter.finagle.http.{Request, RequestBuilder, Response, Status}
 import com.twitter.util.{Duration, Future}
-import com.typesafe.config.Config
 import io.circe._
 import io.circe.parser._
 import io.circe.generic.auto._

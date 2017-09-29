@@ -13,7 +13,6 @@ import org.apache.fop.apps.FopFactoryBuilder
 import org.apache.xmlgraphics.util.MimeConstants
 import xml.{Resume, defaultScope}
 
-import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
 import scala.xml.NodeSeq
 

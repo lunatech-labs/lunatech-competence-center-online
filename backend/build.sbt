@@ -1,6 +1,6 @@
 import com.typesafe.sbt.packager.docker._
 
-scalaVersion := "2.12.2"
+scalaVersion := "2.12.3"
 
 organization := "com.lunatech.cc"
 
@@ -51,7 +51,8 @@ lazy val root = (project in file(".")).
     scalaxbDispatchVersion in (Compile, scalaxb) := "0.11.3",
     scalaxbPackageName in (Compile, scalaxb)     := "xml",
     flywayUrl := "jdbc:postgresql:competence-center",
-    flywayUser := "postgres"
+    flywayUser := "postgres",
+    scalacOptions += "-Ywarn-unused-import"
   )
 
 coverageExcludedPackages := "scalaxb;xml;"

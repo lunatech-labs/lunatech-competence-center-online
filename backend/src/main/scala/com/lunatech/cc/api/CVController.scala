@@ -1,12 +1,11 @@
 package com.lunatech.cc.api
 
 import com.lunatech.cc.api.Routes._
-import com.lunatech.cc.api.services.{PeopleService, Person}
+import com.lunatech.cc.api.services.PeopleService
 import com.lunatech.cc.formatter.{CVFormatter, FormatResult}
-import com.lunatech.cc.models.{CV, Employee}
+import com.lunatech.cc.models.CV
 import com.twitter.io.{Buf, Reader}
 import com.twitter.util.Future
-import com.twitter.finagle.http.Status
 import io.circe._
 import io.circe.generic.auto._
 import io.circe.syntax._
