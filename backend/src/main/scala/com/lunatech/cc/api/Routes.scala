@@ -1,6 +1,6 @@
 package com.lunatech.cc.api
 
-import io.finch.{Endpoint, Endpoint0, header}
+import io.finch.{Endpoint, header}
 import shapeless.HNil
 
 object Routes {

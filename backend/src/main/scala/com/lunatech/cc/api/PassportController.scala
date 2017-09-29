@@ -1,7 +1,7 @@
 package com.lunatech.cc.api
 
 import com.lunatech.cc.api.Routes._
-import com.lunatech.cc.api.services.{PassportService, PeopleService, Person}
+import com.lunatech.cc.api.services.{PassportService, PeopleService}
 import com.lunatech.cc.models.Employee
 import io.circe._
 import io.circe.generic.auto._
