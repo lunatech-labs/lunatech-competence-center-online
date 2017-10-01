@@ -34,7 +34,6 @@ class PostgresCVService(transactor: Transactor[Task]) extends CVService {
     Meta.other[PGobject]("json").nxmap[Json](
       a => parse(a.getValue).leftMap[Json](e => throw e).merge, // failure raises an exception
       a => {
-        println(a)
         val o = new PGobject
         o.setType("json")
         o.setValue(a.noSpaces)
@@ -50,12 +49,14 @@ class PostgresCVService(transactor: Transactor[Task]) extends CVService {
 
   override def findAll: Map[String, List[Json]] = {
 
-    val folder: (List[CVData]) => Map[String, List[Json]] = (x: List[CVData]) => x.foldRight(Map[String, List[Json]]()) ((cvd: CVData, aggr: Map[String, List[Json]]) => {
-      val l =   aggr.get(cvd.email).map( l => cvd.cv :: l).getOrElse(List(cvd.cv))
-      aggr + (cvd.email -> l)
-    } )
+    val toMap: (List[CVData]) => Map[String, List[Json]] = (x: List[CVData]) => x.groupBy(_.email).mapValues(_.map(_.cv))
+
+
     val out = sql"SELECT person, cv FROM cvs ORDER BY person, created_on".query[CVData].process.list.transact(transactor).unsafeRun()
-    folder(out)
+    val x = toMap(out)
+//    println("query output")
+//    println(x)
+    x
   }
 
 

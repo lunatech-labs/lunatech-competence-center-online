@@ -66,7 +66,7 @@ class ApiSpec extends FlatSpec with Matchers {
   private val pg_passportService: PassportService = new PostgresPassportService(transactor)
   private val cvFormatter = new StaticCVFormatter
   private val cvController = new CVController(cvService, peopleService, cvFormatter,authenticated, authenticatedUser)
-  private val pg_cvController = new CVController(pg_cvService, static_peopleService, cvFormatter,authenticated, authenticatedUser)
+  private val pg_cvController = new CVController(pg_cvService, peopleService, cvFormatter,authenticated, authenticatedUser)
   private val passportController = new PassportController(passportService,peopleService, authenticatedUser)
   private val pg_passportController = new PassportController(pg_passportService,peopleService, authenticatedUser)
   private def withToken(input: Input) = input.withHeaders("X-ID-Token" -> "Token")
@@ -159,14 +159,22 @@ class ApiSpec extends FlatSpec with Matchers {
 
   it should "return Seq[CVS] on GET /cvs" in {
     val output = withToken(Input.get("/cvs"))
-    cvController.`GET /cvs`(output).awaitValueUnsafe().getOrElse(Json.fromString("[]")).as[List[CVS]] should be ('right)
+    cvController.`GET /cvs`(output).awaitValueUnsafe().getOrElse(Json.fromString("[]")).as[List[CVS]] match {
+      case Left(value) => fail("expected a right")
+      case Right(value) => assert(value.nonEmpty)
+    }
   }
 
   it should "return Seq[CVS] on GET /cvs from db" in {
     val input = withToken(Input.post("/cvs").withBody(cvJson))
     pg_cvController.`POST /cvs`(input).awaitValueUnsafe()
-    val output = withToken(Input.get("/cvs"))
-    pg_cvController.`GET /cvs`(output).awaitValueUnsafe().getOrElse(Json.fromString("[]")).as[List[CVS]] should be ('right)
+    val data = withToken(Input.get("/cvs"))
+    val cvs = pg_cvController.`GET /cvs`(data).awaitValueUnsafe().get
+      cvs.as[List[CVS]] match {
+      case Left(value) => fail("expected a right")
+      case Right(value) =>
+        assert(value.nonEmpty)
+    }
   }
 
   it should "throw exception when putting invalid json to cvs" in {
