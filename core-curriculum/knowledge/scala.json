@@ -555,7 +555,7 @@
       "name": "Variance",
       "description": "With type parameters and type constructors comes variance, which defines for a give type A that extends B, how is the relationship of C[A] and C[B], given a type constructor C.",
       "tags": ["required-for-scala-senior"],
-      "dependencies": ["type-parameters", "type-constructors", "collections-i"],
+      "dependencies": ["type-constructors", "collections-i"],
       "resources": [
         {
           "name": "Wikipedia: Covariance and contravariance",
@@ -691,7 +691,7 @@
       "name": "Functors",
       "tags": ["fp"],
       "description": "Functors are things that can be mapped.",
-      "dependencies": ["type-parameters", "type-constructors"],
+      "dependencies": ["type-constructors"],
       "resources": [
         {
           "name": "Funtors: generalizing the map",
