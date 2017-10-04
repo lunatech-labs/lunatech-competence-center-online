@@ -1,0 +1,229 @@
+{
+  "id": "java",
+  "name": "Java programming language",
+  "description": "Java is a general purpose language that's Object Oriented (class-based) with support for concurrency. Originally developed by James Gosling at Sun Microsystems, now acquired by Oracle.",
+  "tags": ["programming-language"],
+  "image": "/images/java.png",
+  "topics": [
+    {
+      "id": "classes-and-members",
+      "name": "Classes and Members",
+      "description": "In Java everything is an instance of a class (except for some counted exceptions), where each class defines a set of members: attributes and methods. This is the first step when entering the Java world.",
+      "tags": ["required-for-junior"],
+      "resources": [],
+      "abilities": [
+        "Code a basic *Hello World!* application.",
+        "Identify the difference between Primitive and Reference Type."
+      ],
+      "assessment-questions": [
+        { "question": "Can you define what the entry point of a Main class?" },
+        { "question": "How many classes can a file have? What's considered a good practice on this?" },
+        { "question": "When considering primitives and references types, what are their default initialisation values?" },
+        { "question": "What's the declaration order of classes, imports and packages?" },
+        { "question": "In case no constructor is implemented, does that mean that the class doesn't have a constructor?" },
+        { "question": "Can you give an example of method overloading?" }
+      ]
+    },
+    {
+      "id": "control-flow",
+      "name": "Control flow",
+      "description": "As stated by Dijkstra in an ACM communication, *Go To Statement Considered Harmful*, any algorithm can be described with two control flow statements, *if/else* and *loop* (for, while); and Java being an imperative language these control statements are they way we explicitly tell the computer what to do.",
+      "tags": ["required-for-junior"],
+      "resources": [],
+      "abilities": [
+        "Create conditional branches that execute different code, based on a boolean test.",
+        "Create different repeat patterns (zero to many, one to many).",
+        "Use different exit/break strategies on loops, like `break`, `labels` and defensive counter breaking.",
+        "Simplify multiple `if/else if/else` with `switch` statements."
+      ],
+      "assessment-questions": [
+        { "question": "Can you explain what is short circuiting? How does it work with AND and OR?" },
+        { "question": "There are at least one way to define an infinite loop with each loop syntax, can you detail them?" },
+        { "question": "Is it legal to introduce a `break` statement inside a conditional?" },
+        { "question": "What does switch *cascade* mean? Is it possible to get the same behavior with if/else if/else?" },
+        { "question": "What are the supported comparison types on switch syntax?" }
+      ]
+    },
+    {
+      "id": "static-vs-instance",
+      "name": "Static vs Instance",
+      "description": "Java makes a big difference between **Static** members and **Instance** members, the former tied to the class life cycle, and the latter to the instance life cycle. Each has it's upsides and downsides, and different use cases.",
+      "tags": ["required-for-junior"],
+      "dependencies": ["classes-and-members"],
+      "resources": [],
+      "abilities": [
+        "Create code that's shared and accessible from every class instance.",
+        "Define `static` initialisation blocks."
+      ],
+      "assessment-questions": [
+        { "question": "How can you initialise static members that require complex logic?" },
+        { "question": "Providing a public static variable is considered bad practice, can you explain why?" },
+        { "question": "With knowledge of Design Patterns, can you implement the *Singleton* pattern?" },
+        { "question": "Can you call static code from instance code? How about the other way around?" }
+      ]
+    },
+    {
+      "id": "object-oriented-i",
+      "name": "Object Oriented I",
+      "description": "Java is a Object Oriented programming language, that means that it has support for:\n- Classes.\n- Class modifiers.\n- Visibility modifiers.\n- Composition and inheritance.\n- Interfaces.",
+      "tags": ["required-for-junior"],
+      "dependencies": ["static-vs-instance"],
+      "resources": [],
+      "abilities": [
+        "Define a class hierarchy.",
+        "Hide implementation details through visibility modifiers.",
+        "Specialise methods that only child classes can access.",
+        "Understand the difference between overloading and overriding.",
+        "Define contracts that classes can implement.",
+        "Prevent class or method redefinition."
+      ],
+      "assessment-questions": [
+        { "question": "What's the default visibility modifier applied to classes and members?" },
+        { "question": "How many classes can a child class extends? Why does this constraint exist?" },
+        { "question": "Does static members get inherited?" },
+        { "question": "Does private members get inherited? Can you 'override' private members?" },
+        { "question": "Is it possible to override inherited public or protected methods? How can you disambiguate between them?" },
+        { "question": "Is it possible to override inherited public or protected variables? How can you disambiguate between them?" },
+        { "question": "What the key difference between overriding and overloading? Can you explain it from a static and dynamic perspective?" },
+        { "question": "Before Java 8, could you create a diamond problem with multiple interfaces with the same signature? How about after Java 8?" },
+        { "question": "What's the value of having a private class?" },
+        { "question": "How many public classes can a single file hold?" },
+        { "question": "Can you explain the use cases of an anonymous class? After Java 8 they were simplified, can you demonstrate how?" },
+        { "question": "How can you access instance members from an anonymous class? What's the syntax?" }
+      ]
+    },
+    {
+      "id": "collections-i",
+      "name": "Collections I",
+      "description": "Collections allows to define containers for a bunch of values. In Java every collection extends from a few interfaces: List, Set, Map and Queue. Also, the language provides a low-level construct known as Array.",
+      "tags": ["required-for-junior"],
+      "dependencies": ["object-oriented-i", "control-flow"],
+      "resources": [],
+      "abilities": [
+        "Use basic collection implementations, like ArrayList or HashMap.",
+        "Understand the difference between static and dynamic allocation.",
+        "Implement simple collection traversal"
+      ],
+      "assessment-questions": [
+        { "question": "What's the main difference between Arrays and Collections?" },
+        { "question": "How can you convert back and forth between Arrays and Collections?" },
+        { "question": "What's the difference between `ArrayList` and `LinkedList`? When should you prefer one over the other?" },
+        { "question": "`Set` and `Map` depended heavily on two methods that you ought to implement, which are those methods and what are their contracts?" },
+        { "question": "How can you sort a collection based on something different than the natural order?" }
+      ]
+    },
+    {
+      "id": "generics",
+      "name": "Generics",
+      "description": "In a nutshell, generics enable types (classes and interfaces) to be parameters when defining classes, interfaces and methods. Much like the more familiar formal parameters used in method declarations, type parameters provide a way for you to re-use the same code with different inputs. The difference is that the inputs to formal parameters are values, while the inputs to type parameters are types.",
+      "tags": ["required-for-java-medior"],
+      "dependencies": ["collections-i"],
+      "resources": [],
+      "abilities": [
+        "Define methods that can accept generic types as input.",
+        "Understand what's the use of upper and lower bounds.",
+        "Know the limits of generics on the JVM (ie. Type erasure)."
+      ],
+      "assessment-questions": [
+        { "question": "What the syntax for adding a type parameter at class level? How about method level?" },
+        { "question": "What is the use for wildcard on generics?" },
+        { "question": "Can you implement you own generic `LinkedList` implementation?" }
+      ]
+    },
+    {
+      "id": "annotations",
+      "name": "Annotations",
+      "description": "Annotations provide a way to add meta-data to our code. This can be in turn used by some library to enhance our implementations or even provide new functionality.",
+      "dependencies": ["classes-and-members"],
+      "resources": [],
+      "abilities": [],
+      "assessment-questions": [
+        { "question": "Where can you apply annotations?" },
+        { "question": "What does Retention policy means?" },
+        { "question": "How can you scan for annotations in a class definition?" },
+        { "question": "Do annotations get inherited?" }
+      ]
+    },
+    {
+      "id": "java-std",
+      "name": "Java Standard Library",
+      "description": "Java comes with a rich Standard Library, including `String`, `System`, wrappers, and `StringBuilder` among others.",
+      "tags": ["required-for-java-medior"],
+      "resources": [],
+      "abilities": [],
+      "assessment-questions": [
+        { "question": "What's the key property of the Java `String`?", "answer-hint": "It's a implementation detail, differs from Ruby or C/C++ string." },
+        { "question": "What is the rationale behind `StringBuilder` and `StringBuffer`? When should you prefer one over the other?" },
+        { "question": "How can you get the current system time in milliseconds? How about nanoseconds?" },
+        { "question": "When should you prefer using wrappers over primitive types? What's the downside of using wrappers?" },
+        { "question": "Can you read/write a file using simply an instance of `java.io.File`?" },
+        { "question": "What's the difference between `OutputStream` and `InputStream`?" },
+        { "question": "What kind of `Stream` can you use for to save an Object to a file?" },
+        { "question": "What method do you need to implement when using the interface `Serializable`?" },
+        { "question": "What's the purpose of the field `serialVersionUID`?" }
+      ]
+    },
+    {
+      "id": "concurrency-i",
+      "name": "Concurrency I",
+      "description": "The Java platform is designed from the ground up to support concurrent programming, with basic concurrency support in the Java programming language and the Java class libraries.",
+      "tags": ["required-for-junior"],
+      "dependencies": ["classes-and-members"],
+      "resources": [],
+      "abilities": [
+        "Define a simple concurrent program, such as a Producer/Consumer.",
+        "Understand what's the purpose of `synchronized`, and what type of problems it can generate."
+      ],
+      "assessment-questions": [
+        { "question": "How do you declare a low level synchronization construct?" },
+        { "question": "What different levels of synchronization are available?" },
+        { "question": "Can you explain how locking and monitor work? What happens when some thread enters a `synchronized` method?" },
+        { "question": "Can you think of some way to avoid Deadlocks?" },
+        { "question": "Concurrency can be more efficient when the problem is big enough, why is it discouraged for small problems?" },
+        { "question": "Given a instance of a Class that has two synchronized methods: M1 and M2. If one thread calls M1 and another calls M2, can both methods execute at the same time?" }
+      ]
+    },
+    {
+      "id": "concurrency-ii",
+      "name": "Concurrency II",
+      "description": "Since version 5.0, the Java platform has also included high-level concurrency APIs, which made easier for work concurrent programs.\nThis includes the new Lock, ThreadLocal, Thread pools and Atomics.",
+      "tags": ["required-for-java-medior"],
+      "dependencies": ["concurrency-i"],
+      "resources": [],
+      "abilities": [
+        "Define fine grain control over concurrency.",
+        "Isolate resources from different threads.",
+        "Optimise the JVM performance by using Thread pools.",
+        "Simplify shared resource access with Atomics."
+      ],
+      "assessment-question": [
+        { "question": "Why Java 5 Locks are considered better alternatives than synchronized methods?" },
+        { "question": "What types of Thread Pools are available? Which are their use cases?" },
+        { "question": "Can you submit a Thread to a Thread Pool?" },
+        { "question": "What interface should you use when you what to get a result out of a asynchronous computation?" },
+        { "question": "Why was the class `CompletableFuture` introduced in Java 8?" }
+      ]
+    },
+    {
+      "id": "java-8",
+      "name": "Java 8",
+      "description": "Java 8 provides lots of additions to the language, the most importants are: Lambdas and Streams.",
+      "tags": ["required-for-java-medior"],
+      "dependencies": ["collections-i"],
+      "resources": [],
+      "abilities": [
+        "Use collections in a more functional way.",
+        "Simplify single method anonymous classes."
+      ]
+    },
+    {
+      "id": "cg-aop",
+      "name": "Code Generation and AOP",
+      "description": "",
+      "tags": ["required-for-java-senior"],
+      "dependencies": ["classes-and-members"],
+      "resources": [],
+      "abilities": []
+    }
+  ]
+}
