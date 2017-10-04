@@ -112,35 +112,35 @@ CV Editor
    <iron-meta id="meta"></iron-meta>
 
    <iron-ajax id="ajaxSave"
-      url="/api/employees/me"
+      url="/api/passport"
       method="PUT"
       content-type="application/json"
-      on-response="cvSaved"></iron-ajax>
+      on-response="passportSaved"></iron-ajax>
 
    <!-- overview view -->
    <template is="dom-if" if="{{isOverviewVisible}}">
      <paper-card elevation="0" class="horizontal">
        <div class="card-content">
          <div class="header">Personal Details
-           <paper-input label="Given name" value="{{data.employee.basics.givenName}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Family name" value="{{data.employee.basics.familyName}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Label" value="{{data.employee.basics.label}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Start" value="{{data.employee.basics.startYear}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Given name" value="{{data.basics.givenName}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Family name" value="{{data.basics.familyName}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Label" value="{{data.basics.label}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Start" value="{{data.basics.startYear}}" class="no-underline" readonly></paper-input>
          </div>
        </div>
        <div class="card-content">
-         <img-mask id="photoImage" src="{{data.employee.basics.image}}" size="200"></img-mask>
+         <img-mask id="photoImage" src="{{data.basics.image}}" size="200"></img-mask>
        </div>
      </paper-card>
      <paper-card elevation="0">
        <div class="card-content">
-         {{data.employee.basics.profile}}
+         {{data.basics.profile}}
        </div>
      </paper-card>
      <paper-card elevation="0">
        <div class="card-content" style="width=100%;">
          <div class="header">Education
-           <template is="dom-repeat" items="{{data.employee.educations}}">
+           <template is="dom-repeat" items="{{data.educations}}">
              <div class="content">
                <br>
                <b>{{item.studyType}}</b>
@@ -156,7 +156,7 @@ CV Editor
      <paper-card elevation="0">
        <div class="card-content">
          <div class="header">Key Experience
-           <template is="dom-repeat" items="{{data.employee.projects}}">
+           <template is="dom-repeat" items="{{data.projects}}">
              <div class="content">
                <br>
                <b>{{item.client}}</b> {{item.startDate}} - {{item.endDate}}
@@ -171,11 +171,11 @@ CV Editor
      <paper-card elevation="0">
        <div class="card-content">
          <div class="header">Key Skills
-           <template is="dom-if" if="{{data.employee.skills.length}}">
+           <template is="dom-if" if="{{data.skills.length}}">
            <div class="content">
              <br>
              <b>Technical Skills</b>
-             <template is="dom-repeat" items="{{data.employee.skills}}" filter="isTech" observe="item.category">
+             <template is="dom-repeat" items="{{data.skills}}" filter="isTech" observe="item.category">
                <br>
                <div class="content">
                  <div class="left">
@@ -192,7 +192,7 @@ CV Editor
              <br>
              <br>
              <b>Fun Skills</b>
-             <template is="dom-repeat" items="{{data.employee.skills}}" filter="isFun" observe="item.category">
+             <template is="dom-repeat" items="{{data.skills}}" filter="isFun" observe="item.category">
                <br>
                <div class="content">
                  <div class="left">
@@ -212,7 +212,7 @@ CV Editor
      <paper-card elevation="0">
        <div class="card-content">
          <div class="header">Achievements
-           <template is="dom-repeat" items="{{data.employee.achievements}}">
+           <template is="dom-repeat" items="{{data.achievements}}">
              <div class="content">
                <br>
                {{item}}
@@ -228,12 +228,12 @@ CV Editor
      <paper-card elevation="0" class="horizontal">
        <div class="card-content">
          <div class="header">Personal Details
-           <paper-input label="Given name" value="{{data.employee.basics.givenName}}"></paper-input>
-           <paper-input label="Family name" value="{{data.employee.basics.familyName}}"></paper-input>
-           <paper-input label="Label" value="{{data.employee.basics.label}}"></paper-input>
-           <paper-input label="Start" value="{{data.employee.basics.startYear}}"></paper-input>
+           <paper-input label="Given name" value="{{data.basics.givenName}}"></paper-input>
+           <paper-input label="Family name" value="{{data.basics.familyName}}"></paper-input>
+           <paper-input label="Label" value="{{data.basics.label}}"></paper-input>
+           <paper-input label="Start" value="{{data.basics.startYear}}"></paper-input>
            <div class="floating-label">Office</div>
-           <paper-radio-group selected="{{data.employee.basics.contact.name}}">
+           <paper-radio-group selected="{{data.basics.contact.name}}">
              <paper-radio-button class="small" name="LUNATECH ROTTERDAM">Rotterdam</paper-radio-button>
              <paper-radio-button class="small" name="LUNATECH AMSTERDAM">Amsterdam</paper-radio-button>
              <paper-radio-button class="small" name="LUNATECH PARIS">Paris</paper-radio-button>
@@ -241,20 +241,20 @@ CV Editor
          </div>
        </div>
        <div class="card-content">
-         <img-mask id="photoImage" src="{{data.employee.basics.image}}" size="200" on-tap="photoSelected"></img-mask>
-         <paper-input label="Photo address" value="{{data.employee.basics.image}}"></paper-input>
+         <img-mask id="photoImage" src="{{data.basics.image}}" size="200" on-tap="photoSelected"></img-mask>
+         <paper-input label="Photo address" value="{{data.basics.image}}"></paper-input>
          <paper-button hidden$=[[!photoChanged]] on-tap="resetPhoto">Reset Photo</paper-button>
        </div>
      </paper-card>
      <paper-card elevation="0">
        <div class="card-content">
-         <paper-textarea label="Summary" value="{{data.employee.basics.profile}}"></paper-textarea>
+         <paper-textarea label="Summary" value="{{data.basics.profile}}"></paper-textarea>
        </div>
      </paper-card>
      <paper-card elevation="0">
        <div class="header-out">Education
          <div class="card-group">
-           <template is="dom-repeat" items="{{data.employee.educations}}">
+           <template is="dom-repeat" items="{{data.educations}}">
              <paper-card class="horizontal">
                <div class="card-content">
                  <paper-input label="Institution" value="{{item.institution}}"></paper-input>
@@ -278,7 +278,7 @@ CV Editor
      <paper-card elevation="0">
        <div class="header-out">Key Experience
          <div class="card-group">
-           <template is="dom-repeat" items="{{data.employee.projects}}">
+           <template is="dom-repeat" items="{{data.projects}}">
              <paper-card class="horizontal">
                <div class="card-content">
                  <paper-input label="Client" value="{{item.client}}"></paper-input>
@@ -301,7 +301,7 @@ CV Editor
      <paper-card elevation="0">
        <div class="header-out">Key Skills
            <div class="card-group">
-             <template is="dom-repeat" items="{{data.employee.skills}}">
+             <template is="dom-repeat" items="{{data.skills}}">
                <paper-card class="horizontal">
                  <div class="card-content">
                    <paper-input label="Name" value="{{item.name}}"></paper-input>
@@ -328,7 +328,7 @@ CV Editor
        <div class="card-content">
          <div class="header">Achievements
            <div class="card-group">
-             <template is="dom-repeat" items="{{data.employee.achievements}}">
+             <template is="dom-repeat" items="{{data.achievements}}">
                <paper-card class="horizontal">
                  <div class="card-content">
                    <paper-textarea label="Achievement" value="{{item}}"></paper-textarea>
@@ -351,26 +351,26 @@ CV Editor
      <paper-card elevation="0" class="horizontal">
        <div class="card-content">
          <div class="header">Personal Details
-           <paper-input label="Given name" value="{{data.employee.basics.givenName}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Family name" value="{{data.employee.basics.familyName}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Label" value="{{data.employee.basics.label}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Start" value="{{data.employee.basics.startYear}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Office" value="{{data.employee.basics.contact.name}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Given name" value="{{data.basics.givenName}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Family name" value="{{data.basics.familyName}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Label" value="{{data.basics.label}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Start" value="{{data.basics.startYear}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Office" value="{{data.basics.contact.name}}" class="no-underline" readonly></paper-input>
          </div>
        </div>
        <div class="card-content">
-         <img-mask id="photoImage" src="{{data.employee.basics.image}}" size="200"></img-mask>
+         <img-mask id="photoImage" src="{{data.basics.image}}" size="200"></img-mask>
        </div>
      </paper-card>
      <paper-card elevation="0">
          <div class="card-content">
-           <paper-textarea label="Summary" value="{{data.employee.basics.profile}}"></paper-textarea>
+           <paper-textarea label="Summary" value="{{data.basics.profile}}"></paper-textarea>
          </div>
      </paper-card>
      <paper-card elevation="0">
        <div class="header-out">Education
          <div class="card-group">
-           <template is="dom-repeat" items="{{data.employee.educations}}">
+           <template is="dom-repeat" items="{{data.educations}}">
              <paper-card class="horizontal">
                <div class="card-content">
                  <paper-input label="Institution" value="{{item.institution}}"></paper-input>
@@ -394,7 +394,7 @@ CV Editor
      <paper-card elevation="0">
        <div class="header-out">Key Experience
          <div class="card-group">
-           <template is="dom-repeat" items="{{data.employee.projects}}">
+           <template is="dom-repeat" items="{{data.projects}}">
              <paper-card class="horizontal">
                <div class="card-content">
                  <paper-input label="Client" value="{{item.client}}"></paper-input>
@@ -417,7 +417,7 @@ CV Editor
      <paper-card elevation="0">
        <div class="header-out">Key Skills
            <div class="card-group">
-             <template is="dom-repeat" items="{{data.employee.skills}}">
+             <template is="dom-repeat" items="{{data.skills}}">
                <paper-card class="horizontal">
                  <div class="card-content">
                    <paper-input label="Name" value="{{item.name}}"></paper-input>
@@ -444,7 +444,7 @@ CV Editor
        <div class="card-content">
          <div class="header">Achievements
            <div class="card-group">
-             <template is="dom-repeat" items="{{data.employee.achievements}}">
+             <template is="dom-repeat" items="{{data.achievements}}">
                <paper-card class="horizontal">
                  <div class="card-content">
                    <paper-textarea label="Achievement" value="{{item}}"></paper-textarea>
@@ -467,9 +467,9 @@ CV Editor
    </template>
    <template is="dom-if" if="true">
    <paper-icon-button hidden="{{isOverviewVisible}}" title="Go to Overview" icon="icons:arrow-back" on-tap="doOverview" class="done" mini></paper-icon-button>
-   <paper-icon-button hidden="{{isGeneratingVisible}}" title="Go to PDF generation" icon="image:picture-as-pdf" on-tap="doGenerate" mini></paper-icon-button>
+   <paper-icon-button hidden="{{isEditableVisible}}" title="Edit" icon="icons:create" on-tap="doEdit" mini></paper-icon-button>
    <paper-icon-button hidden="{{!isGeneratingVisible}}" title="Reset Modifications" icon="icons:refresh" on-tap="resetData"   mini></paper-icon-button>
-   <paper-icon-button hidden="{{!isGeneratingVisible}}" title="Generate PDF" icon="icons:done" on-tap="getPDF" mini></paper-icon-button>
+   <paper-icon-button hidden="{{!isEditableVisible}}" title="Save" icon="icons:save" on-tap="savePassport" mini></paper-icon-button>
    </template>
 
 
@@ -483,7 +483,15 @@ CV Editor
    </iron-ajax>
  </template>
 
- <script>
+</dom-module>
+
+
+
+
+
+
+
+<script>
 
    Polymer({
 
@@ -527,16 +535,19 @@ CV Editor
 
      attached: function() {
        this.$.ajaxSave.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
-       if(this.data.employee.basics === undefined) {
-         this.set('data.employee.basics', {});
+       if(this.data.basics === undefined) {
+         this.set('data.basics', {});
        }
 
-       if(this.data.employee.education === undefined ){
-         this.set('data.employee.education', []);
+       if(this.data.educations === undefined ){
+         this.set('data.educations', []);
        }
 
-       if(this.data.employee.skills === undefined) {
-         this.set('data.employee.skills', {});
+       if(this.data.skills === undefined) {
+         this.set('data.skills', {});
+       }
+       if(this.data.achievements === undefined) {
+         this.set('data.achievements', {});
        }
      },
 
@@ -575,6 +586,16 @@ CV Editor
        a.generateRequest();
      },
 
+     savePassport : function(e) {
+       a = this.$.ajaxSave;
+       console.log("saving passport");
+       passportData = this.data.employee;
+       a.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
+       a.body = this.data;
+       console.log(this.data);
+       a.generateRequest();
+     },
+
      cvDownloaded : function(e) {
        const pdfUrl = URL.createObjectURL(this.$.ajaxDownloadPDF.lastResponse);
        this.win.location.href = pdfUrl;
@@ -583,43 +604,43 @@ CV Editor
 
      addEducation: function() {
 
-       this.push('data.employee.educations', { 'foo': 'bar' });
+       this.push('data.educations', { });
      },
 
      removeEducation: function(e) {
-       this.splice('data.employee.educations', e.model.index, 1);
+       this.splice('data.educations', e.model.index, 1);
      },
 
      removeSummary: function(e) {
-       this.data.employee.basics.profile='';
+       this.data.basics.profile='';
        this.$.summaryTextarea.update('');
      },
 
      addProject: function() {
 
-       this.push('data.employee.projects', { 'foo': 'bar' });
+       this.push('data.projects', {});
      },
 
      removeProject: function(e) {
-       this.splice('data.employee.projects', e.model.index, 1);
+       this.splice('data.projects', e.model.index, 1);
      },
 
      addSkill: function() {
 
-       this.push('data.employee.skills', { 'foo': 'bar' });
+       this.push('data.skills', {});
      },
 
      removeSkill: function(e) {
-       this.splice('data.employee.skills', e.model.index, 1);
+       this.splice('data.skills', e.model.index, 1);
      },
 
      addAchievement: function() {
 
-       this.push('data.employee.achievements', { 'foo': 'bar' });
+       this.push('data.achievements', {});
      },
 
      removeAchievement: function(e) {
-       this.splice('data.employee.achievements', e.model.index, 1);
+       this.splice('data.achievements', e.model.index, 1);
      },
 
      show: function() {
@@ -639,11 +660,11 @@ CV Editor
        return item.category === 'fun';
      },
 
-     cvSaved: function(data) {
+     passportSaved: function(d) {
        this.isEditableVisible=false;
        this.isOverviewVisible=true;
-       console.log("CV saved!");
-       console.log(arguments);
+       console.log("Passport saved!");
+       this.data = d.detail.response;
      },
 
      save: function() {
@@ -677,4 +698,3 @@ CV Editor
 
    });
  </script>
-</dom-module>

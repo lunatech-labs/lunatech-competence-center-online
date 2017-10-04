@@ -52,11 +52,10 @@ class PostgresCVService(transactor: Transactor[Task]) extends CVService {
     val toMap: (List[CVData]) => Map[String, List[Json]] = (x: List[CVData]) => x.groupBy(_.email).mapValues(_.map(_.cv))
 
 
-    val out = sql"SELECT person, cv FROM cvs ORDER BY person, created_on".query[CVData].process.list.transact(transactor).unsafeRun()
-    val x = toMap(out)
-//    println("query output")
-//    println(x)
-    x
+    val data = sql"SELECT person, cv FROM cvs ORDER BY person, created_on".query[CVData].process.list.transact(transactor).unsafeRun()
+
+    toMap(data)
+
   }
 
 

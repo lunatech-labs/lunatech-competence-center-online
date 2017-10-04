@@ -36,10 +36,11 @@ class PassportController(passportService: PassportService, peopleService: People
     passport.as[Employee] match {
       case Right(_) =>
         logger.debug("received data")
-        passportService.save(user.email, passport)
-        Ok(passport)
+        val result: Int = passportService.save(user.email, passport)
+        if (result > 0) Ok(passport)
+        else InternalServerError(new Exception("Errors while saving passport"))
       case Left(e) =>
-        logger.debug(s"incorrect data $passport")
+        logger.debug(s"incorrect data $e in $passport")
         BadRequest(new RuntimeException(e))
     }
   }
