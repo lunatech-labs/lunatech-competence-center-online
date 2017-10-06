@@ -215,7 +215,7 @@ CV Editor
            <template is="dom-repeat" items="{{data.achievements}}">
              <div class="content">
                <br>
-               {{item}}
+               {{item.description}}
              </div>
            </template>
          </div>
@@ -257,14 +257,14 @@ CV Editor
            <template is="dom-repeat" items="{{data.educations}}">
              <paper-card class="horizontal">
                <div class="card-content">
-                 <paper-input label="Institution" value="{{item.institution}}"></paper-input>
+                 <paper-input label="Institution" value="{{item.institution}}" required auto-validate error-message="needs some text!"></paper-input>
                  <vaadin-date-picker label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
-                 <paper-textarea label="Description" value="{{item.description}}"></paper-textarea>
+                 <paper-textarea label="Description" value="{{item.description}}" required auto-validate error-message="needs some text!"></paper-textarea>
                </div>
                <div class="card-content">
                  <paper-input label="Country" value="{{item.country}}"></paper-input>
                  <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
-                 <paper-input label="Study Type" value="{{item.studyType}}"></paper-input>
+                 <paper-input label="Study Type" value="{{item.studyType}}" ></paper-input>
                </div>
                <div class="card-actions">
                  <paper-icon-button icon="delete" title="Delete education" on-click="removeEducation"></paper-icon-button>
@@ -324,6 +324,7 @@ CV Editor
 
        </div>
      </paper-card>
+
      <paper-card elevation="0">
        <div class="card-content">
          <div class="header">Achievements
@@ -331,7 +332,7 @@ CV Editor
              <template is="dom-repeat" items="{{data.achievements}}">
                <paper-card class="horizontal">
                  <div class="card-content">
-                   <paper-textarea label="Achievement" value="{{item}}"></paper-textarea>
+                   <paper-textarea label="Achievement" value="{{item.description}}"></paper-textarea>
                  </div>
                  <div class="card-actions">
                    <paper-icon-button icon="delete" title="Delete achievement" on-click="removeAchievement"></paper-icon-button>
@@ -339,7 +340,7 @@ CV Editor
                </paper-card>
              </template>
            </div class="card-group">
-           <paper-button icon="add-circle" title="Add achievement" on-click="addAchievement"></paper-icon-button>
+           <paper-icon-button icon="add-circle" title="Add achievement" on-click="addAchievement"></paper-icon-button>
          </div>
        </div>
      </paper-card>
@@ -414,6 +415,7 @@ CV Editor
          <paper-icon-button icon="add-circle" title="Add project" on-click="addProject"></paper-icon-button>
        </div>
      </paper-card>
+
      <paper-card elevation="0">
        <div class="header-out">Key Skills
            <div class="card-group">
@@ -440,14 +442,14 @@ CV Editor
 
        </div>
      </paper-card>
+
      <paper-card elevation="0">
-       <div class="card-content">
-         <div class="header">Achievements
+         <div class="header-out">Achievements
            <div class="card-group">
              <template is="dom-repeat" items="{{data.achievements}}">
                <paper-card class="horizontal">
                  <div class="card-content">
-                   <paper-textarea label="Achievement" value="{{item}}"></paper-textarea>
+                   <paper-textarea label="Achievement" value="{{item.description}}"></paper-textarea>
                  </div>
                  <div class="card-actions">
                    <paper-icon-button icon="delete" title="Delete achievement" on-click="removeAchievement"></paper-icon-button>
@@ -455,10 +457,12 @@ CV Editor
                </paper-card>
              </template>
            </div class="card-group">
-           <paper-button icon="add-circle" title="Add achievement" on-click="addAchievement"></paper-icon-button>
+
+           <paper-icon-button icon="add-circle" title="Add achievement" on-click="addAchievement"></paper-icon-button>
+
          </div>
-       </div>
      </paper-card>
+
    </template>
 
    <template is="dom-if" if="{{editable}}">
@@ -592,7 +596,6 @@ CV Editor
        passportData = this.data.employee;
        a.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
        a.body = this.data;
-       console.log(this.data);
        a.generateRequest();
      },
 
@@ -603,7 +606,6 @@ CV Editor
      },
 
      addEducation: function() {
-
        this.push('data.educations', { });
      },
 

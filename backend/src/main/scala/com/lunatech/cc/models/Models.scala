@@ -27,7 +27,7 @@ case class BasicDetails(givenName: String,
 
 case class Employee(basics: BasicDetails,
                     skills: Seq[Skill],
-                    achievements: Seq[String],
+                    achievements: Seq[Achievement],
                     projects: Seq[Project],
                     educations: Seq[Education])
 
@@ -56,6 +56,8 @@ case class Project(client: String,
                    endDate: String,
                    role: String,
                    summary: String)
+
+case class Achievement(description: String)
 
 case class Education(institution: String,
                      country: String,
@@ -174,9 +176,15 @@ package object Models {
 
   implicit def toXML(skills: Seq[Skill]): xml.Skills = xml.Skills(skills.map(toXML))
 
-  implicit def toXML(description: String): xml.Achievement = xml.Achievement(description)
 
-  implicit def toXML(achievements: Seq[String]): xml.Achievements = xml.Achievements(achievements.map(toXML))
+  implicit def toXML(achievement: Achievement): xml.Achievement = xml.Achievement(achievement.description)
+
+  implicit def toXML(achievements: Seq[Achievement]): xml.Achievements = xml.Achievements(achievements.map(toXML))
+
+  implicit val achDecoder = deriveDecoder[Achievement]
+
+  implicit val achEncoder = deriveEncoder[Achievement]
+
 
   implicit def toXML(project: Project): xml.Project = xml.Project(
     client = project.client,

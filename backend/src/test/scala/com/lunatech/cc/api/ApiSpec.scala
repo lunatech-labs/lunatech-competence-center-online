@@ -74,7 +74,6 @@ class ApiSpec extends FlatSpec with Matchers {
 
   behavior of "Passport API"
 
-  println(employeeJson)
 
   it should "return Some(json) when putting json" in {
     val input = withToken(Input.put("/passport").withBody(employeeJson))
