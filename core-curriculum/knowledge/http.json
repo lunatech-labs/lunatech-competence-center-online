@@ -3,6 +3,7 @@
   "name": "HTTP",
   "description": "The Hypertext Transfer Protocol, the transport layer of web application.",
   "tags": [],
+  "image": "/images/http.png",
   "topics": [
     {
       "id": "http1-basics",

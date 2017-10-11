@@ -3,6 +3,7 @@
     "name": "Apache Maven",
     "description": "A software project management and comprehension tool",
     "tags": ["tool", "java", "build"],
+    "image": "/images/maven.png",
     "topics": [
         {
             "id": "introduction",

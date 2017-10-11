@@ -4,7 +4,7 @@
     "name": "HTTP",
     "description": "The Hypertext Transfer Protocol, the transport layer of web application.",
     "tags": [],
-    "image": null
+    "image": "/images/http.png"
   },
   {
     "id": "java",
@@ -25,7 +25,7 @@
       "java",
       "build"
     ],
-    "image": null
+    "image": "/images/maven.png"
   },
   {
     "id": "sbt",
