@@ -45,7 +45,8 @@
       return {
         authenticated: {
           type: Boolean,
-          value: false
+          value: false,
+          computed: '_computeAuthenticated(basicProfile, lunatechProfile)'
         },
 
         basicProfile: {
@@ -58,8 +59,12 @@
       }
     }
 
+    _computeAuthenticated(basicProfile, lunatechProfile) {
+      return basicProfile && lunatechProfile
+    }
+
     _handleLogout() {
-      this.authenticated = false;
+      this.basicProfile = null;
       this.shadowRoot.querySelector('google-signin-aware').signOut();
     }
 
@@ -74,11 +79,13 @@
       // TODO, do a domain check?
       var domain = currentUser.getHostedDomain();
 
-      this.authenticated = true;
       this.basicProfile = basicProfile;
       this.idToken = currentUser.getAuthResponse().id_token;
-
       this.shadowRoot.querySelector("#login-dialog").close();
+
+      // Load the lunatech profile
+      this.$.lunatechProfileLoader.headers = { "X-ID-Token": this.idToken }
+      this.$.lunatechProfileLoader.generateRequest();
     }
 
     _signedOut() {

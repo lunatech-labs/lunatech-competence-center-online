@@ -64,8 +64,18 @@ In case of conflicts, remove the bower_components and redo steps described above
 
 ### Observe
 
-Browse to http://localhost:8080/ to see the application. 
+Browse to http://localhost:8080/ to see the application.
 There is also a GUI running on top of the Postgres database, reach it on http://localhost:8088/ and login with username `postgres`, password `secret` and database `competence-center`.
+
+## How To's
+
+### How to impersonate another user
+
+This application uses user roles as defined in Lunatech's People API. Depending on the role, pages and API endpoints may or may not be accessible. Sometimes, your own roles aren't sufficient to see the pages.
+
+You can impersonate another user by using the 'fake' token verifier, and configuring it with an override-email. See the `application.conf` for the details.
+
+When you use this; don't be confused that in the frontend you might still see your own name and photo. This is because the Google id token that the frontend obtains is still yours, and that's what it uses to print name and photo. But the `lunatechProfile` that the frontend obtains, which contains the roles, will contain the overridden user profile.
 
 
 ## API Documentation

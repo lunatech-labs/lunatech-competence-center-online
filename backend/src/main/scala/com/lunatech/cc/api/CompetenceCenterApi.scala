@@ -18,12 +18,19 @@ import scalaz._
 
 object CompetenceCenterApi extends App {
 
-  case class Config(application: Config.ApplicationConfig, http: Config.HttpConfig, google: Config.GoogleConfig, auth: AuthConfig, database: DbConfig, services: Config.ServicesConfig)
+  case class Config(application: Config.ApplicationConfig, tokenVerifier: Config.TokenVerifierConfig, http: Config.HttpConfig, auth: AuthConfig, database: DbConfig, services: Config.ServicesConfig)
   object Config {
     case class ApplicationConfig(mode: String)
     case class HttpConfig(port: Int)
-    case class GoogleConfig(oauthClientId: String)
     case class ServicesConfig(people: PeopleService.Config, workshops: WorkshopService.Config)
+
+    sealed trait TokenVerifierConfig
+    case class Google(google: GoogleConfig) extends TokenVerifierConfig
+    case class Fake(fake: FakeConfig) extends TokenVerifierConfig
+
+    case class FakeConfig(overrideEmail: String)
+    case class GoogleConfig(oauthClientId: String)
+
   }
 
   val config = loadConfig[Config].fold(
@@ -44,10 +51,9 @@ object CompetenceCenterApi extends App {
   val workshopService = EventBriteWorkshopService(config.services.workshops)
   val peopleService = ApiPeopleService(config.services.people)
 
-  val tokenVerifier = config.application.mode match {
-    case "dev" => new StaticTokenVerifier()
-    case "prod" => new GoogleTokenVerifier(config.google.oauthClientId)
-    case _ => throw new RuntimeException("no valid application mode found")
+  val tokenVerifier = config.tokenVerifier match {
+    case Config.Fake(fakeConfig) => new StaticTokenVerifier(fakeConfig.overrideEmail)
+    case Config.Google(googleConfig) => new GoogleTokenVerifier(googleConfig.oauthClientId)
   }
 
   // For endpoints that require an API key OR a Google authenticated user.
