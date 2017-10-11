@@ -57,6 +57,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         line-height: 40px;
       }
 
+      .drawer-list a[hidden] {
+        display: none;
+      }
+
       .drawer-list a.iron-selected {
         color: black;
         font-weight: bold;
@@ -75,6 +79,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app-drawer-layout:not([narrow]) [drawer-toggle] {
         display: none;
       }
+
+
 
     </style>
     <app-location route="{{route}}"></app-location>
@@ -98,8 +104,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <a name="home" href="/">Home</a>
             <a name="core-curriculum" href="/core-curriculum">Core Curriculum</a>
             <a name="workshops" href="/workshops">Workshops</a>
-            <a name="passport" href="/passport/me">Developer Passport</a>
-            <a name="cvs" href="/cvs">CVs</a>
+
+            <a name="passport" hidden$="[[!hasRole(lunatechProfile,'developer')]]" href="/passport/me">Developer Passport</a>
+
+            <a name="cvs"  hidden$="[[!hasRole(lunatechProfile,'cv-editor')]]" href="/cvs">CVs</a>
             <a name="techmatrix" href="http://techmatrix.lunatech.com" target="_new">Tech Matrix</a>
 
             <br />
@@ -172,6 +180,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Array
         }
 
+      },
+
+      hasRole: function(profile, role) {
+        return profile.roles.includes(role);
       },
 
       titleChanged: function(e, v) {
