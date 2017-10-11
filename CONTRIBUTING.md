@@ -50,12 +50,12 @@ Use `scalafix RemoveUnusedImports` for cleaning up imports
 ### Frontend
 
     scripts/link_local_polymer_components.sh
-    
+
     cd frontend
     npm install
     polymer serve
-    
-In case of conflicts, remove the bower_components and redo steps described above. 
+
+In case of conflicts, remove the bower_components and redo steps described above.
 
 ### nginx
 

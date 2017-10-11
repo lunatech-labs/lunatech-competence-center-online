@@ -99,6 +99,14 @@ mappings in Docker ++= {
   }
 }
 
+// Add pages to Docker
+mappings in Docker ++= {
+  val sourceDir = baseDirectory.value / ".." / "pages"
+  ((sourceDir.*** --- sourceDir) pair relativeTo(sourceDir)).map { case (file, mapping) =>
+    file -> ("opt/docker/pages/" + mapping)
+  }
+}
+
 val buildFrontend = TaskKey[File]("build-frontend", "Build the Polymer Frontend")
 
 buildFrontend := {
