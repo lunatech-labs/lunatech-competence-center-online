@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../../bower_components/knowledge-graph/knowledge-graph.html">
 <link rel="import" href="./topic-details.html">
@@ -13,17 +14,26 @@
         };
       }
     </style>
-    <iron-ajax id="ajaxLoad"
-               loading="{{loading}}"
+
+    <iron-meta id="meta"></iron-meta>
+
+    <iron-request id="xhr"></iron-request>
+    <iron-ajax id="subjectLoad"
+               loading="{{dataLoading}}"
                url="/data/core-curriculum/knowledge/[[subject]].json"
                last-response="{{knowledge}}"></iron-ajax>
+
+     <iron-ajax id="personKnowledgeLoad"
+                loading="{{personKnowledgeLoading}}"
+                url="/api/people/me/knowledge/[[subject]]"
+                last-response="{{personKnowledge}}"></iron-ajax>
 
     <h1>[[knowledge.name]]</h1>
     <p>[[knowledge.description]]</p>
     <template is="dom-if" if=[[!loading]]>
       <knowledge-graph graph="{{knowledge}}" nodes="topics"></knowledge-graph>
     </template>
-    <topic-details id="topicDetail"></topic-details>
+    <topic-details id="topicDetail" on-i-know-this-changed="_iKnowThisChanged"></topic-details>
   </template>
   <script>
     Polymer({
@@ -40,6 +50,15 @@
           observer: '_onKnowledgeChange'
         },
 
+        personKnowledge: {
+          type: Array
+        },
+
+        loading: {
+          type: Boolean,
+          computed: '_computeLoading(dataLoading, personKnowledgeLoading)'
+        },
+
         title: {
           type: String,
           notify: true
@@ -47,21 +66,47 @@
       },
 
       listeners: {
-        'knowledge-node--clicked': '_onKnowledgeNodeClicked',
+          'knowledge-node--clicked': '_onKnowledgeNodeClicked',
+      },
+
+      _iKnowThisChanged: function(e, v) {
+        var topic = this.$.topicDetail.selected ? this.$.topicDetail.selected.id : undefined;
+        if(topic !== undefined) {
+          var setting = v.value;
+
+          if(setting && !this.personKnowledge.includes(topic)) {
+            this.$.xhr.send({ method: "PUT", url: "/api/people/me/knowledge/" + this.subject + "/" + topic, headers: {'X-ID-Token': this.$.meta.byKey('idToken')}});
+            this.push('personKnowledge', topic); // TODO, only add this if the XHR call succeeds.
+          }
+
+          if(!setting && this.personKnowledge.includes(topic)) {
+            this.$.xhr.send({ method: "DELETE", url: "/api/people/me/knowledge/" + this.subject + "/" + topic, headers: {'X-ID-Token': this.$.meta.byKey('idToken')}});
+            this.splice('personKnowledge', personKnowledge.indexOf(topic), 1); // TODO, only remove this if the XHR call succeeds.
+          }
+
+        }
+
+      },
+
+      _computeLoading: function(dataLoading, personKnowledgeLoading) {
+        return dataLoading && personKnowledgeLoading;
       },
 
       _onSubjectChange: function () {
         if (this.subject) {
-          this.$.ajaxLoad.generateRequest();
+          this.$.subjectLoad.generateRequest();
+          this.$.personKnowledgeLoad.generateRequest();
         }
       },
 
       _onKnowledgeNodeClicked: function (event) {
         this.$.topicDetail.selected = event.detail;
+        this.$.topicDetail.iKnowThis = this.personKnowledge.includes(event.detail.id);
         this.$.topicDetail.open();
       },
 
       ready: function() {
+        this.$.personKnowledgeLoad.headers = {'X-ID-Token': this.$.meta.byKey('idToken')};
       },
 
       _onKnowledgeChange: function(knowledge) {

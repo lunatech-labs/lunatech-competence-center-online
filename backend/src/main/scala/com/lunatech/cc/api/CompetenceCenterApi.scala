@@ -1,6 +1,6 @@
 package com.lunatech.cc.api
 
-import com.lunatech.cc.api.services.{ PeopleService, ApiPeopleService, WorkshopService, EventBriteWorkshopService }
+import com.lunatech.cc.api.services._
 import com.lunatech.cc.formatter.PdfCVFormatter
 import com.lunatech.cc.utils.DBMigration
 import com.twitter.finagle.http.filter.Cors
@@ -14,6 +14,7 @@ import io.finch.circe._
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory._
 import pureconfig._
+
 import scalaz._
 
 object CompetenceCenterApi extends App {
@@ -50,9 +51,11 @@ object CompetenceCenterApi extends App {
   val cvService = new PostgresCVService(transactor)
   val workshopService = EventBriteWorkshopService(config.services.workshops)
   val peopleService = ApiPeopleService(config.services.people)
+  val coreCurriculumService = new PostgresCoreCurriculumService(transactor)
 
   val tokenVerifier = config.tokenVerifier match {
-    case Config.Fake(fakeConfig) => new StaticTokenVerifier(fakeConfig.overrideEmail)
+    case Config.Fake(fakeConfig) =>
+      new StaticTokenVerifier(fakeConfig.overrideEmail)
     case Config.Google(googleConfig) => new GoogleTokenVerifier(googleConfig.oauthClientId)
   }
 
@@ -73,6 +76,7 @@ object CompetenceCenterApi extends App {
   val cvController = new CVController(cvService, peopleService, cvFormatter, authenticated, authenticatedUser)
   val workshopController = new WorkshopController(workshopService, authenticated)
   val peopleController = new PeopleController(peopleService, authenticatedUser)
+  val coreCurriculumController = new CoreCurriculumController(coreCurriculumService, authenticated, authenticatedUser)
   val service = (
     cvController.`GET /employees` :+:
     cvController.`GET /employees/me` :+:
@@ -82,7 +86,11 @@ object CompetenceCenterApi extends App {
     cvController.`GET /cvs` :+:
     cvController.`GET /cvs/employeeId` :+:
     workshopController.`GET /workshops` :+:
-    peopleController.`GET /people/me`
+    peopleController.`GET /people/me`:+:
+    coreCurriculumController.`GET /people/me/knowledge/{subject}` :+:
+    coreCurriculumController.`PUT /people/me/knowledge/{subject}/{topic}` :+:
+      coreCurriculumController.`DELETE /people/me/knowledge/{subject}/{topic}`
+
   ).toServiceAs[Application.Json]
 
   val corsService: Service[Request, Response] = new Cors.HttpFilter(policy).andThen(service)

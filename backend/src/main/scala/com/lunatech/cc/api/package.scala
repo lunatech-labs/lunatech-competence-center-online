@@ -23,17 +23,20 @@ package object api {
   type ApiUser = AuthConfig.Client \/ GoogleUser
 
   def authenticatedBuilder(config: AuthConfig, tokenVerifier: TokenVerifier): Endpoint[ApiUser] = (paramOption("apiKey") :: headerOption("X-ID-Token")).mapOutput {
-    case None :: None :: HNil => Output.failure(new RuntimeException("API Key or ID-Token required"), Status.Unauthorized)
-    case (Some(_) :: Some(_) :: HNil) => Output.failure(new RuntimeException("API Key and ID-Token received, only one allowed"), Status.Unauthorized)
+    case None :: None :: HNil =>
+      Output.failure(new RuntimeException("API Key or ID-Token required"), Status.Unauthorized)
+    case (Some(_) :: Some(_) :: HNil) =>
+      Output.failure(new RuntimeException("API Key and ID-Token received, only one allowed"), Status.Unauthorized)
     case (Some(apiKey) :: None :: HNil) =>
       config.clients.get(apiKey) match {
-        case Some(client) => Output.payload(-\/(client))
+        case Some(client) =>
+          Output.payload(-\/(client))
         case None => Output.failure(new RuntimeException("Bad API Key"), Status.Unauthorized)
       }
-    case (None :: Some(idToken) :: HNil) => tokenVerifier.verifyToken(idToken) match {
-      case None => Output.failure(new RuntimeException("Invalid ID-Token"), Status.Unauthorized)
-      case Some(googleUser) => Output.payload(\/-(googleUser))
-
+    case (None :: Some(idToken) :: HNil) =>
+      tokenVerifier.verifyToken(idToken) match {
+        case None => Output.failure(new RuntimeException("Invalid ID-Token"), Status.Unauthorized)
+        case Some(googleUser) => Output.payload(\/-(googleUser))
     }
 
   }

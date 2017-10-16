@@ -73,7 +73,7 @@
           </template>
         </ul>
 
-        <paper-checkbox id="i-know-this">I know this</paper-checkbox>
+        <paper-checkbox id="i-know-this" checked={{iKnowThis}}>I know this</paper-checkbox>
       </card-content>
       <card-actions>
 
@@ -90,6 +90,11 @@
           selected: {
             type: Object,
           },
+
+          iKnowThis: {
+            type: Boolean,
+            notify: true
+          }
         }
       }
 
