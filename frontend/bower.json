@@ -29,6 +29,7 @@
     "paper-spinner": "^2.0.0",
     "paper-datatable-api": "^2.0.7",
     "marked-element": "^2.3.0"
+    "iron-form": "PolymerElements/iron-form#^2.0.1"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

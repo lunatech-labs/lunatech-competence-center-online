@@ -14,6 +14,7 @@
 <link rel="import" href="../file-input/file-input.html">
 <link rel="import" href="../vaadin-date-picker/vaadin-date-picker.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../iron-form/iron-form.html">
 <link rel="import" href="../iron-meta/iron-meta.html">
 <link rel="import" href="../img-mask/img-mask.html">
 
@@ -225,6 +226,10 @@ CV Editor
 
    <!-- editable view -->
    <template is="dom-if" if="{{isEditableVisible}}">
+
+     <iron-form id="passportEditor">
+       <form method="put" action="/api/passport">
+
      <paper-card elevation="0" class="horizontal">
        <div class="card-content">
          <div class="header">Personal Details
@@ -271,7 +276,7 @@ CV Editor
                </div>
              </paper-card>
            </template>
-         </div class="card-group">
+         </div>
          <paper-icon-button icon="add-circle" on-click="addEducation" title="Add education" mini></paper-icon-button>
        </div>
      </paper-card>
@@ -345,6 +350,8 @@ CV Editor
        </div>
      </paper-card>
 
+       </form>
+     </iron-form>
    </template>
 
    <!-- generating PDF view -->
@@ -474,12 +481,14 @@ CV Editor
    <paper-icon-button hidden="{{isEditableVisible}}" title="Edit" icon="icons:create" on-tap="doEdit" mini></paper-icon-button>
    <paper-icon-button hidden="{{!isGeneratingVisible}}" title="Reset Modifications" icon="icons:refresh" on-tap="resetData"   mini></paper-icon-button>
    <paper-icon-button hidden="{{!isEditableVisible}}" title="Save" icon="icons:save" on-tap="savePassport" mini></paper-icon-button>
-   </template>
+
+     </template>
 
 
-   <iron-ajax id="ajaxDownloadPDF"
-      url="/api/cvs"
-      handle-as="blob"
+     <iron-ajax id="ajaxDownloadPDF"
+                url="/api/cvs"
+                handle-as="blob"
+              }
       method="POST"
       content-type="application/json"
       on-response="cvDownloaded"
@@ -591,12 +600,20 @@ CV Editor
      },
 
      savePassport : function(e) {
-       a = this.$.ajaxSave;
-       console.log("saving passport");
-       passportData = this.data.employee;
-       a.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
-       a.body = this.data;
-       a.generateRequest();
+       let form = this.$$('iron-form');
+       console.log(form);
+       console.log(form.validate());
+
+      // .$.input.focus();
+
+       if (form.validate()) {
+         a = this.$.ajaxSave;
+         console.log("saving passport");
+         passportData = this.data.employee;
+         a.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
+         a.body = this.data;
+         a.generateRequest();
+       }
      },
 
      cvDownloaded : function(e) {
