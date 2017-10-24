@@ -187,7 +187,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       titleChanged: function(e, v) {
-        if(e.path[0].classList.contains('iron-selected')) {
+        if(e.target.classList.contains('iron-selected')) {
           console.debug("Updating title to ", v.value);
           this.pageTitle = v.value;
         } else {
@@ -196,7 +196,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       breadCrumbsChanged: function(e, v) {
-        if(e.path[0].classList.contains('iron-selected')) {
+        if(e.target.classList.contains('iron-selected')) {
           console.debug("Updating bread crumbs to ", v.value);
           this.breadCrumbs = v.value;
         } else {
