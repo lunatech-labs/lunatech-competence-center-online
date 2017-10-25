@@ -262,14 +262,14 @@ CV Editor
            <template is="dom-repeat" items="{{data.educations}}">
              <paper-card class="horizontal">
                <div class="card-content">
-                 <paper-input label="Institution" value="{{item.institution}}" required auto-validate error-message="needs some text!"></paper-input>
+                 <paper-input label="Institution" value="{{item.institution}}" required auto-validate autofocus error-message="needs some text!" on-error="focus()"></paper-input>
                  <vaadin-date-picker label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
-                 <paper-textarea label="Description" value="{{item.description}}" required auto-validate error-message="needs some text!"></paper-textarea>
+                 <paper-textarea label="Description" value="{{item.description}}" required auto-validate autofocus error-message="needs some text!"></paper-textarea>
                </div>
                <div class="card-content">
-                 <paper-input label="Country" value="{{item.country}}"></paper-input>
+                 <paper-input label="Country" value="{{item.country}}" required auto-validate auto-focus error-message="needs some text!"></paper-input>
                  <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
-                 <paper-input label="Study Type" value="{{item.studyType}}" ></paper-input>
+                 <paper-input label="Study Type" value="{{item.studyType}}" required auto-validate auto-focus error-message="needs some text!"></paper-input>
                </div>
                <div class="card-actions">
                  <paper-icon-button icon="delete" title="Delete education" on-click="removeEducation"></paper-icon-button>
@@ -606,6 +606,12 @@ CV Editor
 
       // .$.input.focus();
 
+      var forEach = function (array, callback, scope) {
+        for (var i = 0; i < array.length; i++) {
+          callback.call(scope, i, array[i]); // passes back stuff we need
+        }
+      };
+
        if (form.validate()) {
          a = this.$.ajaxSave;
          console.log("saving passport");
@@ -613,6 +619,13 @@ CV Editor
          a.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
          a.body = this.data;
          a.generateRequest();
+       } else {
+         //Set focus to first error
+          var inputs = form.querySelectorAll('paper-input');
+          for (var i of inputs) {
+            if(!i.validate()) {i.focus(); break};
+          }
+
        }
      },
 
