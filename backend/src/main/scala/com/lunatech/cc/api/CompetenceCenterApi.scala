@@ -5,8 +5,9 @@ import com.lunatech.cc.formatter.PdfCVFormatter
 import com.lunatech.cc.utils.DBMigration
 import com.twitter.finagle.http.filter.Cors
 import com.twitter.finagle.http.{Request, Response, Status}
-import com.twitter.finagle.{Http, Service}
-import com.twitter.util.Await
+import com.twitter.finagle.{Http, Service, SimpleFilter}
+import com.twitter.finagle.http.Status.MovedPermanently
+import com.twitter.util.{Await, Future}
 import doobie.imports._
 import fs2._
 import io.finch._
@@ -15,6 +16,7 @@ import org.slf4j.bridge.SLF4JBridgeHandler
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory._
 import pureconfig._
+
 import scalaz._
 
 object CompetenceCenterApi extends App {
@@ -96,7 +98,17 @@ object CompetenceCenterApi extends App {
 
   ).toServiceAs[Application.Json]
 
-  val corsService: Service[Request, Response] = new Cors.HttpFilter(policy).andThen(service)
+  val HttpsOnlyFilter = new SimpleFilter[Request, Response] {
+    override def apply(request: Request, service: Service[Request, Response]): Future[Response] = {
+      if(request.headerMap.get("X-Forwarded-Proto") == Some("http")) {
+        val response = Response(MovedPermanently)
+        response.location = "https://" + request.host.get + request.uri
+        Future.value(response)
+      } else service(request)
+    }
+  }
+
+  val corsService: Service[Request, Response] = HttpsOnlyFilter.andThen(new Cors.HttpFilter(policy).andThen(service))
 
   logger.info(s"Starting server on port ${config.http.port}")
   val server = Http.server.serve(s":${config.http.port}", corsService)
