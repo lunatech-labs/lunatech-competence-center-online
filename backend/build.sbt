@@ -39,6 +39,7 @@ libraryDependencies ++= Seq(
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.6",
   "net.databinder.dispatch" %% "dispatch-core" % "0.13.1",
 
+  "org.slf4j" % "jul-to-slf4j" % "1.7.25",
   "ch.qos.logback" % "logback-classic" % logbackVersion,
 
   "org.scalatest" %% "scalatest" % "3.0.3" % "test",

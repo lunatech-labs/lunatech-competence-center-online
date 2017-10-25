@@ -11,13 +11,16 @@ import doobie.imports._
 import fs2._
 import io.finch._
 import io.finch.circe._
+import org.slf4j.bridge.SLF4JBridgeHandler
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory._
 import pureconfig._
-
 import scalaz._
 
 object CompetenceCenterApi extends App {
+
+  SLF4JBridgeHandler.removeHandlersForRootLogger()
+  SLF4JBridgeHandler.install()
 
   case class Config(application: Config.ApplicationConfig, tokenVerifier: Config.TokenVerifierConfig, http: Config.HttpConfig, auth: AuthConfig, database: DbConfig, services: Config.ServicesConfig)
   object Config {
@@ -95,6 +98,7 @@ object CompetenceCenterApi extends App {
 
   val corsService: Service[Request, Response] = new Cors.HttpFilter(policy).andThen(service)
 
+  logger.info(s"Starting server on port ${config.http.port}")
   val server = Http.server.serve(s":${config.http.port}", corsService)
   logger.info(s"Server running on port ${config.http.port}")
   Await.ready(server)

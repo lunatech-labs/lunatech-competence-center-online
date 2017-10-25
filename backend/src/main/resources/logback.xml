@@ -1,42 +1,18 @@
-<!--# galm-log-appender-properties -->
-<configuration>
+<configuration debugging="true">
+  <!-- address performance concern with jul-to-slf4j -->
+  <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+    <resetJUL>true</resetJUL>
+  </contextListener>
 
-    <!-- address performance concern with jul-to-slf4j -->
-    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
-        <resetJUL>true</resetJUL>
-    </contextListener>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
 
-    <property scope="context" name="API_NAME" value="CCO-API" />
-    <property scope="context" name="ENVIRONMENT" value="DOCKER" />
-
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{ISO8601} ${HOSTNAME} ${API_NAME} ${ENVIRONMENT} %msg%n</pattern>
-        </encoder>
-    </appender>
-
-    <appender name="OPERLOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!--<file>logs/${API_NAME}-monitor.log</file>-->
-        <file>logs/${API_NAME}-monitor.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/${API_NAME}-monitor.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
-            <maxHistory>30</maxHistory>
-            <maxFileSize>5MB</maxFileSize>
-            <totalSizeCap>500MB</totalSizeCap>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%d{ISO8601} ${HOSTNAME} ${API_NAME} ${ENVIRONMENT} %msg%n</pattern>
-        </encoder>
-    </appender>
-
-    <!--<logger name="com.lunatech.cc.api" level="INFO" >-->
-        <!--<appender-ref ref="CONSOLE"/>-->
-        <!--&lt;!&ndash;<appender-ref ref="OPERLOG"/>&ndash;&gt;-->
-    <!--</logger>-->
-
-    <root level="debug">
-        <!--<appender-ref ref="CONSOLE" />-->
-        <appender-ref ref="OPERLOG" />
-    </root>
-
+  <root level="info">
+    <appender-ref ref="STDOUT" />
+  </root>
 </configuration>
