@@ -1,7 +1,7 @@
 [
   {
     "id": "http",
-    "name": "HTTP",
+    "name": "HTTP & RESTful API design",
     "description": "The Hypertext Transfer Protocol, the transport layer of web application.",
     "tags": [],
     "image": "/images/http.png"

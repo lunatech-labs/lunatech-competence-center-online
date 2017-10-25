@@ -1,7 +1,9 @@
 {
   "id": "http",
-  "name": "HTTP",
+  "name": "HTTP and RESTful API design",
   "description": "The Hypertext Transfer Protocol, the transport layer of web application.",
+  "headmaster": "erik.bakker@lunatech.com",
+  "teachers": [ "erik.bakker@lunatech.com", "muayad.ali@lunatech.com" ],
   "tags": [],
   "image": "/images/http.png",
   "topics": [
@@ -99,12 +101,43 @@
       "tags": ["required-for-junior"],
       "assessment-questions": [],
       "dependencies": ["http1-basics"],
+      "resources": [{
+        "name": "Discover DevTools course on  Code School",
+        "url": "https://www.codeschool.com/courses/discover-devtools",
+        "type": "video"
+      }],
       "abilities": [
         "Use the tooling in your preferred browser to inspect request headers",
         "Find the request that you are looking for on pages that do many requests",
         "Determine how many Ajax calls the frontpage of Amazon.com makes",
         "Use your browser to determine the response headers of the 302 response you get when you browse to http://google.com"
       ]
+    },
+
+    {
+      "id": "restful-api-design",
+      "name": "RESTful API design",
+      "description": "REST is an architectural style for designing networked applications. It has been defined by Roy Fielding in his PhD dissertation, and has gained a lot of traction among software designers since. Today, it's the most commonly used pattern for designing API's, and it's almost exclusively used on HTTP, with JSON being most people's favourite representation.\n\nNot all parts of REST that Fielding described are commonly used, but many of the popular ideas did come from his paper. In RESTful API design we avoid an envelope with a status around the response body, instead we use the response code and headers that HTTP offers us. But REST is not a standard, there are many different ways of doing the details.\n\nA common format for specifying APIs is OpenAPI, also known as Swagger. A Swagger definition specifies what resources and API exposes, which endpoints, which methods are supported, which path, querystring or body parameters endpoints take. Also the structure of the request and response bodies and possible error responses are described. This is a very useful tool for designing an API. Many experienced API designers subscribe to the idea of 'design first': you design your API in Swagger first and have it validated by your consumers, before you build it.",
+      "tags": ["required-for-junior"],
+      "dependencies": [ "common-statuscodes" ],
+      "assessment-questions": [
+        { "question": "What does the abbreviation REST stand for?" },
+        { "question": "What are a resource and a representation, and how do they relate?" },
+        { "question": "What's the difference between PUT and PATCH?"},
+        { "question": "Is a DELETE request idem-potent? And a POST request?" },
+        { "question": "What's the Content-Type of a JSON response?" }
+      ],
+      "abilities": [
+        "Design an API and create a Swagger specification for it."
+      ]
+    }
+  ],
+
+  "projects": [
+    {
+      "id": "",
+      "name": "Designing a RESTful API for a Phonebook application",
+      "description": "The goal of this project is to design a RESTful API for a phonebook application.\n\n# Requirements\n\nDesign an API for a phonebook application. The phonebook has one top-level resource, a `Contact`. A contact has a name and a type, which can have the value `Personal` or `Business`. Contacts can be created, updated and deleted. Contacts can also be listed, and the list can be filtered by type, and by partial name match.\n\nContacts have zero or more phone numbers. A phone number consists of a number and a type, which is one of 'Mobile' or 'Fixed'. Phone numbers can be added and removed from a Contact. The phone numbers of a Contact can be listed. The list can be filtered by phone number type.\n\nThere is no way to list all phonenumbers in the phonebook.\n\n# Deliverables\n\nAn OpenAPI specification of this API."
     }
   ]
 }
