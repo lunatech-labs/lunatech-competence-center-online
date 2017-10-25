@@ -10,7 +10,58 @@
       "name": "Classes and Members",
       "description": "In Java everything is an instance of a class (except for some counted exceptions), where each class defines a set of members: attributes and methods. This is the first step when entering the Java world.",
       "tags": ["required-for-junior"],
-      "resources": [],
+      "resources": [
+        {
+          "name": "Hackernoon: Java for Humans",
+          "type": "article",
+          "url": "https://hackernoon.com/java-for-humans-classes-objects-95be77501e5c"
+        },
+        {
+          "name": "Tutorials Point: Java Objects and Classes",
+          "type": "article",
+          "url": "https://www.tutorialspoint.com/java/java_object_classes.htm"
+        },
+        {
+          "name": "Oracle Documentation: Java Variables",
+          "type": "documentation",
+          "url": "http://docs.oracle.com/javase/tutorial/java/nutsandbolts/variables.html"
+        },
+        {
+          "name": "Oracle Documentation: Java Primitive Data Types",
+          "type": "documentation",
+          "url": "http://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html"
+        },
+        {
+          "name": "Oracle Documentation: Java Constructors",
+          "type": "documentation",
+          "url": "https://docs.oracle.com/javase/tutorial/java/javaOO/constructors.html"
+        },
+        {
+          "name": "Dummies: Reference Types in Java",
+          "type": "article",
+          "url": "http://www.dummies.com/programming/java/reference-types-in-java"
+        },
+        {
+          "name": "BeginnersBook: Method Overloading",
+          "type": "article",
+          "url": "https://beginnersbook.com/2013/05/method-overloading"
+        },
+        {
+          "name": "Oracle Documentation: Java 8 Hashcode",
+          "type": "documentation",
+          "url": "https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#hashCode--"
+        },
+        {
+          "name": "Leepoint: Compare objects in Java",
+          "type": "article",
+          "url": "https://www.leepoint.net/data/expressions/22compareobjects.html"
+        },
+        {
+          "name": "Mkyong: How to override equals and hashcode?",
+          "type": "article",
+          "url": "https://www.mkyong.com/java/java-how-to-overrides-equals-and-hashcode/"
+        }
+      ],
       "abilities": [
         "Code a basic *Hello World!* application.",
         "Identify the difference between Primitive and Reference Type."
@@ -21,7 +72,8 @@
         { "question": "When considering primitives and references types, what are their default initialisation values?" },
         { "question": "What's the declaration order of classes, imports and packages?" },
         { "question": "In case no constructor is implemented, does that mean that the class doesn't have a constructor?" },
-        { "question": "Can you give an example of method overloading?" }
+        { "question": "Can you give an example of method overloading?" },
+        { "question": "Can you explain how to do object comparison in java?" }
       ]
     },
     {
@@ -29,7 +81,33 @@
       "name": "Control flow",
       "description": "As stated by Dijkstra in an ACM communication, *Go To Statement Considered Harmful*, any algorithm can be described with two control flow statements, *if/else* and *loop* (for, while); and Java being an imperative language these control statements are they way we explicitly tell the computer what to do.",
       "tags": ["required-for-junior"],
-      "resources": [],
+      "resources": [
+        {
+          "name": "Oracle Documentation: Java Control Flow",
+          "type": "documentation",
+          "url": "https://docs.oracle.com/javase/tutorial/java/nutsandbolts/flow.html"
+         },
+        {
+          "name": "Wideskills: Java Control Flow",
+          "type": "article",
+          "url": "http://www.wideskills.com/java-tutorial/java-control-flow-statements"
+         },
+        {
+          "name": "Stackoverflow: Java Short Circuiting",
+          "type": "article",
+          "url": "https://stackoverflow.com/questions/8759868/java-logical-operator-short-circuiting"
+        },
+        {
+          "name": "Stackoverflow: Java Break & Return",
+          "type": "article",
+          "url": "https://stackoverflow.com/questions/6620949/difference-between-return-and-break-statements"
+        },
+        {
+          "name": "Geeksforgeeks: Java Decision Making Statements",
+          "type": "article",
+          "url": "http://www.geeksforgeeks.org/decision-making-javaif-else-switch-break-continue-jump"
+        }
+      ],
       "abilities": [
         "Create conditional branches that execute different code, based on a boolean test.",
         "Create different repeat patterns (zero to many, one to many).",
@@ -50,7 +128,38 @@
       "description": "Java makes a big difference between **Static** members and **Instance** members, the former tied to the class life cycle, and the latter to the instance life cycle. Each has it's upsides and downsides, and different use cases.",
       "tags": ["required-for-junior"],
       "dependencies": ["classes-and-members"],
-      "resources": [],
+      "resources": [
+        {
+          "name": "Oracle Documentation: Java Static Class Members",
+          "type": "documentation",
+          "url": "https://docs.oracle.com/javase/tutorial/java/javaOO/classvars.html"
+        },
+        {
+          "name": "Dzone: Can you call non-static method from a static method ?",
+          "type": "article",
+          "url": "https://dzone.com/articles/can-you-call-non-static-method-from-a-static"
+        },
+        {
+          "name": "Stackoverflow: Static Methods vs Instance Methods",
+          "type": "article",
+          "url": "https://stackoverflow.com/questions/11993077/difference-between-static-methods-and-instance-methods"
+        },
+        {
+          "name": "Stackoverflow: Static vs Instance",
+          "type": "article",
+          "url": "https://stackoverflow.com/questions/11906913/java-static-vs-instance"
+        },
+        {
+          "name": "Stackoverflow: Why static methods are bad for oop?",
+          "type": "article",
+          "url": "https://stackoverflow.com/questions/4002201/why-arent-static-methods-considered-good-oo-practice"
+        },
+        {
+          "name": "Stackoverflow: Static method call from instance variable (object / reference variable)",
+          "type": "article",
+          "url": "https://stackoverflow.com/questions/29906464/java-invoke-static-method-from-instance-method-from-static-class-call"
+        }
+      ],
       "abilities": [
         "Create code that's shared and accessible from every class instance.",
         "Define `static` initialisation blocks."
@@ -68,7 +177,53 @@
       "description": "Java is a Object Oriented programming language, that means that it has support for:\n- Classes.\n- Class modifiers.\n- Visibility modifiers.\n- Composition and inheritance.\n- Interfaces.",
       "tags": ["required-for-junior"],
       "dependencies": ["static-vs-instance"],
-      "resources": [],
+      "resources": [
+        {
+          "name": "BeginnersBook: OOPs concepts in Java",
+          "type": "article",
+          "url": "https://beginnersbook.com/2013/04/oops-concepts"
+        },
+        {
+          "name": "Oracle Documentation: Access Level Modifiers",
+          "type": "documentation",
+          "url": "https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html"
+        },
+        {
+          "name": "BeginnersBook: Java Multiple Inheritance",
+          "type": "article",
+          "url": "https://beginnersbook.com/2013/05/java-multiple-inheritance/"
+        },
+        {
+          "name": "Oracle Documentation: Inheritance",
+          "type": "documentation",
+          "url": "http://docs.oracle.com/javase/tutorial/java/IandI/subclasses.html"
+        },
+        {
+          "name": "Stackoverflow: Overloading vs Overriding",
+          "type": "article",
+          "url": "https://stackoverflow.com/questions/12374399/what-is-the-difference-between-method-overloading-and-overriding"
+        },
+        {
+          "name": "Oracle Documentation: Anonymous Classes",
+          "type": "documentation",
+          "url": "https://docs.oracle.com/javase/tutorial/java/javaOO/anonymousclasses.html"
+        },
+        {
+          "name": "Stackoverflow: Why there can't be 2 public classes in 1 file (java)?",
+          "type": "article",
+          "url": "https://stackoverflow.com/questions/13329012/why-cant-two-public-classes-be-defined-in-one-file-in-java"
+        },
+        {
+          "name": "Tutorialspoint: Private Classes, Inner Classes",
+          "type": "article",
+          "url": "https://www.tutorialspoint.com/java/java_innerclasses.htm"
+        },
+        {
+          "name": "Dzone: Diamond Problem in Java",
+          "type": "article",
+          "url": "https://dzone.com/articles/dealing-with-diamond-problem-in-java"
+        }
+      ],
       "abilities": [
         "Define a class hierarchy.",
         "Hide implementation details through visibility modifiers.",
@@ -98,7 +253,48 @@
       "description": "Collections allows to define containers for a bunch of values. In Java every collection extends from a few interfaces: List, Set, Map and Queue. Also, the language provides a low-level construct known as Array.",
       "tags": ["required-for-junior"],
       "dependencies": ["object-oriented-i", "control-flow"],
-      "resources": [],
+      "resources": [
+        {
+          "name": "TutorialsPoint: Java Collections",
+          "type": "article",
+          "url": "https://www.tutorialspoint.com/java/java_collections.htm"
+        },
+        {
+          "name": "TutorialsPoint: Convert Array to Collection",
+          "type": "article",
+          "url": "https://www.tutorialspoint.com/javaexamples/collection_array.htm"
+        },
+        {
+          "name": "TutorialsPoint: Convert Collection to Array",
+          "type": "article",
+          "url": "https://www.tutorialspoint.com/javaexamples/collection_conversion.htm"
+        },
+        {
+          "name": "Stackoverflow: ArrayList vs LinkedList",
+          "type": "article",
+          "url": "https://stackoverflow.com/questions/322715/when-to-use-linkedlist-over-arraylist"
+        },
+        {
+          "name": "BeginnersBook: Set vs Map",
+          "type": "article",
+          "url": "https://beginnersbook.com/2015/01/difference-between-list-set-and-map-in-java/"
+        },
+        {
+          "name": "Dzone: How hashmap works in java ?",
+          "type": "article",
+          "url": "https://dzone.com/articles/how-hashmap-works-in-java"
+        },
+        {
+          "name": "Tutorialspoint: Java Set",
+          "type": "article",
+          "url": "https://www.tutorialspoint.com/java/java_set_interface.htm"
+        },
+        {
+          "name": "Tutorialspoint: Java Map",
+          "type": "article",
+          "url": "https://www.tutorialspoint.com/java/java_map_interface.htm"
+        }
+      ],
       "abilities": [
         "Use basic collection implementations, like ArrayList or HashMap.",
         "Understand the difference between static and dynamic allocation.",
@@ -118,7 +314,33 @@
       "description": "In a nutshell, generics enable types (classes and interfaces) to be parameters when defining classes, interfaces and methods. Much like the more familiar formal parameters used in method declarations, type parameters provide a way for you to re-use the same code with different inputs. The difference is that the inputs to formal parameters are values, while the inputs to type parameters are types.",
       "tags": ["required-for-java-medior"],
       "dependencies": ["collections-i"],
-      "resources": [],
+      "resources": [
+        {
+          "name": "Oracle Documentation: Java Generics",
+          "type": "documentation",
+          "url": "https://docs.oracle.com/javase/tutorial/java/generics/index.html"
+        },
+        {
+          "name": "Tutorialspoint: Java Generics",
+          "type": "article",
+          "url": "https://www.tutorialspoint.com/java/java_generics.htm"
+        },
+        {
+          "name": "Dummies: Java Wildcards",
+          "type": "article",
+          "url": "http://www.dummies.com/programming/java/using-wildcard-type-parameters-java/"
+        },
+        {
+          "name": "Oracle Documentation: Restrictions on Generics",
+          "type": "documentation",
+          "url": "https://docs.oracle.com/javase/tutorial/java/generics/restrictions.html"
+        },
+        {
+          "name": "Baeldung: Type Erasure",
+          "type": "article",
+          "url": "http://www.baeldung.com/java-type-erasure"
+        }
+      ],
       "abilities": [
         "Define methods that can accept generic types as input.",
         "Understand what's the use of upper and lower bounds.",
@@ -135,7 +357,28 @@
       "name": "Annotations",
       "description": "Annotations provide a way to add meta-data to our code. This can be in turn used by some library to enhance our implementations or even provide new functionality.",
       "dependencies": ["classes-and-members"],
-      "resources": [],
+      "resources": [
+        {
+          "name": "Oracle Documentation: Java Annotations",
+          "type": "documentation",
+          "url": "https://docs.oracle.com/javase/tutorial/java/annotations/index.html"
+        },
+        {
+          "name": "Javatpoint: Java Annotations",
+          "type": "article",
+          "url": "https://www.javatpoint.com/java-annotation"
+        },
+        {
+          "name": "Mkyong: How to write java annotations ?",
+          "type": "article",
+          "url": "https://www.mkyong.com/java/java-custom-annotations-example/"
+        },
+        {
+          "name": "Dzone: How do annotations work in java ?",
+          "type": "article",
+          "url": "https://dzone.com/articles/how-annotations-work-java"
+        }
+      ],
       "abilities": [],
       "assessment-questions": [
         { "question": "Where can you apply annotations?" },
@@ -149,7 +392,58 @@
       "name": "Java Standard Library",
       "description": "Java comes with a rich Standard Library, including `String`, `System`, wrappers, and `StringBuilder` among others.",
       "tags": ["required-for-java-medior"],
-      "resources": [],
+      "resources": [
+        {
+          "name": "Stackoverflow: List of Java Standard Libraries",
+          "type": "article",
+          "url": "https://stackoverflow.com/questions/10868825/where-can-i-find-a-list-of-the-java-standard-libraries"
+        },
+        {
+          "name": "BeginnersBook: Java Strings",
+          "type": "article",
+          "url": "https://beginnersbook.com/2013/12/java-strings"
+        },
+        {
+          "name": "TutorialsPoint: Java Strings",
+          "type": "article",
+          "url": "https://www.tutorialspoint.com/java/java_strings.htm"
+        },
+        {
+          "name": "Stackoverflow: Stringbuilder vs Stringbuffer",
+          "type": "article",
+          "url": "https://stackoverflow.com/questions/355089/difference-between-stringbuilder-and-stringbuffer"
+        },
+        {
+          "name": "Javatpoint: Stringbuilder vs Stringbuffer",
+          "type": "article",
+          "url": "https://www.javatpoint.com/difference-between-stringbuffer-and-stringbuilder"
+        },
+        {
+          "name": "Stackoverflow: Get current date / time in java",
+          "type": "article",
+          "url": "https://stackoverflow.com/questions/5175728/how-to-get-the-current-date-time-in-java"
+        },
+        {
+          "name": "BeginnersBook: Wrapper classes in Java",
+          "type": "article",
+          "url": "https://beginnersbook.com/2017/09/wrapper-class-in-java"
+        },
+        {
+          "name": "Tutorialspoint: Read/Write files in Java",
+          "type": "article",
+          "url": "https://www.tutorialspoint.com/java/java_files_io.htm"
+        },
+        {
+          "name": "Mkyong: Read/Write java objects to file",
+          "type": "article",
+          "url": "https://www.mkyong.com/java/how-to-read-and-write-java-object-to-a-file"
+        },
+        {
+          "name": "JavaPractices: Implementing Serializable",
+          "type": "article",
+          "url": "http://www.javapractices.com/topic/TopicAction.do?Id=45"
+        }
+      ],
       "abilities": [],
       "assessment-questions": [
         { "question": "What's the key property of the Java `String`?", "answer-hint": "It's a implementation detail, differs from Ruby or C/C++ string." },
@@ -169,7 +463,52 @@
       "description": "The Java platform is designed from the ground up to support concurrent programming, with basic concurrency support in the Java programming language and the Java class libraries.",
       "tags": ["required-for-junior"],
       "dependencies": ["classes-and-members"],
-      "resources": [],
+      "resources": [
+        {
+          "name": "Oracle Documentation: Java Concurrency",
+          "type": "documentation",
+          "url": "https://docs.oracle.com/javase/tutorial/essential/concurrency"
+        },
+        {
+          "name": "Vogella: Java Concurrency",
+          "type": "article",
+          "url": "http://www.vogella.com/tutorials/JavaConcurrency/article.html"
+        },
+        {
+          "name": "Dzone: Producer Consumer Example using Threads",
+          "type": "article",
+          "url": "https://dzone.com/articles/solving-producer-consumer"
+        },
+        {
+          "name": "Blog: Low Level Synchronization in Java",
+          "type": "article",
+          "url": "http://shengwangi.blogspot.nl/2015/11/low-level-synchronization-in-java.html"
+        },{
+          "name": "Blog: Low Level Synchronization in Java",
+          "type": "article",
+          "url": "http://shengwangi.blogspot.nl/2015/11/low-level-synchronization-in-java.html"
+        },
+        {
+          "name": "HowtodoinJava: Object Level Locking vs Class Level Locking",
+          "type": "article",
+          "url": "https://howtodoinjava.com/core-java/multi-threading/thread-synchronization-object-level-locking-and-class-level-locking"
+        },
+        {
+          "name": "Quora: Object Level Locking vs Class Level Locking",
+          "type": "article",
+          "url": "https://www.quora.com/What-is-the-difference-between-class-level-and-object-level-locking-in-Java-Multi-Threading"
+        },
+        {
+          "name": "Howtodoinjava: Lock vs Monitor",
+          "type": "article",
+          "url": "https://howtodoinjava.com/core-java/multi-threading/multithreading-difference-between-lock-and-monitor"
+        },
+        {
+          "name": "TutorialsPoint: Deadlock",
+          "type": "article",
+          "url": "https://www.tutorialspoint.com/java/java_thread_deadlock.htm"
+        }
+      ],
       "abilities": [
         "Define a simple concurrent program, such as a Producer/Consumer.",
         "Understand what's the purpose of `synchronized`, and what type of problems it can generate."
@@ -189,7 +528,33 @@
       "description": "Since version 5.0, the Java platform has also included high-level concurrency APIs, which made easier for work concurrent programs.\nThis includes the new Lock, ThreadLocal, Thread pools and Atomics.",
       "tags": ["required-for-java-medior"],
       "dependencies": ["concurrency-i"],
-      "resources": [],
+      "resources": [
+        {
+          "name": "Winterbe: 1. Threads and Executors",
+          "type": "article",
+          "url": "http://winterbe.com/posts/2015/04/07/java8-concurrency-tutorial-thread-executor-examples"
+        },
+        {
+          "name": "Winterbe: 2. Synchronized and Locks",
+          "type": "article",
+          "url": "http://winterbe.com/posts/2015/04/30/java8-concurrency-tutorial-synchronized-locks-examples"
+        },
+        {
+          "name": "Winterbe: 3. Atomic Variables and ConcurrentMap",
+          "type": "article",
+          "url": "http://winterbe.com/posts/2015/05/22/java8-concurrency-tutorial-atomic-concurrent-map-examples"
+        },
+        {
+          "name": "Stackoverflow: Type of Thread Pools",
+          "type": "article",
+          "url": "https://stackoverflow.com/questions/17186206/types-of-thread-pools-in-java"
+        },
+        {
+          "name": "Baeldung: Java CompletableFuture",
+          "type": "article",
+          "url": "http://www.baeldung.com/java-completablefuture"
+        }
+      ],
       "abilities": [
         "Define fine grain control over concurrency.",
         "Isolate resources from different threads.",
@@ -210,7 +575,43 @@
       "description": "Java 8 provides lots of additions to the language, the most importants are: Lambdas and Streams.",
       "tags": ["required-for-java-medior"],
       "dependencies": ["collections-i"],
-      "resources": [],
+      "resources": [
+        {
+          "name": "TutorialsPoint: Java 8 Overview",
+          "type": "article",
+          "url": "https://www.tutorialspoint.com/java8/java8_overview.htm"
+        },
+        {
+          "name": "Dzone: Lambda Expressions",
+          "type": "article",
+          "url": "https://dzone.com/articles/java-lambda-expressions-basics"
+        },
+        {
+          "name": "Codementor: Java 8 Method Reference",
+          "type": "article",
+          "url": "https://www.codementor.io/eh3rrera/using-java-8-method-reference-du10866vx"
+        },
+        {
+          "name": "TutorialsPoint: Java 8 Default Methods",
+          "type": "article",
+          "url": "https://www.tutorialspoint.com/java8/java8_default_methods.htm"
+        },
+        {
+          "name": "Winterbe: Java 8 Stream",
+          "type": "article",
+          "url": "http://winterbe.com/posts/2014/07/31/java8-stream-tutorial-examples"
+        },
+        {
+          "name": "Baeldung: Java 8 Date Time API",
+          "type": "article",
+          "url": "http://www.baeldung.com/java-8-date-time-intro"
+        },
+        {
+          "name": "Mkyong: Java 8 Optional",
+          "type": "article",
+          "url": "https://www.mkyong.com/java8/java-8-optional-in-depth"
+        }
+      ],
       "abilities": [
         "Use collections in a more functional way.",
         "Simplify single method anonymous classes."
@@ -219,10 +620,41 @@
     {
       "id": "cg-aop",
       "name": "Code Generation and AOP",
-      "description": "",
+      "description": "Many Java libraries reliy on Code generation and AOP to perform their magic, they are a convenient tool to create useful algorithms and utilities that wouldn't be possible otherwise. ",
       "tags": ["required-for-java-senior"],
       "dependencies": ["classes-and-members"],
-      "resources": [],
+      "resources": [
+        {
+          "name": "Stackoverflow: Aspect vs Object Oriented Programming",
+          "type": "article",
+          "url": "https://stackoverflow.com/questions/232884/aspect-oriented-programming-vs-object-oriented-programming"
+        },
+        {
+          "name": "Stackoverflow: What is aspect oriented programming?",
+          "type": "article",
+          "url": "https://stackoverflow.com/questions/242177/what-is-aspect-oriented-programming"
+        },
+        {
+          "name": "Dzone: Spring Aspect Oriented Programming",
+          "type": "article",
+          "url": "https://dzone.com/articles/overview-of-spring-aspect-oriented-programming-aop"
+        },
+        {
+          "name": "Baeldung: Java Aspectj",
+          "type": "article",
+          "url": "http://www.baeldung.com/aspectj"
+        },
+        {
+          "name": "Stackoverflow: What is Just in Time Compiler?",
+          "type": "article",
+          "url": "https://stackoverflow.com/questions/95635/what-does-a-just-in-time-jit-compiler-do"
+        },
+        {
+          "name": "Dzone: Just in Time Compiler",
+          "type": "article",
+          "url": "https://dzone.com/articles/just-time-compiler-jit-hotspot"
+        }
+      ],
       "abilities": []
     }
   ]
