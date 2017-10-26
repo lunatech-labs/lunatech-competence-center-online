@@ -5,6 +5,7 @@
 <link rel="import" href="../../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-behavior.html">
+<link rel="import" href="../../bower_components/marked-element/marked-element.html">
 
 <dom-module id="topic-details">
   <template>
@@ -54,7 +55,10 @@
     <paper-card>
       <card-content>
         <h1>{{selected.name}}</h1>
-        <p>{{selected.description}}</p>
+
+        <marked-element markdown={{selected.description}}>
+          <div slot="markdown-html"></div>
+        </marked-element>
 
         <template is="dom-if" if="{{_hasResources(selected)}}">
           <h2>Resources</h2>
