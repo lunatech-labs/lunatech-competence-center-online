@@ -31,7 +31,7 @@
     <h1>[[knowledge.name]]</h1>
     <p>[[knowledge.description]]</p>
     <template is="dom-if" if=[[!loading]]>
-      <knowledge-graph graph="{{knowledge}}" nodes="topics"></knowledge-graph>
+      <knowledge-graph graph="{{knowledge}}" known=[[personKnowledge]] required-tags=[[requiredTags]] nodes="topics"></knowledge-graph>
     </template>
     <topic-details id="topicDetail" on-i-know-this-changed="_iKnowThisChanged"></topic-details>
   </template>
@@ -52,6 +52,11 @@
 
         personKnowledge: {
           type: Array
+        },
+
+        requiredTags: {
+          type: Array,
+          value: ['required-for-junior']
         },
 
         loading: {
@@ -95,7 +100,7 @@
       },
 
       _computeLoading: function(dataLoading, personKnowledgeLoading) {
-        return dataLoading && personKnowledgeLoading;
+        return dataLoading || personKnowledgeLoading;
       },
 
       _onSubjectChange: function () {

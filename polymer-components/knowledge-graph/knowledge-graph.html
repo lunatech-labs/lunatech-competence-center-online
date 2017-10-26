@@ -13,7 +13,6 @@ Displays a knowledge graph
     <style>
       :host {
         display: block;
-
       }
 
       #node-container {
@@ -52,7 +51,7 @@ Displays a knowledge graph
     <div id="node-container" style="width:{{width}}px;height:{{height}}px">
       <template is="dom-repeat" items="{{graphNodes}}">
         <div class="node" style="left:{{item.left}}px;top:{{item.top}}px;width:{{item.width}}px;height:{{item.height}}px">
-          <knowledge-node topic="{{item}}"></knowledge-node>
+          <knowledge-node topic="{{item}}" known="[[_isKnown(item, known.splices)]]" required="[[_isRequired(item, requiredTags.splices)]]" ></knowledge-node>
         </div>
       </template>
     </div>
@@ -147,6 +146,24 @@ Displays a knowledge graph
             type: String,
             value: 'nodes'
           },
+
+          known: {
+            type: Array
+          },
+
+          requiredTags: {
+            type: Array
+          }
+        },
+
+        _isKnown: function(item) {
+          return this.known.includes(item.id);
+        },
+
+        _isRequired: function(item) {
+          return item.tags.some(function(element) {
+            return this.requiredTags.includes(element);
+          }.bind(this));
         },
 
         _drawEdges: function() {

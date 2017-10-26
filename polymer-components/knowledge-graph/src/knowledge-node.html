@@ -25,10 +25,11 @@ Displays a knowledge node
         padding-left: 23px;
         position: relative;
         text-align: center;
+        opacity: 0.5;
       }
 
       .label {
-        background-color: #F00;
+        background-color: #4357E4;
         border-bottom-left-radius: 7px;
         border-right: 1px solid black;
         border-top-left-radius: 7px;
@@ -39,6 +40,21 @@ Displays a knowledge node
         width: 15px;
       }
 
+      #node[required] {
+        opacity: 1;
+      }
+
+      #node[required] .label {
+        background-color: #F00;
+      }
+
+      #node[known] .label,
+      #node[required][known] .label {
+        background-color: #5faa5f;
+      }
+
+      .label
+
       .resources {
         margin-top: 10px;
       }
@@ -48,7 +64,7 @@ Displays a knowledge node
         --iron-icon-width: 18px;
       }
     </style>
-    <div id="node">
+    <div id="node" known$={{known}} required$={{required}}>
       <div class="label"></div>
 
       <div class="title">{{topic.name}}</div>
@@ -81,6 +97,16 @@ Displays a knowledge node
         },
 
         expanded: {
+          type: Boolean,
+          value: false
+        },
+
+        known: {
+          type: Boolean,
+          value: true
+        },
+
+        required: {
           type: Boolean,
           value: false
         }
