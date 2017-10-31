@@ -7,6 +7,7 @@
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-slider/paper-slider.html">
 <link rel="import" href="../paper-card/paper-card.html">
+<link rel="import" href="../paper-countries/paper-countries.html">
 <link rel="import" href="../paper-radio-button/paper-radio-button.html">
 <link rel="import" href="../paper-radio-group/paper-radio-group.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
@@ -262,14 +263,15 @@ CV Editor
            <template is="dom-repeat" items="{{data.educations}}">
              <paper-card class="horizontal">
                <div class="card-content">
-                 <paper-input label="Institution" value="{{item.institution}}" required auto-validate autofocus error-message="needs some text!" on-error="focus()"></paper-input>
-                 <vaadin-date-picker label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
-                 <paper-textarea label="Description" value="{{item.description}}" required auto-validate autofocus error-message="needs some text!"></paper-textarea>
+                 <paper-input class="formfield" label="Institution" value="{{item.institution}}" required auto-validate error-message="Institution is required!"></paper-input>
+                 <vaadin-date-picker class="formfield" label="Start Date" value="{{item.startDate}}" required auto-validate error-message="Are you sure you've started?"></vaadin-date-picker>
+                 <paper-textarea class="formfield" label="Description" value="{{item.description}}" required auto-validate error-message="Description is required!"></paper-textarea>
                </div>
                <div class="card-content">
-                 <paper-input label="Country" value="{{item.country}}" required auto-validate auto-focus error-message="needs some text!"></paper-input>
-                 <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
-                 <paper-input label="Study Type" value="{{item.studyType}}" required auto-validate auto-focus error-message="needs some text!"></paper-input>
+                 <!--<paper-countries country="[[country]]" value="{{item.country}}" auto-validate="true" placeholder="Country"></paper-countries>-->
+                 <paper-input class="formfield" label="Country" value="{{item.country}}" required auto-validate error-message="needs some text!"></paper-input>
+                 <vaadin-date-picker class="formfield" label="End Date" value="{{item.endDate}}" required auto-validate error-message="Until when???"></vaadin-date-picker>
+                 <paper-input class="formfield" label="Study Type" value="{{item.studyType}}" required auto-validate error-message="needs some text!"></paper-input>
                </div>
                <div class="card-actions">
                  <paper-icon-button icon="delete" title="Delete education" on-click="removeEducation"></paper-icon-button>
@@ -286,13 +288,13 @@ CV Editor
            <template is="dom-repeat" items="{{data.projects}}">
              <paper-card class="horizontal">
                <div class="card-content">
-                 <paper-input label="Client" value="{{item.client}}"></paper-input>
-                 <vaadin-date-picker label="Start Date" value="{{item.startDate}}"></vaadin-date-picker>
-                 <paper-textarea label="Summary" value="{{item.summary}}" ></paper-textarea>
+                 <paper-input class="formfield" label="Client" value="{{item.client}}" required auto-validate error-message="Where did you work?"></paper-input>
+                 <vaadin-date-picker class="formfield" label="Start Date" value="{{item.startDate}}" required auto-validate error-message="Are you sure you've started?"></vaadin-date-picker>
+                 <paper-textarea class="formfield" label="Summary" value="{{item.summary}}" required auto-validate error-message="You didn't tell what you did!"></paper-textarea>
                </div>
                <div class="card-content">
-                 <paper-input label="Role" value="{{item.role}}"></paper-input>
-                 <vaadin-date-picker label="End Date" value="{{item.endDate}}"></vaadin-date-picker>
+                 <paper-input class="formfield" label="Role" value="{{item.role}}" required auto-validate error-message="What role did you have?"></paper-input>
+                 <vaadin-date-picker class="formfield" label="End Date" value="{{item.endDate}}" required auto-validate error-message="Until when???"></vaadin-date-picker>
                </div>
                <div class="card-actions">
                  <paper-icon-button icon="delete" title="Delete project" on-click="removeProject"></paper-icon-button>
@@ -309,7 +311,7 @@ CV Editor
              <template is="dom-repeat" items="{{data.skills}}">
                <paper-card class="horizontal">
                  <div class="card-content">
-                   <paper-input label="Name" value="{{item.name}}"></paper-input>
+                   <paper-input class="formfield" label="Name" value="{{item.name}}" required auto-validate error-message="What skill do you have?"></paper-input>
                  </div>
                  <div class="floating-label">Category</div>
                  <paper-radio-group selected="{{item.category}}">
@@ -337,7 +339,7 @@ CV Editor
              <template is="dom-repeat" items="{{data.achievements}}">
                <paper-card class="horizontal">
                  <div class="card-content">
-                   <paper-textarea label="Achievement" value="{{item.description}}"></paper-textarea>
+                   <paper-textarea label="Achievement" value="{{item.description}}" required auto-validate error-message="What exactly did you achieve?"></paper-textarea>
                  </div>
                  <div class="card-actions">
                    <paper-icon-button icon="delete" title="Delete achievement" on-click="removeAchievement"></paper-icon-button>
@@ -498,12 +500,6 @@ CV Editor
 
 </dom-module>
 
-
-
-
-
-
-
 <script>
 
    Polymer({
@@ -564,7 +560,6 @@ CV Editor
        }
      },
 
-
      doEdit: function(e){
        this.isEditableVisible=true;
        this.isOverviewVisible=false;
@@ -599,18 +594,21 @@ CV Editor
        a.generateRequest();
      },
 
+     forEach : function (array, callback, scope) {
+       for (var i = 0; i < array.length; i++) {
+         callback.call(scope, i, array[i]); // passes back stuff we need
+       }
+     },
+
+     // Usage:
+     // optionally change the scope as final parameter too, like ECMA5
+     // var myNodeList = document.querySelectorAll('li');
+     // forEach(myNodeList, function (index, value) {
+     //   console.log(index, value); // passes index + value back!
+     // });
+
      savePassport : function(e) {
        let form = this.$$('iron-form');
-       console.log(form);
-       console.log(form.validate());
-
-      // .$.input.focus();
-
-      var forEach = function (array, callback, scope) {
-        for (var i = 0; i < array.length; i++) {
-          callback.call(scope, i, array[i]); // passes back stuff we need
-        }
-      };
 
        if (form.validate()) {
          a = this.$.ajaxSave;
@@ -621,11 +619,10 @@ CV Editor
          a.generateRequest();
        } else {
          //Set focus to first error
-          var inputs = form.querySelectorAll('paper-input');
+          var inputs = form.querySelectorAll('.formfield');
           for (var i of inputs) {
-            if(!i.validate()) {i.focus(); break};
+            if(i['invalid']) {i.focus();i.$.input.focus();break}; //should be nicer!!!!
           }
-
        }
      },
 
