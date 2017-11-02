@@ -1,0 +1,493 @@
+{
+  "id": "akka",
+  "name": "Akka",
+  "description": "Akka is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala. Its underlying concurrency model is based on [Actor Model|https://en.wikipedia.org/wiki/Actor_model], with inspiration drawn from [Erlang|https://www.erlang.org/] ",
+  "tags": ["java", "scala"],
+  "image": "/images/akka.svg",
+  "topics": [
+    {
+      "id": "akka-basic",
+      "name": "Basic Akka ",
+      "description": "The starting point for learning Akka is understanding the [Actor Model|https://en.wikipedia.org/wiki/Actor_model] as the underlying concept. That being said, Akka's main concurrent abstraction is the Actor, which can simply be thought as a worker receiving messages from other actors to do some task and deliver an outcome.\n\nBut Actors don't live in isolation, they exist with a container called Actor System, which is in charge of monitoring and managing the life cycle of each of them. This system, with the help of another abstraction called Dispatcher, delivers messages to actors, alleviating the developer from dealing with explicit locking and thread management.",
+      "tags": [],
+      "resources": [
+        {
+          "name": "Akka Documentation - Scala",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/scala/index.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Akka Documentation - Java",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/java/index.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Introduction to Akka by Yannick De Turck",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=_nk5rnlRQ8E"
+        },
+        {
+          "name": "Introduction to the Actor Model for Concurrent Computation",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=lPTqcecwkJg"
+        },
+        {
+          "name": "Hewitt, Meijer and Szyperski: The Actor Model (everything you wanted to know, but were afraid to ask)",
+          "type": "video",
+          "url": "https://channel9.msdn.com/Shows/Going+Deep/Hewitt-Meijer-and-Szyperski-The-Actor-Model-everything-you-wanted-to-know-but-were-afraid-to-ask"
+        },
+        {
+          "name": "Akka in Action - Introduction to Akka",
+          "type": "book",
+          "url": "https://www.manning.com/books/akka-in-action",
+          "notes": "Chapter 1. Introduction to Akka"
+        },
+        {
+          "name": "Learning Akka - Actors and Concurrency",
+          "type": "book",
+          "url": "https://www.packtpub.com/application-development/learning-akka",
+          "notes": "Chapter 2. Actors and Concurrency"
+        },
+        {
+          "name": "8 Akka anti-patterns you'd better be aware of by Manuel Bernhardt",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=hr3UdktX-As"
+        }
+      ],
+      "abilities": [
+        "Create a basic Akka application, where at least two actors can talk to each other (e.g. a Ping-Pong application).",
+        "Initialize and communicate actors idiomatically according to convention.",
+        "Understand difference between ActorRef and ActorSelection, and when to use one over the other.",
+        "Schedule message delivery, considering different strategies (once or indefinitely).",
+        "Stop an Actor or an ActorSystem, when it's no longer needed or is in inconsistent state."
+      ],
+
+      "assessment-questions": [
+        { "question": "Why do we say Akka is message-based and asynchronous?" },
+        { "question": "Is it possible to configure Akka synchronously? If so, what would be the downside?" },
+        { "question": "What is the interface that an Actor must uphold?" },
+        { "question": "What is an actor system?" },
+        { "question": "What is an ActorRef and why do we need them? Why can't we just have a direct reference to the Actor?" },
+        { "question": "When scheduling messages, when do you prefer Timers over the Scheduler?" },
+        { "question": "How to does communication between actor happens? What's the purpose of the dispatcher in all this?" },
+        { "question": "Why blocking is no recommended within the `receive` method? Can you think of one case where it is?" }
+      ]
+    },
+    {
+      "id": "akka-customization",
+      "name": "Akka Customization",
+      "description": "Like any other framework, Akka provides specific extension point where we can tune the functionality to our needs. The two most prominent are:\n# Mailboxes, responsible for holding the messages that are destined for an Actor.\n# Dispatchers, responsible for deciding when and how to feed the messages to an Actor.",
+      "tags": [],
+      "dependencies": ["akka-basic"],
+      "resources": [
+        {
+          "name": "Mailbox - Scala",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/scala/mailboxes.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Mailbox - Java",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/java/mailboxes.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "How to create a priority based mailbox for an Akka actor",
+          "type": "article",
+          "url": "https://blog.knoldus.com/2014/03/13/how-to-create-a-priority-based-mailbox-for-an-actor/"
+        },
+        {
+          "name": "Dispatchers - Scala",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/scala/dispatchers.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Dispatchers - Java",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/java/dispatchers.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Akka in Action - Introduction to Akka",
+          "type": "book",
+          "url": "https://www.manning.com/books/akka-in-action",
+          "notes": "Chapter 1. Introduction to Akka (Section 1.7)"
+        },
+        {
+          "name": "Akka in Action - Performance Tips",
+          "type": "book",
+          "url": "https://www.manning.com/books/akka-in-action",
+          "notes": "Chapter 16. Performance Tips"
+        },
+        {
+          "name": "Learning Akka - Scaling Up",
+          "type": "book",
+          "url": "https://www.packtpub.com/application-development/learning-akka",
+          "notes": "Chapter 5. Scaling Up (Section 'Working with Dispatchers')"
+        },
+        {
+          "name": "Learning Akka - Handling Mailbox Problems",
+          "type": "book",
+          "url": "https://www.packtpub.com/application-development/learning-akka",
+          "notes": "Chapter 7. Handling Mailbox Problems"
+        }
+      ],
+      "abilities": [
+        "Configure different types of dispatchers",
+        "Configure different mailbox for actors",
+        "Implement a custom mailbox that acts upon messages (for example, filters them depending a condition being met)."
+      ],
+      "assessment-questions": [
+        { "question": "What is the dispatcher and what is its responsibility?" },
+        { "question": "Is it possible to have more than one type of Dispatcher in the same ActorSystem? If so, how can an Actor select one of them?" },
+        { "question": "Akka comes with three types of Dispatchers, can you provide use cases for each?" },
+        { "question": "What are the different types of mailbox and reasons to choose them?" }
+      ]
+    },
+    {
+      "id": "akka-supervisor",
+      "name": "Akka Supervision",
+      "description": "In an ideal world, a system is always available and is able to guarantee that it will be successful with each undertaken action. Building a fault-tolerant application with plain old objects and exception handling is quite a complex task, but Akka provides tools to make applications more resilient.\n\nInstead of using one flow to handle both normal code and recovery code, Akka provides two separate flows: one for normal logic and one for fault recovery logic. The normal flow consists of actors that handle normal messages; the recovery flow consists of actors that monitor the actors in the normal flow. Actors that monitor other actors are called supervisors.",
+      "tags": [],
+      "dependencies": ["akka-basic"],
+      "resources": [
+        {
+          "name": "Supervision - Scala",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/scala/general/supervision.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Supervision - Java",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/java/general/supervision.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Akka in Action - Fault Tolerance",
+          "type": "book",
+          "url": "https://www.manning.com/books/akka-in-action",
+          "notes": "Chapter 2. Fault Tolerance"
+        },
+        {
+          "name": "Learning Akka - Handling State and Failure",
+          "type": "book",
+          "url": "https://www.packtpub.com/application-development/learning-akka",
+          "notes": "Chapter 4. Handling State and Failure"
+        }
+      ],
+      "abilities": [
+        "Create custom supervisor for actors.",
+        "Understand actor lifecycle.",
+        "Understand lifecycle hooks.",
+        "Create resilient actors that can respond correctly to failure."
+      ],
+      "assessment-questions": [
+        { "question": "What happens when an actor is restarted?" },
+        { "question": "Which supervisions strategies exist?" },
+        { "question": "What's the difference between supervising and watching over an actor?" }
+      ]
+    },
+    {
+      "id": "akka-fsm",
+      "name": "Akka FSM",
+      "description": "Following the same design principles as Erlang, Akka provides a way of defining Actor's behavior like an Finite State Machine (FSM). Many applications can be modeled as FSM, protocol stacks being one example. Arguably we could use `become` to define different behaviors, but having more than three states can result in messy code.\nAn FSM can be described as a set of relations of the form:\n```\nState(S) x Event(E) -> Actions (A), State(S')\n```\nThese relations are interpreted as meaning: *If we are in state S and the event E occurs, we should perform the actions A and make a transition to the state S'.*",
+      "tags": [],
+      "dependencies": ["akka-basic"],
+      "resources": [
+        {
+          "name": "FSM - Scala",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/scala/fsm.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "FSM - Java",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/java/fsm.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Akka in Action - Finite State Machines and Agents",
+          "type": "book",
+          "url": "https://www.manning.com/books/akka-in-action",
+          "notes": "Chapter 16. Finite State Machines and Agents"
+        },
+        {
+          "name": "Learning Akka - Actor Lifecycle - Handling State and Failure",
+          "type": "book",
+          "url": "https://www.packtpub.com/application-development/learning-akka",
+          "notes": "Chapter 4. Actor Lifecycle - Handling State and Failure (Section 'State')"
+        },
+        {
+          "name": "Express yourself with a finite-state machine - Michal Tomanski",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=iwmLi-O5x2Y"
+        }
+      ],
+      "abilities": [
+        "Create FSM actors",
+        "Handle transitions between states",
+        "How to create immutable data on FSM actor"
+      ],
+      "assessment-questions": [
+        { "question": "What is a FSM actor?" },
+        { "question": "Why FSM Actor need that you specify two type parameters?" },
+        { "question": "What happens with an event not handle on the current state?" },
+        { "question": "Where should behavior be encoded according to convention?" }
+      ]
+    },
+    {
+      "id": "akka-route",
+      "name": "Akka Routing",
+      "description": "Create router actors for message distribution among routees actors. Messages can be sent via a router to efficiently route them to destination actors, known as its routees. A Router can be used inside or outside of an actor, and you can manage the routees yourselves or use a self contained router actor with configuration capabilities. Different routing strategies can be used, according to your application’s needs. Akka comes with several useful routing strategies right out of the box.",
+      "tags": [],
+      "dependencies": ["akka-basic"],
+      "resources": [
+        {
+          "name": "Routing - Scala",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/scala/routing.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Routing - Java",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/java/routing.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Akka in Action - Routing Messages",
+          "type": "book",
+          "url": "https://www.manning.com/books/akka-in-action",
+          "notes": "Chapter 9. Routing Messages"
+        },
+        {
+          "name": "Learning Akka - Scaling Up",
+          "type": "book",
+          "url": "https://www.packtpub.com/application-development/learning-akka",
+          "notes": "Chapter 5. Scaling Up (Section 'Routing logic')"
+        }
+      ],
+      "abilities": [
+        "Create a router actor via code or configuration",
+        "Create your own routing logic"
+      ],
+      "assessment-questions": [
+        { "question": "What is a router actor?" },
+        { "question": "Which routing strategies are defined by Akka?" },
+        { "question": "How do use remote actor as routees?" },
+        { "question": "What's the difference between Router Pool and Router Group? When should you pick one over other?" }
+      ]
+    },
+    {
+      "id": "akka-persistence",
+      "name": "Akka Persistence",
+      "description": "Create actors able to persist their internal state and recover after restart. Just like objects in OOP, actors keep their state in volatile memory. Once the system is shut down, gracefully or because of a crash, all data that was in memory is lost. Persistence provides patterns to enable actors to persist events that lead to their current state. Upon startup, events can be replayed to restore the state of the entity hosted by the actor.",
+      "tags": [],
+      "dependencies": ["akka-customization"],
+      "resources": [
+        {
+          "name": "Persistence - Scala",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/scala/persistence.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Persistence - Java",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/java/persistence.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Akka in Action - Actor Persistence",
+          "type": "book",
+          "url": "https://www.manning.com/books/akka-in-action",
+          "notes": "Chapter 15. Actor Persistence"
+        },
+        {
+          "name": "Learning Akka - A Journey's End",
+          "type": "book",
+          "url": "https://www.packtpub.com/application-development/learning-akka",
+          "notes": "Chapter 9. A Journey's End (Section 'Akka Persistence')"
+        },
+        {
+          "name": "Resilient Applications with Akka Persistence",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=qqNsGomfabc"
+        }
+      ],
+      "abilities": [
+        "Create persistent actor and recovery process",
+        "Shutdown persistent actor safely",
+        "Making snapshots"
+      ],
+      "assessment-questions": [
+        { "question": "What is a persistent actor?" },
+        { "question": "How do make a at least once delivery with persistent actors?" },
+        { "question": "How to use snapshot to improve recovery time?" }
+      ]
+    },
+    {
+      "id": "akka-cluster",
+      "name": "Akka Cluster",
+      "description": "Create Akka actor system in a cluster",
+      "tags": [],
+      "dependencies": ["akka-route"],
+      "resources": [
+        {
+          "name": "Cluster Design Concepts - Scala",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/scala/common/cluster.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Cluster Design Concepts  - Java",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/java/common/cluster.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Cluster - Scala",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/scala/cluster-usage.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Cluster - Java",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/java/cluster-usage.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Akka Revealed: A JVM Architect’s Journey From Resilient Actors To Scalable Clusters",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=iYTEZ0fm4Pw"
+        },
+        {
+          "name": "Akka in Action - Clustering",
+          "type": "book",
+          "url": "https://www.manning.com/books/akka-in-action",
+          "notes": "Chapter 14. Clustering"
+        },
+        {
+          "name": "Learning Akka - Successfully Scaling Out",
+          "type": "book",
+          "url": "https://www.packtpub.com/application-development/learning-akka",
+          "notes": "Chapter 6. Successfully Scaling Out"
+        },
+        {
+          "name": "Hands on Introduction to Distributed Systems Concepts with Akka Clustering - David Russell",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=WVHqUL-8FuM"
+        },
+        {
+          "name": "Scalable task distribution with Scala, Akka and Mesos",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=9jT92NxWlPc"
+        }
+      ],
+      "abilities": [
+        "Create actor system in a cluster",
+        "Join new nodes to cluster",
+        "Remove nodes to cluster",
+        "Handle cluster events",
+        "Use node roles",
+        "Message serialization",
+        "Send messages to actor across node",
+        "Actor singletons on cluster"
+      ],
+      "assessment-questions": [
+        { "question": "How to create a cluster?" },
+        { "question": "What are the seed nodes?" },
+        { "question": "Which are the cluster events?" },
+        { "question": "How to set a node role?" },
+        { "question": "Why you shouldn't use Java serialization?" },
+        { "question": "How to send message to an actor which you don't know the running node?" },
+        { "question": "How to create a publish/subscribe on the cluster?" },
+        { "question": "How to create an actor that is only instantiated once across the whole cluster?" }
+      ]
+    },
+    {
+      "id": "akka-stream-basic",
+      "name": "Akka Stream Basic",
+      "description": "Create an Akka stream",
+      "tags": [],
+      "dependencies": ["akka-basic"],
+      "resources": [
+        {
+          "name": "Akka Stream Design Concepts - Scala",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/scala/general/stream/stream-design.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Akka Stream Design Concepts  - Java",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/java/general/stream/stream-design.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Akka Stream - Scala",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/scala/stream/stream-flows-and-basics.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Akka Stream - Java",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/java/stream/stream-flows-and-basics.html",
+          "tags": ["official"]
+        }
+      ],
+      "abilities": [
+        "Create a stream",
+        "Understand back pressure"
+      ],
+      "assessment-questions": [
+        { "question": "What is a source?" },
+        { "question": "What is a flow?" },
+        { "question": "What is a sink?" },
+        { "question": "What is a back pressure?" }
+      ]
+    },
+    {
+      "id": "akka-stream-graph",
+      "name": "Akka Stream Graph",
+      "description": "Create an Akka stream based on graphs",
+      "tags": [],
+      "dependencies": ["akka-stream-basic"],
+      "resources": [
+        {
+          "name": "Akka Stream Graph - Scala",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/scala/stream/stream-graphs.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Akka Stream Graph  - Java",
+          "type": "documentation",
+          "url": "https://doc.akka.io/docs/akka/current/java/stream/stream-graphs.html",
+          "tags": ["official"]
+        }
+      ],
+      "abilities": [
+        "Create a graph",
+        "Create a stream based on graph",
+        "Create partial graph",
+        "Reuse partial components",
+        "Handle cycles in graph"
+      ],
+      "assessment-questions": [
+        { "question": "What is a graph?" },
+        { "question": "How to fan-out data?" },
+        { "question": "How to fan-in data?" },
+        { "question": "How to generate a stream from a graph?" }
+      ]
+    }
+  ]
+}

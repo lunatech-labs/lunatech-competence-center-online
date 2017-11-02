@@ -1,14 +1,23 @@
 [
   {
+    "id": "akka",
+    "name": "Akka",
+    "description": "Akka is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala. Its underlying concurrency model is based on [Actor Model|https://en.wikipedia.org/wiki/Actor_model], with inspiration drawn from [Erlang|https://www.erlang.org/] ",
+    "tags": [
+      "java",
+      "scala"
+    ],
+    "image": "/images/akka.svg"
+  },
+  {
     "id": "http",
-    "name": "HTTP & RESTful API design",
+    "name": "HTTP and RESTful API design",
     "description": "The Hypertext Transfer Protocol, the transport layer of web application.",
     "tags": [],
     "image": "/images/http.png"
   },
   {
     "id": "java",
-    "primary": true,
     "name": "Java programming language",
     "description": "Java is a general purpose language that's Object Oriented (class-based) with support for concurrency. Originally developed by James Gosling at Sun Microsystems, now acquired by Oracle.",
     "tags": [
@@ -39,7 +48,6 @@
   },
   {
     "id": "scala",
-    "primary": true,
     "name": "Scala programming language",
     "description": "The Scala programming language, invented by Martin Odersky, is a general-purpose programming language providing support for functional programming and a strong static type system.",
     "tags": [
