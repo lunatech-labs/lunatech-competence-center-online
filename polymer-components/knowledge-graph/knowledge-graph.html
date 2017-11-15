@@ -161,7 +161,7 @@ Displays a knowledge graph
         },
 
         _isRequired: function(item) {
-          return item.tags.some(function(element) {
+          return (item.tags || []).some(function(element) {
             return this.requiredTags.includes(element);
           }.bind(this));
         },
