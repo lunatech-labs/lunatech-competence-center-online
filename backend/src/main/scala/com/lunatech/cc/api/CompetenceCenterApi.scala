@@ -100,6 +100,7 @@ object CompetenceCenterApi extends App {
 
   val HttpsOnlyFilter = new SimpleFilter[Request, Response] {
     override def apply(request: Request, service: Service[Request, Response]): Future[Response] = {
+      println("Got a request with headers: " + request.headerMap)
       if(request.headerMap.get("X-Forwarded-Proto") == Some("http")) {
         val response = Response(MovedPermanently)
         response.location = "https://" + request.host.get + request.uri
