@@ -28,11 +28,24 @@
     "vaadin-date-picker": "^2.0.0",
     "paper-spinner": "^2.0.0",
     "paper-datatable-api": "^2.0.7",
-    "marked-element": "^2.3.0"
+    "marked-element": "^2.3.0",
     "iron-form": "PolymerElements/iron-form#^2.0.1"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
   },
-  "private": true
+  "private": true,
+  "resolutions": {
+    "polymer": "^2.0.0",
+    "webcomponentsjs": "^1.0.0",
+    "paper-behaviors": "1 - 2",
+    "iron-meta": "^2.0.0",
+    "iron-a11y-announcer": "^2.0.0",
+    "paper-input": "^2.0.1",
+    "paper-button": "^2.0.0",
+    "iron-flex-layout": "^2.0.0",
+    "iron-iconset-svg": "^2.0.0",
+    "iron-icon": "^2.0.0",
+    "iron-icons": "^2.0.1"
+  }
 }

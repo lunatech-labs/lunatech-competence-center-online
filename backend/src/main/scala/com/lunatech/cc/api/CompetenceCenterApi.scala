@@ -89,10 +89,6 @@ object CompetenceCenterApi extends App {
     passportController.`PUT /passport` :+:
       passportController.`GET /passport/me` :+:
       passportController.`GET /passport/employeeId` :+:
-//    cvController.`GET /employees` :+:
-//    cvController.`GET /employees/me` :+:
-//    cvController.`GET /employees/employeeId` :+:
-//    cvController.`PUT /employees/me` :+:
     cvController.`POST /cvs` :+:
     cvController.`GET /cvs` :+:
     cvController.`GET /cvs/employeeId` :+:
