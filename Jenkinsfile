@@ -5,7 +5,9 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh './scripts/build_jenkins.sh'
+        withNPM {
+          sh './scripts/build_jenkins.sh'
+        }
       }
     }
 
