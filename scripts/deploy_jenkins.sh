@@ -16,5 +16,5 @@ git init
 git add .
 git commit -m "Jenkins Build $BUILD_NUMBER"
 
-GIT_SSH_COMMAND='ssh -i $IDENTITY_FILE'
+GIT_SSH_COMMAND='ssh -i $GIT_PRIVATE_KEY'
 git push $GIT_URL -i $IDENTITY_FILE
