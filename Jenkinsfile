@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                dir 'backend' {
+                dir('backend') {
                   sh 'sbt build'
                 }
             }
