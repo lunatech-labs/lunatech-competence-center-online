@@ -5,7 +5,7 @@ pipeline {
 
     stage('Build') {
       steps {
-        withNPM {
+        nodejs('NodeJS 8.1.4') {
           sh './scripts/build_jenkins.sh'
         }
       }
