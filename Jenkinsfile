@@ -12,7 +12,7 @@ pipeline {
       }
     }
   */
-  
+
     stage('Deploy to Acceptance') {
       environment {
         GIT_URL = 'git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/app_15549042-04ed-41bc-a0c9-5149bc1c4954.git'
@@ -21,7 +21,7 @@ pipeline {
 
       steps {
         withCredentials([[$class: 'SSHUserPrivateKeyBinding', credentialsId: 'lunatech-jenkins', usernameVariable: 'GIT_USERNAME', keyFileVariable: 'GIT_PRIVATE_KEY']]) {
-          echo '$GIT_USERNAME'
+          sh 'printenv'
           // sh './scripts/deploy_jenkins.sh'
         }
       }
