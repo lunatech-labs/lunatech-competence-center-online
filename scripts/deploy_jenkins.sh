@@ -6,7 +6,7 @@ set -x
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR/..
 
-cd backend/target/docker/stage/* .
+cd backend/target/docker/stage
 chmod 755 opt/docker/bin/*
 mkdir -p opt/docker/logs
 
