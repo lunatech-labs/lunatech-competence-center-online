@@ -6,7 +6,9 @@ pipeline {
     stage('Build') {
       steps {
         nodejs('NodeJS 8.1.4') {
-          sh './scripts/build_jenkins.sh'
+          ansiColor('xterm') {
+            sh './scripts/build_jenkins.sh'
+          }
         }
       }
     }
