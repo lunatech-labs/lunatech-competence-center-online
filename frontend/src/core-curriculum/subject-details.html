@@ -3,7 +3,7 @@
 <link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../../bower_components/knowledge-graph/knowledge-graph.html">
-<link rel="import" href="./topic-details.html">
+<link rel="import" href="./topic-card.html">
 
 <dom-module id="subject-details">
   <template>
@@ -33,7 +33,7 @@
     <template is="dom-if" if=[[!loading]]>
       <knowledge-graph graph="{{knowledge}}" known=[[personKnowledge]] required-tags=[[requiredTags]] nodes="topics"></knowledge-graph>
     </template>
-    <topic-details id="topicDetail" on-i-know-this-changed="_iKnowThisChanged"></topic-details>
+    <topic-card id="topicCard" on-i-know-this-changed="_iKnowThisChanged"></topic-details>
   </template>
   <script>
     Polymer({
@@ -75,11 +75,12 @@
       },
 
       _iKnowThisChanged: function(e, v) {
-        let topic = this.$.topicDetail.selected && this.$.topicDetail.selected.id;
-        if(topic) {
+        let topic = this.$.topicCard.topic && this.$.topicCard.topic.id;
+        console.log('I know!!');
+        if (topic) {
           var setting = v.value;
 
-          if(setting && !this.personKnowledge.includes(topic)) {
+          if (setting && !this.personKnowledge.includes(topic)) {
             let request = document.createElement('iron-request');
             request.send({ method: "PUT", url: "/api/people/me/knowledge/" + this.subject + "/" + topic, headers: {'X-ID-Token': this.$.meta.byKey('idToken')}}).then(function(){
               this.push('personKnowledge', topic);
@@ -87,7 +88,7 @@
 
           }
 
-          if(!setting && this.personKnowledge.includes(topic)) {
+          if (!setting && this.personKnowledge.includes(topic)) {
             let request = document.createElement('iron-request');
             let promise = request.send({ method: "DELETE", url: "/api/people/me/knowledge/" + this.subject + "/" + topic, headers: {'X-ID-Token': this.$.meta.byKey('idToken')}}).then(function(){
               this.splice('personKnowledge', this.personKnowledge.indexOf(topic), 1);
@@ -111,9 +112,9 @@
       },
 
       _onKnowledgeNodeClicked: function (event) {
-        this.$.topicDetail.selected = event.detail;
-        this.$.topicDetail.iKnowThis = this.personKnowledge.includes(event.detail.id);
-        this.$.topicDetail.open();
+        this.$.topicCard.topic = event.detail;
+        this.$.topicCard.$.topicDetail.iKnowThis = this.personKnowledge.includes(event.detail.id);
+        this.$.topicCard.open();
       },
 
       ready: function() {

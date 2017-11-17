@@ -1,27 +1,15 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/av-icons.html">
-<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
-<link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-behavior.html">
+<link rel="import" href="../../bower_components/marked-element/marked-element.html">
 <link rel="import" href="../../bower_components/marked-element/marked-element.html">
 
 <dom-module id="topic-details">
   <template>
     <style>
-      #i-know-this {
-          position: absolute;
-          right: 5%;
-          top: 5%;
-      }
-
-      paper-card {
-        display: block;
-        margin: 0 auto;
-        padding: 2%;
-        position: relative;
-        width: 500px;
+      :host {
+        display: flex;
       }
 
       .resources,
@@ -39,7 +27,6 @@
       }
 
       .tags {
-        border-top: 1px solid #EEE;
         margin-top: 2%;
         padding-top: 2%;
       }
@@ -52,52 +39,38 @@
         padding: 2px 5px;
       }
     </style>
-    <paper-card>
-      <card-content>
-        <h1>{{selected.name}}</h1>
+    <div class="topic-details">
+      <marked-element markdown="{{topic.description}}">
+        <div slot="markdown-html"></div>
+      </marked-element>
 
-        <marked-element markdown={{selected.description}}>
-          <div slot="markdown-html"></div>
-        </marked-element>
-
-        <template is="dom-if" if="{{_hasResources(selected)}}">
-          <h2>Resources</h2>
-          <ul class="resources">
-            <template is="dom-repeat" items="[[selected.resources]]">
-              <li class="resource">
-                <iron-icon icon="{{_resourceIcon(item)}}" size="12"></iron-icon><a href="{{item.url}}" target="_blank">{{item.name}}</a>
-              </li>
-            </template>
-          </ul>
-        </template>
-
-        <ul class="tags">
-          <template is="dom-repeat" items="[[selected.tags]]">
-            <li class="tag">[[item]]</li>
+      <template is="dom-if" if="{{_hasResources(topic)}}">
+        <h2>Resources</h2>
+        <ul class="resources">
+          <template is="dom-repeat" items="[[topic.resources]]">
+            <li class="resource">
+              <iron-icon icon="{{_resourceIcon(item)}}" size="12"></iron-icon><a href="{{item.url}}" target="_blank">{{item.name}}</a>
+            </li>
           </template>
         </ul>
+      </template>
 
-        <paper-checkbox id="i-know-this" checked={{iKnowThis}}>I know this</paper-checkbox>
-      </card-content>
-      <card-actions>
-
-      </card-actions>
-    </paper-card>
+      <ul class="tags">
+        <template is="dom-repeat" items="[[topic.tags]]">
+          <li class="tag">[[item]]</li>
+        </template>
+      </ul>
+    </div>
   </template>
   <script>
-    class TopicDetails extends Polymer.mixinBehaviors([Polymer.IronOverlayBehavior], Polymer.Element) {
+    class TopicDetails extends Polymer.Element {
 
       static get is () { return 'topic-details'; }
 
       static get properties () {
         return {
-          selected: {
+          topic: {
             type: Object,
-          },
-
-          iKnowThis: {
-            type: Boolean,
-            notify: true
           }
         }
       }

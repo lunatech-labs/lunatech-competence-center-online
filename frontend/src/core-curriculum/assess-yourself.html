@@ -1,0 +1,68 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/marked-element/marked-element.html">
+<link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<dom-module id="assess-yourself">
+  <template>
+    <style>
+      paper-button {
+        color: var(--google-blue-500);
+      }
+    </style>
+    <marked-element markdown="{{currentQuestion.question}}">
+      <div slot="markdown-html"></div>
+    </marked-element>
+    <template is="dom-if" if="{{currentQuestion.answer-hint}}">
+      <paper-button on-tap="showHint">Show hint</paper-button>
+      <iron-collapse id="collapse">
+        <marked-element markdown="{{currentQuestion.answer-hint}}">
+          <div slot="markdown-html"></div>
+        </marked-element>
+      </iron-collapse>
+    </template>
+  </template>
+  <script>
+    class AssessYourself extends Polymer.Element {
+      static get is () { return 'assess-yourself'; }
+
+      static get properties () {
+        return {
+          questions: {
+            type: Array,
+            value: [],
+            observer: 'questionsObserver'
+          },
+
+          currentQuestion: {
+            type: Object,
+            computed: 'computeCurrentQuestion(questionIdx)'
+          },
+
+          questionIdx: {
+            type: Number,
+            value: 0
+          }
+        }
+      }
+
+      computeCurrentQuestion () {
+        return this.questions[this.questionIdx];
+      }
+
+      questionsObserver (newQuestions) {
+        this.questionIdx = Math.floor(Math.random() * newQuestions.length);
+      }
+
+      nextQuestion () {
+        this.questionIdx = (this.questionIdx + 1) % this.questions.length;
+      }
+
+      showHint () {
+        this.shadowRoot.querySelector('#collapse').toggle();
+      }
+    }
+
+    customElements.define(AssessYourself.is, AssessYourself);
+  </script>
+</dom-module>
