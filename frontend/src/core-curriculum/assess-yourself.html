@@ -21,6 +21,7 @@
         </marked-element>
       </iron-collapse>
     </template>
+    <paper-button on-tap="_nextQuestionHandler">Next Question!</paper-button>
   </template>
   <script>
     class AssessYourself extends Polymer.Element {
@@ -51,7 +52,8 @@
       }
 
       questionsObserver (newQuestions) {
-        this.questionIdx = Math.floor(Math.random() * newQuestions.length);
+        this.questionIdx = newQuestions && newQuestions.length ?
+          Math.floor(Math.random() * newQuestions.length) : 0;
       }
 
       nextQuestion () {
@@ -60,6 +62,10 @@
 
       showHint () {
         this.shadowRoot.querySelector('#collapse').toggle();
+      }
+
+      _nextQuestionHandler () {
+        this.nextQuestion();
       }
     }
 

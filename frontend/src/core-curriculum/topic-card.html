@@ -1,6 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tab.html">
 <link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
 <link rel="import" href="../../bower_components/neon-animation/neon-animatable-behavior.html">
 <link rel="import" href="../../bower_components/neon-animation/animations/slide-from-right-animation.html">
@@ -8,12 +10,16 @@
 <link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-behavior.html">
 <link rel="import" href="../../bower_components/web-animations-js/web-animations-next-lite.min.html">
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower_components/marked-element/marked-element.html">
 <link rel="import" href="./assess-yourself.html">
 <link rel="import" href="./topic-details.html">
 
 <dom-module id="topic-card">
   <template>
     <style>
+      :host {
+        --paper-tabs-selection-bar-color: var(--app-primary-color);
+      }
       paper-card {
         display: block;
         margin: 0 auto;
@@ -32,31 +38,30 @@
         min-height: 60vh;
         overflow: auto;
       }
-
-      .card-actions paper-button {
-        color: var(--google-blue-500);
-      }
     </style>
     <paper-card>
 
       <div class="card-content">
         <h1>{{topic.name}}</h1>
-        <neon-animated-pages id="pages" class="flex" selected="[[selected]]" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
+        <paper-tabs selected="{{selected}}">
+          <paper-tab>DESCRIPTION</paper-tab>
+          <paper-tab>ASSESSMENT</paper-tab>
+          <paper-tab>ABILITIES</paper-tab>
+        </paper-tabs>
+        <neon-animated-pages id="pages" class="flex" selected="{{selected}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
           <neon-animatable>
             <topic-details id="topicDetail" topic="{{topic}}"></topicDetail>
           </neon-animatable>
           <neon-animatable>
             <assess-yourself id="assess" questions="{{topic.assessment-questions}}"></assess-yourself>
           </neon-animatable>
+          <neon-animatable>
+            <p>After learning this topic, you should have the following abilities:</p>
+            <marked-element markdown="{{markdownedAbilities}}">
+              <div slot="markdown-html"></div>
+            </marked-element>
+          </neon-animatable>
         </neon-animated-pages>
-      </div>
-      <div class="card-actions">
-        <div class="horizontal justified">
-          <paper-button on-tap="_assessYourselfHandler">Assess yourself!</paper-button>
-          <template is="dom-if" if="{{showingAssessment}}">
-            <paper-button on-tap="_goToDetails">Go back details</paper-button>
-          </template>
-        </div>
       </div>
       <paper-checkbox id="i-know-this" checked={{iKnowThis}}>I know this</paper-checkbox>
     </paper-card>
@@ -82,9 +87,19 @@
             value: 0
           },
 
-          showingAssessment: {
+          markdownedAbilities: {
+            type: String,
+            computed: 'computeMarkdownAbilities(topic)'
+          },
+
+          hasQuestions: {
             type: Boolean,
-            computed: 'computeShowingAssessment(selected)'
+            computed: 'computeHasQuestions(topic)'
+          },
+
+          hasAbilities: {
+            type: Boolean,
+            computed: 'computeHasAbilities(topic)'
           },
         }
       }
@@ -93,17 +108,22 @@
         this.selected = 0;
       }
 
-      computeShowingAssessment (selected) {
-        return selected == 1;
+      computeHasQuestions (topic) {
+        return topic['assessment-questions'] &&
+          topic['assessment-questions'].length;
       }
 
-      _goToDetails() {
-        this.selected = 0;
+      computeHasAbilities (topic) {
+        return topic.abilities &&
+          topic.abilities.length;
       }
 
-      _assessYourselfHandler(event) {
-        this.selected = 1;
-        this.$.assess.nextQuestion();
+      computeMarkdownAbilities (topic) {
+        const listBullet = '*';
+        const abilities = topic.abilities || [];
+        const markdown = abilities.join(`\n${listBullet} `);
+
+        return `${listBullet} ${markdown}`;
       }
     }
 
