@@ -30,7 +30,8 @@
     "paper-datatable-api": "^2.0.7",
     "marked-element": "^2.3.0",
     "web-animations-js": "^2.3.1",
-    "iron-collapse": "PolymerElements/iron-collapse#^2.0.0"
+    "iron-collapse": "PolymerElements/iron-collapse#^2.0.0",
+    "paper-tabs": "PolymerElements/paper-tabs#^2.0.0"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
