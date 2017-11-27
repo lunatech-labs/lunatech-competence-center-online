@@ -99,25 +99,52 @@
             ]
         },
         {
-            "id":"networking-routing",
-            "name":"Routing",
+            "id":"networking-routing-local",
+            "name":"Local Routing",
             "description":"Routing is used for connecting to devices that are not on the local subnet, often it involved jumps trough several hosts (known as routers). The first router is referred to as the internet gateway for a subnet.",
-            "dependencies":["networking-subnetting"],
+            "dependencies":["networking-subnetting","networking-osimodel"],
+            "resources":[]
+        },
+        {
+            "id":"networking-bridging",
+            "name":"Bridges",
+            "description":"Bridging is used to connect different networks using a lower level device than a router.",
+            "dependencies":["networking-subnetting","networking-osimodel"],
             "resources":[]
         },
         {
             "id":"networking-nat",
             "name":"NAT",
-            "dependencies":["networking-subnetting","networking-routing","networking-reserved-nets"],
+            "dependencies":["networking-subnetting","networking-routing-local","networking-reserved-nets"],
             "description":"Network Access Translation (NAT) is something performed on the internet gateway of a private network with a reserved address space (e.g.: 192.168.0.0/16). The NAT rewrites the IP addresses in the packages of the traffic to one or more external IP addresses to allow proper internet connectivity. In addition to that the NAT keeps track of connections and makes sure traffic flows to and from the right hosts.",
             "resources":[]
         },
-        
         {
             "id":"networking-dns",
             "name":"DNS",
             "description":"To get from numeric addresses to fancy names like \"learn.lunatech.com\" the Domain Name System (DNS) is used.",
             "dependencies":["networking-addressing"],
+            "resources":[]
+        },
+        {
+            "id":"networking-dns-advanced",
+            "name":"DNS - Advanced",
+            "description":"Advanced usages of DNS, e.g.: round-robin load balancing using DNS, DNAME zones",
+            "dependencies":["networking-dns"],
+            "resources":[]
+        },
+        {
+            "id":"networking-routing-global",
+            "name":"Global Routing", 
+            "description":"Routing beyond the local routing table and the various protocols used by routers to make the internet work will be discussed here..",
+            "dependencies":["networking-routing-local"],
+            "resources":[]
+        },
+        {
+            "id":"networking-virtual",
+            "name":"Virtual networks",
+            "description":"There are various technologies in use to run virtual networks. Examples of this include VLANs which allow multiple layer 2 domains to co-exist on one physical network, VPNs, and more advanced overlay networks such as Calico.",
+            "dependencies":["networking-osimodel","networking-routing-local"],
             "resources":[]
         }
     ]
