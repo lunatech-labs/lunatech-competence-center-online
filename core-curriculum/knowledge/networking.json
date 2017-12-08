@@ -6,9 +6,9 @@
     "image": "",
     "topics": [
         {
-            "id":"networking-basic",
+            "id":"basic",
             "name":"Basic Networking",
-            "description": "Basic knowledge of the components of a minimal computer network.",
+            "description": "Basic knowledge of the components of a minimal (home) computer network.",
             "tags": [],
             "resources":[
                 {
@@ -16,135 +16,173 @@
                     "type":"documentation",
                     "url":"https://linuxjourney.com/lesson/network-basics"
                 }
+            ],
+            "abilities": [
+                "List components of a home computer network and their function, e.g: devices, cables, access points, router, modem."
             ]
         },
         {
-            "id":"networking-osimodel",
-            "name":"The OSI model",
-            "description":"Layers defined within a computer network stack, these range from the hardware all the way up to your HTTP server.",
-            "tags": [],
-            "dependencies":["networking-basic"],
-            "resources":[
-                {
-                    "name":"Wikipedia - OSI model",
-                    "type":"documentation",
-                    "url":"https://en.wikipedia.org/wiki/OSI_model"
-                }
-            ]
-        },
-        {
-            "id":"networking-addressing-basic",
-            "name":"Basic Addressing",
-            "description":"Computers talk to each other using various addresses, MAC, IPv4. It is important to know on what layers these adresses are used and/or relevant. We start with MAC / IPv4. IPv6 will be discussed later, as further knowledge makes it easier to understand the advantages and tradeoffs related to IPv6.",
-            "dependencies":["networking-osimodel"],
+            "id":"addressing-transport",
+            "name":"Adressing and transport",
+            "description":"Computers talk to each other using various addresses, MAC, IPv4. We start with MAC / IPv4. dwdwIPv6 will be discussed later, as further knowledge makes it easier to understand the advantages and tradeoffs related to IPv6. This topic also starts on the OSI model.",
+            "dependencies":["basic"],
             "resources":[
                 {
                     "name":"Linuxjourney - Network Adressing",
                     "type":"documentation",
                     "url":"https://linuxjourney.com/lesson/network-addressing"
-                }
-            ]
-        },
-        {
-            "id":"networking-tcpip",
-            "name":"TCP/IP model",
-            "description":"The TCP/IP model, what currently \"runs\" the internet and most other networks.",
-            "dependencies":["networking-osimodel","networking-addressing-basic"],
-            "resources":[
+                },
                 {
-                    "name":"Linuxjourney - TCP/IP Model",
+                    "name":"Wikipedia - OSI model (media layer)",
                     "type":"documentation",
-                    "url":"https://linuxjourney.com/lesson/tcp-ip-model"
-                }
-            ]
-        },
-        {
-            "id":"networking-subnetting",
-            "name":"Subnetting",
-            "description":"The available space of IP adresses is split up in various subnets, ranges of adresses assigned to specific ISPs or data centers. This also covers broadcasting and connecting to local addresses (within the same subnet).",
-            "dependencies":["networking-addressing"],
-            "resources":[
+                    "url":"https://en.wikipedia.org/wiki/OSI_model",
+                    "notes": "Focus on the media layer"
+                },
                 {
                     "name":"Linuxjourney - Subnetting",
                     "type":"documentation",
                     "url":"https://linuxjourney.com/lesson/ipv4",
                     "notes":"1. IPv4 up to 5. CIDR"
                 }
+            ],
+            "abilities": [
+                "Describe the purpose and properties of a MAC address, and on what OSI layer it applies.",
+                "Describe the purpose and properties of an IPV4 address, and on what OSI layer it applies.",
+                "Understand CIDR notation.",
+                "Understand: ARP, broadcasting, and and how connections are setup within the subnet a computer belongs to."
             ]
         },
         {
-            "id":"networking-dhcp",
+            "id":"tcpip",
+            "name":"Layer 4: TCP & UDP",
+            "description":"The TCP/IP model, what currently \"runs\" the internet and most other networks.",
+            "dependencies":["addressing-transport"],
+            "resources":[
+                {
+                    "name":"Linuxjourney - TCP/IP Model",
+                    "type":"documentation",
+                    "url":"https://linuxjourney.com/lesson/tcp-ip-model"
+                },
+                {
+                    "name":"Wikipedia - OSI model (protocol layer)",
+                    "type":"documentation",
+                    "url":"https://en.wikipedia.org/wiki/OSI_model",
+                    "notes": "Focus on the media layer"
+                }
+            ],
+            "abilities": [
+                "Describe what ports are.",
+                "Describe the properties of TCP connections.",
+                "Describe the properties of UDP transmissions."
+            ]
+        },
+        {
+            "id":"dhcp",
             "name":"DHPC",
-            "description":"DHCP is the technologym used to assign IP adresses to network clients. Commonly a DHCP server distributes IP adresses within one or more subnets.",
-            "dependencies":["networking-subnetting"],
+            "description":"DHCP is the technology used to assign IP adresses to network clients. Commonly a DHCP server distributes IP adresses within one or more subnets.",
+            "dependencies":["addressing-transport"],
             "resources":[
                 {
                     "name":"Linuxjourney - DHCP overview",
                     "type":"documentation",
                     "url":"https://linuxjourney.com/lesson/dhcp-overview"
                 }
+            ],
+            "abilities":[
+               "Explain the purpose of a DHCP server."
             ]
         },
         {
-            "id":"networking-reserved-nets",
+            "id":"reserved-nets",
             "name":"Reserved Subnets",
             "description":"A group of subnets is reserved for special purposes that cannot be used on the internet.",
-            "dependencies":["networking-subnetting","networking-dhcp"],
+            "dependencies":["addressing-transport"],
             "resources":[
                 {
                     "name":"Wikipedia - Table of reserved ranges and their purpose.",
                     "type":"documentation",
                     "url":"https://en.wikipedia.org/wiki/Reserved_IP_addresses"
                 }
+            ],
+            "abilities":[
+                "Know what reserved network ranges are.",
+                "Know where to find out if a network range is reserved for a specific purpose or not."
             ]
         },
         {
-            "id":"networking-routing-local",
+            "id":"routing-local",
             "name":"Local Routing",
             "description":"Routing is used for connecting to devices that are not on the local subnet, often it involved jumps trough several hosts (known as routers). The first router is referred to as the internet gateway for a subnet.",
-            "dependencies":["networking-subnetting","networking-osimodel"],
-            "resources":[]
+            "dependencies":["addressing-transport","addressing-transport"],
+            "resources":[],
+            "abilities":[
+                "Explain how a routing table works on the OS level."
+            ]
         },
         {
-            "id":"networking-bridging",
+            "id":"bridging",
             "name":"Bridges",
             "description":"Bridging is used to connect different networks using a lower level device than a router.",
-            "dependencies":["networking-subnetting","networking-osimodel"],
-            "resources":[]
+            "dependencies":["addressing-transport","addressing-transport"],
+            "resources":[],
+            "abilities":[
+                "Explain the properties of a network bridge (i.e.: layer 2 device)",
+                "Give common use cases of a bridge (e.g.: multiple VMs with distinct addresses on a single network port"
+            ]
         },
         {
-            "id":"networking-nat",
+            "id":"nat",
             "name":"NAT",
-            "dependencies":["networking-subnetting","networking-routing-local","networking-reserved-nets"],
+            "dependencies":["addressing-transport","routing-local"],
             "description":"Network Access Translation (NAT) is something performed on the internet gateway of a private network with a reserved address space (e.g.: 192.168.0.0/16). The NAT rewrites the IP addresses in the packages of the traffic to one or more external IP addresses to allow proper internet connectivity. In addition to that the NAT keeps track of connections and makes sure traffic flows to and from the right hosts.",
-            "resources":[]
+            "resources":[],
+            "abilities":[
+                "Explain the purpose of a NAT.",
+                "Understand the basic functioning of a NAT, e.g.: why are port forwarding rules needed for incoming traffic but not for incoming responses to outbound traffic."
+            ]
         },
         {
-            "id":"networking-dns",
+            "id":"dns",
             "name":"DNS",
             "description":"To get from numeric addresses to fancy names like \"learn.lunatech.com\" the Domain Name System (DNS) is used.",
-            "dependencies":["networking-addressing"],
-            "resources":[]
+            "dependencies":["addressing-transport"],
+            "resources":[],
+            "abilities":[
+                "Basic knowledge of DNS, e.g.: MX, A, CNAME, SOA and NS records",
+                "Explain how recursive DNS queries work.",
+                "Explain the difference between a local DNS server (that serves a local domain) and a DNS cache.",
+                "Explain the purpose of the TTL and when/why you would want to give this a high or low value."
+            ]
         },
         {
-            "id":"networking-dns-advanced",
+            "id":"dns-advanced",
             "name":"DNS - Advanced",
             "description":"Advanced usages of DNS, e.g.: round-robin load balancing using DNS, DNAME zones",
-            "dependencies":["networking-dns"],
-            "resources":[]
+            "dependencies":["dns"],
+            "resources":[],
+            "abilities":[
+                "Explain how DNS can be used for (global) load balancing.",
+                "Understand more advanced records such as the various TXT values, SRV and DNAME records.",
+                "Explain the purpose of DNSSEC."
+            ]
         },
         {
-            "id":"networking-routing-global",
+            "id":"routing-global",
             "name":"Global Routing", 
             "description":"Routing beyond the local routing table and the various protocols used by routers to make the internet work will be discussed here..",
-            "dependencies":["networking-routing-local"],
-            "resources":[]
+            "dependencies":["routing-local"],
+            "resources":[],
+            "abilities":[
+                "Explain how routing works on a global level.",
+                "Explain the purpose of BGP.",
+                "Explain what an \"Autonomous System Number\" is"
+            ]
         },
         {
-            "id":"networking-virtual",
+            "id":"virtual",
             "name":"Virtual networks",
             "description":"There are various technologies in use to run virtual networks. Examples of this include VLANs which allow multiple layer 2 domains to co-exist on one physical network, VPNs, and more advanced overlay networks such as Calico.",
-            "dependencies":["networking-osimodel","networking-routing-local"],
+            "dependencies":["addressing-transport","routing-local"],
             "resources":[]
         }
     ]
