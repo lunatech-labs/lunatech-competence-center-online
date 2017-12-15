@@ -1,0 +1,225 @@
+{
+    "id": "linux",
+    "name": "Linux",
+    "description": "Linux is an operating system dat is commonly used on server systems. This subject is focused on specifically that Linux use case.",
+    "tags": ["operating-system", "tool"],
+    "image": "images/linux.png",
+    "topics": [
+        {
+            "id": "basic",
+            "name": "Basic Linux",
+            "description": "One of the most common tasks for a dev on a Linux machine is inspection, e.g.: \"what on this machine causes my software to not run the way it should\", or: \"What do the logs say?\". To do so you need to know how to get access to a terminal, how to navigate and where to look.",
+            "tags":["required-for-junior"],
+            "resources":[
+                {
+                    "name": "Linuxjourney lesson - The Shell",
+                    "type": "article",
+                    "url": "https://linuxjourney.com/lesson/the-shell"
+                },
+                {
+                    "name": "Find Files in Linux, Using the Command Line",
+                    "type": "article",
+                    "url": "https://linode.com/docs/tools-reference/tools/find-files-in-linux-using-the-command-line/"
+                },
+                {
+                    "name": "View and Follow the End of Text Files with tail",
+                    "type": "article",
+                    "url": "https://linode.com/docs/tools-reference/tools/view-and-follow-the-end-of-text-files-with-tail/"
+                },
+                {
+                    "name": "Use Killall and Kill Commands to Stop Processes on Linux",
+                    "type": "article",
+                    "url": "https://linode.com/docs/tools-reference/tools/use-killall-and-kill-to-stop-processes/"
+                },
+                {
+                    "name": "How to Use Nano Text Editor Commands in Linux",
+                    "type": "article",
+                    "url": "https://linode.com/docs/tools-reference/tools/use-nano-text-editor-commands/"
+                },
+                {
+                    "name": "How to Grep for Text in Files",
+                    "type": "article",
+                    "url": "https://linode.com/docs/tools-reference/tools/how-to-grep-for-text-in-files/"
+                }
+            ],
+            "abilities":[
+                "Navigating the directory structure of a Linux box from the terminal.",
+                "Search for a specific file by name within the file system.", 
+                "Search trough file(s) by content.",
+                "Know the common places to look for log files.",
+                "Know the common places to look for configuration files.",
+                "Run a command as super user using \"sudo\".",
+                "Find a process id.",
+                "Send a signal (e.g.: KILL, HUP) to a process."
+            ]
+        },
+        {
+            "id": "fsh",
+            "name": "Linux Filesystem",
+            "description":"Everything related to a Linux system can be found in the filesystem. Actual files, devices, statistics, everything. It is important to know what can be found where (and why!)",
+            "tags":[],
+            "dependencies":["basic"],
+            "abilities": [
+                "List the various types of (pseudo)files that can exist in the Linux system.",
+                "Explain the purpose of the directories present at the root level of most linux filesystem."
+            ],
+            "resources":[]
+        },
+        {
+            "id": "networking",
+            "name": "Networking I",
+            "description":"Common tools for inspecting and manipulating the network configuration of a Linux machine. E.g.: iproute2, netstat, opening and closing ports using IPTables",
+            "tags":["required-for-junior"],
+            "dependencies":["basic"],
+            "abilities": [
+                "Inspect the networking configuration of a Linux machine.",
+                "Perform basic troubleshooting of network issues, e.g.: is there a process listening on this port, do my routes check out.",
+                "Opening and closing ports using the IPTables INPUT chain."
+            ],
+            "resources":[]
+        },
+        {
+            "id": "processmanagement",
+            "name": "Managing Processes",
+            "description":"On a linux machine processes run in a tree, always having an \"init\" process at the root that is owned by the root user. There exist various tools to inspect and manage this tree of processes. In this topic we discuss the process tree, various tools to explore it, how to manage processes, how process ownership works and ",
+            "tags":["required-for-junior"],
+            "dependencies":["basic"],
+            "abilities": [
+                "Explain the relationship between processes, users and groups.",
+                "Explain the purpose of the root process.",
+                "Explain the implications of the parent-child relationship between processes.",
+                "Diagnose issues with running processes, using tools like \"*top\"."
+            ],
+            "resources":[]
+        },
+        {
+            "id": "access-control",
+            "name": "Advanced Access Control",
+            "description":"Within Linux several frameworks exist to further limit the access of processes to files, frameworks such as SELinux and AppArmor.",
+            "tags":[],
+            "dependencies":["permissions"],
+            "abilities": [
+                "Have knowledge of methods for further limiting access to files & directories (beyond users/groups/ACLs)",
+                "List the two most common frameworks used for enabling such access control."
+            ],
+            "resources":[]
+        },
+        {
+            "id": "remoteaccess",
+            "name": "Remote Access",
+            "description":"Linux servers are most commonly accessed by SSH. There are some good things to know about SSH such as known hosts, verification and how public/private keys work. In addition to that SSH can also be used as a simple (vpn like) tunnel.",
+            "tags":["required-for-junior"],
+            "dependencies":["basic"],
+            "abilities": [
+                "Log into a Linux box using SSH.",
+                "Generating ssh private keys.",
+                "Setting up a port forward on an SSH tunnel.",
+                "Execute commands directly on remote host.",
+                "Understand the limitations of SSH (e.g.: what happens if I start a long running migration in an SSH session and my connection breaks)"
+            ],
+            "resources":[
+                {
+                    "name":"Digitalocean: SSH Essentials",
+                    "type":"Article",
+                    "url":"https://www.digitalocean.com/community/tutorials/ssh-essentials-working-with-ssh-servers-clients-and-keys"
+                }
+            ]
+        },
+        {
+            "id": "bashtricks",
+            "name": "Using Bash",
+            "description":"The most common shell on Linux is bash. Bash and its associated utilities probably deserve a knowledge graph on their own. However even with some basic knowledge about subjects such as piping and output redirection, and where to find the manual, it can quickly become a powerful tool for any user.",
+            "tags":[],
+            "dependencies":["basic"],
+            "abilities": [
+                "Redirect output of a program to a file and/or another program.",
+                "Redirect stdout to stderr and vice versa.",
+                "Write a basic bash script.",
+                "Basic data manipulation, e.g.: search/replace, remove a column from a csv, extract values from json."
+            ],
+            "resources":[
+                {
+                    "name": "Linuxjourney lesson - Text-Fu",
+                    "type": "article",
+                    "url": "https://linuxjourney.com/lesson/stdout-standard-out-redirect"
+                }
+            ]
+        },
+        {
+            "id": "networking-advanced",
+            "name": "Networking II",
+            "description":"Packet inspection, performance measurement and advanced firewalling/routing setups (e.g.: using linux for a home router).",
+            "tags":[],
+            "dependencies":["networking"],
+            "abilities": [
+                "Set up a linux machine as a router/gateway for a network."
+            ],
+            "resources":[]
+        },
+        {
+            "id": "packagemanagement",
+            "name": "Package management I",
+            "description":"There are almost as many different package managers as there are linux distributions. However they share many common operations, just with a different syntax. The goal of this topic is to get an understanding of the common operations: installing, removing, upgrading.",
+            "tags":["required-for-junior"],
+            "dependencies":["basic"],
+            "abilities": [],
+            "resources":[]
+        },
+        {
+            "id": "packagemanagementadvanced",
+            "name": "Package management II",
+            "description": "At some point when working with Linux you will have to deal with software that is not available from the normal package repositories. The result of this is that you have to find a non-official source, download binaries directly and install them manually, or even build software from source. Doing this without making a mess of your system, or worse, interfering with your package manager, requires some knowledge, discipline, and skill.",
+            "tags":[],
+            "dependencies":["fsh","packagemanagement"],
+            "abilities": [],
+            "resources":[]
+        },
+        {
+            "id": "diskmanagement",
+            "name": "Managing Disks",
+            "description":"In the end the filesystem of a Linux machine is a located on a block device, there has to be at least one present mounted at the root of the filesystem. Blockdevices can be backed by pretty much anything. This topic is about block devices, how to manage and how to format them.",
+            "tags":[],
+            "dependencies":["fsh"],
+            "abilities": [],
+            "resources":[]
+        },
+        {
+            "id": "usermanagement",
+            "name": "Users and Groups",
+            "description": "Linux has users, and groups to group those users. There exist various tools for creating, listing and managing these entities. In addition to that there are several special users/groups, such as \"root\" and several methods of privilege escalation.",
+            "tags":["required-for-junior"],
+            "dependencies":["basic"],
+            "abilities": [],
+            "resources":[]
+        },
+        {
+            "id": "permissions",
+            "name": "File Access Permissions",
+            "description":"Access to files in Linux is primarily determined by the user and group who own the files and the permissions set on the file. In addition to that it is possible to add further ACLs to linux files, for example to give multiple groups access to the same directory tree. Managing file permissions is what this topic is about.",
+            "tags":[""],
+            "dependencies":["usermanagement"],
+            "abilities": [],
+            "resources":[]
+        },
+        {
+            "id": "servicemanagement",
+            "name": "Managing Services",
+            "description":"Common tools for managing services on Linux, primarily systemd.",
+            "tags":[],
+            "dependencies":["processmanagement"],
+            "abilities": [],
+            "resources":[]
+        },
+        {
+            "id": "timedjobs",
+            "name": "Scheduling tasks",
+            "description":"Common tools for scheduling tasks, timed jobs (systemd) and cron.",
+            "tags":[],
+            "dependencies":["processmanagement"],
+            "abilities": [],
+            "resources":[]
+        }
+    ]
+}
+
+
