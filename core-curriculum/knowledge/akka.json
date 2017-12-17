@@ -491,5 +491,18 @@
         { "question": "How to generate a stream from a graph?" }
       ]
     }
+  ],
+
+  "projects": [
+    {
+      "id": "akka-webcrawler",
+      "name": "Web Crawler using Akka",
+      "description": "The goal of this project is to implement a web crawler using Akka Actors.\n\n# Requirements\n\nDesign and implement an Akka application that crawls through the web parsing html pages. The application should start with a single URL entry point, then parse that HTML page, finding anchor tags to repeat the process.\n\nThings to consider:\n* How would you structure the actor hierarchy?\n* What should happen when something goes wrong? (Unauthorized Resource, lost connection, etc.)\n* The process should end eventually, mind search depth.\n\n* The application should be testable\n* As bonus point you could implement this as a cluster.\n\n**Note:** We don't actually care about what's in the pages that you parse, we just care the overall process. You can just discard the data, but feel free to add any type of post processing you want (HTML validation, top 10 most frequent words, accessibility compliance, etc.)\n\nThe action of crawling through the web and extracting information is called [web scraping](https://en.wikipedia.org/wiki/Web_scraping), for the parsing HTML (which is outside the scope of Akka) you can use:\n* [Jsoup](https://jsoup.org/) (Java)\n* [scala-scraper](https://github.com/ruippeixotog/scala-scraper) (Scala)\n\nAfter parsing the information, search for anchor elements and repeat the process.\n\n# Deliverables\n\nA GitHub repository with a working application."
+    },
+    {
+      "id": "akka-auto-scaling",
+      "name": "Auto-scaling application",
+      "description": "The goal of this project it to implement an auto-scaling concept using Akka.\n\nAkka is useful for vertical and horizontal scaling, but the latter requires provisioning of new nodes by a third service.\n\n# Requirements\n\nGiven any Akka application, you task is to develop a library that can listen to the mailbox of certain actors across a cluster and decides when it time to scale up. How the provisioning actually happens is not part of the exercise (since it depends on the hosting platform), so just think you can do this with two HTTP calls (`scale-up` and `scale-down`)\n\n**Note:** You can consider [Gatling](https://gatling.io/) for stress testing of your application.\n\n# Deliverables\n\nA GitHub repository with a working application, that you can demostrate how your system copes with load (you can use Gatling for load testing)."
+    }
   ]
 }
