@@ -1,7 +1,7 @@
 {
   "id": "akka",
   "name": "Akka",
-  "description": "Akka is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala. Its underlying concurrency model is based on [Actor Model|https://en.wikipedia.org/wiki/Actor_model], with inspiration drawn from [Erlang|https://www.erlang.org/] ",
+  "description": "Akka is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.",
   "tags": ["java", "scala"],
   "image": "/images/akka.svg",
   "topics": [

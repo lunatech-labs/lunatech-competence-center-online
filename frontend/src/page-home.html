@@ -1,5 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="util/page-behavior.html">
+<link rel="import" href="../bower_components/marked-element/marked-element.html">
+<link rel="import" href="core-curriculum/enrollment-status.html">
+
 <dom-module id="page-home">
   <template>
     <style>
@@ -10,7 +13,11 @@
       }
     </style>
 
-    <p>This is the homepage. It's not suuuper impressive.</p>
+    <marked-element disable-remote-sanitization>
+      <div slot="markdown-html"></div>
+      <script type="text/markdown" src="/data/pages/home.md"></script>
+    </marked-element>
+
   </template>
 
   <script>

@@ -1,6 +1,6 @@
 package com.lunatech.cc.models
 
-import com.lunatech.cc.api.GoogleUser
+import com.lunatech.cc.api.EnrichedGoogleUser
 import com.lunatech.cc.api.services.Person
 
 import scala.language.implicitConversions
@@ -55,7 +55,7 @@ case class CV(employee: Employee,
               meta: Meta)
 
 object CV {
-  def apply(user:GoogleUser): CV = {
+  def apply(user:EnrichedGoogleUser): CV = {
     val bd: BasicDetails = BasicDetails(user.givenName,user.familyName,"","",user.email,"","",Contact("","","","","","",""))
     basicCV(bd)
   }

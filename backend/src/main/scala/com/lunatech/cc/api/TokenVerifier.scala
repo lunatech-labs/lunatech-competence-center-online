@@ -7,6 +7,17 @@ import com.google.api.client.json.jackson.JacksonFactory
 import scala.collection.JavaConverters._
 
 case class GoogleUser(userId: String, email: String, name: String, familyName: String, givenName: String, imageUrl: String)
+case class EnrichedGoogleUser(userId: String, email: String, name: String, familyName: String, givenName: String, imageUrl: String, roles: Set[String])
+object EnrichedGoogleUser {
+  def apply(googleUser: GoogleUser, roles: Set[String]): EnrichedGoogleUser = EnrichedGoogleUser(
+    userId = googleUser.userId,
+    email = googleUser.email,
+    name = googleUser.name,
+    familyName = googleUser.familyName,
+    givenName = googleUser.givenName,
+    imageUrl = googleUser.imageUrl,
+    roles = roles)
+}
 
 trait TokenVerifier {
   def verifyToken(idTokenString: String): Option[GoogleUser]

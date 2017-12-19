@@ -28,7 +28,7 @@
     </style>
 
     <iron-ajax id="ajaxLoad"
-               url="/data/core-curriculum/summary.json"
+               url="/api/core-curriculum"
                loading="{{loading}}"
                last-response="{{graphs}}"></iron-ajax>
 
@@ -36,13 +36,13 @@
 
     <div class="layout horizontal wrap">
       <template is="dom-repeat" items="{{graphs}}" filter="isPrimary">
-        <subject-card item=[[item]]></subject-card>
+        <subject-card item=[[item]] base-path=[[basePath]]></subject-card>
       </template>
     </div>
 
     <div class="layout horizontal wrap">
       <template is="dom-repeat" items="{{graphs}}" filter="isNonPrimary">
-        <subject-card item=[[item]]></subject-card>
+        <subject-card item=[[item]] base-path=[[basePath]]></subject-card>
       </template>
     </div>
   </template>
@@ -52,6 +52,12 @@
 
     Polymer({
       is: "subject-list",
+
+      properties: {
+        basePath: {
+          type: String
+        }
+      },
 
       ready: function() {
         this.$.ajaxLoad.generateRequest();

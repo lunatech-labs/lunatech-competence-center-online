@@ -63,7 +63,7 @@
           </neon-animatable>
         </neon-animated-pages>
       </div>
-      <paper-checkbox id="i-know-this" checked={{iKnowThis}}>I know this</paper-checkbox>
+      <paper-checkbox id="i-know-this" checked={{iKnowThis}} disabled$=[[readOnly]]>I know this</paper-checkbox>
     </paper-card>
   </template>
   <script>
@@ -76,6 +76,11 @@
           topic: {
             type: Object,
             observer: 'topicChanged'
+          },
+
+          readOnly: {
+            type: Boolean,
+            value: false
           },
 
           iKnowThis: {

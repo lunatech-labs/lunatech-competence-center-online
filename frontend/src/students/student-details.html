@@ -1,0 +1,106 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="../core-curriculum/subject-summary.html">
+
+<link rel="import" href="../core-curriculum/subject-list.html">
+<link rel="import" href="../core-curriculum/subject-details.html">
+
+<dom-module id="student-details">
+  <template>
+    <style>
+      :host {
+        display: block;
+        padding: 10px 20px;
+      }
+    </style>
+
+    <iron-ajax id="ajaxLoad"
+               loading="{{studentLoading}}"
+               last-response="{{student}}"></iron-ajax>
+  <iron-meta id="meta"></iron-meta>
+
+  <app-route
+    route="{{route}}"
+    pattern="/:page"
+    data="{{routeData}}"
+    tail="{{subroute}}">
+  </app-route>
+  <app-route
+      route="{{subroute}}"
+      pattern="/:id"
+      data="{{subrouteData}}"
+      active="{{subrouteActive}}">
+  </app-route>
+
+  <iron-pages
+      selected="[[component]]"
+      attr-for-selected="id">
+    <subject-summary id="subject-summary" email=[[studentEmail]] base-path="/students/[[studentEmail]]/core-curriculum"></subject-summary>
+    <subject-details id="subject-details" subject="{{subrouteData.id}}" person="[[studentEmail]]" read-only></subject-details>
+  </iron-pages>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'student-details',
+
+      properties: {
+        studentEmail: {
+          observer: '_onStudentEmailChange',
+          type: String,
+        },
+
+        component: {
+          type: String,
+          computed: '_computeComponent(routeData.page, subrouteActive, subrouteData.id)'
+        },
+
+        student: {
+          type: Object,
+          observer: '_onStudentChange'
+        },
+
+        studentName: {
+          type: String,
+          notify: true
+        }
+      },
+
+      ready: function() {
+        this.$.ajaxLoad.headers = { "X-ID-Token": this.$.meta.byKey("idToken") }
+      },
+
+      _onStudentEmailChange: function() {
+        console.log("Student email:", this.studentEmail);
+        this.$.ajaxLoad.url = "/api/students/" + this.studentEmail;
+        this.$.ajaxLoad.generateRequest();
+      },
+
+      _onStudentChange: function() {
+        this.studentName = this.student.person.name.fullName;
+      },
+
+      _computeComponent: function(page, subrouteActive, id) {
+        if(page == "core-curriculum" && !subrouteActive) {
+          return "subject-summary";
+        } else if(page == "core-curriculum" && id !== undefined) {
+          return "subject-details";
+        }
+      }
+
+    });
+  </script>
+</dom-module>
