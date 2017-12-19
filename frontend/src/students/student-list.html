@@ -1,0 +1,88 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="../../bower_components/paper-datatable-api/paper-datatable-api.html">
+<link rel="import" href="../../bower_components/paper-datatable-api/paper-datatable-api-column.html">
+
+<dom-module id="student-list">
+  <template>
+    <style>
+      :host {
+        display: block;
+        padding: 10px 20px;
+      }
+
+      paper-spinner {
+        position: absolute;
+        height: 50px;
+        width: 50px;
+        top: 50%;
+        left: 50%;
+        margin-left: -50px;
+        margin-top: -50px;
+      }
+    </style>
+    <iron-ajax id="ajaxLoad"
+               loading="{{studentsLoading}}"
+               url="/api/students"
+               last-response="{{students}}"></iron-ajax>
+  <iron-meta id="meta"></iron-meta>
+  <paper-spinner active=[[studentsLoading]]></paper-spinner>
+
+  <paper-datatable-api data="[[students]]">
+    <paper-datatable-api-column header="Name" draggable-column property="person">
+      <template>
+        <span><a href="/students/[[value.email]]/core-curriculum">{{value.name.fullName}}</a></span>
+      </template>
+    </paper-datatable-api-column>
+    <paper-datatable-api-column header="Mentor" property="mentor.name.fullName">
+      <template>
+        <span>{{value}}</span>
+      </template>
+    </paper-datatable-api-column>
+  </paper-datatable-api>
+
+<!--
+    <table>
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Mentor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template is="dom-repeat" items="{{students}}">
+          <tr>
+            <td><a href="/students/[[item.person.email]]/core-curriculum">[[item.person.name.fullName]]</a></td>
+            <td>[[item.mentor.name.fullName]]</td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+-->
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'student-list',
+
+      ready: function() {
+        this.$.ajaxLoad.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
+        this.$.ajaxLoad.generateRequest();
+      }
+
+    });
+  </script>
+</dom-module>

@@ -18,6 +18,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-lazy-pages/iron-lazy-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-avatar/paper-avatar.html">
@@ -102,16 +103,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
             <a name="home" href="/">Home</a>
-            <a name="core-curriculum" href="/core-curriculum">Core Curriculum</a>
+            <a name="core-curriculum" href="/core-curriculum">University</a>
+            <a name="students" hiddend$="[[!hasAnyRole(lunatechProfile,'mentor')]]" href="/students">Students</a>
             <a name="workshops" href="/workshops">Workshops</a>
-
-            <a name="passport" hidden$="[[!hasRole(lunatechProfile,'developer')]]" href="/passport/me">Developer Passport</a>
-
+            <!-- <a name="passport" hidden$="[[!hasRole(lunatechProfile,'developer')]]" href="/passport/me">Developer Passport</a> -->
             <a name="cvs"  hidden$="[[!hasRole(lunatechProfile,'cv-editor')]]" href="/cvs">CVs</a>
             <a name="techmatrix" href="http://techmatrix.lunatech.com" target="_new">Tech Matrix</a>
 
             <br />
-            <a href="pages/books-to-read">Books to read</a>
+            <!-- <a href="pages/books-to-read">Books to read</a> -->
           </iron-selector>
         </app-drawer>
 
@@ -132,19 +132,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </app-header>
 
           <lunatech-breadcrumbs bread-crumbs=[[breadCrumbs]]></lunatech-breadcrumbs>
-          <iron-pages
+          <iron-lazy-pages
               selected="[[page]]"
               attr-for-selected="name"
               fallback-selection="view404"
               role="main">
             <page-home            on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" name="home"></page-home>
             <page-workshops       on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" name="workshops" title="Workshops"></page-workshops>
-            <page-passport        on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" name="passport" title="Developer Passport" route=[[subroute]]></page-passport>
-            <page-cvs             on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" name="cvs" title="CVs" route=[[subroute]]></page-cvs>
-            <page-core-curriculum on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" name="core-curriculum" route=[[subroute]]></page-core-curriculum>
+
+            <template is="dom-if" name="passport" restamp>
+                <page-passport    on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" name="passport" title="Developer Passport" route=[[subroute]]></page-passport>
+            </template>
+
+            <template is="dom-if" name="cvs" restamp>
+                <page-cvs         on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" name="cvs" title="CVs" route=[[subroute]]></page-cvs>
+            </template>
+
+            <template is="dom-if" name="core-curriculum" restamp>
+                <page-core-curriculum on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" route=[[subroute]]></page-core-curriculum>
+            </template>
+
+            <template is="dom-if" name="students" restamp>
+                <page-students    on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" route=[[subroute]]></page-students>
+            </template>
+
             <page-pages           on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" name="pages" route=[[subroute]]></page-pages>
             <page-view404         on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" name="view404"></page-view404>
-          </iron-pages>
+          </iron-lazy-pages>
         </app-header-layout>
       </app-drawer-layout>
   </template>
@@ -186,22 +200,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return profile.roles.includes(role);
       },
 
+      hasAnyRole: function(profile) {
+        var roles = Array.from(arguments)
+        roles.shift()
+
+        return roles.find(function(role) {
+          this.hasRole(profile, role);
+        }.bind(this)) !== undefined
+      },
+
       titleChanged: function(e, v) {
-        if(e.target.classList.contains('iron-selected')) {
+        console.log("titleChanged", arguments);
+        // We also check the parent for the pages wrapped in a dom-if
+        //if(e.target.classList.contains('iron-selected') || e.target.parentNode.classList.contains('iron-selected')) {
           console.debug("Updating title to ", v.value);
           this.pageTitle = v.value;
-        } else {
-          console.debug("Not updating title; change came from inactive page.");
-        }
+        //} else {
+        //  console.debug("Not updating title; change came from inactive page.");
+        //}
       },
 
       breadCrumbsChanged: function(e, v) {
-        if(e.target.classList.contains('iron-selected')) {
+        console.log("breadCrumbsChanged", arguments);
+        // We also check the parent for the pages wrapped in a dom-if
+        //if(e.target.classList.contains('iron-selected') || e.target.parentNode.classList.contains('iron-selected')) {
           console.debug("Updating bread crumbs to ", v.value);
           this.breadCrumbs = v.value;
-        } else {
-          console.debug("Not updating bread crumbs; change came from inactive page.");
-        }
+        //} else {
+        //  console.log("BCt", e.target);
+        //  console.log("BCtp", e.target.parentNode);
+        //  console.debug("Not updating bread crumbs; change came from inactive page.");
+        //}
       },
 
       observers: [
@@ -214,6 +243,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _basicProfileChanged: function(basicProfile) {
+        console.log("_basicProfileChanged", arguments);
         if(basicProfile != null) {
           this.givenName = basicProfile.getGivenName();
           this.lastName = basicProfile.getFamilyName();
@@ -222,9 +252,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _routePageChanged: function(page) {
+        console.log("_routePageChanged", arguments);
         this.page = page || 'home';
 
-        var selectedPageElement = this.$$("iron-pages [name=" + this.page +"]")
+        var selectedPageElement = this.$$("iron-lazy-pages [name=" + this.page +"]")
         this.pageTitle = selectedPageElement.title;
         this.breadCrumbs = selectedPageElement.breadCrumbs;
 
@@ -234,6 +265,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _pageChanged: function(page) {
+        console.log("_pageChanged", arguments);
         // Load page import on demand. Show 404 page if fails
         var resolvedPageUrl = this.resolveUrl('page-' +page + '.html');
         this.importHref(resolvedPageUrl, null, this._showPage404, true);

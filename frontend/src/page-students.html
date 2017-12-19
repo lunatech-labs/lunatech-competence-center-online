@@ -10,12 +10,11 @@
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="core-curriculum/subject-list.html">
-<link rel="import" href="core-curriculum/subject-details.html">
-<link rel="import" href="core-curriculum/enrollment-status.html">
+<link rel="import" href="students/student-list.html">
+<link rel="import" href="students/student-details.html">
 <link rel="import" href="util/page-behavior.html">
 
-<dom-module id="page-core-curriculum">
+<dom-module id="page-students">
     <template>
         <style>
          :host {
@@ -26,65 +25,70 @@
 
         <app-route
             route="{{route}}"
-            pattern="/:id"
+            pattern="/:studentEmail"
             data="{{routeData}}"
-            active="{{graphSelected}}">
+            active="{{studentSelected}}"
+            tail="{{subroute}}">
         </app-route>
 
         <iron-pages
             selected="[[page]]"
             attr-for-selected="id"
             role="main">
-          <div id="list">
-            <enrollment-status></enrollment-status>
-            <subject-list base-path="/core-curriculum"></subject-list>
-          </div>
-          <subject-details id="details" subject="{{routeData.id}}" title="{{subjectTitle}}"></subject-details>
+          <student-list id="list"></student-list>
+          <student-details id="details" student-email="{{routeData.studentEmail}}" student-name="{{studentName}}" route=[[subroute]]></student-details>
         </iron-pages>
 
     </template>
 
     <script>
       Polymer({
-         is: 'page-core-curriculum',
+         is: 'page-students',
 
          behaviors: [PageBehavior],
 
          properties: {
            page: {
              type: String,
-             computed: '_computePage(graphSelected)'
+             computed: '_computePage(studentSelected)'
            },
 
            title: {
-             value: "University"
+             value: "Students"
            },
 
-           subjectTitle: {
-             type: String,
-             value: ""
+           studentName: {
+             type: String
            },
 
            breadCrumbs: {
              value: [],
-             computed: "computeBreadCrumbs(page, routeData.id, subjectTitle)"
+             computed: "computeBreadCrumbs(page, routeData.studentEmail, studentName)"
+           },
+
+           routeData: {
+             observer: "_routeDataChanged"
            }
          },
 
-        computeBreadCrumbs: function(page, subjectId, subjectTitle) {
-           if(page == "details" && subjectTitle != "") {
+         _routeDataChanged: function() {
+           console.log("Route data changed: ", this.routeData, this.routeData.studentEmail)
+         },
+
+        computeBreadCrumbs: function(page, studentEmail, studentName) {
+           if(page == "details" && studentEmail != "") {
              return [{
-               "title": "University", "link": "/core-curriculum"
+               "title": "Students", "link": "/students"
              }, {
-               "title": subjectTitle, "link": "/core-curriculum/" + subjectId
+               "title": this.studentName, "link": "/students/" + studentEmail
              }]
             } else {
               return [];
             }
          },
 
-         _computePage: function(graphSelected) {
-           return graphSelected ? 'details' : 'list';
+         _computePage: function(studentSelected) {
+           return studentSelected ? 'details' : 'list';
          }
      });
     </script>

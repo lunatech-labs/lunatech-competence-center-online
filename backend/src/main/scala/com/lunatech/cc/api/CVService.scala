@@ -10,8 +10,6 @@ import io.circe.parser.parse
 import org.postgresql.util.PGobject
 
 trait CVService {
-  def findByPerson(user: GoogleUser): Option[Json]
-
   def findById(email: String): Option[Json]
 
   def findAll: List[Json]
@@ -31,9 +29,6 @@ class PostgresCVService(transactor: Transactor[Task]) extends CVService {
         o
       }
     )
-
-  override def findByPerson(user: GoogleUser): Option[Json] =
-    sql"SELECT cv FROM cvs WHERE person = ${user.email} ORDER BY created_on DESC LIMIT 1".query[Json].option.transact(transactor).unsafeRun()
 
   override def findById(email: String): Option[Json] =
       sql"SELECT cv FROM cvs WHERE person = ${email} ORDER BY created_on DESC LIMIT 1".query[Json].option.transact(transactor).unsafeRun()

@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/marked-element/marked-element.html">
 
 <dom-module id="subject-card">
   <template>
@@ -39,12 +40,14 @@
     <paper-card primary$="[[item.primary]]" image="{{item.image}}" class="layout vertical">
       <div class="card-content flex">
         <h2>{{item.name}}</h2>
-        <div class="subject-description">{{item.description}}</div>
+        <marked-element markdown=[[item.description]]>
+          <div slot="markdown-html" class="subject-description"></div>
+        </marked-element>
       </div>
       <div class="card-actions layout horizontal center-justified">
         <div class="center">
           <paper-button noink>
-            <a href="/core-curriculum/{{item.id}}">Learn more</a>
+            <a href="{{basePath}}/{{item.id}}">Learn more</a>
           </paper-button>
         </div>
       </div>
@@ -57,6 +60,10 @@
       properties: {
         item: {
           type: Object
+        },
+
+        basePath: {
+          type: String
         }
       }
 

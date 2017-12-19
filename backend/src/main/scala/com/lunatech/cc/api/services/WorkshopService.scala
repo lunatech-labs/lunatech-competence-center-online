@@ -42,7 +42,7 @@ object WorkshopService {
 
 object EventBriteWorkshopService {
 
-  def apply(config: WorkshopService.Config): EventBriteWorkshopService = {
+  def apply(config: StudentService.Config): EventBriteWorkshopService = {
     val eventBriteToken = config.token
 
     val client = Http.client

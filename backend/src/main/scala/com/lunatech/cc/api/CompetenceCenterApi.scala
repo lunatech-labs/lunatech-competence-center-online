@@ -1,5 +1,7 @@
 package com.lunatech.cc.api
 
+import java.io.File
+
 import com.lunatech.cc.api.services._
 import com.lunatech.cc.formatter.PdfCVFormatter
 import com.lunatech.cc.utils.DBMigration
@@ -28,7 +30,7 @@ object CompetenceCenterApi extends App {
   object Config {
     case class ApplicationConfig(mode: String)
     case class HttpConfig(port: Int)
-    case class ServicesConfig(people: PeopleService.Config, workshops: WorkshopService.Config)
+    case class ServicesConfig(people: PeopleService.Config, workshops: StudentService.Config)
 
     sealed trait TokenVerifierConfig
     case class Google(google: GoogleConfig) extends TokenVerifierConfig
@@ -56,7 +58,8 @@ object CompetenceCenterApi extends App {
   val cvService = new PostgresCVService(transactor)
   val workshopService = EventBriteWorkshopService(config.services.workshops)
   val peopleService = ApiPeopleService(config.services.people)
-  val coreCurriculumService = new PostgresCoreCurriculumService(transactor)
+  val coreCurriculumService = new PostgresCoreCurriculumService(transactor, new File("../core-curriculum/knowledge"))
+  val studentService = new PostgresStudentService(transactor, peopleService)
 
   val tokenVerifier = config.tokenVerifier match {
     case Config.Fake(fakeConfig) =>
@@ -65,10 +68,10 @@ object CompetenceCenterApi extends App {
   }
 
   // For endpoints that require an API key OR a Google authenticated user.
-  val authenticated: Endpoint[ApiUser] = authenticatedBuilder(config.auth, tokenVerifier)
-  val authenticatedUser: Endpoint[GoogleUser] = authenticated.mapOutput {
+  val authenticated: Endpoint[ApiUser] = authenticatedBuilder(config.auth, tokenVerifier, peopleService)
+  val authenticatedUser: Endpoint[EnrichedGoogleUser] = authenticated.mapOutput {
     case -\/(_) => Output.failure(new RuntimeException("This endpoint only accepts an ID-Token"), Status.Unauthorized)
-    case \/-(googleUser) => Output.payload(googleUser)
+    case \/-(user) => Output.payload(user)
   }
 
   val cvFormatter = new PdfCVFormatter()
@@ -82,6 +85,7 @@ object CompetenceCenterApi extends App {
   val workshopController = new WorkshopController(workshopService, authenticated)
   val peopleController = new PeopleController(peopleService, authenticatedUser)
   val coreCurriculumController = new CoreCurriculumController(coreCurriculumService, authenticated, authenticatedUser)
+  val studentController = new StudentController(studentService, authenticated, authenticatedUser)
   val service = (
     cvController.`GET /employees` :+:
     cvController.`GET /employees/me` :+:
@@ -92,9 +96,16 @@ object CompetenceCenterApi extends App {
     cvController.`GET /cvs/employeeId` :+:
     workshopController.`GET /workshops` :+:
     peopleController.`GET /people/me`:+:
+    coreCurriculumController.`GET /core-curriculum` :+:
+    coreCurriculumController.`GET /people/{email}/knowledge` :+:
     coreCurriculumController.`GET /people/me/knowledge/{subject}` :+:
+    coreCurriculumController.`GET /people/{email}/knowledge/{subject}` :+:
     coreCurriculumController.`PUT /people/me/knowledge/{subject}/{topic}` :+:
-      coreCurriculumController.`DELETE /people/me/knowledge/{subject}/{topic}`
+    coreCurriculumController.`DELETE /people/me/knowledge/{subject}/{topic}`:+:
+    studentController.`GET /students` :+:
+    studentController.`GET /students/me` :+:
+    studentController.`GET /students/{studentEmail}`
+
 
   ).toServiceAs[Application.Json]
 

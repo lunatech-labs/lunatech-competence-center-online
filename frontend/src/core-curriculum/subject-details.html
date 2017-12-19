@@ -25,7 +25,7 @@
 
      <iron-ajax id="personKnowledgeLoad"
                 loading="{{personKnowledgeLoading}}"
-                url="/api/people/me/knowledge/[[subject]]"
+                url="/api/people/{{person}}/knowledge/[[subject]]"
                 last-response="{{personKnowledge}}"></iron-ajax>
 
     <h1>[[knowledge.name]]</h1>
@@ -33,15 +33,27 @@
     <template is="dom-if" if=[[!loading]]>
       <knowledge-graph graph="{{knowledge}}" known=[[personKnowledge]] required-tags=[[requiredTags]] nodes="topics"></knowledge-graph>
     </template>
-    <topic-card id="topicCard" on-i-know-this-changed="_iKnowThisChanged"></topic-details>
+    <topic-card id="topicCard" on-i-know-this-changed="_iKnowThisChanged" read-only$=[[readOnly]]></topic-details>
   </template>
   <script>
     Polymer({
       is: "subject-details",
 
       properties: {
+
+        readOnly: {
+          type: Boolean,
+          value: false
+        },
+
+        person: {
+          type: String,
+          observer: '_reloadData',
+          value: "me"
+        },
+
         subject: {
-          observer: '_onSubjectChange',
+          observer: '_reloadData',
           type: String
         },
 
@@ -104,8 +116,9 @@
         return dataLoading || personKnowledgeLoading;
       },
 
-      _onSubjectChange: function () {
-        if (this.subject) {
+      _reloadData: function() {
+        // Only load the data if both the person and subject are set, to avoid loads before proper initialization.
+        if (this.person && this.subject) {
           this.$.subjectLoad.generateRequest();
           this.$.personKnowledgeLoad.generateRequest();
         }
@@ -113,7 +126,8 @@
 
       _onKnowledgeNodeClicked: function (event) {
         this.$.topicCard.topic = event.detail;
-        this.$.topicCard.$.topicDetail.iKnowThis = this.personKnowledge.includes(event.detail.id);
+        this.$.topicCard.iKnowThis = this.personKnowledge.includes(event.detail.id);
+        console.log("Setting iKnowThis to ", this.personKnowledge.includes(event.detail.id));
         this.$.topicCard.open();
       },
 
@@ -122,7 +136,9 @@
       },
 
       _onKnowledgeChange: function(knowledge) {
-        this.title = knowledge.name
+        if(knowledge) {
+          this.title = knowledge.name;
+        }
       }
     });
   </script>

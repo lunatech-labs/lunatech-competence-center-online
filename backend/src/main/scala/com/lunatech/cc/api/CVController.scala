@@ -16,7 +16,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory._
 import scalaz._
 
-class CVController(cvService: CVService, peopleService: PeopleService, cvFormatter: CVFormatter, authenticated: Endpoint[ApiUser], authenticatedUser: Endpoint[GoogleUser]) {
+class CVController(cvService: CVService, peopleService: PeopleService, cvFormatter: CVFormatter, authenticated: Endpoint[ApiUser], authenticatedUser: Endpoint[EnrichedGoogleUser]) {
 
   lazy val logger: Logger = getLogger(getClass)
 
@@ -25,9 +25,9 @@ class CVController(cvService: CVService, peopleService: PeopleService, cvFormatt
     Ok(cvService.findAll.asJson)
   }
 
-  val `GET /employees/me`: Endpoint[Json] = get(employees :: me :: authenticatedUser) { (user: GoogleUser) =>
+  val `GET /employees/me`: Endpoint[Json] = get(employees :: me :: authenticatedUser) { (user: EnrichedGoogleUser) =>
     logger.debug(s"GET /employees/me for $user")
-    cvService.findByPerson(user) match {
+    cvService.findById(user.email) match {
       case Some(json) => Ok(json)
       case None => {
         val json = CV(user).asJson
@@ -48,7 +48,7 @@ class CVController(cvService: CVService, peopleService: PeopleService, cvFormatt
     }
   }
 
-  val `PUT /employees/me`: Endpoint[Json] = put(employees :: me :: authenticatedUser :: jsonBody[Json]) { (user: GoogleUser, employee: Json) =>
+  val `PUT /employees/me`: Endpoint[Json] = put(employees :: me :: authenticatedUser :: jsonBody[Json]) { (user: EnrichedGoogleUser, employee: Json) =>
     employee.as[CV] match {
       case Right(_) =>
         logger.debug("received data")

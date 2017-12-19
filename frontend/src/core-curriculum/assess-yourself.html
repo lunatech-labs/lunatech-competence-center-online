@@ -10,18 +10,23 @@
         color: var(--google-blue-500);
       }
     </style>
-    <marked-element markdown="{{currentQuestion.question}}">
-      <div slot="markdown-html"></div>
-    </marked-element>
-    <template is="dom-if" if="{{currentQuestion.answer-hint}}">
-      <paper-button on-tap="showHint">Show hint</paper-button>
-      <iron-collapse id="collapse">
-        <marked-element markdown="{{currentQuestion.answer-hint}}">
-          <div slot="markdown-html"></div>
-        </marked-element>
-      </iron-collapse>
+    <template is="dom-if" if="[[questions.length]]">
+      <marked-element markdown="{{currentQuestion.question}}">
+        <div slot="markdown-html"></div>
+      </marked-element>
+      <template is="dom-if" if="{{currentQuestion.answer-hint}}">
+        <paper-button on-tap="showHint">Show hint</paper-button>
+        <iron-collapse id="collapse">
+          <marked-element markdown="{{currentQuestion.answer-hint}}">
+            <div slot="markdown-html"></div>
+          </marked-element>
+        </iron-collapse>
+      </template>
+      <paper-button on-tap="_nextQuestionHandler">Next Question!</paper-button>
     </template>
-    <paper-button on-tap="_nextQuestionHandler">Next Question!</paper-button>
+    <template is="dom-if" if="[[!questions.length]]">
+      <p>No assessment questions yet for this topic? Can you believe it?!?</p>
+    </template>
   </template>
   <script>
     class AssessYourself extends Polymer.Element {
@@ -47,8 +52,8 @@
         }
       }
 
-      computeCurrentQuestion () {
-        return this.questions[this.questionIdx];
+      computeCurrentQuestion ()   {
+        return (this.questions !== undefined) ? this.questions[this.questionIdx] : undefined;
       }
 
       questionsObserver (newQuestions) {

@@ -1,0 +1,147 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="./subject-card.html">
+
+<dom-module id="subject-summary">
+  <template>
+    <style include="iron-flex iron-flex-alignment">
+    <style>
+      div.main {
+        max-width: 1080px;
+        margin: 0 auto !important;
+        float: none !important;
+        text-align: center;
+      }
+
+      paper-spinner {
+        position: absolute;
+        height: 50px;
+        width: 50px;
+        top: 50%;
+        left: 50%;
+        margin-left: -50px;
+        margin-top: -50px;
+      }
+    </style>
+    <iron-meta id="meta"></iron-meta>
+    <iron-ajax id="ajaxLoad"
+               url="/api/core-curriculum"
+               loading="{{loading}}"
+               last-response="{{curriculum}}"></iron-ajax>
+
+    <iron-ajax id="progressLoad"
+              url="/api/people/[[email]]/knowledge"
+              loading="{{loading}}"
+              last-response="{{progress}}"></iron-ajax>
+
+    <paper-spinner active=[[loading]]></paper-spinner>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Subject</th><th>Done</th><th>Progress</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template is="dom-repeat" items=[[summary]] mutable-data>
+          <tr>
+            <td><a href="[[basePath]]/[[item.id]]">[[item.name]]</a></td>
+            <td>[[item.known_required]] / [[item.required]]</td>
+            <td><paper-progress value=[[item.progress]]</td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+
+  </template>
+  <script>
+  (function () {
+    'use strict';
+
+    Polymer({
+      is: "subject-summary",
+
+      properties: {
+        basePath: {
+          type: String
+        },
+
+        email: {
+          type: String,
+          observer: '_onEmailChange'
+        },
+
+        progress: {
+          type: Object,
+          observer: '_onProgressChange'
+        },
+
+        summary: {
+          type: Array,
+          observer: '_onSummaryChange'
+        }
+      },
+
+      ready: function() {
+        this.$.progressLoad.headers = {'X-ID-Token': this.$.meta.byKey('idToken')};
+        this.$.ajaxLoad.generateRequest();
+      },
+
+      isPrimary: function(item) {
+        return !!item.primary;
+      },
+
+      isNonPrimary: function(item) {
+        return !item.primary;
+      },
+
+      _onSummaryChange: function() {
+        console.debug("Summary change")
+      },
+
+      _onEmailChange: function() {
+        this.$.progressLoad.generateRequest();
+      },
+
+      _onProgressChange: function() {
+        console.debug("_onProgressChange")
+        if(this.progress != null) {
+
+          var summary = []
+
+          this.curriculum.forEach(function(subject) {
+            var knowledge = this.progress[subject.id] || [];
+
+            subject.required = 0;
+            subject.known_required = 0;
+
+            subject.topics.forEach(function(topic) {
+              var known = knowledge && knowledge.includes(topic.id);
+              var required = topic.tags.includes("required-for-junior");
+              var known_required = known && required;
+              if(required) { subject.required++ }
+              if(known_required) { subject.known_required++ }
+            });
+
+            if(subject.required == 0) {
+              subject.progress = 100;
+            } else {
+              subject.progress = (subject.known_required / subject.required) * 100;
+            }
+
+            summary.push(subject);
+          }.bind(this));
+          this.set('summary', summary);
+        }
+
+      }
+
+    });
+  }());
+  </script>
+</dom-module>
