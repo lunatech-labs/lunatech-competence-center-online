@@ -10,6 +10,8 @@ Contributing
   `/scripts`: Useful scripts for development.
 
 ## Running locally
+There now is a docker-compose available in `scipts/cc_fullstack` that brings up a complete dev environment using docker compose.
+See the [readme](scripts/cc_fullstack/) in that directory for the details, if you prefer the old way, then carry on in this document.
 
 Prepare yourself, it's not as smooth as some other applications. We'll make it better in the future.
 

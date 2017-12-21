@@ -1,0 +1,45 @@
+version: '3.4'
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: competence-center
+
+  adminer:
+    image: adminer
+    ports:
+      - 8081:8080
+
+  backend:
+    image: bigtruedata/sbt:0.13.15-2.12
+    volumes:
+      - ../../backend:/app
+    command: sbt "~re-start"
+    depends_on:
+      - postgres
+
+  frontend:
+    build:
+      context: cc_frontend_container
+    volumes:
+      - ../../frontend:/root/frontend
+      - ../../polymer-components:/root/polymer-components
+      - ../../scripts:/root/scripts
+      - ./scripts/start_frontend.sh:/root/start_frontend.sh
+    depends_on:
+      - backend
+    command: "/root/start_frontend.sh"
+
+  proxy:
+    image: nginx:alpine
+    volumes:
+      - ../../pages:/pages
+      - ../../core-curriculum:/core-curriculum
+      - ./confs/compose_nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:8080
+    depends_on:
+      - backend
+      - frontend
