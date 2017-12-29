@@ -74,6 +74,8 @@ class PostgresCoreCurriculumService(transactor: Transactor[Task], subjectDirecto
 
   lazy val logger: Logger = getLogger(getClass)
 
+  logger.info(s"Reading Core Curriculum content from directory [$subjectDirectory]")
+
   override val getSubjectSummaries: Future[Vector[CoreCurriculumService.SubjectSummary]] = Future {
     val subjectFiles = subjectDirectory.listFiles(new FileFilter {
       override def accept(pathname: File): Boolean = pathname.getName.endsWith(".json")

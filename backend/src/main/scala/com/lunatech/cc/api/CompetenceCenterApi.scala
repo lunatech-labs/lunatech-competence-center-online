@@ -26,7 +26,15 @@ object CompetenceCenterApi extends App {
   SLF4JBridgeHandler.removeHandlersForRootLogger()
   SLF4JBridgeHandler.install()
 
-  case class Config(application: Config.ApplicationConfig, tokenVerifier: Config.TokenVerifierConfig, http: Config.HttpConfig, auth: AuthConfig, database: DbConfig, services: Config.ServicesConfig)
+  case class Config(
+                     application: Config.ApplicationConfig,
+                     tokenVerifier: Config.TokenVerifierConfig,
+                     http: Config.HttpConfig,
+                     auth: AuthConfig,
+                     database: DbConfig,
+                     services: Config.ServicesConfig,
+                     coreCurriculum: Config.CoreCurriculumConfig
+                   )
   object Config {
     case class ApplicationConfig(mode: String)
     case class HttpConfig(port: Int)
@@ -39,6 +47,7 @@ object CompetenceCenterApi extends App {
     case class FakeConfig(overrideEmail: String)
     case class GoogleConfig(oauthClientId: String)
 
+    case class CoreCurriculumConfig(directory: String)
   }
 
   val config = loadConfig[Config].fold(
@@ -58,7 +67,7 @@ object CompetenceCenterApi extends App {
   val cvService = new PostgresCVService(transactor)
   val workshopService = EventBriteWorkshopService(config.services.workshops)
   val peopleService = ApiPeopleService(config.services.people)
-  val coreCurriculumService = new PostgresCoreCurriculumService(transactor, new File("../core-curriculum/knowledge"))
+  val coreCurriculumService = new PostgresCoreCurriculumService(transactor, new File(config.coreCurriculum.directory))
   val studentService = new PostgresStudentService(transactor, peopleService)
 
   val tokenVerifier = config.tokenVerifier match {
