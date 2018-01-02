@@ -1,0 +1,260 @@
+{
+  "id": "git",
+  "name": "git",
+  "description": "Git Source Control Management",
+  "headmaster": "dirk.jonker@lunatech.com",
+  "teachers": [
+    "dirk.jonker@lunatech.com"
+  ],
+  "tags": [],
+  "image": "/images/git.png",
+  "topics": [
+    {
+      "id": "git-basics",
+      "name": "Basics",
+      "description": "Git is a distributed source management control system that stores all versions of your code and enables collaboration. Although there are various graphical tools available, knowing how to perform the basic operations using the command line is the best way to understanding the concepts and working effectively with git.",
+      "tags": [
+        "required-for-junior"
+      ],
+      "resources": [
+        {
+          "name": "Github: tryGit",
+          "type": "course",
+          "url": "https://try.github.io/"
+        },
+        {
+          "name": "Pro Git: Getting Started",
+          "type": "book",
+          "url": "https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control"
+        },
+        {
+          "name": "Pro Git: Git Basics",
+          "type": "book",
+          "url": "https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository"
+        },
+        {
+          "name": "How to Write a Git Commit Message",
+          "type": "article",
+          "url": "https://chris.beams.io/posts/git-commit/"
+        }
+      ],
+      "abilities": [
+        "Staging, resetting, and commiting files from the command line",
+        "Setting up basic git configuration using the command line",
+        "Pushing to and pulling from remote repositories",
+        "Ignoring files and directories using local or global ignore files",
+        "Writing useful commit messages using imperative language",
+        "Knowing what type of files to commit into version control and what not to commit"
+      ],
+      "assessment-questions": [
+        {
+          "question": "What are the three possible states of a file in git?",
+          "answer-hint": "Modified, staged, committed"
+        },
+        {
+          "question": "What are the options to ignore files and when do you use them?",
+          "answer-hint": ".gitignore for project-specific files (e.g. build artifacts), .gitignore_global for user-specific files, (e.g. IDE files such as .idea/)"
+        },
+        {
+          "question": "You have added a red button to the support page for ticket BUG-42. What is a proper commit message?"
+        },
+        {
+          "question": "What type of files should you never commit into source control? How do you ensure that?",
+          "answer-hint": "Passwords, API keys, and other sensitive information, using common sense. Build artifacts, editor files, using ignore files."
+        }
+      ]
+    },
+    {
+      "id": "git-branching",
+      "name": "Branching",
+      "description": "Branches in git are a powerful way to help you develop and manage projects",
+      "tags": [
+        "required-for-junior"
+      ],
+      "dependencies": [
+        "git-basics"
+      ],
+      "resources": [
+        {
+          "name": "Pro Git: Git Branching",
+          "type": "book",
+          "url": "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell"
+        }
+      ],
+      "abilities": [
+        "Creating and checking out branches using the command line",
+        "Merging and rebasing branches using the command line"
+      ],
+      "assessment-questions": [
+        {
+          "question": "Is it costly to have many branches in git?",
+          "answer-hint": "A branch is simply a pointer to a commit, so it's very cheap at about 41 bytes"
+        },
+        {
+          "question": "What are good use cases of branches?",
+          "answer-hint": "Bug fixes, adding features, managing deployment"
+        }
+      ]
+    },
+    {
+      "id": "git-workflows",
+      "name": "Workflows",
+      "description": "Different projects require different workflows in git. This is more a management topic than a technical topic, but it has big implications for how you deal with git. Being able to explain the benefits of several workflows, you can recommend the best method for any project.",
+      "tags": [
+        "required-for-medior"
+      ],
+      "dependencies": [
+        "git-branching"
+      ],
+      "resources": [
+        {
+          "name": "Pro Git: Distributed Git",
+          "type": "book",
+          "url": "https://git-scm.com/book/en/v2/Distributed-Git-Distributed-Workflows"
+        },
+        {
+          "name": "A successful Git branching model",
+          "type": "article",
+          "url": "http://nvie.com/posts/a-successful-git-branching-model/"
+        },
+        {
+          "name": "Atlassian: Comparing Workflows",
+          "type": "article",
+          "url": "https://www.atlassian.com/git/tutorials/comparing-workflows"
+        }
+      ],
+      "abilities": [
+        "Analyze a projects context and requirements and make a git workflow recommendation",
+        "Use and explain the centralized workflow",
+        "Use and explain the git-flow method",
+        "Use and explain the forking workflow",
+        "Adapt these common workflows to the requirements of the project"
+      ],
+      "assessment-questions": [
+        {
+          "question": "What workflow would you recommend for a small team with a simple project?",
+          "answer-hint": "Centralized with feature branches"
+        },
+        {
+          "question": "Can you recommend a good workflow for a repository with multiple teams and multi-stage deployment strategy?",
+          "answer-hint": "Git-flow or: develop, master, release, feature, and/or hotfix branches"
+        },
+        {
+          "question": "What are the risks of long living feature branches?",
+          "answer-hint": "A lot of time could be spent on resolving conflicts, merging bug fixes, rebasing"
+        }
+      ]
+    },
+    {
+      "id": "git-intermediate",
+      "name": "Intermediate topics",
+      "description": "In any large project it becomes very useful to have a lot of git knowledge.\nCreating a useful history of commits is beneficial to everyone working with the repository, and can help resolve issues in the future.\nBesides being able to squash your commits, it is sometimes necessary to merge only specific commits or changes.",
+      "tags": [
+        "required-for-medior"
+      ],
+      "dependencies": [
+        "git-branching"
+      ],
+      "resources": [
+        {
+          "name": "Pro Git (chapters 4-6)",
+          "type": "book",
+          "url": "https://git-scm.com/book/en/v2"
+        }
+      ],
+      "abilities": [
+        "Visualise the git history using either the command line or some other tool",
+        "Rewrite history by using amend or interactive rebase using the command line",
+        "Using reset to change a branch to a certain commit using the command line",
+        "Selectively choosing changes to commit or revert using interactive add and cherry-picking",
+        "Using stash to temporarily store the working directory state while performing other operations",
+        "Explain the properties of tags and use them to track releases",
+        "Draw on a whiteboard the differences between squashing a branch, rebasing and then merging and doing the same without squashing. And to explain why one might lead to more conflicts."
+      ],
+      "assessment-questions": [
+        {
+          "question": "What is the easiest way to add something to a previous commit?",
+          "answer-hint": "git commit --amend"
+        },
+        {
+          "question": "What do you do when somebody asks you to \"squash your commits\"?",
+          "answer-hint": "Interactive rebase"
+        },
+        {
+          "question": "How do you split up or remove something from the previous commit?",
+          "answer-hint": "Soft reset"
+        },
+        {
+          "question": "What does 'git revert' do? What can be an alternative?",
+          "answer-hint": "It creates a new commit that reverts the changes made in a previous commit. Alternative: git rebase"
+        },
+        {
+          "question": "Describe the properties of tags",
+          "answer-hint": "Immutable, named reference to an object, usually a commit"
+        },
+        {
+          "question": "You are in the middle of something when you are told to implement a security hotfix, what do you do?",
+          "answer-hint": "Use git stash to temporarily store your changes, rebase, and pop the changes back from the stash"
+        },
+        {
+          "question": "How is the stash implemented in git?",
+          "answer-hint": "As a stack, using push and pop, but you can select apply a specific stash index as well"
+        }
+      ]
+    },
+    {
+      "id": "git-advanced",
+      "name": "Advanced topics",
+      "description": "Mastering git involves a good understanding of the git internals. You are able to solve any git problem using the command line tool, since all graphical git tools eventually use the command line underneath. You can recover accidentally deleted branches or commits lost due to hard resets. You know how to truly delete files from the history, and you know the implications of doing so.",
+      "tags": [
+        "required-for-senior"
+      ],
+      "dependencies": [
+        "git-intermediate"
+      ],
+      "resources": [
+        {
+          "name": "Pro Git (chapters 7-10)",
+          "type": "book",
+          "url": "https://git-scm.com/book/en/v2"
+        }
+      ],
+      "abilities": [
+        "Advanced rewriting of history using filter-branch",
+        "Restoring lost data using git fsck and/or git reflog",
+        "Explain how git works internally",
+        "Explain the difference between the 'plumbing' and 'porcelain' commands"
+      ],
+      "assessment-questions": [
+        {
+          "question": "What is the difference between a soft and a hard reset?",
+          "answer-hint": "Both change the HEAD but a soft reset does not change the working directory."
+        },
+        {
+          "question": "Somebody has committed and pushed sensitive data upstream. What do you do?",
+          "answer-hint": "Password: disable/change it immediately and remove it in a new commit. Other: git filter-branch"
+        },
+        {
+          "question": "How do you restore commits accidentally lost after a hard reset or branch deletion?",
+          "answer-hint": "Use git reflog to find the tree of the commit and create a recovery branch."
+        },
+        {
+          "question": "What are the different object types that git can store and how do they relate?",
+          "answer-hint": "Blob, tree, and commit tree."
+        },
+        {
+          "question": "Why can't you store an empty directory in git?",
+          "answer-hint": "Git does not know about directories, only trees with objects. If a directory has no files, the tree is empty and therefore will not be stored."
+        },
+        {
+          "question": "Describe the git file system briefly",
+          "answer-hint": "Git can be described as a file system where each version of a file is stored as a blob object addressed by its hash. A commit points to a specific tree object also identified by its hash."
+        },
+        {
+          "question": "Why does git use hashes for commits?",
+          "answer-hint": "Security, integrity"
+        }
+      ]
+    }
+  ]
+}
