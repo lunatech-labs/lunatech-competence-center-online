@@ -1,15 +1,20 @@
 FROM node:slim
 
+ARG USER_UID
+ARG NAME=polymer
+
 RUN apt-get update && apt-get -y install git
 RUN npm install -g gulp bower polymer-cli --unsafe-perm 
 
-RUN echo '{ "allow_root": true }' > /root/.bowerrc
+RUN groupadd $NAME 
+RUN useradd -g $NAME -u $USER_UID -m $NAME
 
-RUN mkdir -p /root/scripts
-RUN mkdir -p /root/polymer-components
-RUN mkdir -p /root/frontend
-VOLUME /root/scripts
-VOLUME /root/polymer-components
-VOLUME /root/frontend
+USER polymer
 
-WORKDIR /root
+RUN mkdir -p /home/polymer/scripts
+RUN mkdir -p /home/polymer/polymer-components
+RUN mkdir -p /home/polymer/frontend
+VOLUME /home/polymer/scripts
+VOLUME /home/polymer/polymer-components
+VOLUME /home/polymer/frontend
+

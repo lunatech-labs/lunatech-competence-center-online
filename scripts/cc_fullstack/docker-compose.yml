@@ -16,6 +16,7 @@ services:
     image: bigtruedata/sbt:0.13.15-2.12
     volumes:
       - ../../backend:/app
+      - ../../core-curriculum:/core-curriculum
     command: sbt "~re-start"
     depends_on:
       - postgres
@@ -23,14 +24,16 @@ services:
   frontend:
     build:
       context: cc_frontend_container
+      args:
+        USER_UID: "${UID}"
     volumes:
-      - ../../frontend:/root/frontend
-      - ../../polymer-components:/root/polymer-components
-      - ../../scripts:/root/scripts
-      - ./scripts/start_frontend.sh:/root/start_frontend.sh
+      - ../../frontend:/home/polymer/frontend
+      - ../../polymer-components:/home/polymer/polymer-components
+      - ../../scripts:/home/polymer/scripts
+      - ./scripts/start_frontend.sh:/home/polymer/start_frontend.sh
     depends_on:
       - backend
-    command: "/root/start_frontend.sh"
+    command: "/home/polymer/start_frontend.sh"
 
   proxy:
     image: nginx:alpine
