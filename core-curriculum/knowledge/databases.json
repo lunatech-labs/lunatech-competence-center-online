@@ -1,0 +1,287 @@
+{
+  "id": "databases",
+  "name": "Databases",
+  "description": "Databases are a key part of every project",
+  "headmaster": "dirk.jonker@lunatech.com",
+  "teachers": [
+    "dirk.jonker@lunatech.com"
+  ],
+  "tags": [],
+  "image": "/images/databases.png",
+  "topics": [
+    {
+      "id": "database-fundamentals",
+      "name": "Database fundamentals",
+      "description": "There are many ways to store data, but being able to choose an appropriate one can be difficult.",
+      "tags": [],
+      "resources": [
+        {
+          "name": "Designing Data-Intensive Applications (Martin Kleppmann, 2017): Chapter 1 and 2",
+          "type": "book",
+          "url": "https://dataintensive.net/"
+        }
+      ],
+      "abilities": [
+        "Basic knowledge about different database types and their use cases",
+        "Relational",
+        "Key/Value",
+        "Document",
+        "Graph",
+        "Analytical",
+        "Considering the trade-offs to make when choosing a database type"
+      ],
+      "assessment-questions": [
+        {
+          "question": "What are the most important trade-offs you need to make when choosing the right database for a project?",
+          "answer-hint": "Data model capabilities; latency vs durability; read vs write performance; CAP theorem; ACID vs BASE"
+        }
+      ]
+    },
+    {
+      "id": "rdbms-sql-basics",
+      "name": "RDBMS SQL basics",
+      "description": "Relational databases and SQL",
+      "tags": [],
+      "resources": [
+        {
+          "name": "Codecademy: Learn SQL",
+          "type": "course",
+          "url": "https://www.codecademy.com/learn/learn-sql"
+        },
+        {
+          "name": "Khan Academy: Intro to SQL",
+          "type": "video",
+          "url": "https://www.khanacademy.org/computing/computer-programming/sql"
+        },
+        {
+          "name": "PostgreSQL Documentation Part I. Tutorial",
+          "type": "documentation",
+          "url": "https://www.postgresql.org/docs/10/static/tutorial.html"
+        }
+      ],
+      "abilities": [
+        "Writing basic SQL operations",
+        "Joining tables",
+        "Sorting and grouping",
+        "Limits and offsets",
+        "Set operations",
+        "Parametrisation of queries"
+      ],
+      "assessment-questions": [
+        {
+          "question": "What are the most commonly used SQL operations?",
+          "answer-hint": "INSERT, SELECT, UPDATE, DELETE"
+        },
+        {
+          "question": "What are different ways to combine data from different tables?"
+        },
+        {
+          "question": "What is the difference between a set operation and a cursor-based operation?"
+        },
+        {
+          "question": "Why is it useful to know SQL when you are using an ORM?"
+        },
+        {
+          "question": "What is an SQL injection attack and how do you prevent it?"
+        }
+      ]
+    },
+    {
+      "id": "rdbms-sql-advanced",
+      "name": "RDBMS SQL advanced techniques",
+      "description": "Advanced SQL techniques",
+      "tags": [],
+      "dependencies": [ "rdbms-sql-basics" ],
+      "resources": [
+        {
+          "name": "MIT OpenCourseWare: Database Systems",
+          "type": "course",
+          "url": "https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-830-database-systems-fall-2010/index.htm"
+        },
+        {
+          "name": "Use the Index, Luke",
+          "type": "documentation",
+          "url": "https://use-the-index-luke.com/"
+        },
+        {
+          "name": "PostgreSQL Documentation Chapter 13. Concurrency Control",
+          "type": "documentation",
+          "url": "https://www.postgresql.org/docs/10/static/mvcc.html<Paste>"
+        }
+      ],
+      "abilities": [
+        "Using common table expressions for recursive queries",
+        "Using window functions",
+        "Using date and time functions",
+        "Using different types of locks"
+      ],
+      "assessment-questions": []
+    },
+    {
+      "id": "rdbms-schemas",
+      "name": "RDBMS Schema design",
+      "description": "Designing schemas for relational databases",
+      "tags": [],
+      "dependencies": [ "rdbms-sql-basics" ],
+      "resources": [
+        {
+          "name": "Logical Database Design and E-R Diagrams",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=ZBgXb66Ckz0"
+        },
+        {
+          "name": "Database Normalization",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=QqlPXKxN6LQ"
+        }
+      ],
+      "abilities": [
+        "Designing a database schema using normalisation",
+        "Creating Entity-Relationship-Diagrams (ERDs) or similar drawings of tables and relations",
+        "Know and apply the principles of set theory to the design"
+      ],
+      "assessment-questions": [
+        {
+          "question": "What are the advantages and disadvantages of 3NF?"
+        },
+        {
+          "question": "What is an appropriate type for a surrogate key?"
+        },
+        {
+          "question": "Why should a table design not violate the principles of set theory?"
+        }
+      ]
+    },
+    {
+      "id": "rdbms-indexes",
+      "name": "RDBMS Indexes",
+      "description": "Indexes for relational databases",
+      "tags": [],
+      "dependencies": [ "rdbms-schemas" ],
+      "resources": [
+        {
+          "name": "Use the Index, Luke",
+          "type": "Documentation",
+          "url": "https://use-the-index-luke.com/"
+        },
+        {
+          "name": "Postgres: Chapter 11. Indexes",
+          "type": "Documentation",
+          "url": "https://www.postgresql.org/docs/10/static/indexes-intro.html"
+        },
+        {
+          "name": "Designing Data-Intensive Applications (Martin Kleppmann, 2017): Chapter 3",
+          "type": "book",
+          "url": "https://dataintensive.net/"
+        }
+      ],
+      "abilities": [
+        "Knowing when to apply an index to a table",
+        "Creating indexes to optimize problematic queries",
+        "Using query plans to find performance issues",
+        "Making trade-offs between write and read performance of indexes"
+      ],
+      "assessment-questions": [
+        {
+          "question": "What is the most important data structure of a relational database?"
+        },
+        {
+          "question": "What is a covering index?"
+        },
+        {
+          "question": "How are indexes usually stored in a relational database?"
+        }
+      ]
+    },
+    {
+      "id": "rdbms-constraints",
+      "name": "RDBMS Constraints",
+      "description": "Constraints for relational databases",
+      "tags": [],
+      "dependencies": [ "rdbms-schemas" ],
+      "resources": [],
+      "abilities": [
+        "Know how and when to use foreign keys",
+        "Using constraints to enforce data quality"
+      ],
+      "assessment-questions": [
+        {
+          "question": "What are advantages and disadvantages of using foreign keys?"
+        },
+        {
+          "question": "What is referential integrity?"
+        },
+        {
+          "question": "Why do you need to think about cascading foreign key changes?"
+        },
+        {
+          "question": "When do you check a constraint in the database and when in your application?"
+        }
+      ]
+    },
+    {
+      "id": "rdbms-stored-procedures",
+      "name": "RDBMS Stored procedures",
+      "description": "Stored procedures for relational databases",
+      "tags": [],
+      "dependencies": [ "rdbms-schemas" ],
+      "resources": [],
+      "abilities": [
+        "Writing and using stored procedures"
+      ],
+      "assessment-questions": [
+        {
+          "question": "What are advantages and disadvantages of using stored procedures?"
+        },
+        {
+          "question": "What are the trade-offs between a stored procedure in your database and a function in your application?"
+        }
+      ]
+    },
+    {
+      "id": "rdbms-administration-basics",
+      "name": "RDBMS Administration basics",
+      "description": "Basic administration of RDBMS",
+      "tags": [],
+      "dependencies": [
+        "rdbms-indexes",
+        "rdbms-constraints",
+        "rdbms-stored-procedures"
+      ],
+      "resources": [
+        {
+          "name": "PostgreSQL Documentation Part III. Server Administration",
+          "type": "documentation",
+          "url": "https://www.postgresql.org/docs/10/static/admin.html"
+        }
+      ],
+      "abilities": [
+        "Configuring the database",
+        "Managing users and access",
+        "Creating databases"
+      ],
+      "assessment-questions": []
+    },
+    {
+      "id": "rdbms-administration-advanced",
+      "name": "RDBMS Administration advanced",
+      "description": "Setting up replication, backups, tuning databases",
+      "tags": [],
+      "dependencies": [ "rdbms-administration-basics" ],
+      "resources": [],
+      "abilities": [
+        "Optimising indexes, constraints, and stored procedures",
+        "Making and restoring backups",
+        "Setting up replication"
+      ],
+      "assessment-questions": []
+    }
+  ],
+  "projects": [
+    {
+      "id": "rdbms-project-1",
+      "name": "Designing a database schema for a Phonebook application",
+      "description": "The goal of this project is to design a database schema in third normal format (3NF) for a phonebook application.\n\n# Requirements\n\nDesign an API for a phonebook application. The phonebook has one top-level resource, a `Contact`. A contact has a name and a type, which can have the value `Personal` or `Business`.\n\nContacts have zero or more phone numbers. A phone number consists of a number and a type, which is one of 'Mobile' or 'Fixed'. \n\n# Deliverables\n\nPostgreSQL compatible CREATE TABLE statements. Can be combined with the Scala or Java Phonebook project."
+    }
+  ]
+}
