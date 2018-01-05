@@ -45,7 +45,7 @@
             "abilities":[
                 "Navigating the directory structure of a Linux box from the terminal.",
                 "Search for a specific file by name within the file system.", 
-                "Search trough file(s) by content.",
+                "Search through file(s) by content.",
                 "Know the common places to look for log files.",
                 "Know the common places to look for configuration files.",
                 "Run a command as super user using \"sudo\".",
@@ -148,18 +148,18 @@
         {
             "id": "networking-advanced",
             "name": "Networking II",
-            "description":"Packet inspection, performance measurement and advanced firewalling/routing setups (e.g.: using linux for a home router).",
+            "description":"Packet inspection, performance measurement and advanced firewalling/routing set-ups (e.g.: using linux for a home router).",
             "tags":[],
             "dependencies":["networking"],
             "abilities": [
-                "Set up a linux machine as a router/gateway for a network."
+                "Set up a Linux machine as a router/gateway for a network."
             ],
             "resources":[]
         },
         {
             "id": "packagemanagement",
             "name": "Package management I",
-            "description":"There are almost as many different package managers as there are linux distributions. However they share many common operations, just with a different syntax. The goal of this topic is to get an understanding of the common operations: installing, removing, upgrading.",
+            "description":"There are almost as many different package managers as there are Linux distributions. However they share many common operations, just with a different syntax. The goal of this topic is to get an understanding of the common operations: installing, removing, upgrading.",
             "tags":["required-for-junior"],
             "dependencies":["basic"],
             "abilities": [],
@@ -177,7 +177,7 @@
         {
             "id": "diskmanagement",
             "name": "Managing Disks",
-            "description":"In the end the filesystem of a Linux machine is a located on a block device, there has to be at least one present mounted at the root of the filesystem. Blockdevices can be backed by pretty much anything. This topic is about block devices, how to manage and how to format them.",
+            "description":"In the end the file system of a Linux machine is a located on a block device, there has to be at least one present mounted at the root of the file system. Blockdevices can be backed by pretty much anything. This topic is about block devices, how to manage and how to format them.",
             "tags":[],
             "dependencies":["fsh"],
             "abilities": [],
