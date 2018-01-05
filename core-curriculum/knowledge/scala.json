@@ -19,10 +19,10 @@
           "tags": ["stackoverflow"]
         },
         {
-          "name": "Evaluation Strategies and Termination",
-          "type": "video",
-          "url": "https://www.coursera.org/learn/progfun1/lecture/eervR/lecture-1-3-evaluation-strategies-and-termination",
-          "tags": ["coursera", "mooc"]
+          "name": "Scala Substitution Model",
+          "type": "other",
+          "url": "http://bkpathak.github.io/scala-substitution-model",
+          "tags": ["github"]
         },
         {
           "name": "Scala Syntax Summary",
