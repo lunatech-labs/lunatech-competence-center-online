@@ -59,6 +59,97 @@
             ]
         },
         {
+            "id": "networking",
+            "name": "Networking I",
+            "description":"Common tools for inspecting and manipulating the network configuration of a Linux machine. E.g.: iproute2, netstat, inspecting the system route table and running traceroutes.",
+            "tags":["required-for-junior"],
+            "dependencies":["basic"],
+            "abilities": [
+                "Inspect the networking configuration of a Linux machine.",
+                "Perform basic troubleshooting of network issues, e.g.: is there a process listening on this port, do my routes check out."
+            ],
+            "resources":[
+                {
+                    "name": "Linux Static IP Configuration",
+                    "type": "article",
+                    "url": "https://linode.com/docs/networking/linux-static-ip-configuration/"
+                },
+                {
+                    "name": "iproute2 cheat sheet",
+                    "type": "article",
+                    "url": "http://baturin.org/docs/iproute2/"
+                },
+                {
+                    "name": "How to user traceroute and mtr to diagnose network issues",
+                    "type": "article",
+                    "url": "https://www.digitalocean.com/community/tutorials/how-to-use-traceroute-and-mtr-to-diagnose-network-issues"
+                }
+            ]
+        },
+        {
+            "id": "bashtricks",
+            "name": "Using Bash",
+            "description":"The most common shell on Linux is bash. Bash and its associated utilities probably deserve a knowledge graph on their own. However even with some basic knowledge about subjects such as piping and output redirection, and where to find the manual, it can quickly become a powerful tool for any user.",
+            "tags":["required-for-junior"],
+            "dependencies":["basic"],
+            "abilities": [
+                "Redirect output of a program to a file and/or another program.",
+                "Redirect stdout to stderr and vice versa.",
+                "Write a basic bash script.",
+                "Basic data manipulation, e.g.: search/replace, remove a column from a csv, extract values from json."
+            ],
+            "resources":[
+                {
+                    "name": "Linuxjourney lesson - Text-Fu",
+                    "type": "article",
+                    "url": "https://linuxjourney.com/lesson/stdout-standard-out-redirect"
+                },
+                {
+                    "name": "jq manual",
+                    "type": "documentation",
+                    "url": "https://stedolan.github.io/jq/manual/"
+                }
+            ]
+        },
+        {
+            "id": "diskinspection",
+            "name": "Inspecting Disks",
+            "description":"A common cause of outages on Linux machines is disk issues, a harddrive getting filled up or broken. Knowing how to inspect the status of disks is key to diagnosing issues.",
+            "tags":["required-for-junior"],
+            "dependencies":["basic"],
+            "abilities": [
+                "Determine if a specific disk/partition is getting full.",
+                "Check a filesystem for errors."
+            ],
+            "resources":[
+                {
+                    "name":"Man page: du",
+                    "type":"documentation",
+                    "url":"http://jlk.fjfi.cvut.cz/arch/manpages/man/du.1"
+                },
+                {
+                    "name":"Man page: df",
+                    "type":"documentation",
+                    "url":"http://jlk.fjfi.cvut.cz/arch/manpages/man/df.1"
+                },
+                {
+                    "name":"Man page: lsblk",
+                    "type":"documentation",
+                    "url":"http://jlk.fjfi.cvut.cz/arch/manpages/man/lsblk.8"
+                },
+                {
+                    "name":"Man page: fsck",
+                    "type":"documentation",
+                    "url":"http://jlk.fjfi.cvut.cz/arch/manpages/man/fsck.1"
+                },
+                {
+                    "name":"Troubleshooting disk space issues on Linux",
+                    "type":"documentation",
+                    "url":"https://coderwall.com/p/1exv9a/troubleshooting-disk-space-issues-on-linux"
+                }
+            ]
+        },
+        {
             "id": "fsh",
             "name": "Linux Filesystem",
             "description":"Everything related to a Linux system can be found in the filesystem. Actual files, devices, statistics, everything. It is important to know what can be found where (and why!)",
@@ -92,34 +183,6 @@
             ]
         },
         {
-            "id": "networking",
-            "name": "Networking I",
-            "description":"Common tools for inspecting and manipulating the network configuration of a Linux machine. E.g.: iproute2, netstat, inspecting the system route table and running traceroutes.",
-            "tags":["required-for-junior"],
-            "dependencies":["basic"],
-            "abilities": [
-                "Inspect the networking configuration of a Linux machine.",
-                "Perform basic troubleshooting of network issues, e.g.: is there a process listening on this port, do my routes check out."
-            ],
-            "resources":[
-                {
-                    "name": "Linux Static IP Configuration",
-                    "type": "article",
-                    "url": "https://linode.com/docs/networking/linux-static-ip-configuration/"
-                },
-                {
-                    "name": "iproute2 cheat sheet",
-                    "type": "article",
-                    "url": "http://baturin.org/docs/iproute2/"
-                },
-                {
-                    "name": "How to user traceroute and mtr to diagnose network issues",
-                    "type": "article",
-                    "url": "https://www.digitalocean.com/community/tutorials/how-to-use-traceroute-and-mtr-to-diagnose-network-issues"
-                }
-            ]
-        },
-        {
             "id": "processmanagement",
             "name": "Managing Processes",
             "description":"On a linux machine processes run in a tree, always having an \"init\" process at the root that is owned by the root user, all processes are (in)direct children of this process. There exist various tools to inspect and manage this tree of processes such as \"ps\", \"top\", and \"kill\". Finally the permissions of a process are determined by the user who owns the process,",
@@ -144,30 +207,27 @@
             ]
         },
         {
-            "id": "access-control",
-            "name": "Mandatory Access Control",
-            "description":"Within Linux several frameworks exist to further limit the access of processes to files, frameworks such as SELinux and AppArmor.",
-            "tags":[],
-            "dependencies":["permissions"],
+            "id": "usermanagement",
+            "name": "Users and Groups",
+            "description": "Linux has users, and groups to group those users. There exist various tools for creating, listing and managing these entities. In addition to that there are several special users/groups, such as \"root\" and several methods of privilege escalation.",
+            "tags":["required-for-junior"],
+            "dependencies":["basic"],
             "abilities": [
-                "Have knowledge of methods for further limiting access to files & directories (beyond users/groups/ACLs)",
-                "List the two most common frameworks used for enabling such access control."
+                "Adding and removing (system) accounts.",
+                "Adding and removing groups.",
+                "Adding and removing users to groups.",
+                "Granting and revoking sudo permissions for specific commands."
             ],
             "resources":[
                 {
-                    "name": "Wikipedia - Linux Security Modules",
-                    "type": "article",
-                    "url": "https://en.wikipedia.org/wiki/Linux_Security_Modules"
+                    "name":"Arch Wiki - Users and Groups",
+                    "type":"article",
+                    "url":"https://wiki.archlinux.org/index.php/Users_and_groups"
                 },
                 {
-                    "name": "An Introduction to SELinux on CentOS 7 – Part 1: Basic Concepts",
-                    "type": "article",
-                    "url": "https://www.digitalocean.com/community/tutorials/an-introduction-to-selinux-on-centos-7-part-1-basic-concepts"
-                },
-                {
-                    "name": "Arch Wiki - AppArmor",
-                    "type": "article",
-                    "url": "https://wiki.archlinux.org/index.php/AppArmor"
+                    "name":"Arch Wiki - Sudo",
+                    "type":"article",
+                    "url":"https://wiki.archlinux.org/index.php/Sudo"
                 }
             ]
         },
@@ -189,31 +249,6 @@
                     "name":"Digitalocean: SSH Essentials",
                     "type":"article",
                     "url":"https://www.digitalocean.com/community/tutorials/ssh-essentials-working-with-ssh-servers-clients-and-keys"
-                }
-            ]
-        },
-        {
-            "id": "bashtricks",
-            "name": "Using Bash",
-            "description":"The most common shell on Linux is bash. Bash and its associated utilities probably deserve a knowledge graph on their own. However even with some basic knowledge about subjects such as piping and output redirection, and where to find the manual, it can quickly become a powerful tool for any user.",
-            "tags":["required-for-junior"],
-            "dependencies":["basic"],
-            "abilities": [
-                "Redirect output of a program to a file and/or another program.",
-                "Redirect stdout to stderr and vice versa.",
-                "Write a basic bash script.",
-                "Basic data manipulation, e.g.: search/replace, remove a column from a csv, extract values from json."
-            ],
-            "resources":[
-                {
-                    "name": "Linuxjourney lesson - Text-Fu",
-                    "type": "article",
-                    "url": "https://linuxjourney.com/lesson/stdout-standard-out-redirect"
-                },
-                {
-                    "name": "jq manual",
-                    "type": "documentation",
-                    "url": "https://stedolan.github.io/jq/manual/"
                 }
             ]
         },
@@ -267,44 +302,6 @@
             ]
         },
         {
-            "id": "diskinspection",
-            "name": "Inspecting Disks",
-            "description":"A common cause of outages on Linux machines is disk issues, a harddrive getting filled up or broken. Knowing how to inspect the status of disks is key to diagnosing issues.",
-            "tags":["required-for-junior"],
-            "dependencies":["basic"],
-            "abilities": [
-                "Determine if a specific disk/partition is getting full.",
-                "Check a filesystem for errors."
-            ],
-            "resources":[
-                {
-                    "name":"Man page: du",
-                    "type":"documentation",
-                    "url":"http://jlk.fjfi.cvut.cz/arch/manpages/man/du.1"
-                },
-                {
-                    "name":"Man page: df",
-                    "type":"documentation",
-                    "url":"http://jlk.fjfi.cvut.cz/arch/manpages/man/df.1"
-                },
-                {
-                    "name":"Man page: lsblk",
-                    "type":"documentation",
-                    "url":"http://jlk.fjfi.cvut.cz/arch/manpages/man/lsblk.8"
-                },
-                {
-                    "name":"Man page: fsck",
-                    "type":"documentation",
-                    "url":"http://jlk.fjfi.cvut.cz/arch/manpages/man/fsck.1"
-                },
-                {
-                    "name":"Troubleshooting disk space issues on Linux",
-                    "type":"documentation",
-                    "url":"https://coderwall.com/p/1exv9a/troubleshooting-disk-space-issues-on-linux"
-                }
-            ]
-        },
-        {
             "id": "diskmanagement_1",
             "name": "Managing Disks I",
             "description": "Managing the drives of a linux system, partitioning, mounting and filesystem choice.",
@@ -330,37 +327,6 @@
                     "name": "Arch Wiki - fstab",
                     "type":"article",
                     "url":"https://wiki.archlinux.org/index.php/Fstab"
-                }
-            ]
-        },
-        {
-            "id": "diskmanagement_2",
-            "name": "Managing Disks II",
-            "description": "Managing the drives of a linux system, creating advanced layouts using LVM, device mapper and md..",
-            "tags": [],
-            "dependencies": ["diskmanagement_1"],
-            "abilities": [
-                "Set up raid arrays on Linux machines.",
-                "Create and administer encrypted volumes.",
-                "Be able to use LVM to create several volumes on a single encrypted volume.",
-                "Combining and stacking the various technologies for aggregating disks.",
-                "Creating cheap system snapshots."
-            ],
-            "resources": [
-                {
-                    "name":"ArchWiki - RAID (and related pages)",
-                    "type":"article",
-                    "url":"https://wiki.archlinux.org/index.php/RAID"
-                },
-                {
-                    "name":"ArchWiki - LVM (and related pages)",
-                    "type":"article",
-                    "url":"https://wiki.archlinux.org/index.php/LVM"
-                },
-                {
-                    "name":"Archwiki - dm_crypt",
-                    "type":"article",
-                    "url": "https://wiki.archlinux.org/index.php/Dm-crypt"
                 }
             ]
         },
@@ -398,27 +364,61 @@
             ]
         },
         {
-            "id": "usermanagement",
-            "name": "Users and Groups",
-            "description": "Linux has users, and groups to group those users. There exist various tools for creating, listing and managing these entities. In addition to that there are several special users/groups, such as \"root\" and several methods of privilege escalation.",
-            "tags":["required-for-junior"],
-            "dependencies":["basic"],
+            "id": "diskmanagement_2",
+            "name": "Managing Disks II",
+            "description": "Managing the drives of a linux system, creating advanced layouts using LVM, device mapper and md..",
+            "tags": [],
+            "dependencies": ["diskmanagement_1"],
             "abilities": [
-                "Adding and removing (system) accounts.",
-                "Adding and removing groups.",
-                "Adding and removing users to groups.",
-                "Granting and revoking sudo permissions for specific commands."
+                "Set up raid arrays on Linux machines.",
+                "Create and administer encrypted volumes.",
+                "Be able to use LVM to create several volumes on a single encrypted volume.",
+                "Combining and stacking the various technologies for aggregating disks.",
+                "Creating cheap system snapshots."
+            ],
+            "resources": [
+                {
+                    "name":"ArchWiki - RAID (and related pages)",
+                    "type":"article",
+                    "url":"https://wiki.archlinux.org/index.php/RAID"
+                },
+                {
+                    "name":"ArchWiki - LVM (and related pages)",
+                    "type":"article",
+                    "url":"https://wiki.archlinux.org/index.php/LVM"
+                },
+                {
+                    "name":"Archwiki - dm_crypt",
+                    "type":"article",
+                    "url": "https://wiki.archlinux.org/index.php/Dm-crypt"
+                }
+            ]
+        },
+        {
+            "id": "access-control",
+            "name": "Mandatory Access Control",
+            "description":"Within Linux several frameworks exist to further limit the access of processes to files, frameworks such as SELinux and AppArmor.",
+            "tags":[],
+            "dependencies":["permissions"],
+            "abilities": [
+                "Have knowledge of methods for further limiting access to files & directories (beyond users/groups/ACLs)",
+                "List the two most common frameworks used for enabling such access control."
             ],
             "resources":[
                 {
-                    "name":"Arch Wiki - Users and Groups",
-                    "type":"article",
-                    "url":"https://wiki.archlinux.org/index.php/Users_and_groups"
+                    "name": "Wikipedia - Linux Security Modules",
+                    "type": "article",
+                    "url": "https://en.wikipedia.org/wiki/Linux_Security_Modules"
                 },
                 {
-                    "name":"Arch Wiki - Sudo",
-                    "type":"article",
-                    "url":"https://wiki.archlinux.org/index.php/Sudo"
+                    "name": "An Introduction to SELinux on CentOS 7 – Part 1: Basic Concepts",
+                    "type": "article",
+                    "url": "https://www.digitalocean.com/community/tutorials/an-introduction-to-selinux-on-centos-7-part-1-basic-concepts"
+                },
+                {
+                    "name": "Arch Wiki - AppArmor",
+                    "type": "article",
+                    "url": "https://wiki.archlinux.org/index.php/AppArmor"
                 }
             ]
         },
