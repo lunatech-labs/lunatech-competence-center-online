@@ -1,7 +1,7 @@
 {
     "id": "linux",
     "name": "Linux",
-    "description": "Linux is an operating system dat is commonly used on server systems. This subject is focused on specifically that Linux use case.",
+    "description": "Most of the time our applications are deployed on Linux based platforms. Basic knowledge of this platform will help you install your stuff in the right place and easily and quickly diagnose problems.",
     "tags": ["operating-system", "tool"],
     "image": "images/linux.png",
     "topics": [
@@ -40,6 +40,11 @@
                     "name": "How to Grep for Text in Files",
                     "type": "article",
                     "url": "https://linode.com/docs/tools-reference/tools/how-to-grep-for-text-in-files/"
+                },
+                {
+                    "name": "Stackoverflow: How to use/send signals at the command-line for any program",
+                    "type": "article",
+                    "url": "https://unix.stackexchange.com/questions/318518/how-to-use-send-signals-at-the-command-line-for-any-program-eg-dd"
                 }
             ],
             "abilities":[
@@ -63,38 +68,84 @@
                 "List the various types of (pseudo)files that can exist in the Linux system.",
                 "Explain the purpose of the directories present at the root level of most linux filesystem."
             ],
-            "resources":[]
+            "resources":[
+                {
+                    "name": "Wikipedia - Filesystem Hierarchy Standard",
+                    "type": "article",
+                    "url": "https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard"
+                },
+                {
+                    "name": "Wikipedia - Procfs",
+                    "type": "article",
+                    "url": "https://en.wikipedia.org/wiki/Procfs"
+                },
+                {
+                    "name": "Wikipedia - Sysfs",                    
+                    "type": "article",
+                    "url": "https://en.wikipedia.org/wiki/Sysfs"
+                },
+                {
+                    "name": "Linux Kernel Documentation - sysfs",
+                    "type": "documentation",
+                    "url": "https://www.kernel.org/doc/Documentation/filesystems/sysfs.txt"
+                }
+            ]
         },
         {
             "id": "networking",
             "name": "Networking I",
-            "description":"Common tools for inspecting and manipulating the network configuration of a Linux machine. E.g.: iproute2, netstat, opening and closing ports using IPTables",
+            "description":"Common tools for inspecting and manipulating the network configuration of a Linux machine. E.g.: iproute2, netstat, inspecting the system route table and running traceroutes.",
             "tags":["required-for-junior"],
             "dependencies":["basic"],
             "abilities": [
                 "Inspect the networking configuration of a Linux machine.",
-                "Perform basic troubleshooting of network issues, e.g.: is there a process listening on this port, do my routes check out.",
-                "Opening and closing ports using the IPTables INPUT chain."
+                "Perform basic troubleshooting of network issues, e.g.: is there a process listening on this port, do my routes check out."
             ],
-            "resources":[]
+            "resources":[
+                {
+                    "name": "Linux Static IP Configuration",
+                    "type": "article",
+                    "url": "https://linode.com/docs/networking/linux-static-ip-configuration/"
+                },
+                {
+                    "name": "iproute2 cheat sheet",
+                    "type": "article",
+                    "url": "http://baturin.org/docs/iproute2/"
+                },
+                {
+                    "name": "How to user traceroute and mtr to diagnose network issues",
+                    "type": "article",
+                    "url": "https://www.digitalocean.com/community/tutorials/how-to-use-traceroute-and-mtr-to-diagnose-network-issues"
+                }
+            ]
         },
         {
             "id": "processmanagement",
             "name": "Managing Processes",
-            "description":"On a linux machine processes run in a tree, always having an \"init\" process at the root that is owned by the root user. There exist various tools to inspect and manage this tree of processes. In this topic we discuss the process tree, various tools to explore it, how to manage processes, how process ownership works and ",
+            "description":"On a linux machine processes run in a tree, always having an \"init\" process at the root that is owned by the root user, all processes are (in)direct children of this process. There exist various tools to inspect and manage this tree of processes such as \"ps\", \"top\", and \"kill\". Finally the permissions of a process are determined by the user who owns the process,",
             "tags":["required-for-junior"],
             "dependencies":["basic"],
             "abilities": [
                 "Explain the relationship between processes, users and groups.",
                 "Explain the purpose of the root process.",
-                "Explain the implications of the parent-child relationship between processes.",
                 "Diagnose issues with running processes, using tools like \"*top\"."
             ],
-            "resources":[]
+            "resources":[
+                {
+                    "name": "How to use ps, kill and nice to manage processes in Linux",
+                    "type": "article",
+                    "url": "https://www.digitalocean.com/community/tutorials/how-to-use-ps-kill-and-nice-to-manage-processes-in-linux"
+                },
+                {
+                    "name": "Wikipedia - init",
+                    "type": "article",
+                    "url": "https://en.wikipedia.org/wiki/Init"
+                }
+            ]
         },
         {
             "id": "access-control",
-            "name": "Advanced Access Control",
+            "name": "Mandatory Access Control",
             "description":"Within Linux several frameworks exist to further limit the access of processes to files, frameworks such as SELinux and AppArmor.",
             "tags":[],
             "dependencies":["permissions"],
@@ -102,7 +153,23 @@
                 "Have knowledge of methods for further limiting access to files & directories (beyond users/groups/ACLs)",
                 "List the two most common frameworks used for enabling such access control."
             ],
-            "resources":[]
+            "resources":[
+                {
+                    "name": "Wikipedia - Linux Security Modules",
+                    "type": "article",
+                    "url": "https://en.wikipedia.org/wiki/Linux_Security_Modules"
+                },
+                {
+                    "name": "An Introduction to SELinux on CentOS 7 – Part 1: Basic Concepts",
+                    "type": "article",
+                    "url": "https://www.digitalocean.com/community/tutorials/an-introduction-to-selinux-on-centos-7-part-1-basic-concepts"
+                },
+                {
+                    "name": "Arch Wiki - AppArmor",
+                    "type": "article",
+                    "url": "https://wiki.archlinux.org/index.php/AppArmor"
+                }
+            ]
         },
         {
             "id": "remoteaccess",
@@ -120,7 +187,7 @@
             "resources":[
                 {
                     "name":"Digitalocean: SSH Essentials",
-                    "type":"Article",
+                    "type":"article",
                     "url":"https://www.digitalocean.com/community/tutorials/ssh-essentials-working-with-ssh-servers-clients-and-keys"
                 }
             ]
@@ -129,7 +196,7 @@
             "id": "bashtricks",
             "name": "Using Bash",
             "description":"The most common shell on Linux is bash. Bash and its associated utilities probably deserve a knowledge graph on their own. However even with some basic knowledge about subjects such as piping and output redirection, and where to find the manual, it can quickly become a powerful tool for any user.",
-            "tags":[],
+            "tags":["required-for-junior"],
             "dependencies":["basic"],
             "abilities": [
                 "Redirect output of a program to a file and/or another program.",
@@ -142,46 +209,193 @@
                     "name": "Linuxjourney lesson - Text-Fu",
                     "type": "article",
                     "url": "https://linuxjourney.com/lesson/stdout-standard-out-redirect"
+                },
+                {
+                    "name": "jq manual",
+                    "type": "documentation",
+                    "url": "https://stedolan.github.io/jq/manual/"
                 }
             ]
         },
         {
             "id": "networking-advanced",
             "name": "Networking II",
-            "description":"Packet inspection, performance measurement and advanced firewalling/routing set-ups (e.g.: using linux for a home router).",
+            "description": "Linux has a very powerful network stack that can go well beyond the traditional \"hook up a single computer to the network\" case.\n\nExamples include multiple internal networks to seperate containers / VMs, acting as a router in a network.. This complexity also means that sometimes detecting performance issues is notrivial. There is an extensive toolset for managing and inspecting this all, like IPTables (+applications wrapping it), network performance measurement tools (iperf), packet sniffers (tcpdump, wireshark), nmap (detecting open ports).",
             "tags":[],
             "dependencies":["networking"],
             "abilities": [
-                "Set up a Linux machine as a router/gateway for a network."
+                "Set up a Linux machine as a router/gateway for a network.",
+                "Dump raw network traffic on an interface",
+                "Open and close ports using IPTables.",
+                "Set up a local network on a single host, that is granted NATted access to the internet."
             ],
-            "resources":[]
+            "resources":[
+            ]
         },
         {
             "id": "packagemanagement",
-            "name": "Package management I",
+            "name": "Package management",
             "description":"There are almost as many different package managers as there are Linux distributions. However they share many common operations, just with a different syntax. The goal of this topic is to get an understanding of the common operations: installing, removing, upgrading.",
             "tags":["required-for-junior"],
             "dependencies":["basic"],
-            "abilities": [],
-            "resources":[]
+            "abilities": [
+                "Know how to use at least one of the following package managers: apt, yum, dnf",
+                "Explain the risks associated with adding third party repositories.",
+                "Be able to install your own (manually packaged) software on a Linux machine in the proper location."
+            ],
+            "resources":[
+                {
+                    "name":"Linux Package Management",
+                    "type":"article",
+                    "url":"https://linode.com/docs/tools-reference/linux-package-management/"
+                },
+                {
+                    "name":"ArchWiki - Pacman/Rosetta",
+                    "type":"article",
+                    "url":"https://wiki.archlinux.org/index.php/Pacman/Rosetta"
+                },
+                {
+                    "name":"Unix Stackexchange - What is the difference between /opt  and /usr/local",
+                    "type":"article",
+                    "url":"https://unix.stackexchange.com/questions/11544/what-is-the-difference-between-opt-and-usr-local"
+                },
+                {
+                    "name":"AskUbuntu - Why should I move everything into opt",
+                    "type":"article",
+                    "url":"https://askubuntu.com/questions/722968/why-should-i-move-everything-into-opt"
+                }
+            ]
         },
         {
-            "id": "packagemanagementadvanced",
-            "name": "Package management II",
-            "description": "At some point when working with Linux you will have to deal with software that is not available from the normal package repositories. The result of this is that you have to find a non-official source, download binaries directly and install them manually, or even build software from source. Doing this without making a mess of your system, or worse, interfering with your package manager, requires some knowledge, discipline, and skill.",
-            "tags":[],
-            "dependencies":["fsh","packagemanagement"],
-            "abilities": [],
-            "resources":[]
+            "id": "diskinspection",
+            "name": "Inspecting Disks",
+            "description":"A common cause of outages on Linux machines is disk issues, a harddrive getting filled up or broken. Knowing how to inspect the status of disks is key to diagnosing issues.",
+            "tags":["required-for-junior"],
+            "dependencies":["basic"],
+            "abilities": [
+                "Determine if a specific disk/partition is getting full.",
+                "Check a filesystem for errors."
+            ],
+            "resources":[
+                {
+                    "name":"Man page: du",
+                    "type":"documentation",
+                    "url":"http://jlk.fjfi.cvut.cz/arch/manpages/man/du.1"
+                },
+                {
+                    "name":"Man page: df",
+                    "type":"documentation",
+                    "url":"http://jlk.fjfi.cvut.cz/arch/manpages/man/df.1"
+                },
+                {
+                    "name":"Man page: lsblk",
+                    "type":"documentation",
+                    "url":"http://jlk.fjfi.cvut.cz/arch/manpages/man/lsblk.8"
+                },
+                {
+                    "name":"Man page: fsck",
+                    "type":"documentation",
+                    "url":"http://jlk.fjfi.cvut.cz/arch/manpages/man/fsck.1"
+                },
+                {
+                    "name":"Troubleshooting disk space issues on Linux",
+                    "type":"documentation",
+                    "url":"https://coderwall.com/p/1exv9a/troubleshooting-disk-space-issues-on-linux"
+                }
+            ]
         },
         {
-            "id": "diskmanagement",
-            "name": "Managing Disks",
-            "description":"In the end the file system of a Linux machine is a located on a block device, there has to be at least one present mounted at the root of the file system. Blockdevices can be backed by pretty much anything. This topic is about block devices, how to manage and how to format them.",
-            "tags":[],
-            "dependencies":["fsh"],
-            "abilities": [],
-            "resources":[]
+            "id": "diskmanagement_1",
+            "name": "Managing Disks I",
+            "description": "Managing the drives of a linux system, partitioning, mounting and filesystem choice.",
+            "tags": [],
+            "dependencies": ["fsh","diskinspection"],
+            "abilities": [
+                "Partitioning and formatting disks",
+                "Choosing an appropriate filesystem for your use-case",
+                "Working with fstab"
+            ],
+            "resources": [
+                {
+                    "name":"Arch Wiki - File systems",
+                    "type":"article",
+                    "url":"https://wiki.archlinux.org/index.php/File_systems"
+                },
+                {
+                    "name": "Arch Wiki - Partitioning",
+                    "type":"article",
+                    "url":"https://wiki.archlinux.org/index.php/Partitioning"
+                },
+                {
+                    "name": "Arch Wiki - fstab",
+                    "type":"article",
+                    "url":"https://wiki.archlinux.org/index.php/Fstab"
+                }
+            ]
+        },
+        {
+            "id": "diskmanagement_2",
+            "name": "Managing Disks II",
+            "description": "Managing the drives of a linux system, creating advanced layouts using LVM, device mapper and md..",
+            "tags": [],
+            "dependencies": ["diskmanagement_1"],
+            "abilities": [
+                "Set up raid arrays on Linux machines.",
+                "Create and administer encrypted volumes.",
+                "Be able to use LVM to create several volumes on a single encrypted volume.",
+                "Combining and stacking the various technologies for aggregating disks.",
+                "Creating cheap system snapshots."
+            ],
+            "resources": [
+                {
+                    "name":"ArchWiki - RAID (and related pages)",
+                    "type":"article",
+                    "url":"https://wiki.archlinux.org/index.php/RAID"
+                },
+                {
+                    "name":"ArchWiki - LVM (and related pages)",
+                    "type":"article",
+                    "url":"https://wiki.archlinux.org/index.php/LVM"
+                },
+                {
+                    "name":"Archwiki - dm_crypt",
+                    "type":"article",
+                    "url": "https://wiki.archlinux.org/index.php/Dm-crypt"
+                }
+            ]
+        },
+        {
+            "id": "diskmanagement_networking",
+            "name": "Network Drives",
+            "description": "Managing the drives of a linux system: mounting network drives/shares. Both on the block level (iscsi) and filesystem level it is possible to mount network drives.",
+            "tags": [],
+            "dependencies": ["diskmanagement_1","networking"],
+            "abilities": [
+                "Mount network based drives / file systems, your machine being the client.",
+                "Export network based drives, your machine being the host/server"
+            ],
+            "resources": [
+                {
+                    "name":"Arch Wiki - ISCSI",
+                    "type":"article",
+                    "url":"https://wiki.archlinux.org/index.php/ISCSI_Initiator"
+                },
+                {
+                    "name":"Arch Wiki - NFS",
+                    "type":"article",
+                    "url":"https://wiki.archlinux.org/index.php/NFS"
+                },
+                {
+                    "name":"Arch Wiki - Samba",
+                    "type":"article",
+                    "url":"https://wiki.archlinux.org/index.php/Samba"
+                },
+                {
+                    "name":"Arch Wiki - File systems # Clustered file systems",
+                    "type":"article",
+                    "url":"https://wiki.archlinux.org/index.php/File_systems#Clustered_file_systems"
+                }
+            ]
         },
         {
             "id": "usermanagement",
@@ -189,35 +403,119 @@
             "description": "Linux has users, and groups to group those users. There exist various tools for creating, listing and managing these entities. In addition to that there are several special users/groups, such as \"root\" and several methods of privilege escalation.",
             "tags":["required-for-junior"],
             "dependencies":["basic"],
-            "abilities": [],
-            "resources":[]
+            "abilities": [
+                "Adding and removing (system) accounts.",
+                "Adding and removing groups.",
+                "Adding and removing users to groups.",
+                "Granting and revoking sudo permissions for specific commands."
+            ],
+            "resources":[
+                {
+                    "name":"Arch Wiki - Users and Groups",
+                    "type":"article",
+                    "url":"https://wiki.archlinux.org/index.php/Users_and_groups"
+                },
+                {
+                    "name":"Arch Wiki - Sudo",
+                    "type":"article",
+                    "url":"https://wiki.archlinux.org/index.php/Sudo"
+                }
+            ]
         },
         {
             "id": "permissions",
-            "name": "File Access Permissions",
-            "description":"Access to files in Linux is primarily determined by the user and group who own the files and the permissions set on the file. In addition to that it is possible to add further ACLs to linux files, for example to give multiple groups access to the same directory tree. Managing file permissions is what this topic is about.",
-            "tags":[""],
+            "name": "File Access Permissions I",
+            "description":"Access to files in Linux is primarily determined by the user and group who own the files and the permissions set on the file.",
+            "tags":["required-for-junior"],
             "dependencies":["usermanagement"],
-            "abilities": [],
-            "resources":[]
+            "abilities": [
+                "Working with user/group based permissions.",
+                "Changing a file's modebits"
+            ],
+            "resources":[
+                {
+                    "name":"Arch Wiki - File permissions and attributes",
+                    "type":"article",
+                    "url":"https://wiki.archlinux.org/index.php/File_permissions_and_attributes"
+                }
+            ]
+        },
+        {
+            "id": "permissions_2",
+            "name": "File Access Permissions II",
+            "description":"In some cases the user/group mechanism is not granular enough for granting the right permissions. For this it is possible to add extended access control lists to files.",
+            "tags":[""],
+            "dependencies":["permissions"],
+            "abilities": [
+                "Extending the permissions on files/directories using Access Control Lists",
+                "Inspecting the ACLs of a file."
+            ],
+            "resources":[
+                {
+                    "name":"Arch Wiki - Access Control Lists",
+                    "type":"article",
+                    "url":"https://wiki.archlinux.org/index.php/Access_Control_Lists"
+                }
+            ]
         },
         {
             "id": "servicemanagement",
-            "name": "Managing Services",
-            "description":"Common tools for managing services on Linux, primarily systemd.",
-            "tags":[],
+            "name": "Managing Services & Tasks I",
+            "description":"Common tools for managing services on Linux, primarily systemd.\n\n SystemD is what is used by most major distrubutions (e.g.: redhat/fedora/centos, debian/ubuntu, opensuse)",
+            "tags":["required-for-junior"],
             "dependencies":["processmanagement"],
-            "abilities": [],
-            "resources":[]
+            "abilities": [
+                "Manage existing services using systemd.",
+                "Set up scheduled tasks using cron."
+            ],
+            "resources":[
+                {
+                    "name":"Arch Wiki - Systemd, section: Basic Systemctl Usage",
+                    "type":"article",
+                    "url":"https://wiki.archlinux.org/index.php/Systemd#Basic_systemctl_usage"
+                },
+                {
+                    "name":"Ubuntu Wiki - Cron HowTo",
+                    "type":"article",
+                    "url":"https://help.ubuntu.com/community/CronHowto"
+                }
+            ]
         },
         {
-            "id": "timedjobs",
-            "name": "Scheduling tasks",
-            "description":"Common tools for scheduling tasks, timed jobs (systemd) and cron.",
+            "id": "servicemanagement_2",
+            "name": "Managing Services & Tasks II",
+            "description":"Common tools for managing services on Linux, primarily systemd.\n\n SystemD is what is used by most major distrubutions (e.g.: redhat/fedora/centos, debian/ubuntu, opensuse)",
             "tags":[],
-            "dependencies":["processmanagement"],
-            "abilities": [],
-            "resources":[]
+            "dependencies":["servicemanagement"],
+            "abilities": [
+                "Create your own system services to be managed by SystemD",
+                "Override specific parts of existing service configurations using Drop-in files",
+                "Setting up timers"
+            ],
+            "resources":[
+                {
+                    "name":"Arch Wiki - Systemd, the rest",
+                    "type":"article",
+                    "url":"https://wiki.archlinux.org/index.php/Systemd"
+                }
+            ]
+        },
+        {
+            "id": "performance",
+            "name": "Performance Debugging",
+            "description": "Occasionally you will encounter performance issues with applications. These may stem from the linux kernel.\n\nDebugging such problems can be both challenging and fun given the right tools. And horribly frustrating without them.",
+            "tags": [],
+            "dependencies": ["diskmanagement_1","networking","processmanagement"],
+            "abilities": [
+                "Debug performance issues on a linux machine."
+            ],
+            "resources":[
+                {
+                    "name": "BrendanGregg - Overview",
+                    "type": "documentation",
+                    "url":"http://www.brendangregg.com/overview.html"
+                }
+            ]
         }
     ]
 }
