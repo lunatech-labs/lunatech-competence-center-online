@@ -8,7 +8,7 @@
         {
             "id": "basic",
             "name": "Basic Linux",
-            "description": "One of the most common tasks for a dev on a Linux machine is inspection, e.g.: \"what on this machine causes my software to not run the way it should\", or: \"What do the logs say?\". To do so you need to know how to get access to a terminal, how to navigate and where to look.",
+            "description": "One of the most common tasks for a dev on a Linux machine is inspection, e.g.: \"what on this machine causes my software to not run the way it should\", or: \"What do the logs say?\". \n\nTo do so you need to know how to get access to a terminal, how to navigate the filesystem, where to look and/or how to search.",
             "tags":["required-for-junior"],
             "resources":[
                 {
@@ -56,12 +56,42 @@
                 "Run a command as super user using \"sudo\".",
                 "Find a process id.",
                 "Send a signal (e.g.: KILL, HUP) to a process."
+            ],
+            "assessment-questions":[
+                {
+                    "question": "How would you search for a specific directory in linux?",
+                    "answer-hint":"find [search_root] -type d -name [directory-name]"
+                },
+                {
+                    "question": "Give two places you would look for log files",
+                    "answer-hint": "/var/log, /opt/[install_location]/**, journalctl"
+                },
+                {
+                    "question": "You want to follow log output from a process, how do you do this?",
+                    "answer-hint": "tail -f [logfilename]"
+                },
+                {
+                    "question": "List all files, incl. hidden ones, in your current directory.",
+                    "answer-hint": "ls -a"
+                },
+                {
+                    "question": "List the two signals you can send to a process to terminate them, and what is the difference between them.",
+                    "answer-hint": "TERM, KILL"
+                },
+                {
+                    "question": "How would you execute a command with administrator privileges?",
+                    "answer-hint": "sudo [command]"
+                },
+                {
+                    "question": "How would you find all logfiles containing the string \"ERROR\" in a directory?",
+                    "answer-hint": "grep -l ERROR [directory]/*"
+                }
             ]
         },
         {
             "id": "networking",
             "name": "Networking I",
-            "description":"Common tools for inspecting and manipulating the network configuration of a Linux machine. E.g.: iproute2, netstat, inspecting the system route table and running traceroutes.",
+            "description":"Often it is required to inspect/check the network configuration of a machine.\n\nThere are several tools that can be found on most Linux distros to accomplish this. Tools like iproute2, for inspecting the configuration of interfaces and routes. And tools like netstat, to see what connections are up and on what ports and interfaces the machine is listening",
             "tags":["required-for-junior"],
             "dependencies":["basic"],
             "abilities": [
@@ -84,12 +114,17 @@
                     "type": "article",
                     "url": "https://www.digitalocean.com/community/tutorials/how-to-use-traceroute-and-mtr-to-diagnose-network-issues"
                 }
+            ],
+            "assessment-questions":[
+                {
+                    "question": "How would you get the ip address assigned to an interface?"
+                } 
             ]
         },
         {
             "id": "bash-tricks",
             "name": "Using Bash",
-            "description":"The most common shell on Linux is bash. Bash and its associated utilities probably deserve a knowledge graph on their own. However even with some basic knowledge about subjects such as piping and output redirection, and where to find the manual, it can quickly become a powerful tool for any user.",
+            "description":"The most common shell on Linux is bash. Bash and its associated utilities deserve a knowledge graph on their own. However even with some basic knowledge about subjects such as piping and output redirection, and where to find the manual, it can quickly become a powerful tool for any user.",
             "tags":["required-for-junior"],
             "dependencies":["basic"],
             "abilities": [
@@ -108,6 +143,16 @@
                     "name": "jq manual",
                     "type": "documentation",
                     "url": "https://stedolan.github.io/jq/manual/"
+                }
+            ],
+            "assessment-questions":[
+                {
+                    "question":"You have multiple commands chained together using pipes, how would you dump intermediate output to a file without resorting to executing two commands?",
+                    "answer-hint": "[commands] | tee [filename] | [commands]"
+                },
+                {
+                    "question":"Name a tool that can be used for search-replace like tasks.",
+                    "answer-hint": "sed, awk."
                 }
             ]
         },
@@ -146,6 +191,11 @@
                     "name":"Troubleshooting disk space issues on Linux",
                     "type":"documentation",
                     "url":"https://coderwall.com/p/1exv9a/troubleshooting-disk-space-issues-on-linux"
+                }
+            ],
+            "assessment-questions": [
+                {
+                    "question":"How would you determine which file caused a disk to fill up?"
                 }
             ]
         },
@@ -204,6 +254,15 @@
                     "type": "article",
                     "url": "https://en.wikipedia.org/wiki/Init"
                 }
+            ],
+            "assessment-questions": [
+                {
+                    "question": "How would you determine which process consumed all resources on a machine?",
+                    "answer-hint": "top, htop"
+                },
+                {
+                    "question": "Does kill always kill it's victim?"
+                }
             ]
         },
         {
@@ -229,6 +288,20 @@
                     "type":"article",
                     "url":"https://wiki.archlinux.org/index.php/Sudo"
                 }
+            ],
+            "assessment-questions":[
+                {
+                    "question": "What group is commonly used to grant users sudo permission?",
+                    "answer-hint": "wheel"
+                },
+                {
+                    "question": "How can you recognise a system account?",
+                    "answer-hint": "uid smaller than certain amount."
+                },
+                {
+                    "question": "What is the difference between a user's primary group and secondary groups?",
+                    "answer-hint": "Files created by the user are owned by the primary group"
+                }
             ]
         },
         {
@@ -242,13 +315,24 @@
                 "Generating ssh private keys.",
                 "Setting up a port forward on an SSH tunnel.",
                 "Execute commands directly on remote host.",
-                "Understand the limitations of SSH (e.g.: what happens if I start a long running migration in an SSH session and my connection breaks)"
+                "Understand the limitations of SSH (e.g.:)"
             ],
             "resources":[
                 {
                     "name":"Digitalocean: SSH Essentials",
                     "type":"article",
                     "url":"https://www.digitalocean.com/community/tutorials/ssh-essentials-working-with-ssh-servers-clients-and-keys"
+                }
+            ],
+            "assessment-questions": [
+                {
+                    "question":"What happens to a running program in an SSH session when the connection breaks?"
+                },
+                {
+                    "question":"How can you debug ssh connection attempts?"
+                },
+                {
+                    "question":"You want to override some ssh parameters for a specific set of hosts, without always setting these manually in the terminal, how?"
                 }
             ]
         },
@@ -298,6 +382,15 @@
                     "name":"AskUbuntu - Why should I move everything into opt",
                     "type":"article",
                     "url":"https://askubuntu.com/questions/722968/why-should-i-move-everything-into-opt"
+                }
+            ],
+            "assessment-questions":[
+                {
+                    "question": "Why is it good practise to keep manually installed software in a different directory than package-manager installed software?"
+                },
+                {
+                    "question": "When is it approriate to add a third party repository?",
+                    "answer-hint": "When you trust the maintainer of the repository."
                 }
             ]
         },
@@ -438,6 +531,12 @@
                     "type":"article",
                     "url":"https://wiki.archlinux.org/index.php/File_permissions_and_attributes"
                 }
+            ],
+            "assessment-questions": [
+                {
+                    "question": "A file has the following permissions: \"-rwx-rw-r--\", what does this mean?",
+                    "answer-hint": "Owner can read/write/execute, group can read/write, anyone can read"
+                }
             ]
         },
         {
@@ -478,6 +577,17 @@
                     "name":"Ubuntu Wiki - Cron HowTo",
                     "type":"article",
                     "url":"https://help.ubuntu.com/community/CronHowto"
+                }
+            ],
+            "assessment-questions": [
+                {
+                    "question": "Do cron jobs silently fail?"
+                },
+                {
+                    "question": "Is \"systemctl enable\" enough to start a service?"
+                },
+                {
+                    "question": "Does \"systemctl stop\" prevent an enabled service from restarting on machine reboot?"
                 }
             ]
         },
