@@ -87,7 +87,7 @@
             ]
         },
         {
-            "id": "bashtricks",
+            "id": "bash-tricks",
             "name": "Using Bash",
             "description":"The most common shell on Linux is bash. Bash and its associated utilities probably deserve a knowledge graph on their own. However even with some basic knowledge about subjects such as piping and output redirection, and where to find the manual, it can quickly become a powerful tool for any user.",
             "tags":["required-for-junior"],
@@ -112,7 +112,7 @@
             ]
         },
         {
-            "id": "diskinspection",
+            "id": "disk-inspection",
             "name": "Inspecting Disks",
             "description":"A common cause of outages on Linux machines is disk issues, a harddrive getting filled up or broken. Knowing how to inspect the status of disks is key to diagnosing issues.",
             "tags":["required-for-junior"],
@@ -183,7 +183,7 @@
             ]
         },
         {
-            "id": "processmanagement",
+            "id": "process-management",
             "name": "Managing Processes",
             "description":"On a linux machine processes run in a tree, always having an \"init\" process at the root that is owned by the root user, all processes are (in)direct children of this process. There exist various tools to inspect and manage this tree of processes such as \"ps\", \"top\", and \"kill\". Finally the permissions of a process are determined by the user who owns the process,",
             "tags":["required-for-junior"],
@@ -207,7 +207,7 @@
             ]
         },
         {
-            "id": "usermanagement",
+            "id": "user-management",
             "name": "Users and Groups",
             "description": "Linux has users, and groups to group those users. There exist various tools for creating, listing and managing these entities. In addition to that there are several special users/groups, such as \"root\" and several methods of privilege escalation.",
             "tags":["required-for-junior"],
@@ -232,7 +232,7 @@
             ]
         },
         {
-            "id": "remoteaccess",
+            "id": "remote-access",
             "name": "Remote Access",
             "description":"Linux servers are most commonly accessed by SSH. There are some good things to know about SSH such as known hosts, verification and how public/private keys work. In addition to that SSH can also be used as a simple (vpn like) tunnel.",
             "tags":["required-for-junior"],
@@ -268,7 +268,7 @@
             ]
         },
         {
-            "id": "packagemanagement",
+            "id": "package-management",
             "name": "Package management",
             "description":"There are almost as many different package managers as there are Linux distributions. However they share many common operations, just with a different syntax. The goal of this topic is to get an understanding of the common operations: installing, removing, upgrading.",
             "tags":["required-for-junior"],
@@ -302,11 +302,11 @@
             ]
         },
         {
-            "id": "diskmanagement_1",
+            "id": "disk-management-1",
             "name": "Managing Disks I",
             "description": "Managing the drives of a linux system, partitioning, mounting and filesystem choice.",
             "tags": [],
-            "dependencies": ["fsh","diskinspection"],
+            "dependencies": ["fsh","disk-inspection"],
             "abilities": [
                 "Partitioning and formatting disks",
                 "Choosing an appropriate filesystem for your use-case",
@@ -331,11 +331,11 @@
             ]
         },
         {
-            "id": "diskmanagement_networking",
+            "id": "disk-management-networking",
             "name": "Network Drives",
             "description": "Managing the drives of a linux system: mounting network drives/shares. Both on the block level (iscsi) and filesystem level it is possible to mount network drives.",
             "tags": [],
-            "dependencies": ["diskmanagement_1","networking"],
+            "dependencies": ["disk-management-1","networking"],
             "abilities": [
                 "Mount network based drives / file systems, your machine being the client.",
                 "Export network based drives, your machine being the host/server"
@@ -364,11 +364,11 @@
             ]
         },
         {
-            "id": "diskmanagement_2",
+            "id": "disk-management-2",
             "name": "Managing Disks II",
             "description": "Managing the drives of a linux system, creating advanced layouts using LVM, device mapper and md..",
             "tags": [],
-            "dependencies": ["diskmanagement_1"],
+            "dependencies": ["disk-management-1"],
             "abilities": [
                 "Set up raid arrays on Linux machines.",
                 "Create and administer encrypted volumes.",
@@ -427,7 +427,7 @@
             "name": "File Access Permissions I",
             "description":"Access to files in Linux is primarily determined by the user and group who own the files and the permissions set on the file.",
             "tags":["required-for-junior"],
-            "dependencies":["usermanagement"],
+            "dependencies":["user-management"],
             "abilities": [
                 "Working with user/group based permissions.",
                 "Changing a file's modebits"
@@ -441,7 +441,7 @@
             ]
         },
         {
-            "id": "permissions_2",
+            "id": "permissions-2",
             "name": "File Access Permissions II",
             "description":"In some cases the user/group mechanism is not granular enough for granting the right permissions. For this it is possible to add extended access control lists to files.",
             "tags":[""],
@@ -459,11 +459,11 @@
             ]
         },
         {
-            "id": "servicemanagement",
+            "id": "service-management",
             "name": "Managing Services & Tasks I",
             "description":"Common tools for managing services on Linux, primarily systemd.\n\n SystemD is what is used by most major distrubutions (e.g.: redhat/fedora/centos, debian/ubuntu, opensuse)",
             "tags":["required-for-junior"],
-            "dependencies":["processmanagement"],
+            "dependencies":["process-management"],
             "abilities": [
                 "Manage existing services using systemd.",
                 "Set up scheduled tasks using cron."
@@ -486,7 +486,7 @@
             "name": "Managing Services & Tasks II",
             "description":"Common tools for managing services on Linux, primarily systemd.\n\n SystemD is what is used by most major distrubutions (e.g.: redhat/fedora/centos, debian/ubuntu, opensuse)",
             "tags":[],
-            "dependencies":["servicemanagement"],
+            "dependencies":["service-management"],
             "abilities": [
                 "Create your own system services to be managed by SystemD",
                 "Override specific parts of existing service configurations using Drop-in files",
@@ -505,7 +505,7 @@
             "name": "Performance Debugging",
             "description": "Occasionally you will encounter performance issues with applications. These may stem from the linux kernel.\n\nDebugging such problems can be both challenging and fun given the right tools. And horribly frustrating without them.",
             "tags": [],
-            "dependencies": ["diskmanagement_1","networking","processmanagement"],
+            "dependencies": ["disk-management-1","networking","process-management"],
             "abilities": [
                 "Debug performance issues on a linux machine."
             ],
