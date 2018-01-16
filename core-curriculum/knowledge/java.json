@@ -38,9 +38,9 @@
           "url": "https://docs.oracle.com/javase/tutorial/java/javaOO/constructors.html"
         },
         {
-          "name": "Dummies: Reference Types in Java",
+          "name": "SafariBooksOnline: Reference Types in Java",
           "type": "article",
-          "url": "http://www.dummies.com/programming/java/reference-types-in-java"
+          "url": "https://www.safaribooksonline.com/library/view/java-8-pocket/9781491901083/ch04.html"
         },
         {
           "name": "BeginnersBook: Method Overloading",
@@ -190,9 +190,9 @@
           "url": "https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html"
         },
         {
-          "name": "BeginnersBook: Java Multiple Inheritance",
+          "name": "JournalDev: Java Multiple Inheritance",
           "type": "article",
-          "url": "https://beginnersbook.com/2013/05/java-multiple-inheritance/"
+          "url": "https://www.journaldev.com/1775/multiple-inheritance-in-java"
         },
         {
           "name": "Oracle Documentation: Inheritance",
@@ -220,9 +220,9 @@
           "url": "https://www.tutorialspoint.com/java/java_innerclasses.htm"
         },
         {
-          "name": "Dzone: Diamond Problem in Java",
+          "name": "JavaBrahman: Dealing with Diamond Problem in Java",
           "type": "article",
-          "url": "https://dzone.com/articles/dealing-with-diamond-problem-in-java"
+          "url": "https://www.javabrahman.com/java-8/java-8-multiple-inheritance-conflict-resolution-rules-and-diamond-problem/"
         }
       ],
       "abilities": [
@@ -410,14 +410,19 @@
           "url": "https://www.tutorialspoint.com/java/java_strings.htm"
         },
         {
+          "name": "Baeldung: Java String pool",
+          "type": "article",
+          "url": "http://www.baeldung.com/java-string-pool"
+        },
+        {
           "name": "Stackoverflow: Stringbuilder vs Stringbuffer",
           "type": "article",
           "url": "https://stackoverflow.com/questions/355089/difference-between-stringbuilder-and-stringbuffer"
         },
         {
-          "name": "Javatpoint: Stringbuilder vs Stringbuffer",
+          "name": "Baeldung: Stringbuilder vs Stringbuffer",
           "type": "article",
-          "url": "https://www.javatpoint.com/difference-between-stringbuffer-and-stringbuilder"
+          "url": "http://www.baeldung.com/java-string-builder-string-buffer"
         },
         {
           "name": "Stackoverflow: Get current date / time in java",
@@ -440,13 +445,15 @@
           "url": "https://www.mkyong.com/java/how-to-read-and-write-java-object-to-a-file"
         },
         {
-          "name": "JavaPractices: Implementing Serializable",
+          "name": "JournalDev: Implementing Serializable",
           "type": "article",
-          "url": "http://www.javapractices.com/topic/TopicAction.do?Id=45"
+          "url": "https://www.journaldev.com/2452/serialization-in-java"
         }
       ],
       "abilities": [],
       "assessment-questions": [
+        { "question": "What makes String thread-safe?" },
+        { "question": "What is String interning?" },
         { "question": "What's the key property of the Java `String`?", "answer-hint": "It's a implementation detail, differs from Ruby or C/C++ string." },
         { "question": "What is the rationale behind `StringBuilder` and `StringBuffer`? When should you prefer one over the other?" },
         { "question": "How can you get the current system time in milliseconds? How about nanoseconds?" },
@@ -455,7 +462,8 @@
         { "question": "What's the difference between `OutputStream` and `InputStream`?" },
         { "question": "What kind of `Stream` can you use for to save an Object to a file?" },
         { "question": "What method do you need to implement when using the interface `Serializable`?" },
-        { "question": "What's the purpose of the field `serialVersionUID`?" }
+        { "question": "What's the purpose of the field `serialVersionUID`?" },
+        { "question": "Do you know what is autoboxing and unboxing?" }
       ]
     },
     {
@@ -481,10 +489,6 @@
           "url": "https://dzone.com/articles/solving-producer-consumer"
         },
         {
-          "name": "Blog: Low Level Synchronization in Java",
-          "type": "article",
-          "url": "http://shengwangi.blogspot.nl/2015/11/low-level-synchronization-in-java.html"
-        },{
           "name": "Blog: Low Level Synchronization in Java",
           "type": "article",
           "url": "http://shengwangi.blogspot.nl/2015/11/low-level-synchronization-in-java.html"
@@ -546,9 +550,9 @@
           "url": "http://winterbe.com/posts/2015/05/22/java8-concurrency-tutorial-atomic-concurrent-map-examples"
         },
         {
-          "name": "Stackoverflow: Type of Thread Pools",
+          "name": "CodeJava: Type of Thread Pools",
           "type": "article",
-          "url": "https://stackoverflow.com/questions/17186206/types-of-thread-pools-in-java"
+          "url": "http://www.codejava.net/java-core/concurrency/java-concurrency-understanding-thread-pool-and-executors"
         },
         {
           "name": "Baeldung: Java CompletableFuture",
@@ -578,14 +582,19 @@
       "dependencies": ["collections-i"],
       "resources": [
         {
-          "name": "TutorialsPoint: Java 8 Overview",
+          "name": "Winterbe: Java 8 Overview",
           "type": "article",
-          "url": "https://www.tutorialspoint.com/java8/java8_overview.htm"
+          "url": "http://winterbe.com/posts/2014/03/16/java-8-tutorial/"
         },
         {
           "name": "Dzone: Lambda Expressions",
           "type": "article",
           "url": "https://dzone.com/articles/java-lambda-expressions-basics"
+        },
+        {
+          "name": "Oreilly: Java 8 Functional Interfaces",
+          "type": "article",
+          "url": "https://www.oreilly.com/learning/java-8-functional-interfaces"
         },
         {
           "name": "Codementor: Java 8 Method Reference",
@@ -611,11 +620,23 @@
           "name": "Mkyong: Java 8 Optional",
           "type": "article",
           "url": "https://www.mkyong.com/java8/java-8-optional-in-depth"
+        },
+        {
+          "name": "Baeldung: Garbage Collectors overview",
+          "type": "article",
+          "url": "http://www.baeldung.com/jvm-garbage-collectors"
         }
       ],
       "abilities": [
         "Use collections in a more functional way.",
         "Simplify single method anonymous classes."
+      ],
+      "assessment-question": [
+        { "question": "What is the use of Optional?" },
+        { "question": "How do you create your own Functional Interface?" },
+        { "question": "Do you know the difference between Predicate, Supplier and Consumer?" },
+        { "question": "What are advantages of lambda expression?" },
+        { "question": "What is the default garbage collector for Java 8?" }
       ]
     },
     {
