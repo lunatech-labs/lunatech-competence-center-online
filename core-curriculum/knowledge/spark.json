@@ -1,0 +1,308 @@
+{
+  "id": "big-data-spark",
+  "name": "Apache Spark(Big Data)",
+  "description": "Apache Spark is a fast and general-purpose cluster computing system. It provides high-level APIs in Java, Scala, Python and R, and an optimized engine that supports general execution graphs.",
+  "tags": ["big data", "fundamentals","spark","hadoop"],
+  "image": "/images/spark.png",
+  "topics": [
+    {
+      "id": "big-data-fundamentals",
+      "name": "Big Data Fundamentals",
+      "description": "Big Data Fundamentals provides baseline general knowledge of the technologies used in big data solutions.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Big Data Fundamentals",
+          "type": "documentation",
+          "url": "http://www.cse.wustl.edu/~jain/cse570-13/ftp/m_10abd.pdf",
+          "tags": ["university"]
+        },
+        {
+          "name": "Introduction to Big Data Tutorial | Big Data Characteristics",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=UdCXp3jRNCw"
+        }
+      ],
+      "abilities": [
+        "Know Why we use big data",
+        "Know characteristics of big data",
+        "Know big data applications",
+        "Know SQL vs NoSQL"
+      ],
+
+      "assessment-questions": [
+        { "question": "Why we use big data?" },
+        { "question": "What is difference between SQL vs NoSQL?" },
+        { "question": "What are the characteristics of big data?" }
+      ]
+    },
+    {
+      "id": "map-reduce",
+      "name": "MapReduce",
+      "description": "A MapReduce job usually splits the input data-set into independent chunks which are processed by the map tasks in a completely parallel manner.",
+      "tags": ["required-for-junior"],
+      "dependencies": ["big-data-fundamentals"],
+      "resources": [
+        {
+          "name": "MapReduce Concept",
+          "type": "documentation",
+          "url": "https://www.ibm.com/analytics/hadoop/mapreduce#305306"
+        },
+        {
+          "name": "MapReduce | WordCount example",
+          "type": "documentation",
+          "url": "https://it332ksu.files.wordpress.com/2013/09/hadoop-wordcount-explained-students-ver.pdf"
+        },
+        {
+          "name": "MapReduce Explanation",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=8wjvMyc01QY"
+        }
+      ],
+      "abilities": [
+        "Understand how map reduce works",
+        "Could create diagram for map reduce jobs"
+      ],
+
+      "assessment-questions": [
+        { "question": "What is the map reduce workflow for word count?" }
+      ]
+    },
+    {
+      "id": "apache-spark",
+      "name": "Introduction to Apache Spark",
+      "description": "Apache Spark is a fast and general-purpose cluster computing system. It provides high-level APIs in Java, Scala, Python and R, and an optimized engine that supports general execution graphs.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Introduction to Apache Spark",
+          "type": "documentation",
+          "url": "http://spark.apache.org/docs/latest/",
+          "tags": ["official"]
+        },
+        {
+          "name": "Basics of Apache Spark",
+          "type": "documentation",
+          "url": "https://www.dezyre.com/apache-spark-tutorial/tutorial-introduction-to-apache-spark"
+        },
+        {
+          "name": "Components of Apache Spark",
+          "type": "documentation",
+          "url": "http://www.baeldung.com/apache-spark"
+        }
+      ],
+      "dependencies": ["map-reduce"],
+      "abilities": [
+        "Know components of Apache Spark",
+        "Run spark shell and basic examples in it",
+        "Understanding of Apache Spark Architecture"
+      ],
+      "assessment-questions": [
+        { "question": "What are the components of Apache Spark?" },
+        { "question": "Run spark shell and find lines in the file" },
+        { "question": "What is the architecture of Apache Spark? " }
+      ]
+    },
+    {
+      "id": "spark-rdd",
+      "name": "Resilient Distributed Datasets (RDDs)",
+      "description": "Spark revolves around the concept of a resilient distributed dataset (RDD), which is a fault-tolerant collection of elements that can be operated on in parallel.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Apache Spark RDD",
+          "type": "documentation",
+          "url": "http://spark.apache.org/docs/latest/rdd-programming-guide.html#resilient-distributed-datasets-rdds",
+          "tags": ["official"]
+        },
+        {
+          "name": "RDD Operations",
+          "type": "documentation",
+          "url": "https://data-flair.training/blogs/spark-rdd-operations-transformations-actions/"
+        }
+      ],
+      "dependencies": ["apache-spark"],
+      "abilities": [
+        "Upload data as a RDD and run operations on it",
+        "Know difference between transformations and actions"
+      ],
+      "assessment-questions": [
+        { "question": "Calculate number of words in the file using spark shell" }
+      ]
+    },
+    {
+      "id": "pair-rdd",
+      "name": "Pair RDD",
+      "description": "While most Spark operations work on RDDs containing any type of objects, a few special operations are only available on RDDs of key-value pairs. The most common ones are distributed “shuffle” operations, such as grouping or aggregating the elements by a key.",
+      "resources": [
+        {
+          "name": "Pair RDD",
+          "type": "documentation",
+          "url": "https://spark.apache.org/docs/latest/rdd-programming-guide.html#working-with-key-value-pairs",
+          "tags": ["official"]
+        },
+        {
+          "name": "Pair RDD operations",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=vCg3QcvHfWk"
+        }
+      ],
+      "dependencies": ["spark-rdd"],
+      "abilities": [
+        "Create a pair RDD",
+        "Transformation on pair RDD to process pair RDD",
+        "Understand shuffle operations on pair RDD"
+      ],
+      "assessment-questions": [
+        { "question": "Calculate wordCount in the file using spark shell" },
+        { "question": "Calculate wordCount with different operation and check performance" }
+      ]
+    },
+    {
+      "id": "rdd-cache",
+      "name": "RDD Persistence",
+      "description": " Spark is persisting (or caching) a RDD in memory across operations.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "RDD Persistence",
+          "type": "documentation",
+          "url": "http://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-persistence",
+          "tags": ["official"]
+        }
+      ],
+      "dependencies": ["spark-rdd"],
+      "abilities": [
+        "Understand different storage level of RDD persist",
+        "Persist RDD across operations for fast computing"
+      ],
+      "assessment-questions": [
+        { "question": "Persist RDD at right operation in word count example" }
+      ]
+    },
+    {
+      "id": "spark-sql",
+      "name": "Spark SQL",
+      "description": "Spark SQL is a Spark module for structured data processing. Unlike the basic Spark RDD API, the interfaces provided by Spark SQL provide Spark with more information about the structure of both the data and the computation being performed",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Spark SQL",
+          "type": "documentation",
+          "url": "http://spark.apache.org/docs/latest/sql-programming-guide.html#overview",
+          "tags": ["official"]
+        },
+        {
+          "name": "Spark Dataframes",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=OjQzWrnm2ss"
+        }
+      ],
+      "dependencies": ["apache-spark"],
+      "abilities": [
+        "Create Datasets/Dataframe",
+        "Run queries on Datasets/Dataframe using datasets API's",
+        "Run queries on Datasets/Dataframe using plain SQL"
+      ],
+      "assessment-questions": [
+        { "question": "Create dataframe from RDD and query on it" }
+      ]
+    },
+    {
+      "id": "spark-partition",
+      "name": "Partitions",
+      "description": "How Spark partition RDD and Datasets to run operations parallely on it",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Partitions",
+          "type": "documentation",
+          "url": "https://acadgild.com/blog/partitioning-in-spark/",
+          "tags": ["official"]
+        }
+      ],
+      "dependencies": ["spark-rdd","spark-sql"],
+      "abilities": [
+        "Repartition the RDD",
+        "How spark do partitions for RDD and Datasets"
+      ],
+      "assessment-questions": [
+        { "question": "Repartition less number or partition without shuffle" }
+      ]
+    },
+    {
+      "id": "spark-acc-broadcast",
+      "name": "Accumulators/Broadcast Variables",
+      "description": "Normally, when a function passed to a Spark operation (such as map or reduce) is executed on a remote cluster node, it works on separate copies of all the variables used in the function.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Broadcast Variables",
+          "type": "documentation",
+          "url": "https://spark.apache.org/docs/latest/rdd-programming-guide.html#shared-variables",
+          "tags": ["official"]
+        },
+        {
+          "name": "Accumulators",
+          "type": "documentation",
+          "url": "https://spark.apache.org/docs/latest/rdd-programming-guide.html#shared-variables",
+          "tags": ["official"]
+        }
+      ],
+      "dependencies": ["apache-spark"],
+      "abilities": [
+        "Use of shared variables"
+      ],
+      "assessment-questions": [
+        { "question": "Calculate number of line processed in the file using Accumulators" }
+      ]
+    },
+    {
+      "id": "spark-sql-datasources",
+      "name": "Spark SQL Data Sources",
+      "description": "Different sources to create Datasets/Dataframes like json, parquet, jdbc etc",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "SQL Data Sources",
+          "type": "documentation",
+          "url": "https://spark.apache.org/docs/latest/sql-programming-guide.html#data-sources",
+          "tags": ["official"]
+        }
+      ],
+      "dependencies": ["spark-sql"],
+      "abilities": [
+        "Create datasets using different sources like json, parquet, jdbc etc"
+      ],
+      "assessment-questions": [
+        { "question": "Create Datasets using json file" }
+      ]
+    },
+    {
+      "id": "spark-streaming",
+      "name": "Spark Streaming",
+      "description": "Spark Streaming is an extension of the core Spark API that enables scalable, high-throughput, fault-tolerant stream processing of live data streams",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "SQL Streaming",
+          "type": "documentation",
+          "url": "https://spark.apache.org/docs/latest/streaming-programming-guide.html",
+          "tags": ["official"]
+        }
+      ],
+      "dependencies": ["apache-spark"],
+      "abilities": [
+        "Create streaming job to process stream data"
+      ]
+    }
+  ],
+
+  "projects": [
+    {
+      "id": "spark-twitter",
+      "name": "Designing a Spark Streaming application for a twiiter",
+      "description": "The goal of this project is to design Spark Stremaing application.\n\n# Requirements\n\nDesign an twitter streaming application to calculate top hashtag for every minute"
+    }
+  ]
+}
