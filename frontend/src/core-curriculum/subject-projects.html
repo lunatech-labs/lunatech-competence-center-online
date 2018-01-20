@@ -1,0 +1,87 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../../bower_components/marked-element/marked-element.html">
+
+<dom-module id="subject-projects">
+  <template>
+    <style>
+      :host {
+        --paper-tabs-selection-bar-color: var(--app-primary-color);
+      }
+
+      table {
+        width: 100%;
+      }
+
+      vaadin-grid {
+        height: auto;
+      }
+    </style>
+
+    <template is="dom-if" if="[[projects]]">
+      <h2>Projects</h2>
+
+      <vaadin-grid items="[[projects]]" on-active-item-changed="_onActiveItemChanged">
+
+        <template class="row-details">
+          <div class="details">
+            <marked-element markdown="[[item.description]]">
+              <div slot="markdown-html"></div>
+            </marked-element>
+          </div>
+        </template>
+
+        <vaadin-grid-column width="calc(50% - 100px)">
+          <template class="header">Project</template>
+          <template>[[item.name]]</template>
+        </vaadin-grid-column>
+
+        <vaadin-grid-column width="calc(50% - 100px)">
+          <template class="header">Dependencies</template>
+          <template>[[item.dependencies]]</template>
+        </vaadin-grid-column>
+
+      </vaadin-grid>
+
+
+    </template>
+  </template>
+  <script>
+    class SubjectProjects extends Polymer.Element {
+
+      static get is () { return 'subject-projects'; }
+
+      static get properties () {
+        return {
+          projects: {
+            type: Object,
+          },
+          personKnowledge: {
+            type: Array,
+            observer: '_personKnowledgeChanged'
+          }
+        }
+      }
+
+      static get observers() {
+        return [
+            'updateAvailability(projects, personKnowledge.splices)'
+        ]
+      }
+
+      updateAvailability(projects, personKnowledge) {
+        console.log("Updating availability!", this.projects);
+      }
+
+      _onActiveItemChanged(e) {
+        var grid = this.shadowRoot.querySelector("vaadin-grid");
+        if(grid) {
+          grid.detailsOpenedItems = [e.detail.value];
+        }
+      }
+
+    }
+
+    customElements.define(SubjectProjects.is, SubjectProjects);
+  </script>
+</dom-module>

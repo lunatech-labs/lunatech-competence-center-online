@@ -33,7 +33,8 @@
     "iron-collapse": "PolymerElements/iron-collapse#^2.0.0",
     "paper-tabs": "PolymerElements/paper-tabs#^2.0.0",
     "paper-progress": "^2.0.1",
-    "iron-lazy-pages": "^2.1.1"
+    "iron-lazy-pages": "^2.1.1",
+    "vaadin-grid": "^4.1.1"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

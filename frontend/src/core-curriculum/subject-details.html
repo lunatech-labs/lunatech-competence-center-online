@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../../bower_components/knowledge-graph/knowledge-graph.html">
+<link rel="import" href="./subject-projects.html">
 <link rel="import" href="./topic-card.html">
 
 <dom-module id="subject-details">
@@ -33,7 +34,8 @@
     <template is="dom-if" if=[[!loading]]>
       <knowledge-graph graph="{{knowledge}}" known=[[personKnowledge]] required-tags=[[requiredTags]] nodes="topics"></knowledge-graph>
     </template>
-    <topic-card id="topicCard" on-i-know-this-changed="_iKnowThisChanged" read-only$=[[readOnly]]></topic-details>
+    <topic-card id="topicCard" on-i-know-this-changed="_iKnowThisChanged" read-only$=[[readOnly]]></topic-card>
+    <subject-projects projects=[[knowledge.projects]] person-knowledge=[[personKnowledge]]></subject-projects>
   </template>
   <script>
     Polymer({
@@ -127,7 +129,6 @@
       _onKnowledgeNodeClicked: function (event) {
         this.$.topicCard.topic = event.detail;
         this.$.topicCard.iKnowThis = this.personKnowledge.includes(event.detail.id);
-        console.log("Setting iKnowThis to ", this.personKnowledge.includes(event.detail.id));
         this.$.topicCard.open();
       },
 
