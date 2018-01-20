@@ -76,6 +76,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       gapi.load('auth2');
     </script>
 
+    <!-- Userreport widget -->
+    <script type="text/javascript">
+    window._urq = window._urq || [];
+    _urq.push(['initSite', 'd4b0efb2-e12d-4448-b634-484748590c4c']);
+    (function() {
+    var ur = document.createElement('script'); ur.type = 'text/javascript'; ur.async = true;
+    ur.src = ('https:' == document.location.protocol ? 'https://cdn.userreport.com/userreport.js' : 'http://cdn.userreport.com/userreport.js');
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ur, s);
+    })();
+    </script>
+
     <!-- Load your application shell -->
     <link rel="import" href="src/auth-guard.html">
 
