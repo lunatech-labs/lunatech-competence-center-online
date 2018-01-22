@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/vaadin-grid/vaadin-grid.html">
 <link rel="import" href="../../bower_components/marked-element/marked-element.html">
+<link rel="import" href="./project-dependencies.html">
 
 <dom-module id="subject-projects">
   <template>
@@ -38,7 +39,7 @@
 
         <vaadin-grid-column width="calc(50% - 100px)">
           <template class="header">Dependencies</template>
-          <template>[[item.dependencies]]</template>
+          <template><project-dependencies project-dependencies=[[item.dependencies]] satisfied-dependencies=[[personKnowledge]]></project-dependencies></template>
         </vaadin-grid-column>
 
       </vaadin-grid>
@@ -56,21 +57,62 @@
           projects: {
             type: Object,
           },
+
           personKnowledge: {
             type: Array,
             observer: '_personKnowledgeChanged'
+          },
+
+          topics: {
+            type: Array
+          },
+
+          requiredForJuniorDependencies: {
+            type: Array,
+            computed: '_calculateRequiredForJuniorDependencies(topics)'
           }
         }
       }
 
-      static get observers() {
+      static get observers () {
         return [
-            'updateAvailability(projects, personKnowledge.splices)'
+          '_calculateProjectDependencies(projects, requiredForJuniorDependencies)'
         ]
+      }
+
+      _calculateRequiredForJuniorDependencies(topics) {
+        if(topics) {
+        console.log("Topicsa:", topics);
+        var out1 = topics.filter(topic => topic.tags.includes('required-for-junior'))
+
+
+        console.log("out1", out1);
+        var out = out1.map(topic => topic.id);
+
+        console.log("Topics", this.topics);
+
+        console.log("_calculateRequiredForJuniorDependencies", out);
+        return out;
+        }
+      }
+
+      _calculateProjectDependencies(projects, requiredForJuniorDependencies) {
+        if(projects) {
+          projects.forEach(function(project) {
+            if(project.dependencies == undefined) {
+              project.dependencies = requiredForJuniorDependencies;
+              console.debug("Setting dependencies of project " + project.name + " to be all the required-for-junior tagged topics: " + requiredForJuniorDependencies);
+            }
+          });
+        }
       }
 
       updateAvailability(projects, personKnowledge) {
         console.log("Updating availability!", this.projects);
+      }
+
+      _personKnowledgeChanged() {
+        console.log("personKnowledge:", this.personKnowledge);
       }
 
       _onActiveItemChanged(e) {

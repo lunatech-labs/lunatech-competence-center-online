@@ -1,0 +1,65 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="project-dependencies">
+  <template>
+    <style>
+      .satisfied {
+        color: green;
+      }
+
+      .not-satisfied {
+        color: red;
+      }
+    </style>
+    <span id="span">[[projectDependencies]]</span>
+
+  </template>
+  <script>
+    class ProjectDependencies extends Polymer.Element {
+
+      static get is () { return 'project-dependencies'; }
+
+      static get properties () {
+        return {
+          projectDependencies: {
+            type: Array
+          },
+
+          satisfiedDependencies: {
+            type: Array
+          }
+
+        }
+      }
+
+      static get observers() {
+        return [
+            'update(projectDependencies.splices, satisfiedDependencies.splices)'
+        ]
+      }
+
+      update() {
+        if(this.projectDependencies && this.satisfiedDependencies) {
+
+
+          var formatted = [];
+          var allSatisfied = true;
+          this.projectDependencies.forEach(dep => {
+            if(this.satisfiedDependencies.includes(dep)) {
+              formatted.push('<span class="satisfied">' + dep + '</span>');
+            } else {
+              allSatisfied = false;
+              formatted.push('<span class="not-satisfied">' + dep + '</span>');
+            }
+          })
+
+          this.$.span.innerHTML = formatted.join(', ');
+
+        }
+      }
+
+    }
+
+    customElements.define(ProjectDependencies.is, ProjectDependencies);
+  </script>
+</dom-module>

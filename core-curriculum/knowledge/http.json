@@ -137,6 +137,7 @@
     {
       "id": "",
       "name": "Designing a RESTful API for a Phonebook application",
+      "dependencies": ["http1-basics", "common-statuscodes", "restful-api-design"],
       "description": "The goal of this project is to design a RESTful API for a phonebook application.\n\n# Requirements\n\nDesign an API for a phonebook application. The phonebook has one top-level resource, a `Contact`. A contact has a name and a type, which can have the value `Personal` or `Business`. Contacts can be created, updated and deleted. Contacts can also be listed, and the list can be filtered by type, and by partial name match.\n\nContacts have zero or more phone numbers. A phone number consists of a number and a type, which is one of 'Mobile' or 'Fixed'. Phone numbers can be added and removed from a Contact. The phone numbers of a Contact can be listed. The list can be filtered by phone number type.\n\nThere is no way to list all phonenumbers in the phonebook.\n\n# Deliverables\n\nAn OpenAPI specification of this API."
     }
   ]

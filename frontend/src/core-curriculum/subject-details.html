@@ -14,6 +14,15 @@
           cursor: pointer;
         };
       }
+
+      #staff th {
+        text-align:left;
+      }
+
+      #staff ul {
+        list-style: none;
+        padding-left:0;
+      }
     </style>
 
     <iron-meta id="meta"></iron-meta>
@@ -35,7 +44,26 @@
       <knowledge-graph graph="{{knowledge}}" known=[[personKnowledge]] required-tags=[[requiredTags]] nodes="topics"></knowledge-graph>
     </template>
     <topic-card id="topicCard" on-i-know-this-changed="_iKnowThisChanged" read-only$=[[readOnly]]></topic-card>
-    <subject-projects projects=[[knowledge.projects]] person-knowledge=[[personKnowledge]]></subject-projects>
+
+    <h2>Staff</h2>
+    <table id="staff">
+      <tr>
+        <th>Headmaster</th>
+        <td>[[knowledge.headmaster]]</td>
+      </tr>
+      <tr>
+        <th>Teachers</th>
+        <td>
+          <ul>
+            <template is="dom-repeat" items="[[knowledge.teachers]]">
+              <li>[[item]]
+            </template>
+          </ul>
+        </td>
+      </tr>
+    </table>
+
+    <subject-projects topics=[[knowledge.topics]] projects=[[knowledge.projects]] person-knowledge=[[personKnowledge]]></subject-projects>
   </template>
   <script>
     Polymer({
