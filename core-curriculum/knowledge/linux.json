@@ -3,6 +3,8 @@
     "name": "Linux",
     "description": "Most of the time our applications are deployed on Linux based platforms. Basic knowledge of this platform will help you install your stuff in the right place and easily and quickly diagnose problems.",
     "tags": ["operating-system", "tool"],
+    "headmaster": "jasper.dijt@lunatech.com",
+    "teachers": [ "willem-jan.glerum@lunatech.com" ],
     "image": "images/linux.png",
     "topics": [
         {
@@ -49,7 +51,7 @@
             ],
             "abilities":[
                 "Navigating the directory structure of a Linux box from the terminal.",
-                "Search for a specific file by name within the file system.", 
+                "Search for a specific file by name within the file system.",
                 "Search through file(s) by content.",
                 "Know the common places to look for log files.",
                 "Know the common places to look for configuration files.",
@@ -118,7 +120,7 @@
             "assessment-questions":[
                 {
                     "question": "How would you get the ip address assigned to an interface?"
-                } 
+                }
             ]
         },
         {
@@ -221,7 +223,7 @@
                     "url": "https://en.wikipedia.org/wiki/Procfs"
                 },
                 {
-                    "name": "Wikipedia - Sysfs",                    
+                    "name": "Wikipedia - Sysfs",
                     "type": "article",
                     "url": "https://en.wikipedia.org/wiki/Sysfs"
                 },
@@ -629,5 +631,3 @@
         }
     ]
 }
-
-

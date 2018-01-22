@@ -2,6 +2,11 @@
   "id": "scala",
   "name": "Scala programming language",
   "description": "The Scala programming language, invented by Martin Odersky, is a general-purpose programming language providing support for functional programming and a strong static type system.",
+  "headmaster": "erik.bakker@lunatech.com",
+  "teachers": [
+    "gustavo.de.micheli@lunatech.com",
+    "muayad.ali@lunatech.com"
+  ],
   "tags": ["programming-language"],
   "image": "/images/scala.png",
   "primary": true,

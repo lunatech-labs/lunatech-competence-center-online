@@ -2,14 +2,16 @@
   "id": "akka",
   "name": "Akka",
   "description": "Akka is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.",
+  "headmaster": "pedro.ferreira@lunatech.com",
+  "teachers": [],
   "tags": ["java", "scala"],
   "image": "/images/akka.svg",
   "topics": [
     {
       "id": "akka-basic",
       "name": "Basic Akka ",
-      "description": "The starting point for learning Akka is understanding the [Actor Model|https://en.wikipedia.org/wiki/Actor_model] as the underlying concept. That being said, Akka's main concurrent abstraction is the Actor, which can simply be thought as a worker receiving messages from other actors to do some task and deliver an outcome.\n\nBut Actors don't live in isolation, they exist with a container called Actor System, which is in charge of monitoring and managing the life cycle of each of them. This system, with the help of another abstraction called Dispatcher, delivers messages to actors, alleviating the developer from dealing with explicit locking and thread management.",
-      "tags": [],
+      "description": "The starting point for learning Akka is understanding the [Actor Model](https://en.wikipedia.org/wiki/Actor_model) as the underlying concept. That being said, Akka's main concurrent abstraction is the Actor, which can simply be thought as a worker receiving messages from other actors to do some task and deliver an outcome.\n\nBut Actors don't live in isolation, they exist with a container called Actor System, which is in charge of monitoring and managing the life cycle of each of them. This system, with the help of another abstraction called Dispatcher, delivers messages to actors, alleviating the developer from dealing with explicit locking and thread management.",
+      "tags": ["required-for-junior"],
       "resources": [
         {
           "name": "Akka Documentation - Scala",
@@ -72,13 +74,13 @@
         { "question": "What is an ActorRef and why do we need them? Why can't we just have a direct reference to the Actor?" },
         { "question": "When scheduling messages, when do you prefer Timers over the Scheduler?" },
         { "question": "How to does communication between actor happens? What's the purpose of the dispatcher in all this?" },
-        { "question": "Why blocking is no recommended within the `receive` method? Can you think of one case where it is?" }
+        { "question": "Why is blocking not   recommended within the `receive` method? Can you think of one case where it is?" }
       ]
     },
     {
       "id": "akka-customization",
       "name": "Akka Customization",
-      "description": "Like any other framework, Akka provides specific extension point where we can tune the functionality to our needs. The two most prominent are:\n# Mailboxes, responsible for holding the messages that are destined for an Actor.\n# Dispatchers, responsible for deciding when and how to feed the messages to an Actor.",
+      "description": "Like any other framework, Akka provides specific extension point where we can tune the functionality to our needs. The two most prominent are:\n\n* Mailboxes, responsible for holding the messages that are destined for an Actor.\n* Dispatchers, responsible for deciding when and how to feed the messages to an Actor.",
       "tags": [],
       "dependencies": ["akka-basic"],
       "resources": [
@@ -196,7 +198,7 @@
       "id": "akka-fsm",
       "name": "Akka FSM",
       "description": "Following the same design principles as Erlang, Akka provides a way of defining Actor's behavior like an Finite State Machine (FSM). Many applications can be modeled as FSM, protocol stacks being one example. Arguably we could use `become` to define different behaviors, but having more than three states can result in messy code.\nAn FSM can be described as a set of relations of the form:\n```\nState(S) x Event(E) -> Actions (A), State(S')\n```\nThese relations are interpreted as meaning: *If we are in state S and the event E occurs, we should perform the actions A and make a transition to the state S'.*",
-      "tags": [],
+      "tags": ["required-for-junior"],
       "dependencies": ["akka-basic"],
       "resources": [
         {

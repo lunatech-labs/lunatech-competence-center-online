@@ -2,6 +2,8 @@
   "id": "sbt",
   "name": "SBT, interactive build tool",
   "description": "The industry-standard build tool for Scala",
+  "headmaster": "erik.bakker@lunatech.com",
+  "teachers": [],
   "tags": ["tool", "scala"],
   "image": "/images/sbt.png",
   "topics": [

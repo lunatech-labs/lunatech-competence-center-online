@@ -3,7 +3,7 @@
   "name": "HTTP and RESTful API design",
   "description": "The Hypertext Transfer Protocol, the transport layer of web application.",
   "headmaster": "erik.bakker@lunatech.com",
-  "teachers": [ "erik.bakker@lunatech.com", "muayad.ali@lunatech.com" ],
+  "teachers": [ "muayad.ali@lunatech.com" ],
   "tags": [],
   "image": "/images/http.png",
   "topics": [

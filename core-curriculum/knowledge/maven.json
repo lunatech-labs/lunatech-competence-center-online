@@ -3,13 +3,15 @@
     "name": "Apache Maven",
     "description": "A software project management and comprehension tool",
     "tags": ["tool", "java", "build"],
+    "headmaster": "gustavo.de.micheli@lunatech.com",
+    "teachers": [ ],
     "image": "/images/maven.png",
     "topics": [
         {
             "id": "introduction",
             "name": "Introduction",
             "description": "",
-            "tags": ["required-for-junior"],
+            "tags": [],
             "resources": [
                 {
                     "name": "Maven Documentation",
@@ -30,7 +32,7 @@
             "id": "project-build-lifecycle",
             "name": "Project Build Lifecycle",
             "description": "Build Lifecycle of a maven project",
-            "tags": ["required-for-junior"],
+            "tags": [],
             "dependencies": ["introduction"],
             "resources": [
                 {
@@ -50,7 +52,7 @@
             "id": "dependency-management",
             "name": "Dependency Management",
             "description": "Managing dependencies of a maven project",
-            "tags": ["required-for-junior"],
+            "tags": [],
             "dependencies": ["introduction"],
             "resources": [
                 {
@@ -71,7 +73,7 @@
             "id": "build-profiles",
             "name": "Build Profiles",
             "description": "Using multiple profiles in a maven project",
-            "tags": ["required-for-junior"],
+            "tags": [],
             "dependencies": ["project-build-lifecycle"],
             "resources": [
                 {
@@ -106,7 +108,7 @@
             "id": "maven-archetypes",
             "name": "Maven Archetypes",
             "description": "Using archetypes to generate a maven project",
-            "tags": ["required-for-junior"],
+            "tags": [],
             "dependencies": ["project-build-lifecycle"],
             "resources": [
                 {

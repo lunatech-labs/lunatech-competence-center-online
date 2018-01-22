@@ -3,6 +3,8 @@
   "name": "Java programming language",
   "description": "Java is a general purpose language that's Object Oriented (class-based) with support for concurrency. Originally developed by James Gosling at Sun Microsystems, now acquired by Oracle.",
   "tags": ["programming-language"],
+  "headmaster": "gustavo.de.micheli@lunatech.com",
+  "teachers": [],
   "image": "/images/java.png",
   "primary": true,
   "topics": [
