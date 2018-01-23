@@ -59,8 +59,7 @@
           },
 
           personKnowledge: {
-            type: Array,
-            observer: '_personKnowledgeChanged'
+            type: Array
           },
 
           topics: {
@@ -82,17 +81,13 @@
 
       _calculateRequiredForJuniorDependencies(topics) {
         if(topics) {
-        console.log("Topicsa:", topics);
-        var out1 = topics.filter(topic => topic.tags.includes('required-for-junior'))
-
-
-        console.log("out1", out1);
-        var out = out1.map(topic => topic.id);
-
-        console.log("Topics", this.topics);
-
-        console.log("_calculateRequiredForJuniorDependencies", out);
-        return out;
+          return topics.filter(topic => {
+            if(topic.tags) {
+              return topic.tags.includes('required-for-junior')
+            } else {
+              return false;
+            }
+          }).map(topic => topic.id);
         }
       }
 
@@ -105,14 +100,6 @@
             }
           });
         }
-      }
-
-      updateAvailability(projects, personKnowledge) {
-        console.log("Updating availability!", this.projects);
-      }
-
-      _personKnowledgeChanged() {
-        console.log("personKnowledge:", this.personKnowledge);
       }
 
       _onActiveItemChanged(e) {
