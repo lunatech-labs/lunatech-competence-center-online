@@ -1,7 +1,7 @@
 {
   "id": "databases",
   "name": "Databases",
-  "description": "Databases are a key part of every project",
+  "description": "Almost every project requires some form of persistent data storage. There exist many different databases, and with good reason: there is no silver bullet for data storage, and relational databases are still some of the most important and versatile tools that any developer will have to deal with at some point in time.",
   "headmaster": "dirk.jonker@lunatech.com",
   "teachers": [
     "dirk.jonker@lunatech.com"
@@ -23,12 +23,12 @@
       ],
       "abilities": [
         "Basic knowledge about different database types and their use cases",
-        "Relational",
-        "Key/Value",
-        "Document",
-        "Graph",
-        "Analytical",
-        "Considering the trade-offs to make when choosing a database type"
+        "Know about the benefits and use cases of Relational databases",
+        "Know about the benefits and use cases of Key/Value databases",
+        "Know about the benefits and use cases of Document databases",
+        "Know about the benefits and use cases of Graph databases",
+        "Know about the benefits and use cases of Analytical databases",
+        "Considering trade-offs to when choosing between different database types"
       ],
       "assessment-questions": [
         {
@@ -39,7 +39,7 @@
     },
     {
       "id": "rdbms-sql-basics",
-      "name": "RDBMS SQL basics",
+      "name": "SQL basics",
       "description": "Relational databases and SQL",
       "tags": [],
       "resources": [
@@ -60,23 +60,13 @@
         }
       ],
       "abilities": [
-        "Writing basic SQL operations",
-        "Joining tables",
-        "Sorting and grouping",
-        "Limits and offsets",
-        "Set operations",
-        "Parametrisation of queries"
+        "Writing basic SQL operations using INSERT, SELECT, UPDATE, DELETE",
+        "Using parameterization in queries for performance and security"
       ],
       "assessment-questions": [
         {
           "question": "What are the most commonly used SQL operations?",
           "answer-hint": "INSERT, SELECT, UPDATE, DELETE"
-        },
-        {
-          "question": "What are different ways to combine data from different tables?"
-        },
-        {
-          "question": "What is the difference between a set operation and a cursor-based operation?"
         },
         {
           "question": "Why is it useful to know SQL when you are using an ORM?"
@@ -87,11 +77,44 @@
       ]
     },
     {
-      "id": "rdbms-sql-advanced",
-      "name": "RDBMS SQL advanced techniques",
-      "description": "Advanced SQL techniques",
+      "id": "rdbms-sql-set-operations",
+      "name": "SQL set operations",
+      "description": "Understand the concepts of set theory and how they are used in relational databases",
       "tags": [],
-      "dependencies": [ "rdbms-sql-basics" ],
+      "dependencies": [
+        "rdbms-sql-basics"
+      ],
+      "resources": [
+      ],
+      "abilities": [
+        "Use JOIN operators to combine data from multiple sets",
+        "Use INTERSECT to find identical values across multiple sets",
+        "Use EXCEPT to find differences in values across multiple sets"
+      ],
+      "assessment-questions": [
+        {
+          "question": "What is the difference between an INNER and an OUTER join?"
+        },
+        {
+          "question": "How can you select values that exist in either set A or set B, but not in both?"
+        },
+        {
+          "question": "What is the difference between UNION and UNION ALL?"
+        },
+        {
+          "question": "Why should you care about the uniqueness of rows in a table?"
+        }
+      ]
+    },
+    {
+      "id": "rdbms-concurrency",
+      "name": "RDBMS Concurrency",
+      "description": "Understand how relational databases deal with concurrent operations on data. Prevent race conditions and explain how different isolation levels may or may not be used to prevent such conditions.",
+      "tags": [],
+      "dependencies": [
+        "rdbms-constraints",
+        "rdbms-indexes"
+      ],
       "resources": [
         {
           "name": "MIT OpenCourseWare: Database Systems",
@@ -99,27 +122,40 @@
           "url": "https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-830-database-systems-fall-2010/index.htm"
         },
         {
-          "name": "Use the Index, Luke",
-          "type": "documentation",
-          "url": "https://use-the-index-luke.com/"
-        },
-        {
           "name": "PostgreSQL Documentation Chapter 13. Concurrency Control",
           "type": "documentation",
-          "url": "https://www.postgresql.org/docs/10/static/mvcc.html<Paste>"
+          "url": "https://www.postgresql.org/docs/10/static/mvcc.html"
+        },
+        {
+          "name": "Designing Data-Intensive Applications (Martin Kleppmann, 2017): Chapter 7",
+          "type": "book",
+          "url": "https://dataintensive.net/"
         }
       ],
       "abilities": [
-        "Using common table expressions for recursive queries",
-        "Using window functions",
-        "Using date and time functions",
-        "Using different types of locks"
+        "Explain how Multi-Version Concurrency Control (MVCC) works",
+        "Explain the race conditions that can exist in a database, and explain how to prevent dealing with them",
+        "Using explicit locks to prevent race conditions",
+        "Explain how different isolation levels can prevent race conditions"
       ],
-      "assessment-questions": []
+      "assessment-questions": [
+        {
+          "question": "What is a dirty read and why should you prevent them?"
+        },
+        {
+          "question": "How can you read from a table, do a complicated operation in your application, and then update some of these rows?"
+        },
+        {
+          "question": "What is a deadlock? How can deadlocks occur? What does the database do in the case of a deadlock?"
+        },
+        {
+          "question": "In PostgreSQL, what is the difference between read committed, repeatable read, and serializable?"
+        }
+      ]
     },
     {
       "id": "rdbms-schemas",
-      "name": "RDBMS Schema design",
+      "name": "Relational schema design",
       "description": "Designing schemas for relational databases",
       "tags": [],
       "dependencies": [ "rdbms-sql-basics" ],
@@ -154,7 +190,7 @@
     },
     {
       "id": "rdbms-indexes",
-      "name": "RDBMS Indexes",
+      "name": "Indexes",
       "description": "Indexes for relational databases",
       "tags": [],
       "dependencies": [ "rdbms-schemas" ],
@@ -195,7 +231,7 @@
     },
     {
       "id": "rdbms-constraints",
-      "name": "RDBMS Constraints",
+      "name": "Constraints",
       "description": "Constraints for relational databases",
       "tags": [],
       "dependencies": [ "rdbms-schemas" ],
@@ -221,7 +257,7 @@
     },
     {
       "id": "rdbms-stored-procedures",
-      "name": "RDBMS Stored procedures",
+      "name": "Stored procedures",
       "description": "Stored procedures for relational databases",
       "tags": [],
       "dependencies": [ "rdbms-schemas" ],
@@ -240,7 +276,7 @@
     },
     {
       "id": "rdbms-administration-basics",
-      "name": "RDBMS Administration basics",
+      "name": "Database administration basics",
       "description": "Basic administration of RDBMS",
       "tags": [],
       "dependencies": [
@@ -264,7 +300,7 @@
     },
     {
       "id": "rdbms-administration-advanced",
-      "name": "RDBMS Administration advanced",
+      "name": "Database administration advanced",
       "description": "Setting up replication, backups, tuning databases",
       "tags": [],
       "dependencies": [ "rdbms-administration-basics" ],
