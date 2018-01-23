@@ -36,6 +36,11 @@
           "name": "How to Write a Git Commit Message",
           "type": "article",
           "url": "https://chris.beams.io/posts/git-commit/"
+        },
+        {
+          "name": "Atlassian: Git cheat sheet",
+          "type": "article",
+          "url": "https://www.atlassian.com/git/tutorials/atlassian-git-cheatsheet<Paste>"
         }
       ],
       "abilities": [
@@ -79,6 +84,11 @@
           "name": "Pro Git: Git Branching",
           "type": "book",
           "url": "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell"
+        },
+        {
+          "name": "Atlassian: Merging vs Rebasing",
+          "type": "article",
+          "url": "https://www.atlassian.com/git/tutorials/merging-vs-rebasing"
         }
       ],
       "abilities": [
@@ -160,6 +170,21 @@
           "name": "Pro Git (chapters 4-6)",
           "type": "book",
           "url": "https://git-scm.com/book/en/v2"
+        },
+        {
+          "name": "GitLab: Git tips and tricks",
+          "type": "article",
+          "url": "https://about.gitlab.com/2016/12/08/git-tips-and-tricks/"
+        },
+        {
+          "name": "Atlassian: Reset, Checkout, and Revert",
+          "type": "article",
+          "url": "https://www.atlassian.com/git/tutorials/resetting-checking-out-and-reverting"
+        },
+        {
+          "name": "Atlassian: Advanced Git log",
+          "type": "article",
+          "url": "https://www.atlassian.com/git/tutorials/git-log>"
         }
       ],
       "abilities": [
@@ -217,6 +242,11 @@
           "name": "Pro Git (chapters 7-10)",
           "type": "book",
           "url": "https://git-scm.com/book/en/v2"
+        },
+        {
+          "name": "Atlassian: Refs and the Reflog",
+          "type": "article",
+          "url": "https://www.atlassian.com/git/tutorials/refs-and-the-reflog"
         }
       ],
       "abilities": [
