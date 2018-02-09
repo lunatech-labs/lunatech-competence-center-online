@@ -56,11 +56,17 @@
         {
           "name": "PostgreSQL Documentation Part I. Tutorial",
           "type": "documentation",
-          "url": "https://www.postgresql.org/docs/10/static/tutorial.html"
+          "url": "https://www.postgresql.org/docs/current/static/tutorial.html"
+        },
+        {
+          "name": "zentut SQL Tutorial",
+          "type": "course",
+          "url": "http://www.zentut.com/sql-tutorial/"
         }
       ],
       "abilities": [
         "Writing basic SQL operations using INSERT, SELECT, UPDATE, DELETE",
+        "Understand the intricacies of NULL values",
         "Using parameterization in queries for performance and security"
       ],
       "assessment-questions": [
@@ -85,15 +91,48 @@
         "rdbms-sql-basics"
       ],
       "resources": [
+        {
+          "name": "Joins Between Tables",
+          "type": "documentation",
+          "url": "https://www.postgresql.org/docs/current/static/tutorial-join.html"
+        },
+        {
+          "name": "SQL Join",
+          "type": "article",
+          "url": "https://en.wikipedia.org/wiki/Join_(SQL)"
+        },
+        {
+          "name": "SQL Joins Tutorial for Beginners - Inner Join, Left Join, Right Join, Full Outer Join",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=2HVMiPPuPIM"
+        },
+        {
+          "name": "SQL Combining Queries - Union, Intersect, Except",
+          "type": "documentation",
+          "url": "https://www.postgresql.org/docs/current/static/queries-union.html"
+        },
+        {
+          "name": "SQL Union",
+          "type": "article",
+          "url": "https://www.w3resource.com/sql/sql-union.php"
+        }
       ],
       "abilities": [
         "Use JOIN operators to combine data from multiple sets",
+        "Use UNION to combine data from multiple result sets",
         "Use INTERSECT to find identical values across multiple sets",
         "Use EXCEPT to find differences in values across multiple sets"
       ],
       "assessment-questions": [
         {
           "question": "What is the difference between an INNER and an OUTER join?"
+        },
+        {
+          "question": "How do you combine columns from table A with columns from table B where some rows in table A do not have a related row in table B?",
+          "answer-hint": "`select a.*, b.* from a left join b on (a.id=b.a_id)`"
+        },
+        {
+          "question": "How do you find the rows in table A that do not have a related row in table B?"
         },
         {
           "question": "How can you select values that exist in either set A or set B, but not in both?"
@@ -103,6 +142,40 @@
         },
         {
           "question": "Why should you care about the uniqueness of rows in a table?"
+        }
+      ]
+    },
+    {
+      "id": "rdbms-sql-aggregates",
+      "name": "Aggregates",
+      "description": "Foo, Bar, Baz",
+      "tags": [],
+      "dependencies": [
+        "rdbms-sql-basics"
+      ],
+      "resources": [
+        {
+          "name": "Aggregate Functions",
+          "type": "documentation",
+          "url": "https://www.postgresql.org/docs/current/static/tutorial-agg.html"
+        },
+        {
+          "name": "SQL Aggregate Functions",
+          "type": "article",
+          "url": "http://www.zentut.com/sql-tutorial/sql-aggregate-functions/"
+        }
+
+      ],
+      "abilities": [
+        "Use aggregate function in queries (COUNT, MAX, MIN, SUM, AVG, ...)",
+        "Combine aggregate functions with GROUP BY and HAVING"
+      ],
+      "assessment-questions": [
+        {
+          "question": "Why would you use aggregate functions in a query instead of making the calculation in your code"
+        },
+        {
+          "question": "How do you find all rows that occur more than 2 times in your result set"
         }
       ]
     },
@@ -124,7 +197,7 @@
         {
           "name": "PostgreSQL Documentation Chapter 13. Concurrency Control",
           "type": "documentation",
-          "url": "https://www.postgresql.org/docs/10/static/mvcc.html"
+          "url": "https://www.postgresql.org/docs/current/static/mvcc.html"
         },
         {
           "name": "Designing Data-Intensive Applications (Martin Kleppmann, 2017): Chapter 7",
@@ -203,7 +276,7 @@
         {
           "name": "Postgres: Chapter 11. Indexes",
           "type": "Documentation",
-          "url": "https://www.postgresql.org/docs/10/static/indexes-intro.html"
+          "url": "https://www.postgresql.org/docs/current/static/indexes-intro.html"
         },
         {
           "name": "Designing Data-Intensive Applications (Martin Kleppmann, 2017): Chapter 3",
@@ -288,7 +361,7 @@
         {
           "name": "PostgreSQL Documentation Part III. Server Administration",
           "type": "documentation",
-          "url": "https://www.postgresql.org/docs/10/static/admin.html"
+          "url": "https://www.postgresql.org/docs/current/static/admin.html"
         }
       ],
       "abilities": [
