@@ -3,7 +3,7 @@
   "name": "git",
   "description": "Git Source Control Management",
   "headmaster": "dirk.jonker@lunatech.com",
-  "teachers": [],
+  "teachers": ["jasper.dijt@lunatech.com"],
   "tags": [],
   "image": "/images/git.png",
   "topics": [
