@@ -1,0 +1,222 @@
+{
+  "id": "fp",
+  "name": "Functional Programming",
+  "description": "Functional Programming is a programming paradigm. It's a declarative style which avoids changing state and mutable data",
+  "headmaster": "mark.de.jong@lunatech.com",
+  "teachers": [],
+  "tags": ["scala"],
+  "image": "/images/fp.jpg",
+  "topics": [
+    {
+      "id": "recursion",
+      "name": "Recursion",
+      "description": "Recursion in computer science is a method where the solution to a problem depends on solutions to smaller instances of the same problem.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Scala: recursive functions",
+          "type": "article",
+          "url": "http://fruzenshtein.com/scala-recursive-function/"
+        },
+        {
+          "name": "Scala/Recursion",
+          "type": "article",
+          "url": "https://en.wikibooks.org/wiki/Scala/Recursion"
+        },
+        {
+          "name": "Learn you a Haskell",
+          "type": "book",
+          "url": "http://learnyouahaskell.com/recursion",
+          "tags": ["haskell"],
+          "note": "Chapter: Recursion"
+        },
+        {
+          "name": "Learn you a Haskell",
+          "type": "book",
+          "url": "http://learnyouahaskell.com/higher-order-functions#folds",
+          "tags": ["haskell"],
+          "note": "Paragraph: Only folds and horses"
+        }
+      ],
+      "abilities": [
+        "Write a recursive function which sums up a list of numbers",
+        "Use the @tailrec annotation",
+        "Write quicksort in terms of recursion"
+      ],
+      "assessment-questions": [
+        { "question": "Where does recursion really shine?" },
+        { "question": "When would you use a fold instead of recursion?" },
+        { "question": "Why and when would you use @tailrec?" },
+      ]
+    },
+    {
+      "id": "higher-order-functions",
+      "name": "Higher-order functions",
+      "description": "These are functions that take other functions as parameters, or whose result is a function.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Learn you a Haskell",
+          "type": "book",
+          "url": "http://learnyouahaskell.com/higher-order-functions",
+          "tags": ["haskell"],
+          "note": "Chapter: Higher-order functions"
+        },
+        {
+          "name": "Scala/Higher-order functions 1",
+          "type": "article",
+          "url": "https://en.wikibooks.org/wiki/Scala/Higher-order_functions_1"
+        },
+        {
+          "name": "Higher-order functions",
+          "type": "article",
+          "url": "https://docs.scala-lang.org/tour/higher-order-functions.html"
+        },
+        {
+          "name": "Higher-order functions",
+          "type": "article",
+          "url": "https://www.scala-exercises.org/scala_tutorial/higher_order_functions"
+        }
+      ],
+      "abilities": [
+        "Define the generic function map for a List using a higher-order function and recursion",
+        "Define the generic function filter for a List using a higher-order function and recursion"
+      ],
+      "assessment-questions": [
+        { "question": "Why are higher-order functions useful?" }
+      ]
+    },
+    {
+      "id": "adt",
+      "name": "Algebraic data types",
+      "description": "In computer programming, especially functional programming and type theory, an algebraic data type is a kind of composite type, i.e., a type formed by combining other types.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Learn you a Haskell",
+          "type": "book",
+          "url": "http://learnyouahaskell.com/making-our-own-types-and-typeclasses#algebraic-data-types",
+          "tags": ["haskell"],
+          "note": "Algebraic data types intro"
+        },
+        {
+          "name": "Everything You Ever Wanted to Know About Sealed Traits in Scala",
+          "type": "article",
+          "url": "https://underscore.io/blog/posts/2015/06/02/everything-about-sealed.html"
+        },
+        {
+          "name": "Modeling with Union Types",
+          "type": "article",
+          "url": "https://robots.thoughtbot.com/modeling-with-union-types"
+        }
+      ],
+      "abilities": [
+        "Define a ADT in Scala",
+        "Define a recursive ADT in Scala",
+        "Define a generic ADT in Scala"
+      ],
+      "assessment-questions": [
+        { "question": "Why would you like to group certain types together?" },
+        { "question": "Name a few data structures which are defined as an ADT in Scala" }
+      ]
+    },
+    {
+      "id": "type-classes",
+      "name": "Type classes",
+      "description": "In computer science, a type class is a type system construct that supports ad hoc polymorphism. This is achieved by adding constraints to type variables in parametrically polymorphic types.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Learn you a Haskell",
+          "type": "book",
+          "url": "http://learnyouahaskell.com/types-and-typeclasses",
+          "tags": ["haskell"],
+          "note": "Paragraph: Typeclasses 101"
+        },
+        {
+          "name": "Learn you a Haskell",
+          "type": "book",
+          "url": "http://learnyouahaskell.com/making-our-own-types-and-typeclasses#typeclasses-102",
+          "tags": ["haskell"],
+          "note": "Paragraph: Typeclasses 102"
+        },
+        {
+          "name": "Type classes",
+          "type": "article",
+          "url": "https://www.scala-exercises.org/scala_tutorial/type_classes"
+        },
+        {
+          "name": "Type classes in Scala",
+          "type": "article",
+          "url": "https://blog.scalac.io/2017/04/19/typeclasses-in-scala.html"
+        },
+        {
+          "name": "Typeclassopedia",
+          "type": "documentation",
+          "url": "https://wiki.haskell.org/Typeclassopedia",
+          "tags": ["haskell"],
+          "note": "It's oke if you don't understand all of it, later in the course we'll touch Monad, Applicative, Functor, etc"
+        },
+        {
+          "name": "Scala Typeclassopedia",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=IMGCDph1fNY",
+          "note": "It's oke if you don't understand all of it, later in the course we'll touch Monad, Applicative, Functor, etc"
+        },
+        {
+          "name": "Descriptive Variable Names: A Code Smell",
+          "type": "article",
+          "url": "http://degoes.net/articles/insufficiently-polymorphic",
+          "note": "It's oke if you don't understand all of it, later in the course we'll touch Monad, Applicative, Functor, etc"
+        }
+      ],
+      "abilities": [
+        "Define a type class your self",
+        "Define instances of your type class",
+        "Summon a instance of the type class inside one of your functions",
+        "Define a `Show` instance for a List",
+        "Define a `Semigroup` instance for a List"
+      ],
+      "assessment-questions": [
+        { "question": "Why would use type classes instead of inheritance?" },
+      ]
+    },
+    {
+      "id": "higher-kinded-types",
+      "name": "Higher-kinded types",
+      "description": "A higher-kinded type is just a type-level higher-order function",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Learn you a Haskell",
+          "type": "book",
+          "url": "http://learnyouahaskell.com/making-our-own-types-and-typeclasses#kinds-and-some-type-foo",
+          "tags": ["haskell"],
+          "note": "Paragraph: Kinds and some type-foo"
+        },
+        {
+          "name": "Scala: Types of a higher kind",
+          "type": "article",
+          "url": "https://www.atlassian.com/blog/archives/scala-types-of-a-higher-kind"
+        },
+        {
+          "name": "Higher-kinded types: the difference between giving up, and moving forward",
+          "type": "article",
+          "url": "https://typelevel.org/blog/2016/08/21/hkts-moving-forward.html"
+        },
+        {
+          "name": "Compiler plugin for making type lambdas (type projections) easier to write",
+          "type": "article",
+          "url": "https://github.com/non/kind-projector"
+        }
+      ],
+      "abilities": [
+        "Know what the kind is of a `List`",
+        "Know what the kind is of a `Functor`"
+      ],
+      "assessment-questions": [
+        { "question": "What do higher kinded types allows us to do?" },
+      ]
+    }
+  ]
+}
