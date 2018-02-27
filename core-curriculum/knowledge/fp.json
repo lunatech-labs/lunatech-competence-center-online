@@ -134,6 +134,12 @@
           "note": "Paragraph: Typeclasses 101"
         },
         {
+          "name": "Scala with cats",
+          "type": "book",
+          "url": "https://underscore.io/books/scala-with-cats/",
+          "note": "Chapter 1.1"
+        },
+        {
           "name": "Learn you a Haskell",
           "type": "book",
           "url": "http://learnyouahaskell.com/making-our-own-types-and-typeclasses#typeclasses-102",
@@ -149,33 +155,12 @@
           "name": "Type classes in Scala",
           "type": "article",
           "url": "https://blog.scalac.io/2017/04/19/typeclasses-in-scala.html"
-        },
-        {
-          "name": "Typeclassopedia",
-          "type": "documentation",
-          "url": "https://wiki.haskell.org/Typeclassopedia",
-          "tags": ["haskell"],
-          "note": "It's oke if you don't understand all of it, later in the course we'll touch Monad, Applicative, Functor, etc"
-        },
-        {
-          "name": "Scala Typeclassopedia",
-          "type": "video",
-          "url": "https://www.youtube.com/watch?v=IMGCDph1fNY",
-          "note": "It's oke if you don't understand all of it, later in the course we'll touch Monad, Applicative, Functor, etc"
-        },
-        {
-          "name": "Descriptive Variable Names: A Code Smell",
-          "type": "article",
-          "url": "http://degoes.net/articles/insufficiently-polymorphic",
-          "note": "It's oke if you don't understand all of it, later in the course we'll touch Monad, Applicative, Functor, etc"
         }
       ],
       "abilities": [
         "Define a type class your self",
         "Define instances of your type class",
-        "Summon a instance of the type class inside one of your functions",
-        "Define a `Show` instance for a List",
-        "Define a `Semigroup` instance for a List"
+        "Summon a instance of the type class inside one of your functions"
       ],
       "assessment-questions": [
         { "question": "Why would use type classes instead of inheritance?" },
@@ -195,6 +180,12 @@
           "note": "Paragraph: Kinds and some type-foo"
         },
         {
+          "name": "Scala with cats",
+          "type": "book",
+          "url": "https://underscore.io/books/scala-with-cats/",
+          "note": "Chapter 3.4"
+        },
+        {
           "name": "Scala: Types of a higher kind",
           "type": "article",
           "url": "https://www.atlassian.com/blog/archives/scala-types-of-a-higher-kind"
@@ -212,10 +203,201 @@
       ],
       "abilities": [
         "Know what the kind is of a `List`",
-        "Know what the kind is of a `Functor`"
+        "Know what the kind is of a `Either`"
       ],
       "assessment-questions": [
         { "question": "What do higher kinded types allows us to do?" },
+      ]
+    },
+    {
+      "id": "semigroup-and-monoid",
+      "name": "Semigroup and monoids",
+      "description": "Monoid and semigroup, these typeclasses allow us to add or combine values.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Learn you a Haskell",
+          "type": "book",
+          "url": "http://learnyouahaskell.com/functors-applicative-functors-and-monoids",
+          "tags": ["haskell"],
+          "note": "Paragraph: Functors redux"
+        },
+        {
+          "name": "Scala with cats",
+          "type": "book",
+          "url": "https://underscore.io/books/scala-with-cats/",
+          "note": "Chapter 2"
+        }
+      ],
+      "abilities": [
+        "Create a Monoid instance for List",
+        "Create a Semigroup instance for Option",
+      ],
+      "assessment-questions": [
+        { "question": "Name a few instances for semigroup" }
+      ]
+    },
+    {
+      "id": "functor",
+      "name": "Functor",
+      "description": "Functors are things that can be mapped over, like lists, Maybes, trees, and such.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Learn you a Haskell",
+          "type": "book",
+          "url": "http://learnyouahaskell.com/functors-applicative-functors-and-monoids",
+          "tags": ["haskell"],
+          "note": "Paragraph: Functors redux"
+        },
+        {
+          "name": "Scala with cats",
+          "type": "book",
+          "url": "https://underscore.io/books/scala-with-cats/",
+          "note": "Chapter 3.5"
+        },
+        {
+          "name": "Functors",
+          "type": "article",
+          "url": "https://www.scala-exercises.org/cats/functor"
+        }
+      ],
+      "abilities": [
+        "Create a Functor instance for List",
+        "Create a Functor instance for Option",
+      ],
+      "assessment-questions": [
+        { "question": "Name a few instances for functor" }
+      ]
+    },
+    {
+      "id": "contravariant",
+      "name": "Contravariant",
+      "description": "The contravariant functor, provides an operation called contramap that represents “prepending” an operation to a chain",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Scala with cats",
+          "type": "book",
+          "url": "https://underscore.io/books/scala-with-cats/",
+          "note": "Chapter 3.6.1"
+        },
+        {
+          "name": "Contravariant functors - an intuition",
+          "type": "article",
+          "url": "http://igstan.ro/posts/2013-10-31-contravariant-functors-an-intuition.html"
+        }
+      ],
+      "abilities": [
+        "Create a Contravariant instance for Ordering"
+      ],
+      "assessment-questions": [
+        { "question": "Name a few instances for contravariant" }
+      ]
+    },
+    {
+      "id": "invariant",
+      "name": "Invariant",
+      "description": "Invariant functors implement a method called imap that is informally equivalent to a combination of map and contramap.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Scala with cats",
+          "type": "book",
+          "url": "https://underscore.io/books/scala-with-cats/",
+          "note": "Chapter 3.6.2"
+        }
+      ],
+      "abilities": [
+        "Create a Invariant instance for a Codec (encoder/decoder) type class"
+      ],
+      "assessment-questions": [
+        { "question": "Why does Invariant match codecs so well?" }
+      ]
+    },
+    {
+      "id": "applicative",
+      "name": "Applicative",
+      "description": "Applicative functors allow you to take a 'normal' function (taking non-functorial arguments) use it to operate on several values that are in functor contexts. As a corollary, this gives you effectful programming without monads.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Learn you a Haskell",
+          "type": "book",
+          "url": "http://learnyouahaskell.com/functors-applicative-functors-and-monoids",
+          "tags": ["haskell"],
+          "note": "Paragraph: Applicative functors"
+        },
+        {
+          "name": "Scala with cats",
+          "type": "book",
+          "url": "https://underscore.io/books/scala-with-cats/",
+          "note": "Chapter 6.2 and 6.5"
+        },
+        {
+          "name": "Apply",
+          "type": "article",
+          "url": "https://www.scala-exercises.org/cats/apply",
+        },
+        {
+          "name": "Applicative",
+          "type": "article",
+          "url": "https://www.scala-exercises.org/cats/applicative"
+        },
+        {
+          "name": "Haskell/Applicative functors",
+          "type": "article",
+          "url": "https://en.wikibooks.org/wiki/Haskell/Applicative_functors",
+          "tags": ["haskell"]
+        }
+      ],
+      "abilities": [
+        "Create a Applicative instance for List",
+        "Create a Applicative instance for Option",
+      ],
+      "assessment-questions": [
+        { "question": "Name a few instances for Applicative" }
+      ]
+    },
+    {
+      "id": "monad",
+      "name": "Monad",
+      "description": "A monad is a mechanism for sequencing computations.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Learn you a Haskell",
+          "type": "book",
+          "url": "http://learnyouahaskell.com/a-fistful-of-monads",
+          "tags": ["haskell"],
+          "note": "Chapter: A Fistful of Monads"
+        },
+        {
+          "name": "Scala with cats",
+          "type": "book",
+          "url": "https://underscore.io/books/scala-with-cats/",
+          "note": "Chapter 4.1"
+        },
+        {
+          "name": "Monad",
+          "type": "article",
+          "url": "https://www.scala-exercises.org/cats/monad",
+        },
+        {
+          "name": "Haskell/Understanding monads",
+          "type": "article",
+          "url": "https://en.wikibooks.org/wiki/Haskell/Understanding_monads",
+          "tags": ["haskell"]
+        }
+      ],
+      "abilities": [
+        "Create a Monad instance for List",
+        "Create a Monad instance for Option",
+        "Create a Monad instance for Future"
+      ],
+      "assessment-questions": [
+        { "question": "Name a few instances for Monad" },
+        { "question": "When would you use a Monad and when a Applicative?" }
       ]
     }
   ]
