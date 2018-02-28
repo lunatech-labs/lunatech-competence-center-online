@@ -54,6 +54,7 @@
       "name": "Higher-order functions",
       "description": "These are functions that take other functions as parameters, or whose result is a function.",
       "tags": ["required-for-junior"],
+      "dependencies": ["recursion"],
       "resources": [
         {
           "name": "Learn you a Haskell",
@@ -125,6 +126,7 @@
       "name": "Type classes",
       "description": "In computer science, a type class is a type system construct that supports ad hoc polymorphism. This is achieved by adding constraints to type variables in parametrically polymorphic types.",
       "tags": ["required-for-junior"],
+      "dependencies": ["adt"],
       "resources": [
         {
           "name": "Learn you a Haskell",
@@ -167,10 +169,10 @@
       ]
     },
     {
-      "id": "higher-kinded-types",
+      "id": "hkt",
       "name": "Higher-kinded types",
       "description": "A higher-kinded type is just a type-level higher-order function",
-      "tags": ["required-for-junior"],
+      "dependencies": ["type-classes"],
       "resources": [
         {
           "name": "Learn you a Haskell",
@@ -213,7 +215,7 @@
       "id": "semigroup-and-monoid",
       "name": "Semigroup and monoids",
       "description": "Monoid and semigroup, these typeclasses allow us to add or combine values.",
-      "tags": ["required-for-junior"],
+      "dependencies": ["type-classes"],
       "resources": [
         {
           "name": "Learn you a Haskell",
@@ -241,7 +243,7 @@
       "id": "functor",
       "name": "Functor",
       "description": "Functors are things that can be mapped over, like lists, Maybes, trees, and such.",
-      "tags": ["required-for-junior"],
+      "dependencies": ["type-classes", "hkt"],
       "resources": [
         {
           "name": "Learn you a Haskell",
@@ -274,7 +276,7 @@
       "id": "contravariant",
       "name": "Contravariant",
       "description": "The contravariant functor, provides an operation called contramap that represents “prepending” an operation to a chain",
-      "tags": ["required-for-junior"],
+      "dependencies": ["type-classes", "hkt"],
       "resources": [
         {
           "name": "Scala with cats",
@@ -299,7 +301,7 @@
       "id": "invariant",
       "name": "Invariant",
       "description": "Invariant functors implement a method called imap that is informally equivalent to a combination of map and contramap.",
-      "tags": ["required-for-junior"],
+      "dependencies": ["type-classes", "hkt"],
       "resources": [
         {
           "name": "Scala with cats",
@@ -319,7 +321,7 @@
       "id": "applicative",
       "name": "Applicative",
       "description": "Applicative functors allow you to take a 'normal' function (taking non-functorial arguments) use it to operate on several values that are in functor contexts. As a corollary, this gives you effectful programming without monads.",
-      "tags": ["required-for-junior"],
+      "dependencies": ["type-classes", "hkt"],
       "resources": [
         {
           "name": "Learn you a Haskell",
@@ -363,7 +365,7 @@
       "id": "monad",
       "name": "Monad",
       "description": "A monad is a mechanism for sequencing computations.",
-      "tags": ["required-for-junior"],
+      "dependencies": ["type-classes", "hkt"],
       "resources": [
         {
           "name": "Learn you a Haskell",
@@ -398,6 +400,143 @@
       "assessment-questions": [
         { "question": "Name a few instances for Monad" },
         { "question": "When would you use a Monad and when a Applicative?" }
+      ]
+    },
+    {
+      "id": "traverse",
+      "name": "Traverse",
+      "description": "Class of data structures that can be traversed from left to right, performing an action on each element.",
+      "dependencies": ["type-classes", "hkt"],
+      "resources": [
+        {
+          "name": "Scala with cats",
+          "type": "book",
+          "url": "https://underscore.io/books/scala-with-cats/",
+          "note": "Chapter 7.2"
+        },
+        {
+          "name": "Traverse",
+          "type": "article",
+          "url": "https://www.scala-exercises.org/cats/traverse",
+        }
+      ],
+      "abilities": [
+        "Create a Traverse instance for List",
+        "Create a polymorphic case class with metadata and create a Traverse instance for it"
+      ],
+      "assessment-questions": [
+        { "question": "Name a few instances for Traverse" }
+      ]
+    },
+    {
+      "id": "foldable",
+      "name": "Foldable",
+      "description": "Class of data structures that can be folded to a summary value.",
+      "dependencies": ["type-classes", "hkt"],
+      "resources": [
+        {
+          "name": "Scala with cats",
+          "type": "book",
+          "url": "https://underscore.io/books/scala-with-cats/",
+          "note": "Chapter 7.1"
+        },
+        {
+          "name": "Foldable",
+          "type": "article",
+          "url": "https://www.scala-exercises.org/cats/foldable",
+        }
+      ],
+      "abilities": [
+        "Create a Foldable instance for List"
+      ],
+      "assessment-questions": [
+        { "question": "Name a few instances for Traverse" }
+      ]
+    },
+    {
+      "id": "reader-monad",
+      "name": "Reader monad",
+      "description": "Reader is a monad that allows us to sequence operations that depend on some input. Instances of Reader wrap up functions of one argument, providing us with useful methods for composing them.",
+      "dependencies": ["monad"],
+      "resources": [
+        {
+          "name": "Scala with cats",
+          "type": "book",
+          "url": "https://underscore.io/books/scala-with-cats/",
+          "note": "Chapter 4.8"
+        }
+      ],
+      "abilities": [
+        "Got a working outcome of exercise 4.8.3 of Scala with cats"
+      ],
+      "assessment-questions": [
+        { "question": "When would you use Reader?" }
+      ]
+    },
+    {
+      "id": "writer-monad",
+      "name": "Writer monad",
+      "description": "Writer is a monad that lets us carry a log along with a computation.",
+      "dependencies": ["monad"],
+      "resources": [
+        {
+          "name": "Scala with cats",
+          "type": "book",
+          "url": "https://underscore.io/books/scala-with-cats/",
+          "note": "Chapter 4.7"
+        }
+      ],
+      "abilities": [
+        "Got a working outcome of exercise 4.7.3 of Scala with cats"
+      ],
+      "assessment-questions": [
+        { "question": "When would you use a Writer Monad?" },
+        { "question": "Would you use a Writer Monad for logging?" }
+      ]
+    },
+    {
+      "id": "state-monad",
+      "name": "State monad",
+      "description": "State allows us to pass additional state around as part of a computation.",
+      "dependencies": ["monad"],
+      "resources": [
+        {
+          "name": "Scala with cats",
+          "type": "book",
+          "url": "https://underscore.io/books/scala-with-cats/",
+          "note": "Chapter 4.9"
+        }
+      ],
+      "abilities": [
+        "Got a working outcome of exercise 4.9.3 of Scala with cats"
+      ],
+      "assessment-questions": [
+        { "question": "When would you use a State Monad?" }
+      ]
+    },
+    {
+      "id": "monad-transformers",
+      "name": "Monad tranformers",
+      "description": "Monads do not compose, yet you can stack them with Monad Transformers.",
+      "dependencies": ["monad"],
+      "resources": [
+        {
+          "name": "Scala with cats",
+          "type": "book",
+          "url": "https://underscore.io/books/scala-with-cats/",
+          "note": "Chapter 5"
+        },
+        {
+          "name": "Options in Futures, how to unsuck them",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=hGMndafDcc8"
+        }
+      ],
+      "abilities": [
+        "Create a EitherT monad transformer stack with Future as effect type. Add combinators which lift Option, Either, Future[Either[String, ?]], etc into the stack."
+      ],
+      "assessment-questions": [
+        { "question": "Why are monad transformers useful?" }
       ]
     }
   ]
