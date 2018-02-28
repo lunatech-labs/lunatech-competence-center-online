@@ -3,7 +3,7 @@
   "name": "Functional Programming",
   "description": "Functional Programming is a programming paradigm. It's a declarative style which avoids changing state and mutable data",
   "headmaster": "mark.de.jong@lunatech.com",
-  "teachers": [],
+  "teachers": ["erik.bakker@lunatech.com"],
   "tags": ["scala"],
   "image": "/images/fp.jpg",
   "topics": [
