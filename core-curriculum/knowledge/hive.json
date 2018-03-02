@@ -1,0 +1,227 @@
+{
+  "id": "hive",
+  "name": "Hive",
+  "description": "Data warehouse software facilitates reading, writing, and managing large datasets residing in distributed storage using SQL. Structure can be projected onto data already in storage",
+  "teachers": [],
+  "tags": ["big data", "fundamentals","spark","hadoop"],
+  "image": "/images/apache_hive.png",
+  "topics": [
+    {
+      "id": "introduction",
+      "name": "Introduction of Hive",
+      "description": "Hive is a data warehouse infrastructure tool to process structured data in Hadoop. It resides on top of Hadoop to summarize Big Data, and makes querying and analyzing easy.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Hive introduction video",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=j6y4JiJkEGI"
+        },
+        {
+          "name": "Hive introduction",
+          "type": "documentation",
+          "url": "https://cwiki.apache.org/confluence/display/Hive/Tutorial#Tutorial-WhatIsHive"
+        }
+      ],
+      "abilities": [
+        "Basic use case of hive",
+        "Why we use hive",
+        "What is hive"
+      ],
+
+      "assessment-questions": [
+        { "question": "Use cases of hive" },
+        { "question": "What is hive" }
+      ]
+    },
+    {
+      "id": "architecture",
+      "name": "Hive architecture",
+      "description": "Hive components contains different units like UI, Driver, Compiler, MetaStore, Execution Engine etc",
+      "tags": ["required-for-junior"],
+      "dependencies": ["introduction"],
+      "resources": [
+        {
+          "name": "Hive architecture",
+          "type": "documentation",
+          "url": "https://cwiki.apache.org/confluence/display/Hive/Design",
+          "tags": ["official"]
+        }
+      ],
+      "abilities": [
+        "Different components of hive",
+        "Role of each component",
+        "Hive Data Model"
+      ],
+
+      "assessment-questions": [
+        { "question": "What are the components of hive?" },
+        { "question": "What is the role of each component?" },
+        { "question": "What is metastore." }
+      ]
+    },
+    {
+      "id": "partitioning-bucketing",
+      "name": "Partitioning and bucketing in hive",
+      "description": "Hive organizes tables into partitions. It is a way of dividing a table into related parts based on the values of partitioned columns such as date, city, and department. Using partition, it is easy to query a portion of the data.",
+      "tags": ["required-for-medior"],
+      "resources": [
+        {
+          "name": "Hive partitioning and bucketing",
+          "type": "documentation",
+          "url": "http://www.hadooptpoint.org/difference-between-partitioning-and-bucketing-in-hive/"
+        },
+        {
+          "name": "How partition table in hive",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=tr47ITOBZIQ"
+        }
+      ],
+      "dependencies": ["architecture"],
+      "abilities": [
+        "Partition hive table",
+        "Understanding of hive partitioning and bucketing"
+      ],
+      "assessment-questions": [
+        { "question": "Create table in hive with partitioning and bucketing and evaluate performance" }
+      ]
+    },
+    {
+      "id": "hql",
+      "name": "Hive Query Language",
+      "description": "HiveQL is an SQL-like query language for Hive. It mostly mimics SQL syntax for creation of tables, loading data into tables and querying the tables. HiveQL also allows users to embed their custom map-reduce scripts.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Hive Query Language",
+          "type": "documentation",
+          "url": "https://docs.treasuredata.com/articles/hive"
+        },
+        {
+          "name": "Basic of hive and hql",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=qC_GbpPu1aU",
+          "tags": ["video"]
+        },
+        {
+          "name": "Hive commands examples",
+          "type": "article",
+          "url": "https://www.edureka.co/blog/hive-commands-with-examples"
+        }
+      ],
+      "dependencies": ["architecture","partitioning-bucketing"],
+      "abilities": [
+        "Create table in hive",
+        "Load data in hive table",
+        "DML queries on hive table"
+      ],
+      "assessment-questions": [
+        { "question": "What are DDL commands in hive?" },
+        { "question": "How to load file into the hive table?" }
+      ]
+    },
+    {
+      "id": "data-functions",
+      "name": "Hive data types and functions",
+      "description": "Data types support by hive and built in functions in hive.",
+      "resources": [
+        {
+          "name": "Hive data types",
+          "type": "documentation",
+          "url": "https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Types",
+          "tags": ["official"]
+        },
+        {
+          "name": "Hive built-in functions",
+          "type": "article",
+          "url": "https://docs.treasuredata.com/articles/hive-functions"
+        }
+      ],
+      "dependencies": ["hql"],
+      "abilities": [
+        "Know different data types in hive",
+        "Use built-in function in your hive queries"
+      ]
+    },
+    {
+      "id": "udf",
+      "name": "User Defined Functions",
+      "description": "What are udf, udaf and udtf and how to create it in hive.",
+      "tags": ["required-for-medior"],
+      "resources": [
+        {
+          "name": "UDF and UDAF",
+          "type": "article",
+          "url": "https://letsdobigdata.wordpress.com/2016/03/02/writing-hive-udf-and-udaf/"
+        },
+        {
+          "name": "UDTF",
+          "type": "article",
+          "url": "https://acadgild.com/blog/hive-udtf/"
+        },
+        {
+          "name": "UDF, UDAF and UDTF",
+          "type": "article",
+          "url": "https://www.youtube.com/watch?v=fTcPeDhb6ng"
+        }
+      ],
+      "dependencies": ["hql"],
+      "abilities": [
+        "Can create UDF, UDAF and UDTF in hive"
+      ]
+    },
+    {
+      "id": "external-internal-table",
+      "name": "External and Internal tables in hive",
+      "description": "Managed and External tables are the two different types of tables in hive used to improve how data is loaded, managed and controlled.",
+      "tags": ["required-for-medior"],
+      "resources": [
+        {
+          "name": "External and Internal tables in hive",
+          "type": "article",
+          "url": "https://acadgild.com/blog/managed-and-external-tables-in-hive/"
+        },
+        {
+          "name": "How to create external table in hive",
+          "type": "article",
+          "url": "http://dwgeek.com/hive-create-external-tables-examples.html/"
+        }
+      ],
+      "dependencies": ["hql"],
+      "abilities": [
+        "Can create UDF, UDAF and UDTF in hive"
+      ]
+    },
+    {
+      "id": "indexs-views",
+      "name": "Indexes and views in hive",
+      "description": "Indexes are a critical for efficiently retrieving rows from tables. Without an index, it is necessary to perform a full scan of all the data to retrieve the required rows.",
+      "tags": ["required-for-medior"],
+      "resources": [
+        {
+          "name": "Indexes and views in hive",
+          "type": "article",
+          "url": "https://bluewatersql.wordpress.com/2013/09/07/indexes-views-in-hive/"
+        },
+        {
+          "name": "Indexing in hive",
+          "type": "article",
+          "url": "https://acadgild.com/blog/indexing-in-hive/"
+        }
+      ],
+      "dependencies": ["hql"],
+      "abilities": [
+        "Create Index on hive table"
+      ]
+    }
+  ],
+
+  "projects": [
+    {
+      "id": "hive-project",
+      "name": "Create udf, udaf and udtf on any hive table",
+      "dependencies": ["hql", "udf"],
+      "description": "Create a hive table and load the data from file and create udf, udaf and udtf in scala/java"
+    }
+  ]
+}
