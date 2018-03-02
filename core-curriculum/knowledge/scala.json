@@ -60,6 +60,11 @@
           "type": "article",
           "url": "https://en.wikipedia.org/wiki/First-class_function",
           "tags": ["wikipedia"]
+        },
+        {
+          "name": "Evaluation strategies in Scala",
+          "type": "article",
+          "url": "https://www.cakesolutions.net/teamblogs/evaluation-strategies-in-scala"
         }
       ],
 
