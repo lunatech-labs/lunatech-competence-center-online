@@ -29,7 +29,22 @@ validateSchema := {
   val schemaNode = JsonLoader.fromPath("schema/knowledge-graph.json")
   val graphNodes = graphsDir.listFiles(new FilenameFilter {
     override def accept(dir: File, name: String): Boolean = name.endsWith("json")
-  }).toList.map(JsonLoader.fromFile)
+  }).toList.map { f =>
+    try {
+      val json = JsonLoader.fromFile(f)
+
+      // check if ID matches file name
+      Option(json.get("id")).map(_.asText).filter(id => f.getName.startsWith(id)) match {
+        case Some(_) => json
+        case None => throw new IllegalStateException(s"File $f ID is either missing or doesn't match the filename")
+      }
+    } catch {
+      case jpe: com.fasterxml.jackson.core.JsonParseException =>
+        throw new IllegalStateException(s"File $f has errors at ${jpe.getMessage}", jpe)
+    }
+
+  }
+
 
   val factory = JsonSchemaFactory.byDefault()
   val jsonSchema = factory.getJsonSchema(schemaNode)

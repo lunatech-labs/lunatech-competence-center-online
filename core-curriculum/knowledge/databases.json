@@ -45,7 +45,7 @@
       "resources": [
         {
           "name": "Codecademy: Learn SQL",
-          "type": "course",
+          "type": "other",
           "url": "https://www.codecademy.com/learn/learn-sql"
         },
         {
@@ -60,7 +60,7 @@
         },
         {
           "name": "zentut SQL Tutorial",
-          "type": "course",
+          "type": "other",
           "url": "http://www.zentut.com/sql-tutorial/"
         }
       ],
@@ -191,7 +191,7 @@
       "resources": [
         {
           "name": "MIT OpenCourseWare: Database Systems",
-          "type": "course",
+          "type": "other",
           "url": "https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-830-database-systems-fall-2010/index.htm"
         },
         {
@@ -270,12 +270,12 @@
       "resources": [
         {
           "name": "Use the Index, Luke",
-          "type": "Documentation",
+          "type": "documentation",
           "url": "https://use-the-index-luke.com/"
         },
         {
           "name": "Postgres: Chapter 11. Indexes",
-          "type": "Documentation",
+          "type": "documentation",
           "url": "https://www.postgresql.org/docs/current/static/indexes-intro.html"
         },
         {

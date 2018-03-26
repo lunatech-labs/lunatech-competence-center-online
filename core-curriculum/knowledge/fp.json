@@ -46,7 +46,7 @@
       "assessment-questions": [
         { "question": "Where does recursion really shine?" },
         { "question": "When would you use a fold instead of recursion?" },
-        { "question": "Why and when would you use @tailrec?" },
+        { "question": "Why and when would you use @tailrec?" }
       ]
     },
     {
@@ -165,7 +165,7 @@
         "Summon a instance of the type class inside one of your functions"
       ],
       "assessment-questions": [
-        { "question": "Why would use type classes instead of inheritance?" },
+        { "question": "Why would use type classes instead of inheritance?" }
       ]
     },
     {
@@ -208,7 +208,7 @@
         "Know what the kind is of a `Either`"
       ],
       "assessment-questions": [
-        { "question": "What do higher kinded types allows us to do?" },
+        { "question": "What do higher kinded types allows us to do?" }
       ]
     },
     {
@@ -233,7 +233,7 @@
       ],
       "abilities": [
         "Create a Monoid instance for List",
-        "Create a Semigroup instance for Option",
+        "Create a Semigroup instance for Option"
       ],
       "assessment-questions": [
         { "question": "Name a few instances for semigroup" }
@@ -266,7 +266,7 @@
       ],
       "abilities": [
         "Create a Functor instance for List",
-        "Create a Functor instance for Option",
+        "Create a Functor instance for Option"
       ],
       "assessment-questions": [
         { "question": "Name a few instances for functor" }
@@ -339,7 +339,7 @@
         {
           "name": "Apply",
           "type": "article",
-          "url": "https://www.scala-exercises.org/cats/apply",
+          "url": "https://www.scala-exercises.org/cats/apply"
         },
         {
           "name": "Applicative",
@@ -355,7 +355,7 @@
       ],
       "abilities": [
         "Create a Applicative instance for List",
-        "Create a Applicative instance for Option",
+        "Create a Applicative instance for Option"
       ],
       "assessment-questions": [
         { "question": "Name a few instances for Applicative" }
@@ -383,7 +383,7 @@
         {
           "name": "Monad",
           "type": "article",
-          "url": "https://www.scala-exercises.org/cats/monad",
+          "url": "https://www.scala-exercises.org/cats/monad"
         },
         {
           "name": "Haskell/Understanding monads",
@@ -417,7 +417,7 @@
         {
           "name": "Traverse",
           "type": "article",
-          "url": "https://www.scala-exercises.org/cats/traverse",
+          "url": "https://www.scala-exercises.org/cats/traverse"
         }
       ],
       "abilities": [
@@ -443,7 +443,7 @@
         {
           "name": "Foldable",
           "type": "article",
-          "url": "https://www.scala-exercises.org/cats/foldable",
+          "url": "https://www.scala-exercises.org/cats/foldable"
         }
       ],
       "abilities": [
