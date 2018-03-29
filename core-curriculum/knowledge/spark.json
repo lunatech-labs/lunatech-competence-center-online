@@ -1,5 +1,5 @@
 {
-  "id": "big-data-spark",
+  "id": "spark",
   "name": "Apache Spark(Big Data)",
   "description": "Apache Spark is a fast and general-purpose cluster computing system. It provides high-level APIs in Java, Scala, Python and R, and an optimized engine that supports general execution graphs.",
   "tags": ["big data", "fundamentals","spark","hadoop"],
