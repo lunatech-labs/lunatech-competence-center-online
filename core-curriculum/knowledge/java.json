@@ -568,7 +568,7 @@
         "Optimise the JVM performance by using Thread pools.",
         "Simplify shared resource access with Atomics."
       ],
-      "assessment-question": [
+      "assessment-questions": [
         { "question": "Why Java 5 Locks are considered better alternatives than synchronized methods?" },
         { "question": "What types of Thread Pools are available? Which are their use cases?" },
         { "question": "Can you submit a Thread to a Thread Pool?" },
@@ -633,7 +633,7 @@
         "Use collections in a more functional way.",
         "Simplify single method anonymous classes."
       ],
-      "assessment-question": [
+      "assessment-questions": [
         { "question": "What is the use of Optional?" },
         { "question": "How do you create your own Functional Interface?" },
         { "question": "Do you know the difference between Predicate, Supplier and Consumer?" },
