@@ -1,0 +1,336 @@
+<!--
+     @license
+     Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+     This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+     The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+     The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+     Code distributed by Google as part of the polymer project is also
+     subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+   -->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="./career-framework/level-card.html">
+
+<dom-module id="page-career-framework">
+  <template>
+    <style>
+     :host {
+         display: block;
+         padding: 10px 20px;
+     }
+
+     .levels-container {
+       display: block;
+       width: 60%;
+     }
+    </style>
+
+    <iron-ajax id="ajaxLoad"
+               url="/api/core-curriculum"
+               loading="{{loading}}"
+               last-response="{{graphs}}"></iron-ajax>
+
+    <paper-spinner active=[[loading]]></paper-spinner>
+
+    <!-- FIXME this page should be inside the 'career-framework-folder' -->
+    <div class="layout horizontal wrap levels-container">
+      <template is="dom-repeat" items="{{levels}}">
+        <level-card level=[[item]] abilities=[[abilities]]></level-card>
+      </template>
+    </div>
+
+  </template>
+
+  <script>
+    class PageCareerFramework extends Polymer.Element {
+      static get is () { return 'page-career-framework'; }
+
+      static get properties () {
+        return {
+
+          graphs: {
+            type: Array,
+            observer: '_graphsChanged'
+          },
+
+          abilities: {
+            type: Object
+          },
+
+          levels: {
+            type: Object,
+            computed: 'computeLevels()'
+          }
+        }
+      }
+
+      ready () {
+        super.ready();
+        setTimeout(function () {
+          this.$.ajaxLoad.generateRequest();
+        }.bind(this), 1000);
+      }
+
+      _graphsChanged (graphs) {
+        if (!graphs) {
+          return;
+        }
+
+        // FIXME this should only be computed after `graphs` and `levels` promises are complete
+        // FIXME Remove translation object when CC and CF are conciliated.
+        let translations = {
+          'required-for-trainee': 'required-for-junior',
+          'optional-for-trainee': 'optional-for-junior',
+          'required-for-junior': 'required-for-junior',
+          'optional-for-junior': 'optional-for-junior',
+          'required-for-software-engineer': 'required-for-medior',
+          'optional-for-software-engineer': 'optional-for-medior',
+          'required-for-java-engineer': 'required-for-java-medior',
+          'optional-for-java-software-engineer': 'optional-for-java-medior',
+          'required-for-scala-engineer': 'required-for-scala-medior',
+          'optional-for-scala-software-engineer': 'optional-for-scala-medior',
+          'required-for-senior-software-engineer': 'required-for-senior',
+          'optional-for-senior-software-engineer': 'optional-for-senior',
+          'required-for-senior-java-engineer': 'required-for-java-senior',
+          'optional-for-senior-java-engineer': 'optional-for-java-senior',
+          'required-for-senior-scala-engineer': 'required-for-scala-senior',
+          'optional-for-senior-scala-engineer': 'optional-for-scala-senior',
+          'required-for-principal-software-engineer': 'required-for-senior',
+          'optional-for-principal-software-engineer': 'optional-for-senior',
+          'required-for-principal-java-engineer': 'required-for-java-senior',
+          'optional-for-principal-java-engineer': 'optional-for-java-senior',
+          'required-for-principal-scala-engineer': 'required-for-scala-senior',
+          'optional-for-principal-scala-engineer': 'optional-for-scala-senior'
+        };
+
+        let abilities = this.levels.reduce(function (acc, level) {
+          if (level['required-curriculum']) {
+            acc[level['required-curriculum']] = [];
+          }
+          if (level['optional-curriculum']) {
+            acc[level['optional-curriculum']] = [];
+          }
+          if (level.specialized) {
+            level.specializations.forEach(function (s) {
+              acc[s['required-curriculum']] = [];
+              acc[s['optional-curriculum']] = [];
+            });
+          }
+
+          return acc;
+        }, {});
+
+        Object.keys(abilities).forEach(function (cfLevel) {
+          let levelAbilities = abilities[cfLevel],
+              translation = translations[cfLevel];
+
+          graphs.reduce(function (acc, subject) {
+            let relevantTopics = subject.topics.filter(topic => topic.tags.indexOf(translation) >= 0);
+            if (relevantTopics && relevantTopics.length) {
+              acc.push({
+                id: subject.id,
+                name: subject.name,
+                abilities: relevantTopics
+              });
+            }
+
+            return acc;
+          }, levelAbilities)
+        });
+
+        console.log(abilities);
+        this.set('abilities', abilities);
+      }
+
+      computeLevels () {
+        // TODO this should come from API
+        return [
+          {
+            "name": "Common",
+            "short_name": "CMN",
+            "description": "The basics we all should know",
+            "curriculum": "common",
+            "skills": {
+              "interpersonal": [
+                "Mentoring",
+                "Sociable",
+                "Communication Skills"
+              ],
+              "leadership": [
+                "Strategic contribution",
+                "Active listening",
+                "team spirit"
+              ],
+              "managerial": [
+                "Hours tracking",
+                "Project status knowledge",
+                "Scrum",
+                "Kanban",
+                "Agile"
+              ]
+            }
+          },
+          {
+            "name": "Trainee",
+            "short_name": "TRN",
+            "description": "A talented person with basic CS knowledge that could grow into a JSE position quickly (within 2 months), but is not immediately employable on a commercial Java or Scala project. For example because they didn't do enough Java or Scala at University, or are experienced at another language.",
+            "workable_level": "junior",
+            "years_of_experience": 0,
+            "specialized": false,
+            "can-be-oa": true,
+            "can-be-pl": false,
+            "required-curriculum": "required-for-trainee",
+            "optional-curriculum": "optional-for-trainee",
+            "skills": {
+              "interpersonal": [
+                "Respectfull",
+                "Nice attitude",
+                "Willing to learn",
+                "Team working"
+              ],
+              "leadership": [],
+              "managerial": []
+            }
+          },
+          {
+            "name": "Junior Software Engineer",
+            "short_name": "JSE",
+            "description": "Somebody fresh from a CS education or a self-taught person with one or two years of experience. This person has enough hands-on experience with Java or Scala to be placed at a customer and contribute immediately.",
+            "workable_level": "junior",
+            "years_of_experience": 1,
+            "specialized": false,
+            "can-be-oa": false,
+            "can-be-pl": false,
+            "required-curriculum": "required-for-junior",
+            "optional-curriculum": "optional-for-junior",
+            "skills": {
+              "interpersonal": [
+                "Respectfull",
+                "Nice attitude",
+                "Willing to learn",
+                "Team working"
+              ],
+              "leadership": [],
+              "managerial": []
+            }
+          },
+          {
+            "name": "Software Engineer",
+            "short_name": "SE",
+            "description": "A software engineer with a minimum of three years experience in a relevant language",
+            "workable_level": "experienced",
+            "years_of_experience": 3,
+            "specialized": true,
+            "can-be-oa": false,
+            "can-be-pl": true,
+            "required-curriculum": "required-for-software-engineer",
+            "optional-curriculum": "optional-for-software-engineer",
+            "specializations": [
+              {
+                "name": "java",
+                "required-curriculum": "required-for-java-engineer",
+                "optional-curriculum": "optional-for-java-software-engineer"
+              },
+              {
+                "name": "scala",
+                "required-curriculum": "required-for-scala-engineer",
+                "optional-curriculum": "optional-for-scala-software-engineer"
+              }
+            ],
+            "skills": {
+              "interpersonal": [
+                "Communication skills",
+                "proactiveness to communicate with the client"
+              ],
+              "leadership": [
+                "Support for the SSE/PSE on helping the JSE",
+                "Support for the SSE/PSE on Design of the project"
+              ],
+              "managerial": []
+            }
+          },
+          {
+            "name": "Senior Software Engineer",
+            "short_name": "SSE",
+            "description": "A software engineer with a minimum of seven or more years of experience in the industry, and several projects.",
+            "workable_level": "experienced",
+            "years_of_experience": 7,
+            "specialized": true,
+            "can-be-oa": true,
+            "can-be-pl": true,
+            "required-curriculum": "required-for-senior-software-engineer",
+            "optional-curriculum": "optional-for-senior-software-engineer",
+            "specializations": [
+              {
+                "name": "java",
+                "required-curriculum": "required-for-senior-java-engineer",
+                "optional-curriculum": "optional-for-senior-java-engineer"
+              },
+              {
+                "name": "scala",
+                "required-curriculum": "required-for-senior-scala-engineer",
+                "optional-curriculum": "optional-for-senior-scala-engineer"
+              }
+            ],
+            "skills": {
+              "interpersonal": [
+                "Able to recognize problems with colleagues and act on them",
+                "Able to identify problems with the client and act on them"
+              ],
+              "leadership": [
+                "Support for the PL on helping the JSE"
+              ],
+              "managerial": [
+                "Takeover a running project and maintain the work flowing"
+              ]
+            }
+          },
+          {
+            "name": "Principal Software Engineer",
+            "short_name": "PSE",
+            "description": "A person that has strong communication skills and delivery capabilities and that can kick-start a new project in a new organisation, being a quarter maker.",
+            "workable_level": "experienced",
+            "years_of_experience": 7,
+            "specialized": true,
+            "can-be-oa": true,
+            "can-be-pl": true,
+            "required-curriculum": "required-for-principal-software-engineer",
+            "optional-curriculum": "optional-for-principal-software-engineer",
+            "specializations": [
+              {
+                "name": "java",
+                "required-curriculum": "required-for-principal-java-engineer",
+                "optional-curriculum": "optional-for-principal-java-engineer"
+              },
+              {
+                "name": "scala",
+                "required-curriculum": "required-for-principal-scala-engineer",
+                "optional-curriculum": "optional-for-principal-scala-engineer"
+              }
+            ],
+            "skills": {
+              "interpersonal": [
+                "Effective at getting familiar with a new environment or organization",
+                "Gets things done"
+              ],
+              "leadership": [
+                "Lead a small team of people when starting a new project"
+              ],
+              "managerial": [
+                "Manage a starting project"
+              ]
+            }
+          }
+        ]
+      } // end levels
+
+
+    }
+
+    customElements.define(PageCareerFramework.is, PageCareerFramework);
+  </script>
+</dom-module>
