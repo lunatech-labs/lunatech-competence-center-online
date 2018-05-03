@@ -10,15 +10,33 @@
         --knowledge-node-theme: {
           cursor: pointer;
         };
+        display: flex;
+      }
+
+      :host(.slim) paper-card {
+        --paper-card-header-image: {
+          --iron-image-height: 5em;
+          --iron-image-width: auto;
+          margin: 0 auto;
+        };
+        --paper-card-content: {
+          padding: 0;
+          flex: 6;
+        }
+        display: flex;
+        flex-direction: column;
       }
 
       paper-card {
         --paper-card-header-image: {
-          padding: 0 10px;
           width: auto;
         };
+        --paper-card-content: {
+          padding: 0;
+        }
         margin: 20px;
         max-width: 230px;
+        padding: 1em;
       }
 
       paper-card[primary] {
@@ -40,7 +58,7 @@
     <paper-card primary$="[[item.primary]]" image="{{item.image}}" class="layout vertical">
       <div class="card-content flex">
         <h2>{{item.name}}</h2>
-        <marked-element markdown=[[item.description]]>
+        <marked-element markdown=[[subjectDescription(item)]]>
           <div slot="markdown-html" class="subject-description"></div>
         </marked-element>
       </div>
@@ -54,19 +72,38 @@
     </paper-card>
   </template>
   <script>
-    Polymer({
-      is: "subject-card",
+    class SubjectCard extends Polymer.Element {
+      static get DescriptionMaxLength () { return 200 }
 
-      properties: {
-        item: {
-          type: Object
-        },
+      static get is () { return 'subject-card'; }
 
-        basePath: {
-          type: String
+      static get properties () {
+        return {
+          item: {
+            type: Object
+          },
+
+          basePath: {
+            type: String
+          }
         }
       }
 
-    });
+      subjectDescription (subject) {
+        function trimDescription (text) {
+          let stopChars = [' ', '!', '?', '.', ':', ',', ';', '-'], // FIXME could probably just check within range.
+              capped = text.substring(0, SubjectCard.DescriptionMaxLength),
+              lastChar = capped[capped.length - 1];
+
+          return (stopChars.indexOf(lastChar) >= 0 ?
+              capped.substring(0, capped.length - 2) : capped) + '...'
+        }
+
+        return subject.description && subject.description.length > SubjectCard.DescriptionMaxLength ?
+          trimDescription(subject.description) : subject.description;
+      }
+    }
+
+    customElements.define(SubjectCard.is, SubjectCard);
   </script>
 </dom-module>
