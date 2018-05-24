@@ -1,0 +1,14 @@
+{
+  "id": "<enter the id of the workshop>",
+  "name": "<enter the name of the workshop>",
+  "author": "<your name here>",
+  "image": "<image filepath>",
+  "description": "<enter a description of the workshop>",
+  "tags": [],
+  "core-curriculum": [],
+  "teachers": [],
+  "contributors": [],
+  "prerequisites": "<enter the prerequisites of the workshop>",
+  "preparations": "<enter the preparations of the workshop>",
+  "schedule": []
+}

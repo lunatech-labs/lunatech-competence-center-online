@@ -1,0 +1,61 @@
+.reveal.lunatech {
+  color: #595959;
+}
+
+.reveal.lunatech h1 {
+  font-family: 'Arvo', Helvetica, serif;
+  font-size: 8vw;
+}
+
+.reveal .slides > section {
+  padding: 20px 5%;
+  width: 90%;
+}
+
+.reveal code {
+  font-family: Inconsolata, monospace;
+}
+
+.reveal.lunatech h2:first-child {
+  background: #F00;
+  color: #FFF;
+  font-family: 'Arvo', Helvetica, serif;
+  font-size: 3vw;
+  left: 0;
+  padding: 5px 5%;
+  position: fixed;
+  text-align: left;
+  text-transform: none;
+  top: 0;
+  width: 100%;
+}
+
+.reveal {
+  font-size: 3vw;
+}
+
+.reveal div, .reveal span, .reveal applet, .reveal object, .reveal iframe, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6, .reveal p, .reveal blockquote, .reveal pre, .reveal a, .reveal abbr, .reveal acronym, .reveal address, .reveal big, .reveal cite, .reveal del, .reveal dfn, .reveal em, .reveal img, .reveal ins, .reveal kbd, .reveal q, .reveal s, .reveal samp, .reveal small, .reveal strike, .reveal strong, .reveal sub, .reveal sup, .reveal tt, .reveal var, .reveal b, .reveal u, .reveal center, .reveal dl, .reveal dt, .reveal dd, .reveal ol, .reveal ul, .reveal li, .reveal fieldset, .reveal form, .reveal label, .reveal legend, .reveal table, .reveal caption, .reveal tbody, .reveal tfoot, .reveal thead, .reveal tr, .reveal th, .reveal td, .reveal article, .reveal aside, .reveal canvas, .reveal details, .reveal embed, .reveal figure, .reveal figcaption, .reveal footer, .reveal header, .reveal hgroup, .reveal menu, .reveal nav, .reveal output, .reveal ruby, .reveal section, .reveal summary, .reveal time, .reveal mark, .reveal audio, .reveal video {
+  font-size: inherit;
+}
+
+.reveal pre,
+.reveal code span {
+  font-size: 1.5vw;
+}
+
+.reveal .controls-arrow {
+  font-size: initial;
+}
+
+.reveal .lunatech-logo {
+  bottom: 2%;
+  max-width: 30%;
+  position: fixed;
+  right: 2%;
+}
+
+/** This could fix images on the `notes` mode, but need to fix a bit more the margins.
+.reveal section img {
+  width: 46vw;
+  height: auto;
+}**/

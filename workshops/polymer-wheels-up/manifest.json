@@ -1,0 +1,23 @@
+{
+  "id": "polymer-wheels-up",
+  "name": "Polymer - Wheels up",
+  "author": "Anastasiia Pushkina",
+  "image": "image.jpg",
+  "description": "This workshop will teach you how to write Web Components that extend existing HTML elements and define new ones.\n\n\nPolymer is a new technology, built atop Web Components, that enables developers to do so. With Polymer and Web Components, we can componentize the web! The goal of this workshop is to get a “hands on” experience with Google’s Polymer technology. By the end of the course you'll have walked through of what is Polymer, how to use a Polymer Element and how to create a Custom Element with Polymer.",
+  "tags": ["frontend", "polymer"],
+  "core-curriculum": [],
+  "teachers": ["Anastasiia Pushkina"],
+  "contributors": ["Anastasiia Pushkina"],
+  "prerequisites": "There are no special prerequisites, this is an entry-level course.",
+  "preparations": "1. Install the current LTS version (4.x) of Node.js or newer.\n2. Install the latest version of Bower. (npm install -g bower)\n3. Install Polymer CLI. (npm install -g polymer-cli)\n\n\nYou're all set. Run polymer help to view a list of commands.\n\n\nWhen you come to the course, we expect that you have a working `polymer` command in your terminal.",
+  "schedule": [
+    {
+      "block-name": "Day 1",
+      "description": "N/A"
+    },
+    {
+      "block-name": "Day 2",
+      "description": "N/A"
+    }
+  ]
+}

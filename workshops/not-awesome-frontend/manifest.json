@@ -1,0 +1,23 @@
+{
+  "id": "not-awesome-frontend",
+  "name": "(Not) Awesome Frontend",
+  "description": "In today’s world we’re constantly bombarded by new frontend technologies and frameworks that lead to the so called ‘Javascript fatigue’...\nAll the rage is about adopting those technologies to provide a better experience for your users, probably ditching your old stack in the way to achieve that.\nI want to show you that’s possible to learn the fundamentals, Javascript (ES5) and jQuery (both with almost 17 years old combined), and still provide better experiences for your user base, these are still relevant tools.\nAfter finishing this workshop will you be able to properly use both, create new jQuery plugins, implement progressive improvement on your site, and even create your own frontend framework on top of both.",
+  "image": "image.jpg",
+  "tags": ["frontend", "javascript"],
+  "core-curriculum": ["html"],
+  "author": "Gustavo De Micheli",
+  "teachers": ["Gustavo De Micheli"],
+  "contributors": ["Gustavo De Micheli"],
+  "prerequisites": "There are no special prerequisites, this is an entry-level course.",
+  "preparations": "It's useful to have `npm` installed.",
+  "schedule": [
+    {
+      "block-name": "Day 1",
+      "description": "- Introduction to ES5 and jQuery\n- Learning jQuery parts (DOM, Events, Ajax, Plugins)"
+    },
+    {
+      "block-name": "Day 2",
+      "description": "- Learn ES5 coding styles and idioms.\n- Putting all together"
+    }
+  ]
+}

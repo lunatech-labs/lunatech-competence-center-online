@@ -1,0 +1,27 @@
+{
+  "id": "jump-start-with-apache-spark",
+  "name": "Jump-Start with Apache Spark",
+  "author": "Sandeep Purohit",
+  "image": "image.jpg",
+  "description": "One framework for everything (Batch, Streaming, ML, Graph)\n\n\nIn this workshop you’ll learn about Apache spark, look at the internal architecture of Spark and create a Spark cluster on a local machine and deploy application on it.",
+  "tags": ["big-data", "spark", "machine-learning"],
+  "core-curriculum": [],
+  "teachers": ["Sandeep Purohit"],
+  "contributors": ["Sandeep Purohit"],
+  "prerequisites": "No special prerequisites.",
+  "preparations": "- Bring a laptop with SBT.\n- Download the Apache spark binary https://d3kbcqa49mib13.cloudfront.net/spark-2.1.1-bin-hadoop2.7.tgz .",
+  "schedule": [
+    {
+      "block-name": "Day 1",
+      "description": "N/A"
+    },
+    {
+      "block-name": "Day 2",
+      "description": "N/A"
+    },
+    {
+      "block-name": "Day 3",
+      "description": "N/A"
+    }
+  ]
+}
