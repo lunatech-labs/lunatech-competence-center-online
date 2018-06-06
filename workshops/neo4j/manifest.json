@@ -1,0 +1,23 @@
+{
+  "id": "neo4j",
+  "name": "Neo4j",
+  "description": "In our highly interconnected world it is crucial to be able to discover connections between data.\n\n\nTreating relationships as first class citizens has led to the emerging of Graph databases which unlike traditional RDBMS offer much greater possibilities in identifying connection patterns. This workshop is an introduction to Neo4j, one of the most mature products in the market.",
+  "image": "image.jpg",
+  "tags": ["nosql", "graph"],
+  "core-curriculum": [],
+  "author": "Dimitrios Charoulis",
+  "teachers": ["Dimitrios Charoulis"],
+  "contributors": ["Dimitrios Charoulis"],
+  "prerequisites": "None, this is an entry-level course.",
+  "preparations": "Bring a laptop with Java installed.",
+  "schedule": [
+    {
+      "block-name": "Day 1",
+      "description": "N/A"
+    },
+    {
+      "block-name": "Day 2",
+      "description": "N/A"
+    }
+  ]
+}

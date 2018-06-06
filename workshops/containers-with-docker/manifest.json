@@ -1,0 +1,23 @@
+{
+  "id": "containers-with-docker",
+  "name": "Containers with Docker",
+  "author": "Jasper Dijt",
+  "image": "image.jpg",
+  "description": "Containers provide a way of deploying applications without them interfering with each other...\n\nIn this two part workshop we take a look at the underlying tech for containers, how to create and run your own Docker containers according to best practices.\n\nHowever running just a single container is not particulary exiting. So after learning how to make and run one container we will move on to docker-compose and start running(/scaling) multiple dependent containers together.",
+  "tags": ["devops", "docker", "containers"],
+  "core-curriculum": [],
+  "teachers": ["Jasper Dijt"],
+  "contributors": ["Jasper Dijt"],
+  "prerequisites": "None, this is an entry-level workshop.",
+  "preparations": "- Docker installed (https://www.docker.com/docker-mac)\n-Docker compose installed (should come with docker for mac).\n-Clone the git repo (pending).",
+  "schedule": [
+    {
+      "block-name": "Day 1",
+      "description": "N/A"
+    },
+    {
+      "block-name": "Day 2",
+      "description": "N/A"
+    }
+  ]
+}

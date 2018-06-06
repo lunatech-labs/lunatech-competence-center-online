@@ -1,0 +1,23 @@
+{
+  "id": "essential-linux",
+  "name": "Essential Linux",
+  "author": "Victor Basso",
+  "image": "image.jpg",
+  "description": "Shapeless won’t be so mystical after this workshop\n\n\nYou’ll add this library for Generic Programming in Scala to your tool belt.\n\nGeneric programming is about writing one piece of code that will work for any type. When you’re, say, converting Json, you don’t want type restrictions: the same logic applies for Cat, Aeroplane or BankAccount objects.\n\n\nIf you’re curious you might also find joy in learning strange programming techniques where code runs at compile time and is reminiscent of the “logic” programming paradigm.",
+  "tags": ["devops", "linux"],
+  "core-curriculum": [],
+  "teachers": ["Victor Basso"],
+  "contributors": ["Victor Basso"],
+  "prerequisites": "- You’re comfortable with implicits.\n- And most of the content from the Advanced Scala course.\n- You’ve heard of Type Classes.",
+  "preparations": "- Clone the [exercises from github](https://github.com/vitobasso/shapeless-workshop)\n- Make sure it’s compiling",
+  "schedule": [
+    {
+      "block-name": "Day 1",
+      "description": "N/A"
+    },
+    {
+      "block-name": "Day 2",
+      "description": "N/A"
+    }
+  ]
+}

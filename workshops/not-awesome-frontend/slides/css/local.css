@@ -1,0 +1,16 @@
+section img[src="images/borat.png"] {
+  border: none;
+  box-shadow: none;
+  transform: rotate(-27deg);
+  height: 58%;
+  width: auto;
+  display: inline-block;
+  position: absolute;
+  left: 10%;
+  bottom: 10%;
+}
+
+section img[src="images/branca.png"] {
+  height: 32vh;
+  width: auto;
+}

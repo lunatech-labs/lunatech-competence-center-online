@@ -1,0 +1,23 @@
+{
+  "id": "automate-it-with-ansible",
+  "name": "Automate IT with Ansible",
+  "author": "Maria Dominguez",
+  "image": "image.jpg",
+  "description": "Don’t repeat yourself, just automate it!\n\n\nMost of us have a development background, but we always end having to log into servers and change configurations, install packages, etc. It may happen that today we found a great solution to a long running problem, and we fix it... but what is going to happen in a few months? Let's keep the valuable knowledge alive and start automating everything. This way we will save time and what is more important, will reduce chances of failure.\n\n\nAnsible is easy to read, easy to use and offers plenty of solutions for many different use cases. In this workshop I want to introduce you Ansible as an automation tool for VM provisioning and application deployment. We will work together on a small project to bootstrap a small cluster where we can deploy our applications.",
+  "tags": ["devops", "ansible"],
+  "core-curriculum": [],
+  "teachers": ["Maria Dominguez"],
+  "contributors": ["Maria Dominguez"],
+  "prerequisites": "Basic Unix.",
+  "preparations": "Install Ansible.",
+  "schedule": [
+    {
+      "block-name": "Day 1",
+      "description": "N/A"
+    },
+    {
+      "block-name": "Day 2",
+      "description": "N/A"
+    }
+  ]
+}

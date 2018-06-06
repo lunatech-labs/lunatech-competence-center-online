@@ -1,0 +1,23 @@
+{
+  "id": "essential-linux",
+  "name": "Essential Linux",
+  "author": "Willem Jan Glerum",
+  "image": "image.jpg",
+  "description": "Jealous of people who are wizards with a terminal? Want to get some insight into how to get started using Linux to deploy your latest awesome app? Or just wondering how to exit Vim without a reboot? This is your chance.\n\n\nWillem Jan Glerum will get you up to speed so you won't have to blink next time somebody asks you to configure an Apache reverse proxy on a machine with SSL termination. ",
+  "tags": ["devops", "linux"],
+  "core-curriculum": [],
+  "teachers": ["Willem Jan Glerum"],
+  "contributors": ["Willem Jan Glerum"],
+  "prerequisites": "No special prerequisites.",
+  "preparations": "Bring a machine. Leave your mouse at home.",
+  "schedule": [
+    {
+      "block-name": "Day 1",
+      "description": "N/A"
+    },
+    {
+      "block-name": "Day 2",
+      "description": "N/A"
+    }
+  ]
+}
