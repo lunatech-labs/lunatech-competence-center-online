@@ -13,7 +13,7 @@
       "id": "database-fundamentals",
       "name": "Database fundamentals",
       "description": "There are many ways to store data, but being able to choose an appropriate one can be difficult.",
-      "tags": [],
+      "tags": ["required-for-junior"],
       "resources": [
         {
           "name": "Designing Data-Intensive Applications (Martin Kleppmann, 2017): Chapter 1 and 2",
@@ -41,7 +41,7 @@
       "id": "rdbms-sql-basics",
       "name": "SQL basics",
       "description": "Relational databases and SQL",
-      "tags": [],
+      "tags": ["required-for-junior"],
       "resources": [
         {
           "name": "Codecademy: Learn SQL",
@@ -62,6 +62,11 @@
           "name": "zentut SQL Tutorial",
           "type": "other",
           "url": "http://www.zentut.com/sql-tutorial/"
+        },
+        {
+          "name": "Using SQL bind variables for application performance and security",
+          "type": "article",
+          "url": "https://www.ibm.com/developerworks/library/se-bindvariables/index.html"
         }
       ],
       "abilities": [
@@ -79,6 +84,64 @@
         },
         {
           "question": "What is an SQL injection attack and how do you prevent it?"
+        }
+      ]
+    },
+    {
+      "id": "rdbms-data-types",
+      "name": "Data types",
+      "description": "Data types, custom types, json etc",
+      "tags": [],
+      "resources": [
+        {
+          "name": "The PostgreSQL Type System",
+          "type": "documentation",
+          "url": "https://www.postgresql.org/docs/current/static/extend-type-system.html"
+        },
+        {
+          "name": "User-defined Types",
+          "type": "documentation",
+          "url": "https://www.postgresql.org/docs/current/static/xtypes.html"
+        },
+        {
+          "name": "Composite Types",
+          "type": "documentation",
+          "url": "https://www.postgresql.org/docs/current/static/rowtypes.html"
+        },
+        {
+          "name": "JSON Types",
+          "type": "documentation",
+          "url": "https://www.postgresql.org/docs/current/static/datatype-json.html"
+        },
+        {
+          "name": "Enumerated types",
+          "type": "documentation",
+          "url": "https://www.postgresql.org/docs/current/static/datatype-enum.html"
+        },
+        {
+          "name": "When To Avoid JSONB In A PostgreSQL Schema",
+          "type": "article",
+          "url": "https://heapanalytics.com/blog/engineering/when-to-avoid-jsonb-in-a-postgresql-schema"
+        },
+        {
+          "name": "When you should and should NOT use ENUM data type",
+          "type": "article",
+          "url": "https://dzone.com/articles/when-you-should-and-should-not"
+        }
+      ],
+      "abilities": [
+        "Create composite type",
+        "Use jsonb"
+      ],
+      "assessment-questions": [
+        {
+          "question": "What are the advantages of storing JSON data as json type instead of text?"
+        },
+        {
+          "question": "What are the disadvantages of jsonb?"
+        },
+        {
+          "question": "What is the 'dangerous' side of enum?"
         }
       ]
     },
@@ -148,7 +211,7 @@
     {
       "id": "rdbms-sql-aggregates",
       "name": "Aggregates",
-      "description": "Foo, Bar, Baz",
+      "description": "Aggregate functions",
       "tags": [],
       "dependencies": [
         "rdbms-sql-basics"
@@ -230,11 +293,16 @@
       "id": "rdbms-schemas",
       "name": "Relational schema design",
       "description": "Designing schemas for relational databases",
-      "tags": [],
+      "tags": ["required-for-junior"],
       "dependencies": [ "rdbms-sql-basics" ],
       "resources": [
         {
-          "name": "Logical Database Design and E-R Diagrams",
+          "name": "Introduction to Database Design (examples)",
+          "type": "article",
+          "url": "http://www.datanamic.com/support/lt-dez005-introduction-db-modeling.html"
+        },
+        {
+          "name": "Logical Database Design and ER Diagrams",
           "type": "video",
           "url": "https://www.youtube.com/watch?v=ZBgXb66Ckz0"
         },
@@ -258,6 +326,9 @@
         },
         {
           "question": "Why should a table design not violate the principles of set theory?"
+        },
+        {
+          "question": "How would you design relation 'many to many' in your database?"
         }
       ]
     },
@@ -287,7 +358,6 @@
       "abilities": [
         "Knowing when to apply an index to a table",
         "Creating indexes to optimize problematic queries",
-        "Using query plans to find performance issues",
         "Making trade-offs between write and read performance of indexes"
       ],
       "assessment-questions": [
@@ -299,6 +369,65 @@
         },
         {
           "question": "How are indexes usually stored in a relational database?"
+        },
+        {
+          "question": "When should/shouldn't you use indexes?"
+        }
+      ]
+    },
+    {
+      "id": "rdbms-performance-improvements",
+      "name": "Performance improvements",
+      "description": "Query optimisation, work on problematic queries, spotting the problem using different approaches",
+      "tags": [],
+      "dependencies": [ "rdbms-indexes" ],
+      "resources": [
+        {
+          "name": "Query plan (basics)",
+          "type": "documentation",
+          "url": "https://www.postgresql.org/docs/current/static/using-explain.html"
+        },
+        {
+          "name": "Brief hints on performance improvements",
+          "type": "presentation",
+          "url": "https://slides.com/nataliiadziubenko/perf-improvements/fullscreen"
+        },
+        {
+          "name": "Controlling the Planner with Explicit JOIN Clauses",
+          "type": "documentation",
+          "url": "https://www.postgresql.org/docs/current/static/explicit-joins.html"
+        },
+        {
+          "name": "Performance tuning",
+          "type": "article",
+          "url": "https://www.geekytidbits.com/performance-tuning-postgres/"
+        },
+        {
+          "name": "Force influencing query plan",
+          "type": "documentation",
+          "url": "https://www.postgresql.org/docs/current/static/runtime-config-query.html"
+        }
+      ],
+      "abilities": [
+        "Reading query plan and knowing how it can be helpful",
+        "Influencing query plan",
+        "Using statistics",
+        "Knowing memory traps/tips",
+        "Using logging"
+      ],
+      "assessment-questions": [
+        {
+          "question": "Why should you be careful using ANALYZE?"
+        },
+        {
+          "question": "How would you find long working queries?"
+        },
+        {
+          "question": "How would you find unused indexes?"
+        },
+        {
+          "question": "Does the explicit join order change performance? Why?",
+          "answer-hint": "Planner will explore all of options to find the most efficient order, this can take a while if there are many (more than 3) joined tables. Explicit order will give planner no choice so it will need less time to plan."
         }
       ]
     },
@@ -306,9 +435,15 @@
       "id": "rdbms-constraints",
       "name": "Constraints",
       "description": "Constraints for relational databases",
-      "tags": [],
+      "tags": ["required-for-junior"],
       "dependencies": [ "rdbms-schemas" ],
-      "resources": [],
+      "resources": [
+        {
+          "name": "Constraints",
+          "type": "documentation",
+          "url": "https://www.postgresql.org/docs/current/static/ddl-constraints.html"
+        }
+      ],
       "abilities": [
         "Know how and when to use foreign keys",
         "Using constraints to enforce data quality"
@@ -334,9 +469,32 @@
       "description": "Stored procedures for relational databases",
       "tags": [],
       "dependencies": [ "rdbms-schemas" ],
-      "resources": [],
+      "resources": [
+        {
+          "name": "PL/pgSQL - SQL Procedural Language",
+          "type": "documentation",
+          "url": "https://www.postgresql.org/docs/current/static/plpgsql.html"
+        },
+        {
+          "name": "Advantages and Drawbacks of Using Stored Procedures",
+          "type": "article",
+          "url": "https://www.seguetech.com/advantages-and-drawbacks-of-using-stored-procedures-for-processing-data/"
+        },
+        {
+          "name": "Trigger Procedures",
+          "type": "documentation",
+          "url": "https://www.postgresql.org/docs/current/static/plpgsql-trigger.html"
+        },
+        {
+          "name": "Trigger Disadvantages",
+          "type": "article",
+          "url": "https://community.toadworld.com/platforms/oracle/w/wiki/5806.trigger-disadvantages"
+        }
+      ],
       "abilities": [
-        "Writing and using stored procedures"
+        "Writing and using stored procedures",
+        "Writing and using triggers",
+        "Knowing procedures/triggers advantages/disadvantages"
       ],
       "assessment-questions": [
         {
@@ -377,13 +535,39 @@
       "description": "Setting up replication, backups, tuning databases",
       "tags": [],
       "dependencies": [ "rdbms-administration-basics" ],
-      "resources": [],
+      "resources": [
+        {
+          "name": "High Availability, Load Balancing, and Replication",
+          "type": "documentation",
+          "url": "https://www.postgresql.org/docs/current/static/high-availability.html"
+        },
+        {
+          "name": "Database dump",
+          "type": "documentation",
+          "url": "https://www.postgresql.org/docs/current/static/backup-dump.html"
+        },
+        {
+          "name": "Partitioning",
+          "type": "documentation",
+          "url": "https://www.postgresql.org/docs/current/static/ddl-partitioning.html"
+        },
+        {
+          "name": "Three Approaches to PostgreSQL Replication and Backup",
+          "type": "other",
+          "url": "https://www.citusdata.com/blog/2018/02/21/three-approaches-to-postgresql-replication/"
+        }
+      ],
       "abilities": [
         "Optimising indexes, constraints, and stored procedures",
         "Making and restoring backups",
-        "Setting up replication"
+        "Setting up replication",
+        "Using partitioning"
       ],
-      "assessment-questions": []
+      "assessment-questions": [
+        {
+          "question": "What are the benefits of partitioning?"
+        }
+      ]
     }
   ],
   "projects": [
