@@ -3,7 +3,7 @@
   "name": "Swag my Finch Up",
   "author": "Iñaki De Tejada",
   "image": "image.jpg",
-  "description": "Get you up and running, building microservices with Finch and Swagger\n\n\nIn this workshop we will build 3 small apis with Finch, a thin layer of purely functional basic blocks on top of Finagle. Finagle is used in production at Twitter and gives you lots of extras that you can easily integrate in your Finch Api. We'll use the "design-first" principle. This means we will describe the endpoints and models in Swagger / OpenAPI specifications. From there, we will implement different apis and guide you through the whole development process finishing with load testing the application with Gatling. ",
+  "description": "Get you up and running, building microservices with Finch and Swagger\n\n\nIn this workshop we will build 3 small apis with Finch, a thin layer of purely functional basic blocks on top of Finagle. Finagle is used in production at Twitter and gives you lots of extras that you can easily integrate in your Finch Api. We'll use the \"design-first\" principle. This means we will describe the endpoints and models in Swagger / OpenAPI specifications. From there, we will implement different apis and guide you through the whole development process finishing with load testing the application with Gatling. ",
   "tags": ["devops", "linux"],
   "core-curriculum": [],
   "teachers": ["Iñaki De Tejada", "Erik Janssen"],
