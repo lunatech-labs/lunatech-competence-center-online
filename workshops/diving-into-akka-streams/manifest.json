@@ -1,0 +1,23 @@
+{
+  "id": "diving-into-akka-streams",
+  "name": "Diving into Akka Streams",
+  "author": "Muayad Ali",
+  "image": "image.jpg",
+  "description": "When Fast Data meets Big Data, Reactive Streams will be your BEST friend.\n\nIn this workshop you’ll learn about akka streams, and develop a sample app which aims to process big and fast data while keep resilient against overload.",
+  "tags": ["akka", "akka-streams", "reactive", "big-data", "fast-data"],
+  "core-curriculum": [],
+  "teachers": ["Muayad Ali"],
+  "contributors": ["Muayad Ali"],
+  "prerequisites": "Some Scala experience.",
+  "preparations": "- Laptop with SBT.\n- Checkout and compile this [repo](https://github.com/GoldenZero/lunatech-akka-streams-workshop)",
+  "schedule": [
+    {
+      "block-name": "Day 1",
+      "description": ""
+    },
+    {
+      "block-name": "Day 2",
+      "description": ""
+    }
+  ]
+}

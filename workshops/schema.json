@@ -1,0 +1,177 @@
+{
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$id": "/properties/id",
+      "type": "string",
+      "title": "Workshop's ID",
+      "default": "",
+      "description": "Workshop's ID, without spaces.",
+      "examples": [
+        "not-awesome-frontend"
+      ]
+    },
+    "name": {
+      "$id": "/properties/name",
+      "type": "string",
+      "title": "Workshop's name",
+      "default": "",
+      "description": "Workshop's name, to be displayed on the UI.",
+      "examples": [
+        "(Not) Awesome Frontend"
+      ]
+    },
+    "description": {
+      "$id": "/properties/description",
+      "type": "string",
+      "title": "Workshop's description",
+      "default": "",
+      "description": "A detailed description stating what's the objective and content of the workshop, so the student gets an overall idea of what will he/she be learning.",
+      "examples": [
+        "Some lenghty description"
+      ]
+    },
+    "image": {
+      "$id": "/properties/image",
+      "type": "string",
+      "title": "Workshop's image",
+      "default": "",
+      "description": "Relative filepath to the Workshop's image, to be displayed on the UI.",
+      "examples": [
+        "image.jpg"
+      ]
+    },
+    "tags": {
+      "$id": "/properties/tags",
+      "type": "array",
+      "items": {
+        "$id": "/properties/tags/items",
+        "type": "string",
+        "title": "Workshop's tag",
+        "default": "",
+        "description": "Tag referring to the workshop's content.",
+        "examples": [
+          "frontend",
+          "javascript"
+        ]
+      }
+    },
+    "core-curriculum": {
+      "$id": "/properties/core-curriculum",
+      "type": "array",
+      "items": {
+        "$id": "/properties/core-curriculum/items",
+        "type": "string",
+        "title": "Core curriculum's ID",
+        "default": "",
+        "description": "If the content is related to a Core Curriculum subject or topic, you may link the workshop with the subject's ID.",
+        "examples": [
+          "html",
+          "java",
+          "scala"
+        ]
+      }
+    },
+    "author": {
+      "$id": "/properties/author",
+      "type": "string",
+      "title": "Workshop's author name",
+      "default": "",
+      "examples": [
+        "John Doe"
+      ]
+    },
+    "teachers": {
+      "$id": "/properties/teachers",
+      "type": "array",
+      "items": {
+        "$id": "/properties/teachers/items",
+        "type": "string",
+        "title": "Workshop's teacher name",
+        "default": "",
+        "description": "A teacher may be different from the author or contributors.",
+        "examples": [
+          "John Doe",
+          "Jane Doe"
+        ]
+      }
+    },
+    "contributors": {
+      "$id": "/properties/contributors",
+      "type": "array",
+      "items": {
+        "$id": "/properties/contributors/items",
+        "type": "string",
+        "title": "Workshop's contributor name",
+        "default": "",
+        "description": "A contributor may be different from the author or teachers.",
+        "examples": [
+          "Jane Doe"
+        ]
+      }
+    },
+    "prerequisites": {
+      "$id": "/properties/prerequisites",
+      "type": "string",
+      "title": "Workshop's prerequisites",
+      "default": "",
+      "description": "What knowledge should the student have before taking this workshop.",
+      "examples": [
+        "There are no special prerequisites, this is an entry-level course.",
+        "Sound knowledge of type classes"
+      ]
+    },
+    "preparations": {
+      "$id": "/properties/preparations",
+      "type": "string",
+      "title": "Workshop's preparations",
+      "default": "",
+      "description": "What must the student do/bring before the first session.",
+      "examples": [
+        "It's useful to have `npm` installed.",
+        "Laptop with SBT"
+      ]
+    },
+    "schedule": {
+      "$id": "/properties/schedule",
+      "type": "array",
+      "items": {
+        "$id": "/properties/schedule/items",
+        "type": "object",
+        "properties": {
+          "block-name": {
+            "$id": "/properties/schedule/items/properties/block-name",
+            "type": "string",
+            "title": "Block's name",
+            "default": "",
+            "description": "If the workshop is to be given on several session, we specify the schedule in a list of blocks or sessions.",
+            "examples": [
+              "Day 1",
+              "Session 1"
+            ]
+          },
+          "description": {
+            "$id": "/properties/schedule/items/properties/description",
+            "type": "string",
+            "title": "Block's description",
+            "default": "",
+            "examples": [
+              "- Introduction to ES5 and jQuery\n- Learning jQuery parts (DOM, Events, Ajax, Plugins)"
+            ]
+          }
+        },
+        "required": [
+          "block-name"
+        ]
+      }
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "author",
+    "prerequisites",
+    "preparations"
+  ]
+}
