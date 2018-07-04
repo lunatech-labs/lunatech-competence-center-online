@@ -64,7 +64,7 @@ trait CoreCurriculumService {
   def getSubjectSummaries: Future[Vector[SubjectSummary]]
 
   def getPersonKnowledge(person: String, subject: String): Future[Vector[String]]
-  def getAllPersonKnowledge(person: String): Future[Map[String, Vector[String]]]
+  def getAllPersonKnowledge(person: String): Future[Map[String, Vector[Vector[String]]]]
   def addPersonKnowledge(person: String, subject: String, topic: String): Future[Unit]
   def removePersonKnowledge(person: String, subject: String, topic: String): Future[Unit]
 }
@@ -102,15 +102,17 @@ class PostgresCoreCurriculumService(transactor: Transactor[Task], subjectDirecto
     Future { query.vector.transact(transactor).unsafeRun }
   }
 
-  override def getAllPersonKnowledge(person: String): Future[Map[String, Vector[String]]] = {
-
+  override def getAllPersonKnowledge(person: String): Future[Map[String, Vector[Vector[String]]]] = {
     val query = sql"""
-      SELECT subject, topic
+      SELECT subject, topic, created_on
       FROM person_knowledge
-      WHERE person = ${person}""".query[(String, String)]
+      WHERE person = ${person}""".query[(String, (String, String))]
 
-    Future { query.vector.transact(transactor).unsafeRun }.map { pairs =>
-      pairs.groupBy(_._1).map { case (s, v) => s -> v.map(_._2) }.toMap
+    Future {
+      query.vector.transact(transactor).unsafeRun
+    }.map { pairs => {
+        pairs.groupBy(_._1).map { case (s, v) => s -> v.map(_._2).map { case (m,n) => Vector(m, n)} }
+      }
     }
   }
 
