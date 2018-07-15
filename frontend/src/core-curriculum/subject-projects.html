@@ -2,6 +2,10 @@
 <link rel="import" href="../../bower_components/vaadin-grid/vaadin-grid.html">
 <link rel="import" href="../../bower_components/marked-element/marked-element.html">
 <link rel="import" href="./project-dependencies.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html">
 
 <dom-module id="subject-projects">
   <template>
@@ -17,8 +21,12 @@
       vaadin-grid {
         height: auto;
       }
-    </style>
 
+      iron-autogrow-textarea {
+        border: none;
+      }
+
+    </style>
     <template is="dom-if" if="[[projects]]">
       <h2>Projects</h2>
 
@@ -32,19 +40,45 @@
           </div>
         </template>
 
-        <vaadin-grid-column width="calc(50% - 100px)">
+        <vaadin-grid-column width="calc(30% - 20px)">
           <template class="header">Project</template>
-          <template>[[item.name]]</template>
+          <template>
+            <iron-autogrow-textarea rows="3" readonly="true" bind-value="{{item.name}}">
+            </iron-autogrow-textarea>
+          </template>
         </vaadin-grid-column>
 
-        <vaadin-grid-column width="calc(50% - 100px)">
+        <vaadin-grid-column width="calc(20% - 50px)">
           <template class="header">Dependencies</template>
-          <template><project-dependencies project-dependencies=[[item.dependencies]] satisfied-dependencies=[[personKnowledge]]></project-dependencies></template>
+          <template>
+            <project-dependencies project-dependencies=[[item.dependencies]]
+                                  satisfied-dependencies=[[personKnowledge]]>
+            </project-dependencies>
+          </template>
         </vaadin-grid-column>
 
+        <vaadin-grid-column width="calc(20% - 50px)">
+          <template class="header">Status</template>
+          <template>
+          <paper-dropdown-menu on-iron-select="_onItemSelected">
+            <paper-listbox id="[[item.id]]" slot="dropdown-content"
+                           selected="{{getSelectedValue(item.id)}}">
+              <paper-item id = "none">Not started</paper-item>
+              <paper-item id = "in-progress">In progress</paper-item>
+              <paper-item id = "done">Done</paper-item>
+            </paper-listbox>
+          </paper-dropdown-menu>
+          </template>
+        </vaadin-grid-column>
+        <vaadin-grid-column width="calc(30% - 50px)">
+          <template class="header">URL</template>
+          <template>
+            <paper-input id="url-input-{{item.id}}" label="url"
+                         value={{item.url}} disabled="[[isUnactiveStatus(item.id)]]"></paper-input>
+            <paper-button id="url-save-{{item.id}}" on-tap="_onUrlSave" disabled="[[isUnactiveStatus(item.id)]]">save</paper-button>
+          </template>
+        </vaadin-grid-column>
       </vaadin-grid>
-
-
     </template>
   </template>
   <script>
@@ -55,49 +89,61 @@
       static get properties () {
         return {
           projects: {
-            type: Object,
+            type: Object
           },
 
           personKnowledge: {
             type: Array
           },
 
-          topics: {
-            type: Array
+          projectStatus: {
+            type: Object,
+            notify: true
           },
 
-          requiredForJuniorDependencies: {
-            type: Array,
-            computed: '_calculateRequiredForJuniorDependencies(topics)'
+          projectUrl: {
+            type: Object,
+            notify: true
           }
         }
       }
-
-      static get observers () {
-        return [
-          '_calculateProjectDependencies(projects, requiredForJuniorDependencies)'
-        ]
-      }
-
-      _calculateRequiredForJuniorDependencies(topics) {
-        if(topics) {
-          return topics.filter(topic => {
-            if(topic.tags) {
-              return topic.tags.includes('required-for-junior')
-            } else {
-              return false;
-            }
-          }).map(topic => topic.id);
+      getSelectedValue(projectid) {
+        var status = this.projects.find(pr => {
+          return pr.id === projectid
+        }).status;
+        switch (status) {
+          case 'none': return 0;
+          case 'in-progress': return 1;
+          case 'done': return 2;
         }
       }
 
-      _calculateProjectDependencies(projects, requiredForJuniorDependencies) {
-        if(projects) {
-          projects.forEach(function(project) {
-            if(project.dependencies == undefined) {
-              project.dependencies = requiredForJuniorDependencies;
-              console.debug("Setting dependencies of project " + project.name + " to be all the required-for-junior tagged topics: " + requiredForJuniorDependencies);
-            }
+      isUnactiveStatus(projectid) {
+        var status = this.projects.find(pr => {
+          return pr.id === projectid
+        }).status;
+        if (status === 'none') return true;
+          else return false;
+      }
+
+      _onItemSelected(e) {
+        var selectedItem = e.target.selectedItem;
+        var id = e.target.id;
+        var projectId = e.model.__data.item.id;
+        if (selectedItem) {
+          var status = {project: projectId, status: selectedItem.id};
+          if (this.projectStatus && this.projectStatus.url)
+            status.url = this.projectStatus.url
+          this.set('projectStatus', status);
+          <!--update main array-->
+          var project = this.projects.find(pr => {
+            return pr.id === projectId
+          });
+          project.status = status.status;
+          <!--set url input and button disabled if status is 'Not Started'-->
+          Polymer.RenderStatus.afterNextRender(this, () => {
+            this.shadowRoot.querySelector("#url-save-" + id).disabled = (selectedItem.id === 'none')
+            this.shadowRoot.querySelector("#url-input-" + id).disabled = (selectedItem.id === 'none')
           });
         }
       }
@@ -109,8 +155,19 @@
         }
       }
 
+      _onUrlSave(e) {
+        var projectId = e.model.__data.item.id
+        var url = this.shadowRoot.querySelector("#url-input-" + projectId).value
+        var pr = {project: projectId, url: url};
+        this.set('projectUrl', pr)
+        <!--update main array-->
+        var project = this.projects.find(pr => {
+          return pr.id === projectId
+        });
+        project.url = url;
+        alert('saved!');
+      }
     }
-
     customElements.define(SubjectProjects.is, SubjectProjects);
   </script>
 </dom-module>

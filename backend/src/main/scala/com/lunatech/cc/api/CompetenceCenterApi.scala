@@ -110,15 +110,20 @@ object CompetenceCenterApi extends App {
     coreCurriculumController.`GET /core-curriculum` :+:
     coreCurriculumController.`GET /people/{email}/knowledge` :+:
     coreCurriculumController.`GET /people/me/knowledge/{subject}` :+:
+    coreCurriculumController.`GET /people/me/projects/{subject}` :+:
     coreCurriculumController.`GET /people/{email}/knowledge/{subject}` :+:
+    coreCurriculumController.`GET /people/{email}/projects` :+:
+    coreCurriculumController.`GET /people/{email}/projects/{subject}` :+:
     coreCurriculumController.`PUT /people/me/knowledge/{subject}/{topic}` :+:
     coreCurriculumController.`DELETE /people/me/knowledge/{subject}/{topic}`:+:
+    coreCurriculumController.`PUT /people/me/projects/{subject}/{project}/{status}`:+:
+    coreCurriculumController.`DELETE /people/me/projects/{subject}/{project}`:+:
+    coreCurriculumController.`PUT /people/me/projects/{subject}/{project}?url={url}`:+:
     studentController.`GET /students` :+:
     studentController.`GET /students/me` :+:
     studentController.`GET /students/{studentEmail}` :+:
     careerFrameworkController.`GET /career` :+:
     careerFrameworkController.`GET /career/{shortname}`
-
   ).toServiceAs[Application.Json]
 
   val HttpsOnlyFilter = new SimpleFilter[Request, Response] {
