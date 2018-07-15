@@ -48,7 +48,7 @@ class CoreCurriculumController(coreCurriculumService: CoreCurriculumService, aut
     } yield Ok(())
   }
 
-  val `GET /people/{email}/knowledge`: Endpoint[Map[String, Vector[String]]] = get("people" :: string :: "knowledge" :: authenticated) { (person: String, apiUser: ApiUser) =>
+  val `GET /people/{email}/knowledge`: Endpoint[Map[String, Vector[Vector[String]]]] = get("people" :: string :: "knowledge" :: authenticated) { (person: String, apiUser: ApiUser) =>
     for {
       knowledge <- coreCurriculumService.getAllPersonKnowledge(person)
     } yield Ok(knowledge)

@@ -27,6 +27,14 @@
         margin-left: -50px;
         margin-top: -50px;
       }
+
+      .log-table {
+        padding: 0 15px;
+      }
+
+      .log-table td {
+        padding: 0 20px;
+      }
     </style>
     <iron-meta id="meta"></iron-meta>
     <iron-ajax id="ajaxLoad"
@@ -35,29 +43,51 @@
                last-response="{{curriculum}}"></iron-ajax>
 
     <iron-ajax id="progressLoad"
-              url="/api/people/[[email]]/knowledge"
-              loading="{{loading}}"
-              last-response="{{progress}}"></iron-ajax>
+               url="/api/people/[[email]]/knowledge"
+               loading="{{loading}}"
+               last-response="{{progress}}"></iron-ajax>
 
     <paper-spinner active=[[loading]]></paper-spinner>
-
+    <tr>
+      <h3>Progress on required knowledge</h3>
+    </tr>
     <table>
       <thead>
-        <tr>
-          <th>Subject</th><th>Done</th><th>Progress</th>
-        </tr>
+      <tr>
+        <th>Subject</th><th>Done</th><th>Progress</th>
+      </tr>
       </thead>
       <tbody>
-        <template is="dom-repeat" items=[[summary]] mutable-data>
-          <tr>
-            <td><a href="[[basePath]]/[[item.id]]">[[item.name]]</a></td>
-            <td>[[item.known_required]] / [[item.required]]</td>
-            <td><paper-progress value=[[item.progress]]</td>
-          </tr>
-        </template>
+      <template is="dom-repeat" items=[[summary]] mutable-data>
+        <tr>
+          <td><a href="[[basePath]]/[[item.id]]">[[item.name]]</a></td>
+          <td>[[item.known_required]] / [[item.required]]</td>
+          <td><paper-progress value=[[item.progress]]</td>
+        </tr>
+      </template>
       </tbody>
     </table>
-
+    <tr>
+      <h3>Activity log</h3>
+    </tr>
+    <table class="log-table">
+      <thead>
+      <tr>
+        <th>Date</th>
+        <th>Subject</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <template is="dom-repeat" items=[[topicLog]] mutable-data>
+        <tr>
+          <td>[[item.date]]</td>
+          <td><a href="[[basePath]]/[[item.subject]]">[[item.subject_name]]</a></td>
+          <td>[[item.message]]</td>
+        </tr>
+      </template>
+      </tbody>
+    </table>
   </template>
   <script>
   (function () {
@@ -84,6 +114,11 @@
         summary: {
           type: Array,
           observer: '_onSummaryChange'
+        },
+
+        topicLog: {
+          type: Array,
+          observer: '_onTopicLogChange'
         }
       },
 
@@ -104,6 +139,10 @@
         console.debug("Summary change")
       },
 
+      _onTopicLogChange: function() {
+        console.debug("Topic log change")
+      },
+
       _onEmailChange: function() {
         this.$.progressLoad.generateRequest();
       },
@@ -111,36 +150,72 @@
       _onProgressChange: function() {
         console.debug("_onProgressChange")
         if(this.progress != null) {
-
           var summary = []
+          var topicLog = []
 
+          function compare(a, b) {
+            let diff = b.date - a.date;
+            if (a.date == b.date) {
+              if (a.message == "subject finished")
+                return -1;
+              if (b.message == "subject finished")
+                return 1;
+            }
+            return diff;
+          }
           this.curriculum.forEach(function(subject) {
             var knowledge = this.progress[subject.id] || [];
+            let allTopics = knowledge.map(function (topic) {
+              var [topicId, date] = topic;
+              var topicName = subject.topics.find(t2 => t2.id === topicId).name
+              return {
+                subject: subject.id,
+                subject_name: subject.name,
+                topic: topicId,
+                topic_name: topicName,
+                message: "topic \"" + topicName + "\" marked as known",
+                date: date
+              }
+            });
+            let known_topics = allTopics.map(t => t.topic);
+            topicLog = topicLog.concat(allTopics);
 
+            topicLog.sort(compare);
             subject.required = 0;
             subject.known_required = 0;
-
             subject.topics.forEach(function(topic) {
-              var known = knowledge && knowledge.includes(topic.id);
+              var known = known_topics && known_topics.includes(topic.id);
               var required = topic.tags.includes("required-for-junior");
               var known_required = known && required;
               if(required) { subject.required++ }
               if(known_required) { subject.known_required++ }
             });
 
-            if(subject.required == 0) {
+            if (known_topics.length == subject.topics.length) {
+              var logItem = {
+                subject: subject.id,
+                subject_name: subject.name,
+                message: "subject finished"
+              };
+              if (topicLog[0]) {
+                logItem.date = topicLog[0].date
+              }
+              topicLog.push(logItem);
+            }
+
+            if(subject.required === 0) {
               subject.progress = 100;
             } else {
               subject.progress = (subject.known_required / subject.required) * 100;
             }
-
             summary.push(subject);
           }.bind(this));
           this.set('summary', summary);
+          topicLog.sort(compare);
+          this.set('topicLog', topicLog);
+
         }
-
       }
-
     });
   }());
   </script>
