@@ -1,0 +1,178 @@
+[
+  {
+    "name": "Common",
+    "shortName": "CMN",
+    "description": "The basics we all should know",
+    "curriculum": "common",
+    "skills": {
+      "interpersonal": [
+        "Mentoring",
+        "Sociable",
+        "Communication Skills"
+      ],
+      "leadership": [
+        "Strategic contribution",
+        "Active listening",
+        "team spirit"
+      ],
+      "managerial": [
+        "Hours tracking",
+        "Project status knowledge",
+        "Scrum",
+        "Kanban",
+        "Agile"
+      ]
+    }
+  },
+  {
+    "name": "Trainee",
+    "shortName": "TRN",
+    "description": "A talented person with basic CS knowledge that could grow into a JSE position quickly (within 2 months), but is not immediately employable on a commercial Java or Scala project. For example because they didn't do enough Java or Scala at University, or are experienced at another language.",
+    "workableLevel": "junior",
+    "yearsOfExperience": 0,
+    "specialized": false,
+    "canBeOa": true,
+    "canBePl": false,
+    "requiredCurriculum": "required-for-trainee",
+    "optionalCurriculum": "optional-for-trainee",
+    "skills": {
+      "interpersonal": [
+        "Respectfull",
+        "Nice attitude",
+        "Willing to learn",
+        "Team working"
+      ],
+      "leadership": [],
+      "managerial": []
+    }
+  },
+  {
+    "name": "Junior Software Engineer",
+    "shortName": "JSE",
+    "description": "Somebody fresh from a CS education or a self-taught person with one or two years of experience. This person has enough hands-on experience with Java or Scala to be placed at a customer and contribute immediately.",
+    "workableLevel": "junior",
+    "yearsOfExperience": 1,
+    "specialized": false,
+    "canBeOa": false,
+    "canBePl": false,
+    "requiredCurriculum": "required-for-junior",
+    "optionalCurriculum": "optional-for-junior",
+    "skills": {
+      "interpersonal": [
+        "Respectfull",
+        "Nice attitude",
+        "Willing to learn",
+        "Team working"
+      ],
+      "leadership": [],
+      "managerial": []
+    }
+  },
+  {
+    "name": "Software Engineer",
+    "shortName": "SE",
+    "description": "A software engineer with a minimum of three years experience in a relevant language",
+    "workableLevel": "experienced",
+    "yearsOfExperience": 3,
+    "specialized": true,
+    "canBeOa": false,
+    "canBePl": true,
+    "requiredCurriculum": "required-for-software-engineer",
+    "optionalCurriculum": "optional-for-software-engineer",
+    "specilizations": [
+      {
+        "name": "java",
+        "requiredCurriculum": "required-for-java-engineer",
+        "optionalCurriculum": "optional-for-java-software-engineer"
+      },
+      {
+        "name": "scala",
+        "requiredCurriculum": "required-for-scala-engineer",
+        "optionalCurriculum": "optional-for-scala-software-engineer"
+      }
+    ],
+    "skills": {
+      "interpersonal": [
+        "Communication skills",
+        "proactiveness to communicate with the client"
+      ],
+      "leadership": [
+        "Support for the SSE/PSE on helping the JSE",
+        "Support for the SSE/PSE on Design of the project"
+      ],
+      "managerial": []
+    }
+  },
+  {
+    "name": "Senior Software Engineer",
+    "shortName": "SSE",
+    "description": "A software engineer with a minimum of seven or more years of experience in the industry, and several projects.",
+    "workableLevel": "experienced",
+    "yearsOfExperience": 7,
+    "specialized": true,
+    "canBeOa": true,
+    "canBePl": true,
+    "requiredCurriculum": "required-for-senior-software-engineer",
+    "optionalCurriculum": "optional-for-senior-software-engineer",
+    "specilizations": [
+      {
+        "name": "java",
+        "requiredCurriculum": "required-for-senior-java-engineer",
+        "optionalCurriculum": "optional-for-senior-java-engineer"
+      },
+      {
+        "name": "scala",
+        "requiredCurriculum": "required-for-senior-scala-engineer",
+        "optionalCurriculum": "optional-for-senior-scala-engineer"
+      }
+    ],
+    "skills": {
+      "interpersonal": [
+        "Able to recognize problems with colleagues and act on them",
+        "Able to identify problems with the client and act on them"
+      ],
+      "leadership": [
+        "Support for the PL on helping the JSE"
+      ],
+      "managerial": [
+        "Takeover a running project and maintain the work flowing"
+      ]
+    }
+  },
+  {
+    "name": "Principal Software Engineer",
+    "shortName": "PSE",
+    "description": "A person that has strong communication skills and delivery capabilities and that can kick-start a new project in a new organisation, being a quarter maker.",
+    "workableLevel": "experienced",
+    "yearsOfExperience": 7,
+    "specialized": true,
+    "canBeOa": true,
+    "canBePl": true,
+    "requiredCurriculum": "required-for-principal-software-engineer",
+    "optionalCurriculum": "optional-for-principal-software-engineer",
+    "specilizations": [
+      {
+        "name": "java",
+        "requiredCurriculum": "required-for-principal-java-engineer",
+        "optionalCurriculum": "optional-for-principal-java-engineer"
+      },
+      {
+        "name": "scala",
+        "requiredCurriculum": "required-for-principal-scala-engineer",
+        "optionalCurriculum": "optional-for-principal-scala-engineer"
+      }
+    ],
+    "skills": {
+      "interpersonal": [
+        "Effective at getting familiar with a new environment or organization",
+        "Gets things done"
+      ],
+      "leadership": [
+        "Lead a small team of people when starting a new project"
+      ],
+      "managerial": [
+        "Manage a starting project"
+      ]
+    }
+  }
+]
