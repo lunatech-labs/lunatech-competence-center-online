@@ -131,3 +131,5 @@ buildFrontend := {
 
   targetDir
 }
+
+addCommandAlias("lint", "all compile:scalafix test:scalafix")
