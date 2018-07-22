@@ -1,0 +1,236 @@
+{
+  "id": "cassandra",
+  "name": "Apache Cassandra",
+  "description": "The Apache Cassandra database is the right choice when you need scalability and high availability without compromising performance. Linear scalability and proven fault-tolerance on commodity hardware or cloud infrastructure make it the perfect platform for mission-critical data.",
+  "tags": ["big data", "fundamentals","cassandra"],
+  "image": "/images/cassandra.png",
+  "topics": [
+    {
+      "id": "nosql-fundamentals",
+      "name": "NoSql Fundamentals",
+      "description": "NoSQL databases are purpose built for specific data models and have flexible schemas for building modern applications. NoSQL databases are widely recognized for their ease of development, functionality, and performance at scale. They use a variety of data models, including document, graph, key-value, in-memory, and search.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "NoSql Fundamentals",
+          "type": "documentation",
+          "url": "https://www.toptal.com/database/the-definitive-guide-to-nosql-databases",
+          "tags": ["university"]
+        },
+        {
+          "name": "Introduction to NoSql databases",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=qI_g07C_Q5I"
+        }
+      ],
+      "abilities": [
+        "Know Why we use NoSql databases",
+        "Know characteristics of NoSql databases",
+        "Know different type of NoSql databases"
+      ],
+
+      "assessment-questions": [
+        { "question": "What are the types of NoSql" },
+        { "question": "What is difference between Sql and NoSql" }
+      ]
+    },
+    {
+      "id": "cap-theorem",
+      "name": "CapTheorem",
+      "description": "In theoretical computer science, the CAP theorem, also named Brewer's theorem after computer scientist Eric Brewer, states that it is impossible for a distributed data store to simultaneously provide more than two out of the following three guarantees",
+      "tags": ["required-for-junior"],
+      "dependencies": ["nosql-fundamentals"],
+      "resources": [
+        {
+          "name": "CAP Theorem",
+          "type": "documentation",
+          "url": "https://mwhittaker.github.io/blog/an_illustrated_proof_of_the_cap_theorem/"
+        },
+        {
+          "name": "CAP Theorem for cassandra",
+          "type": "documentation",
+          "url": "https://teddyma.gitbooks.io/learncassandra/content/about/the_cap_theorem.html"
+        },
+        {
+          "name": "Cap Theorem Explanation",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=wKfe36drJsk"
+        }
+      ],
+      "abilities": [
+        "Basic concepts of CAP Theorem",
+        "Different NoSql databases stands where in CAP"
+      ],
+
+      "assessment-questions": [
+        { "question": "What is consistency, availability and Partition tolerance?" },
+        { "question": "Cassandra stands where in cap theorem?" }
+      ]
+    },
+    {
+      "id": "apache-cassandra",
+      "name": "Introduction to Apache Cassandra",
+      "description": "Apache Cassandra is a massively scalable open source non-relational database that offers continuous availability, linear scale performance, operational simplicity and easy data distribution across multiple data centers and cloud availability zones. Cassandra was originally developed at Facebook, was open sourced in 2008, and became a top-level Apache project in 2010.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Introduction to Apache Cassandra",
+          "type": "documentation",
+          "url": "https://academy.datastax.com/resources/brief-introduction-apache-cassandra",
+          "tags": ["official"]
+        },
+        {
+          "name": "Introduction to Apache Cassandra ",
+          "type": "video",
+          "url": "https://academy.datastax.com/resources/ds101-introduction-cassandra"
+        }
+      ],
+      "dependencies": ["cap-theorem"],
+      "abilities": [
+        "Know components of Apache Spark",
+        "Run spark shell and basic examples in it",
+        "Understanding of Apache Spark Architecture"
+      ],
+      "assessment-questions": [
+        { "question": "What are the key features of apache cassandra" }
+      ]
+    },
+    {
+      "id": "core-concepts",
+      "name": "Core Concepts and architecture of Apache cassandra",
+      "description": "Core technology at the heart of Apache Cassandra™ and DataStax Enterprise deployments. You’ll learn how to install and configure an Apache Cassandra instance, the basics of data modeling, read/write paths, internal architecture, tools, and more.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Core Concepts and architecture",
+          "type": "video",
+          "url": "https://academy.datastax.com/resources/ds201-cassandra-core-concepts"
+        }
+      ],
+      "dependencies": ["apache-cassandra"],
+      "abilities": [
+        "How internally read/ write works",
+        "Architecture of apache cassandra",
+        "Understand the concepts of keys in cassandra"
+      ],
+      "assessment-questions": [
+        { "question": "What is difference between partition key, clustering key and primary key?" },
+        { "question": "Cassandra has master-slave or peer-peer architecture?" },
+        { "question": "What are the vnodes in cassandra" }
+      ]
+    },
+    {
+      "id": "data-modeling",
+      "name": "Data modeling",
+      "description": "Data modeling techniques essential to a successful Apache Cassandra™ and DataStax Enterprise deployment.  You’ll learn conceptual data modeling techniques, principles and methodology, design techniques and optimization, and review select data modeling use cases.",
+      "resources": [
+        {
+          "name": "Data Modeling",
+          "type": "documentation",
+          "url": "https://docs.datastax.com/en/cql/3.3/cql/ddl/dataModelingApproach.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Data Modeling with Apache cassandra",
+          "type": "video",
+          "url": "https://academy.datastax.com/resources/ds220-data-modeling"
+        }
+      ],
+      "dependencies": ["core-concepts"],
+      "abilities": [
+        "What is conceptual, logical and physical models",
+        "How to do data modeling with apache cassandra",
+        "Data consistency",
+        "Data replication"
+      ],
+      "assessment-questions": [
+        { "question": "Cassandra modeling is query driven modeling or data driven modeling" },
+        { "question": "What are the different type of consistency in cassandra reads and writes" }
+      ]
+    },
+    {
+      "id": "mat-view",
+      "name": "Materialized views",
+      "description": "A materialized view is a table built from data in another table with a new primary key and new properties. Queries are optimized by the primary key definition.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Materialized view",
+          "type": "documentation",
+          "url": "https://docs.datastax.com/en/cql/3.3/cql/cql_using/useOverviewMV.html",
+          "tags": ["official"]
+        }
+      ],
+      "dependencies": ["core-concepts"],
+      "abilities": [
+        "How to create Materialized view",
+        "Use casses of Materialized view"
+      ],
+      "assessment-questions": [
+        { "question": "Materialized view can use different keys column from the base table" }
+      ]
+    },
+    {
+      "id": "cassandra-driver",
+      "name": "Cassandra driver",
+      "description": "Driver to connect your applications to cassandra cluster",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Cassandra Java driver",
+          "type": "documentation",
+          "url": "https://docs.datastax.com/en/developer/java-driver/3.0/",
+          "tags": ["official"]
+        },
+        {
+          "name": "Cassandra phantom",
+          "type": "documentation",
+          "url": "https://github.com/outworkers/phantom"
+        }
+      ],
+      "dependencies": ["core-concepts"],
+      "abilities": [
+        "Create Datasets/Dataframe",
+        "Run queries on Datasets/Dataframe using datasets API's",
+        "Run queries on Datasets/Dataframe using plain SQL"
+      ],
+      "assessment-questions": [
+        { "question": "Create dataframe from RDD and query on it" }
+      ]
+    },
+    {
+      "id": "cassandra-spark",
+      "name": "Cassandra with Apache spark",
+      "description": "You will learn how to effectively and efficiently solve analytical problems with Apache Spark™, Apache Cassandra™, and DataStax Enterprise. You will learn about Spark API, Spark-Cassandra Connector, Spark SQL, Spark Streaming, and crucial performance optimization techniques.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Cassandra with Apache spark",
+          "type": "video",
+          "url": "https://academy.datastax.com/resources/getting-started-apache-spark",
+          "tags": ["official"]
+        },
+        {
+          "name": "Cassandra spark driver",
+          "type": "documentation",
+          "url": "https://github.com/datastax/spark-cassandra-connector",
+          "tags": ["official"]
+        }
+      ],
+      "dependencies": ["core-concepts","cassandra-driver"],
+      "abilities": [
+        "How to connect spark application to cassandra cluster"
+      ],
+      "assessment-questions": [
+      ]
+    }
+  ],
+
+  "projects": [
+    {
+      "id": "cassandra-modeling-project",
+      "name": "Data modeling in your application",
+      "description": "The goal of this project is to Modeling cassandra tables and write crud applications using one of the cassandra driver and designed models"
+    }
+  ]
+}
