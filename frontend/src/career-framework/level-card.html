@@ -258,11 +258,11 @@
       }
 
       canBeOa (level) {
-        return level['can-be-oa'];
+        return level['canBeOa'];
       }
 
       canBePl (level) {
-        return level['can-be-pl'];
+        return level['canBePl'];
       }
 
       isSpecialized (level) {
@@ -284,12 +284,12 @@
       }
 
       computeRequiredAbilities (abilities) {
-        let tag = this.level['required-curriculum'];
+        let tag = this.level['requiredCurriculum'];
         return `# Required\n${this.computeAbilities(this.abilities, tag)}`;
       }
 
       computeOptionalAbilities (abilities) {
-        let tag = this.level['optional-curriculum'];
+        let tag = this.level['optionalCurriculum'];
         return `# Optional\n${this.computeAbilities(this.abilities, tag)}`;
       }
 
@@ -305,22 +305,22 @@
       }
 
       computeRequiredJavaAbilities (abilities) {
-        let text = this.computeSpecializationAbilities(abilities, 'java', 'required-curriculum');
+        let text = this.computeSpecializationAbilities(abilities, 'java', 'requiredCurriculum');
         return `# Required\n${text}`;
       }
 
       computeOptionalJavaAbilities (abilities) {
-        let text = this.computeSpecializationAbilities(abilities, 'java', 'optional-curriculum');
+        let text = this.computeSpecializationAbilities(abilities, 'java', 'optionalCurriculum');
         return `# Optional\n${text}`;
       }
 
       computeRequiredScalaAbilities (abilities) {
-        let text = this.computeSpecializationAbilities(abilities, 'scala', 'required-curriculum');
+        let text = this.computeSpecializationAbilities(abilities, 'scala', 'requiredCurriculum');
         return `# Required\n${text}`;
       }
 
       computeOptionalScalaAbilities (abilities) {
-        let text = this.computeSpecializationAbilities(abilities, 'scala', 'optional-curriculum');
+        let text = this.computeSpecializationAbilities(abilities, 'scala', 'optionalCurriculum');
         return `# Optional\n${text}`;
       }
     }

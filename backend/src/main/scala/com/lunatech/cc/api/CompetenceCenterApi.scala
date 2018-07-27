@@ -38,7 +38,7 @@ object CompetenceCenterApi extends App {
   object Config {
     case class ApplicationConfig(mode: String)
     case class HttpConfig(port: Int)
-    case class ServicesConfig(people: PeopleService.Config, workshops: StudentService.Config)
+    case class ServicesConfig(people: PeopleService.Config, workshops: StudentService.Config, career: CareerFrameworkService.Config)
 
     sealed trait TokenVerifierConfig
     case class Google(google: GoogleConfig) extends TokenVerifierConfig
@@ -69,6 +69,7 @@ object CompetenceCenterApi extends App {
   val peopleService = ApiPeopleService(config.services.people)
   val coreCurriculumService = new PostgresCoreCurriculumService(transactor, new File(config.coreCurriculum.directory))
   val studentService = new PostgresStudentService(transactor, peopleService)
+  val careerFrameworkService = CareerFrameworkServiceImpl(config.services.career)
 
   val tokenVerifier = config.tokenVerifier match {
     case Config.Fake(fakeConfig) =>
@@ -95,6 +96,7 @@ object CompetenceCenterApi extends App {
   val peopleController = new PeopleController(peopleService, authenticatedUser)
   val coreCurriculumController = new CoreCurriculumController(coreCurriculumService, authenticated, authenticatedUser)
   val studentController = new StudentController(studentService, authenticated, authenticatedUser)
+  val careerFrameworkController = new CareerFrameworkController(careerFrameworkService, authenticated, authenticatedUser)
   val service = (
     cvController.`GET /employees` :+:
     cvController.`GET /employees/me` :+:
@@ -113,8 +115,9 @@ object CompetenceCenterApi extends App {
     coreCurriculumController.`DELETE /people/me/knowledge/{subject}/{topic}`:+:
     studentController.`GET /students` :+:
     studentController.`GET /students/me` :+:
-    studentController.`GET /students/{studentEmail}`
-
+    studentController.`GET /students/{studentEmail}` :+:
+    careerFrameworkController.`GET /career` :+:
+    careerFrameworkController.`GET /career/{shortname}`
 
   ).toServiceAs[Application.Json]
 

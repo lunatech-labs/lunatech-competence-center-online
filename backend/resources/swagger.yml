@@ -76,7 +76,27 @@ paths:
           description: Returns PDF
           schema: 
             type: file
+  /career:
+    get:
+      description: Get list of career framework levels
+      responses:
+        '200':
+          description: A list of the levels of the career framework
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Career'
 
+  /career/{shortname}:
+    get:
+      description: Get the data of an specific level of the framework
+      parameters:
+        - $ref: '#/parameters/shortname'
+      responses:
+        '200':
+          description: get specific framework level data
+          schema:
+            $ref: '#/definitions/Career'
 parameters:
   employeeData:
     in: body
@@ -96,6 +116,12 @@ parameters:
     in: path
     name: employeeId
     description: todo
+    required: true
+    type: string
+  shortname:
+    in: path
+    name: shortname
+    description: Shortname of the level as defined in the career framework
     required: true
     type: string
 
@@ -170,6 +196,62 @@ definitions:
         type: string
       countryCode:
         type: string
+
+  Skills:
+    type: object
+    properties:
+      interpersonal:
+        type: array
+        items:
+          type: string
+      leadership:
+        type: array
+        items:
+          type: string
+      managerial:
+        type: array
+        items:
+          type: string
+
+  Specialization:
+    type: object
+    properties:
+      name:
+        type: string
+      requiredCurriculum:
+        type: string
+      optionalCurriculum:
+        type: string
+
+  Career:
+    type: object
+    properties:
+      name:
+        type: string
+      shortName:
+        type: string
+      description:
+        type: string
+      workableLevel:
+        type: string
+      yearsOfExperience:
+        type: number
+      specialized:
+        type: boolean
+      canBeOa:
+        type: boolean
+      canBePl:
+        type: boolean
+      requiredCurriculum:
+        type: string
+      optionalCurriculum:
+        type: string
+      specializations:
+        type: array
+        items:
+          $ref: '#/definitions/Specialization'
+      skills:
+        $ref: '#/definitions/Skill'
 
   CV:
     type: object
