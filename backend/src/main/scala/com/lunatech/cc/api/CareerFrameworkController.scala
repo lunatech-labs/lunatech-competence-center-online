@@ -12,16 +12,17 @@ class CareerFrameworkController(careerFrameworkService: CareerFrameworkService, 
 
   lazy val logger: Logger = getLogger(getClass)
 
-  val `GET /career`: Endpoint[Json] = get("career" :: authenticatedUser) { (user: EnrichedGoogleUser) =>
+  val `GET /career`: Endpoint[Json] = get("career") { () =>
     for {
       levels <- careerFrameworkService.findAll
     } yield Ok(levels.asJson)
   }
 
-  val `GET /career/{shortname}`: Endpoint[Json] = get("career" :: string :: authenticatedUser) { (shortname: String, user: EnrichedGoogleUser) =>
+  val `GET /career/{shortname}`: Endpoint[Json] = get("career" :: string) { (shortname: String) =>
     for {
       level <- careerFrameworkService.findByShortName(shortname)
     } yield Ok(level.asJson)
   }
 
 }
+

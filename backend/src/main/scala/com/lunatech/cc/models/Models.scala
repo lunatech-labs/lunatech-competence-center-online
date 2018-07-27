@@ -182,4 +182,14 @@ package object Models {
   implicit val cvDecoder: Decoder[CV] = deriveDecoder[CV]
 
 
+  implicit val skillsEncoder: ObjectEncoder[Skills] = deriveEncoder[Skills]
+  implicit val skillsDecoder: Decoder[Skills] = deriveDecoder[Skills]
+
+  implicit val specializationEncoder: ObjectEncoder[Specialization] = deriveEncoder[Specialization]
+  implicit val specializationDecoder: Decoder[Specialization] = deriveDecoder[Specialization]
+
+  implicit val careerLevelEncoder: ObjectEncoder[CareerLevel] = deriveEncoder[CareerLevel]
+  implicit val careerLevelDecoder: Decoder[CareerLevel] = deriveDecoder[CareerLevel]
+
+
 }

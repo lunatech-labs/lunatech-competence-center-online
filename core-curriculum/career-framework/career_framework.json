@@ -79,7 +79,7 @@
     "canBePl": true,
     "requiredCurriculum": "required-for-software-engineer",
     "optionalCurriculum": "optional-for-software-engineer",
-    "specilizations": [
+    "specializations": [
       {
         "name": "java",
         "requiredCurriculum": "required-for-java-engineer",
@@ -114,7 +114,7 @@
     "canBePl": true,
     "requiredCurriculum": "required-for-senior-software-engineer",
     "optionalCurriculum": "optional-for-senior-software-engineer",
-    "specilizations": [
+    "specializations": [
       {
         "name": "java",
         "requiredCurriculum": "required-for-senior-java-engineer",
@@ -150,7 +150,7 @@
     "canBePl": true,
     "requiredCurriculum": "required-for-principal-software-engineer",
     "optionalCurriculum": "optional-for-principal-software-engineer",
-    "specilizations": [
+    "specializations": [
       {
         "name": "java",
         "requiredCurriculum": "required-for-principal-java-engineer",
