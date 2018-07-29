@@ -99,7 +99,7 @@
       "name": "Workflows",
       "description": "Different projects require different workflows in git. This is more a management topic than a technical topic, but it has big implications for how you deal with git. Being able to explain the benefits of several workflows, you can recommend the best method for any project.",
       "tags": [
-        "required-for-medior"
+        "required-for-software-engineer"
       ],
       "dependencies": [
         "git-branching"
@@ -148,7 +148,7 @@
       "name": "Intermediate topics",
       "description": "In any large project it becomes very useful to have a lot of git knowledge.\nCreating a useful history of commits is beneficial to everyone working with the repository, and can help resolve issues in the future.\nBesides being able to squash your commits, it is sometimes necessary to merge only specific commits or changes.",
       "tags": [
-        "required-for-medior"
+        "required-for-software-engineer"
       ],
       "dependencies": [
         "git-branching"
@@ -205,7 +205,7 @@
       "name": "Advanced topics",
       "description": "Mastering git involves a good understanding of the git internals. You are able to solve any git problem using the command line tool, since all graphical git tools eventually use the command line underneath. You can recover accidentally deleted branches or commits lost due to hard resets. You know how to truly delete files from the history, and you know the implications of doing so.",
       "tags": [
-        "required-for-senior"
+        "required-for-senior-software-engineer"
       ],
       "dependencies": [
         "git-intermediate"

@@ -83,12 +83,12 @@
       {
         "name": "java",
         "requiredCurriculum": "required-for-java-engineer",
-        "optionalCurriculum": "optional-for-java-software-engineer"
+        "optionalCurriculum": "optional-for-java-engineer"
       },
       {
         "name": "scala",
         "requiredCurriculum": "required-for-scala-engineer",
-        "optionalCurriculum": "optional-for-scala-software-engineer"
+        "optionalCurriculum": "optional-for-scala-engineer"
       }
     ],
     "skills": {

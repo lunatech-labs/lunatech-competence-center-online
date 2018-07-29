@@ -88,32 +88,6 @@
           return;
         }
 
-        // FIXME Remove translation object when CC and CF are conciliated.
-        let translations = {
-          'required-for-trainee': 'required-for-junior',
-          'optional-for-trainee': 'optional-for-junior',
-          'required-for-junior': 'required-for-junior',
-          'optional-for-junior': 'optional-for-junior',
-          'required-for-software-engineer': 'required-for-medior',
-          'optional-for-software-engineer': 'optional-for-medior',
-          'required-for-java-engineer': 'required-for-java-medior',
-          'optional-for-java-software-engineer': 'optional-for-java-medior',
-          'required-for-scala-engineer': 'required-for-scala-medior',
-          'optional-for-scala-software-engineer': 'optional-for-scala-medior',
-          'required-for-senior-software-engineer': 'required-for-senior',
-          'optional-for-senior-software-engineer': 'optional-for-senior',
-          'required-for-senior-java-engineer': 'required-for-java-senior',
-          'optional-for-senior-java-engineer': 'optional-for-java-senior',
-          'required-for-senior-scala-engineer': 'required-for-scala-senior',
-          'optional-for-senior-scala-engineer': 'optional-for-scala-senior',
-          'required-for-principal-software-engineer': 'required-for-senior',
-          'optional-for-principal-software-engineer': 'optional-for-senior',
-          'required-for-principal-java-engineer': 'required-for-java-senior',
-          'optional-for-principal-java-engineer': 'optional-for-java-senior',
-          'required-for-principal-scala-engineer': 'required-for-scala-senior',
-          'optional-for-principal-scala-engineer': 'optional-for-scala-senior'
-        };
-
         let abilities = this.levels.reduce(function (acc, level) {
           if (level['requiredCurriculum']) {
             acc[level['requiredCurriculum']] = [];
@@ -133,11 +107,10 @@
 
         let g = this.graphs
         Object.keys(abilities).forEach(function (cfLevel) {
-          let levelAbilities = abilities[cfLevel],
-              translation = translations[cfLevel];
+          let levelAbilities = abilities[cfLevel];
 
           g.reduce(function (acc, subject) {
-            let relevantTopics = subject.topics.filter(topic => topic.tags.indexOf(translation) >= 0);
+            let relevantTopics = subject.topics.filter(topic => topic.tags.indexOf(cfLevel) >= 0);
             if (relevantTopics && relevantTopics.length) {
               acc.push({
                 id: subject.id,

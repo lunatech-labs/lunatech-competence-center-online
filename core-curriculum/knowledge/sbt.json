@@ -73,7 +73,7 @@
       "id": "publishing",
       "name": "Publishing libraries",
       "description": "Libraries can be published",
-      "tags": ["required-for-scala-medior"],
+      "tags": ["required-for-scala-engineer"],
       "resources": [
         {
           "name": "Publishing",
@@ -109,7 +109,7 @@
       "id": "creating-tasks",
       "name": "Creating custom tasks",
       "description": "Make your own tasks to automate stuff",
-      "tags": ["required-for-scala-medior"],
+      "tags": ["required-for-scala-engineer"],
       "resources": [
         {
           "name": "Custom settings and tasks",
@@ -161,7 +161,7 @@
       "id": "multi-module-builds",
       "name": "Multi-module builds",
       "description": "Making SBT projects with multiple modules",
-      "tags": ["required-for-scala-medior"],
+      "tags": ["required-for-scala-engineer"],
       "resources": [
         {
           "name": "Multi-project builds",

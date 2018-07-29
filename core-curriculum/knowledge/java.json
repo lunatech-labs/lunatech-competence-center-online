@@ -315,7 +315,7 @@
       "id": "generics",
       "name": "Generics",
       "description": "In a nutshell, generics enable types (classes and interfaces) to be parameters when defining classes, interfaces and methods. Much like the more familiar formal parameters used in method declarations, type parameters provide a way for you to re-use the same code with different inputs. The difference is that the inputs to formal parameters are values, while the inputs to type parameters are types.",
-      "tags": ["required-for-java-medior"],
+      "tags": ["required-for-java-engineer"],
       "dependencies": ["collections-i"],
       "resources": [
         {
@@ -394,7 +394,7 @@
       "id": "java-std",
       "name": "Java Standard Library",
       "description": "Java comes with a rich Standard Library, including `String`, `System`, wrappers, and `StringBuilder` among others.",
-      "tags": ["required-for-java-medior"],
+      "tags": ["required-for-java-engineer"],
       "resources": [
         {
           "name": "Stackoverflow: List of Java Standard Libraries",
@@ -533,7 +533,7 @@
       "id": "concurrency-ii",
       "name": "Concurrency II",
       "description": "Since version 5.0, the Java platform has also included high-level concurrency APIs, which made easier for work concurrent programs.\nThis includes the new Lock, ThreadLocal, Thread pools and Atomics.",
-      "tags": ["required-for-java-medior"],
+      "tags": ["required-for-java-engineer"],
       "dependencies": ["concurrency-i"],
       "resources": [
         {
@@ -580,7 +580,7 @@
       "id": "java-8",
       "name": "Java 8",
       "description": "Java 8 provides lots of additions to the language, the most importants are: Lambdas and Streams.",
-      "tags": ["required-for-java-medior"],
+      "tags": ["required-for-junior"],
       "dependencies": ["collections-i"],
       "resources": [
         {
@@ -645,7 +645,7 @@
       "id": "cg-aop",
       "name": "Code Generation and AOP",
       "description": "Many Java libraries reliy on Code generation and AOP to perform their magic, they are a convenient tool to create useful algorithms and utilities that wouldn't be possible otherwise. ",
-      "tags": ["required-for-java-senior"],
+      "tags": ["required-for-senior-java-engineer"],
       "dependencies": ["classes-and-members"],
       "resources": [
         {
