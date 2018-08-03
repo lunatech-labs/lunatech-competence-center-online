@@ -27,18 +27,20 @@ object CompetenceCenterApi extends App {
   SLF4JBridgeHandler.install()
 
   case class Config(
-                     application: Config.ApplicationConfig,
-                     tokenVerifier: Config.TokenVerifierConfig,
-                     http: Config.HttpConfig,
-                     auth: AuthConfig,
-                     database: DbConfig,
-                     services: Config.ServicesConfig,
-                     coreCurriculum: Config.CoreCurriculumConfig
-                   )
+      application: Config.ApplicationConfig,
+      tokenVerifier: Config.TokenVerifierConfig,
+      http: Config.HttpConfig,
+      auth: AuthConfig,
+      database: DbConfig,
+      services: Config.ServicesConfig,
+      coreCurriculum: Config.CoreCurriculumConfig
+  )
   object Config {
     case class ApplicationConfig(mode: String)
     case class HttpConfig(port: Int)
-    case class ServicesConfig(people: PeopleService.Config, workshops: StudentService.Config, career: CareerFrameworkService.Config)
+    case class ServicesConfig(people: PeopleService.Config,
+                              workshops: StudentService.Config,
+                              career: CareerFrameworkService.Config)
 
     sealed trait TokenVerifierConfig
     case class Google(google: GoogleConfig) extends TokenVerifierConfig
@@ -50,9 +52,8 @@ object CompetenceCenterApi extends App {
     case class CoreCurriculumConfig(directory: String)
   }
 
-  val config = loadConfig[Config].fold(
-    errors => sys.error(errors.toString),
-    identity)
+  val config =
+    loadConfig[Config].fold(errors => sys.error(errors.toString), identity)
 
   lazy val logger: Logger = getLogger(getClass)
 
@@ -67,68 +68,91 @@ object CompetenceCenterApi extends App {
   val cvService = new PostgresCVService(transactor)
   val workshopService = EventBriteWorkshopService(config.services.workshops)
   val peopleService = ApiPeopleService(config.services.people)
-  val coreCurriculumService = new PostgresCoreCurriculumService(transactor, new File(config.coreCurriculum.directory))
+  val coreCurriculumService = new PostgresCoreCurriculumService(
+    transactor,
+    new File(config.coreCurriculum.directory))
   val studentService = new PostgresStudentService(transactor, peopleService)
-  val careerFrameworkService = CareerFrameworkServiceImpl(config.services.career)
+  val careerFrameworkService = CareerFrameworkServiceImpl(
+    config.services.career)
 
   val tokenVerifier = config.tokenVerifier match {
     case Config.Fake(fakeConfig) =>
       new StaticTokenVerifier(fakeConfig.overrideEmail)
-    case Config.Google(googleConfig) => new GoogleTokenVerifier(googleConfig.oauthClientId)
+    case Config.Google(googleConfig) =>
+      new GoogleTokenVerifier(googleConfig.oauthClientId)
   }
 
   // For endpoints that require an API key OR a Google authenticated user.
-  val authenticated: Endpoint[ApiUser] = authenticatedBuilder(config.auth, tokenVerifier, peopleService)
-  val authenticatedUser: Endpoint[EnrichedGoogleUser] = authenticated.mapOutput {
-    case -\/(_) => Output.failure(new RuntimeException("This endpoint only accepts an ID-Token"), Status.Unauthorized)
-    case \/-(user) => Output.payload(user)
-  }
+  val authenticated: Endpoint[ApiUser] =
+    authenticatedBuilder(config.auth, tokenVerifier, peopleService)
+  val authenticatedUser: Endpoint[EnrichedGoogleUser] =
+    authenticated.mapOutput {
+      case -\/(_) =>
+        Output.failure(
+          new RuntimeException("This endpoint only accepts an ID-Token"),
+          Status.Unauthorized)
+      case \/-(user) => Output.payload(user)
+    }
 
   val cvFormatter = new PdfCVFormatter()
 
-  val policy: Cors.Policy = Cors.Policy(
-    allowsOrigin = _ => Some("*"),
-    allowsMethods = _ => Some(Seq("GET", "POST", "PUT")),
-    allowsHeaders = x => Some(x))
+  val policy: Cors.Policy = Cors.Policy(allowsOrigin = _ => Some("*"),
+                                        allowsMethods =
+                                          _ => Some(Seq("GET", "POST", "PUT")),
+                                        allowsHeaders = x => Some(x))
 
-  val cvController = new CVController(cvService, peopleService, cvFormatter, authenticated, authenticatedUser)
-  val workshopController = new WorkshopController(workshopService, authenticated)
+  val cvController = new CVController(cvService,
+                                      peopleService,
+                                      cvFormatter,
+                                      authenticated,
+                                      authenticatedUser)
+  val workshopController =
+    new WorkshopController(workshopService, authenticated)
   val peopleController = new PeopleController(peopleService, authenticatedUser)
-  val coreCurriculumController = new CoreCurriculumController(coreCurriculumService, authenticated, authenticatedUser)
-  val studentController = new StudentController(studentService, authenticated, authenticatedUser)
-  val careerFrameworkController = new CareerFrameworkController(careerFrameworkService, authenticated, authenticatedUser)
+  val coreCurriculumController = new CoreCurriculumController(
+    coreCurriculumService,
+    authenticated,
+    authenticatedUser)
+  val studentController =
+    new StudentController(studentService, authenticated, authenticatedUser)
+  val careerFrameworkController = new CareerFrameworkController(
+    careerFrameworkService,
+    authenticated,
+    authenticatedUser)
   val service = (
     cvController.`GET /employees` :+:
-    cvController.`GET /employees/me` :+:
-    cvController.`GET /employees/employeeId` :+:
-    cvController.`PUT /employees/me` :+:
-    cvController.`POST /cvs` :+:
-    cvController.`GET /cvs` :+:
-    cvController.`GET /cvs/employeeId` :+:
-    workshopController.`GET /workshops` :+:
-    peopleController.`GET /people/me`:+:
-    coreCurriculumController.`GET /core-curriculum` :+:
-    coreCurriculumController.`GET /people/{email}/knowledge` :+:
-    coreCurriculumController.`GET /people/me/knowledge/{subject}` :+:
-    coreCurriculumController.`GET /people/me/projects/{subject}` :+:
-    coreCurriculumController.`GET /people/{email}/knowledge/{subject}` :+:
-    coreCurriculumController.`GET /people/{email}/projects` :+:
-    coreCurriculumController.`GET /people/{email}/projects/{subject}` :+:
-    coreCurriculumController.`PUT /people/me/knowledge/{subject}/{topic}` :+:
-    coreCurriculumController.`DELETE /people/me/knowledge/{subject}/{topic}`:+:
-    coreCurriculumController.`PUT /people/me/projects/{subject}/{project}/{status}`:+:
-    coreCurriculumController.`DELETE /people/me/projects/{subject}/{project}`:+:
-    coreCurriculumController.`PUT /people/me/projects/{subject}/{project}?url={url}`:+:
-    studentController.`GET /students` :+:
-    studentController.`GET /students/me` :+:
-    studentController.`GET /students/{studentEmail}` :+:
-    careerFrameworkController.`GET /career` :+:
-    careerFrameworkController.`GET /career/{shortname}`
+      cvController.`GET /employees/me` :+:
+      cvController.`GET /employees/employeeId` :+:
+      cvController.`PUT /employees/me` :+:
+      cvController.`POST /cvs` :+:
+      cvController.`GET /cvs` :+:
+      cvController.`GET /cvs/employeeId` :+:
+      workshopController.`GET /workshops` :+:
+      peopleController.`GET /people/me` :+:
+      coreCurriculumController.`GET /core-curriculum` :+:
+      coreCurriculumController.`GET /people/{email}/knowledge` :+:
+      coreCurriculumController.`GET /people/me/knowledge/{subject}` :+:
+      coreCurriculumController.`GET /people/me/projects/{subject}` :+:
+      coreCurriculumController.`GET /people/{email}/knowledge/{subject}` :+:
+      coreCurriculumController.`GET /people/{email}/projects` :+:
+      coreCurriculumController.`GET /people/{email}/projects/{subject}` :+:
+      coreCurriculumController.`PUT /people/me/knowledge/{subject}/{topic}` :+:
+      coreCurriculumController.`DELETE /people/me/knowledge/{subject}/{topic}` :+:
+      coreCurriculumController.`PUT /people/me/projects/{subject}/{project}/{status}` :+:
+      coreCurriculumController.`DELETE /people/me/projects/{subject}/{project}` :+:
+      coreCurriculumController.`PUT /people/me/projects/{subject}/{project}?url={url}` :+:
+      studentController.`GET /students` :+:
+      studentController.`GET /students/me` :+:
+      studentController.`GET /students/{studentEmail}` :+:
+      careerFrameworkController.`GET /career` :+:
+      careerFrameworkController.`GET /career/{shortname}`
   ).toServiceAs[Application.Json]
 
   val HttpsOnlyFilter = new SimpleFilter[Request, Response] {
-    override def apply(request: Request, service: Service[Request, Response]): Future[Response] = {
-      if(request.headerMap.get("X-Forwarded-Proto") == Some("http")) {
+    override def apply(
+        request: Request,
+        service: Service[Request, Response]): Future[Response] = {
+      if (request.headerMap.get("X-Forwarded-Proto") == Some("http")) {
         val response = Response(MovedPermanently)
         response.location = "https://" + request.host.get + request.uri
         Future.value(response)
@@ -136,7 +160,8 @@ object CompetenceCenterApi extends App {
     }
   }
 
-  val corsService: Service[Request, Response] = HttpsOnlyFilter.andThen(new Cors.HttpFilter(policy).andThen(service))
+  val corsService: Service[Request, Response] =
+    HttpsOnlyFilter.andThen(new Cors.HttpFilter(policy).andThen(service))
 
   logger.info(s"Starting server on port ${config.http.port}")
   val server = Http.server.serve(s":${config.http.port}", corsService)
