@@ -152,8 +152,8 @@
       ]
     },
     {
-      "id": "Roles",
-      "name": "roles",
+      "id": "roles",
+      "name": "Roles",
       "description": "Roles in Ansible are an organised way to define tasks, variables, templates, files, etc. This way we can decide which roles are going to be executed in which plays, for which specific hosts, etc. With roles we can simplify our code and make it reusable.",
       "tags": ["required-for-junior"],
       "dependencies": ["tasks"],
