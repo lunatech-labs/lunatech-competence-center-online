@@ -249,7 +249,7 @@
       "id": "adt",
       "name": "Algebraic data types",
       "description": "Algebraic data types (ADT) provide a way to structure code in an algebraic way.",
-      "tags": ["required-for-scala-medior", "fp"],
+      "tags": ["required-for-scala-engineer", "fp"],
       "dependencies": ["object-oriented-i"],
       "resources": [
         {
@@ -284,7 +284,7 @@
       "id": "object-oriented-ii",
       "name": "Object oriented II",
       "description": "Scala allows for more advanced OO concepts such as:\n - Type parameters (similar to type parameters).\n - Existencial types.\n - Trait composition, Mixins.\n - Existencial types.\n - Static duck typing, or structural types.\n - Double dispatch.\n - Path dependent types.\n - The expression problem.",
-      "tags": ["required-for-scala-medior"],
+      "tags": ["required-for-scala-engineer"],
       "dependencies": ["object-oriented-i", "type-parameters"],
       "resources": [
         {
@@ -340,7 +340,7 @@
       "id": "type-constructors",
       "name": "Type constructors",
       "description": "A type constructor is a type that when combined with another type gives us a new type (eg. String → Option[String]).",
-      "tags": ["required-for-junior", "fp"],
+      "tags": ["required-for-scala-engineer", "fp"],
       "dependencies": ["type-parameters"],
       "resources": [
         {
@@ -396,7 +396,7 @@
       "id": "concurrency",
       "name": "Concurrency",
       "description": "Backed by the JVM, Scala has support for concurrency, this means:\n - Synchronised methods.\n - Futures.",
-      "tags": ["required-for-scala-medior"],
+      "tags": ["required-for-scala-engineer"],
       "dependencies": ["hof"],
       "resources": [
         {
@@ -433,7 +433,7 @@
       "id": "laziness",
       "name": "Laziness",
       "description": "Scala provides syntax level laziness, allowing us to delay evaluation.\n - Lazy modifier.\n - Thunk.",
-      "tags": ["required-for-scala-medior", "fp"],
+      "tags": ["required-for-scala-engineer", "fp"],
       "dependencies": ["functions-as-values"],
       "resources": [
         {
@@ -501,7 +501,7 @@
       "id": "collections-ii",
       "name": "Collections II",
       "description": "Scala provides a nice façade for each collection, but usually implementation is very important, knowing the underlying data structures and which are their trade offs.",
-      "tags": ["required-for-scala-medior"],
+      "tags": ["required-for-scala-engineer"],
       "dependencies": ["collections-i", "type-constructors", "implicit-parameters"],
       "resources": [
         {
@@ -521,7 +521,7 @@
       "id": "collections-iii",
       "name": "Collections III",
       "description": "Collections are the bread and butter of developers, after knowing about actual implementations, you should know about Traversable, Iterator, Iterable, TraversableLike, CanBuildFrom, etc.",
-      "tags": ["required-for-scala-senior"],
+      "tags": ["required-for-senior-scala-engineer"],
       "dependencies": ["collections-ii"],
       "resources": [
         {
@@ -565,7 +565,7 @@
       "id": "variance",
       "name": "Variance",
       "description": "With type parameters and type constructors comes variance, which defines for a give type A that extends B, how is the relationship of C[A] and C[B], given a type constructor C.",
-      "tags": ["required-for-scala-senior"],
+      "tags": ["required-for-senior-scala-engineer"],
       "dependencies": ["type-constructors", "collections-i"],
       "resources": [
         {
@@ -601,7 +601,7 @@
       "id": "extractors",
       "name": "Extractors",
       "description": "Extractors declares how objects will be decomposed in pattern matching.",
-      "tags": ["required-for-scala-medior"],
+      "tags": ["required-for-scala-engineer"],
       "dependencies": ["pattern-matching", "error-handling"],
       "resources": [
         {
@@ -632,7 +632,7 @@
       "id": "type-classes",
       "name": "Type classes",
       "description": "A type class is a type system construct that supports ad-hoc polymorphism.",
-      "tags": ["required-for-scala-medior", "fp"],
+      "tags": ["required-for-scala-engineer", "fp"],
       "dependencies": ["implicit-parameters", "object-oriented-i", "type-parameters"],
       "resources": [
         {
@@ -672,7 +672,7 @@
       "id": "extension-methods",
       "name": "Extension methods",
       "description": "Extension methods (a.k.a. Type Enrichment or Pimp my library).",
-      "tags": ["required-for-scala-medior"],
+      "tags": ["required-for-scala-engineer"],
       "dependencies": ["implicit-parameters"],
       "resources": [
         {

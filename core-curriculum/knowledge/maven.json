@@ -91,7 +91,7 @@
             "id": "project-websites",
             "name": "Project Websites",
             "description": "Using maven to generate project website",
-            "tags": ["required-for-java-senior"],
+            "tags": ["required-for-senior-java-engineer"],
             "dependencies": ["project-build-lifecycle"],
             "resources": [
                 {
@@ -127,7 +127,7 @@
             "id": "using-plugins",
             "name": "Using Plugins",
             "description": "Maven plugins that enhance the lifeycle by providing various features",
-            "tags": ["required-for-java-medior"],
+            "tags": ["required-for-java-engineer"],
             "dependencies": ["introduction"],
             "resources": [
                 {
@@ -146,7 +146,7 @@
             "id": "writing-maven-plugins",
             "name": "Writing Maven Plugins",
             "description": "Creating custom plugins for maven",
-            "tags": ["required-for-java-senior"],
+            "tags": ["required-for-senior-java-engineer"],
             "dependencies": ["using-plugins"],
             "resources": [
                 {
@@ -164,7 +164,7 @@
             "id": "artifact-publication",
             "name": "Artifact Publication",
             "description": "Publishing artifacts in public and private repositories",
-            "tags": ["required-for-java-medior"],
+            "tags": ["required-for-java-engineer"],
             "dependencies": ["project-build-lifecycle"],
             "resources": [
                 {
