@@ -1,0 +1,844 @@
+{
+  "id": "html",
+  "name": "HTML, CSS and JS",
+  "description": "HTML is a markup language for structuring content on the World Wide Web, CSS is a declarative language that defines how content should be presented and JS is a general purpose programming language used to add behavior to the content.",
+  "headmaster": "gustavo.de.micheli@lunatech.nl",
+  "teachers": [ "gustavo.de.micheli@lunatech.nl" ],
+  "tags": [],
+  "image": "/images/html.jpg",
+  "topics": [
+    {
+      "id": "html-basics",
+      "name": "HTML Basics",
+      "description": "HTML (Hyper Text Markup Language) is a markup language composed of tags of the type `<tagname>content</tagname>` that are used to structure web pages. An HTML page is a forms a tree of tags, starting with the `<html>` tag, followed by two important children `<head>` and `<body>`, the former is used for declaring page's metadata and the latter used to define the page's content presented to the viewer.",
+      "tags": ["required-for-junior"],
+      "dependencies": [],
+      "resources": [
+        {
+          "name": "HTML 5 Tutorial",
+          "type": "documentation",
+          "url": "https://www.w3schools.com/html/default.asp"
+        },
+        {
+          "name": "Mozilla HTML Introduction",
+          "type": "documentation",
+          "url": "https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML"
+        },
+        {
+          "name": "HTML Reference.io",
+          "type": "documentation",
+          "url": "https://htmlreference.io/"
+        },
+        {
+          "name": "Mozilla HTML Web Docs",
+          "type": "documentation",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5"
+        },
+        {
+          "name": "W3C HTML Reference",
+          "type": "documentation",
+          "url": "https://dev.w3.org/html5/html-author/"
+        }
+      ],
+      "abilities": [
+        "Create a simple webpage without the need of an IDE.",
+        "Identify which are and which aren't Standard HTML tags.",
+        "Identify when an HTML page is incorrectly formated.",
+        "Use the most commont HTML attributes.",
+        "Use the new HTML5 semantic tags correctly.",
+        "Create a complete static website, that relates multiple pages together."
+      ],
+      "assessment-questions": [
+        { "question": "What's a `<!DOCTYPE>` declaration used for?" },
+        { "question": "What are the three most important tags on an HTML page?" },
+        { "question": "What type of content can go inside a `<head>` tag? Can you name at least three tags and explaing their purpose?" },
+        { "question": "How can we add metadata to a webpage?" },
+        { "question": "What's a `<meta>` tag used for?" },
+        { "question": "Is tag's attribute order relevant? Does an attribute coming before or after the other have any different effect?" },
+        { "question": "Is it possible to have empty tags? If so, can you give at least two examples?" },
+        { "question": "Is it possible to define two different tags with the same ID attribute? If not, why? If it _is_ possible, what the normal behavior?" },
+        { "question": "What's the `<pre>` tag usually used for?" },
+        { "question": "What do we mean when we refer to semantic tags? Can you name at least two example tags and what's their purporse?" },
+        { "question": "Inside a `<table>` declaration, what's the difference between `<th>` and `<td>`?" },
+        { "question": "What's `rowspan` attribute used for? What about `colspan`? Can you draw an example?" },
+        { "question": "What's the difference between `<ol>` and `<ul>`? Can you spot their name's origin?" },
+        { "question": "What's an `<iframe>` used for?" },
+        { "question": "How can you change an `<iframe>`'s content without using Javascript?" },
+        { "question": "When using the `src` attribute, what type of path can you use? Relative, Absolute or both?" },
+        { "question": "What's the usual purpose of the `target` attibute? Can you name at least two valid values?" },
+        { "question": "What's the `title` attribute used for? What's its normal behavior?" },
+        { "question": "What's the Img's `alt` attribute used for?" },
+        { "question": "Can an `href` attribute have a relative path?" },
+        { "question": "What's the default behavior on clicking links with an `href` attribute that starts with the `#` character?" }
+      ]
+    },
+
+    {
+      "id": "js-basics",
+      "name": "Javascript Basics",
+      "description": "Javascript is the only language that can run natively in the browser (until we get WebAssembly), and it's the way that we introduce behavior to our pages. This section will deal with ES5 only, further versions are located on other topics.",
+      "tags": ["required-for-junior"],
+      "dependencies": [],
+      "resources": [
+        {
+          "name": "Mozilla: Javascript Basics",
+          "type": "article",
+          "url": "https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics"
+        },
+        {
+          "name": "Javascript: The Good Parts",
+          "type": "book",
+          "url": "http://shop.oreilly.com/product/9780596517748.do"
+        },
+        {
+          "name": "Douglas Crockford Lectures on Javascript",
+          "type": "video",
+          "url": "https://www.youtube.com/playlist?list=PL62E185BB8577B63D"
+        },
+        {
+          "name": "Speaking Javascript",
+          "type": "book",
+          "url": "http://shop.oreilly.com/product/0636920029564.do"
+        },
+        {
+          "name": "Javascript and Duck Typing",
+          "type": "book",
+          "url": "https://medium.com/front-end-hacking/javascript-and-duck-typing-7d0f908e2238"
+        },
+        {
+          "name": "You Don't Know JS: Up & Going (Free!)",
+          "type": "book",
+          "url": "https://www.amazon.com/You-Dont-Know-JS-Going-ebook/dp/B00V20DQU8"
+        },
+        {
+          "name": "Elocuent Javascript (Free online read)",
+          "type": "book",
+          "url": "https://eloquentjavascript.net/"
+        },
+        {
+          "name": "Idiomatic.js",
+          "type": "article",
+          "url": "https://github.com/rwaldron/idiomatic.js"
+        },
+        {
+          "name": "JS The Right Way",
+          "type": "article",
+          "url": "http://jstherightway.org/"
+        }
+      ],
+      "abilities": [
+        "Define scripts to add behavior to your webpages",
+        "Debug malfunctioning scripts (using DevTools).",
+        "Structure Javascript without loosing your mind",
+        "Understand how to define an object hierarchy and how the prototype chain works.",
+        "Implement Javascript idioms.",
+        "Solve common Javascript quirks and pitfalls."
+      ],
+      "assessment-questions": [
+        { "question": "What do we mean with *hoisting*? Can you explaing how does it affect function and variables?" },
+        { "question": "What's the difference between function expression and function statement?" },
+        { "question": "Does Javascript (ES5) have block scope? How can we define a new scope?" },
+        { "question": "What do we mean when functions are first class citizens?" },
+        { "question": "Why should we prefer `strict` mode?" },
+        { "question": "What are the features we can no longer use on `strict` mode?" },
+        { "question": "Why is `with` statement discouraged?" },
+        { "question": "How can we declare a _class_? (Although Javascript doesn't have the concept of class)." },
+        { "question": "Can you describe how a prototype chain works?" },
+        { "question": "There are at least two ways to create an object, why do we prefer object literals?" },
+        { "question": "There are at least two ways to create an array, why do we prefer array literals?" },
+        { "question": "Javascript array doesn't have a `clean` method, how can we clean an array?" },
+        { "question": "Can you describe what do we mean with _polyfill_? How does that contrast with a _shiv_?" },
+        { "question": "Can we extend or augment native classes? How can we do that?" },
+        { "question": "Why is extending or augmenting native classes considered a bad practice? How can we mitigate the damage?" },
+        { "question": "The function `parseInt` can be used to convert a string to a int, can you spot what the problem with the following code: ```\n['1', '2', '3'].map(parseInt)```?" },
+        { "question": "Javascript arrays have higher-order functions, can you name at least three? What are the arguments that the function you use on that HOF can receive?" },
+        { "question": "What's the difference between `==` and `===`? Why should we *always* use the latter?" },
+        { "question": "What are the possible values we can use on an `if` statement check?", "answer-hint": "Think type cohersion." },
+        { "question": "The `this` keyword can be very tricky when using Javascript, can you spot what the problem and how to solve the following code? ```\nvar obj = {\n  name: 'John Doe',\n  callMeFuture: function () { alert(this.name); }\n};\n\nobj.callMeFuture();\n```" },
+        { "question": "What do we mean when we refer to Duck Typing? Can you explain it with an example?" },
+        { "question": "Can you explain the difference between `Function.call` and `Function.apply`?" },
+        { "question": "Can you explain what does `for..in` on object and arrays? Why is it discouraged to use it on objects?" },
+        { "question": "Can you describe the Module Pattern?" },
+        { "question": "Can you describe the IIFE Pattern?" },
+        { "question": "Javascript doesn't have the concept of visibility modifier (eg. `private`, `public` or `protected`), how can we introduce `private` through idioms?" },
+        { "question": "Can you ran into race conditions or synchonicity issues on Javascript (like you do on Java or Scala)? Can you explain why?" },
+        { "question": "Can you explain the following code, line by line? ```'' == '0'           // false\n0 == ''             // true\n0 == '0'            // true\n\nfalse == 'false'    // false\nfalse == '0'        // true\n\nfalse == undefined  // false\nfalse == null       // false\nnull == undefined   // true\n\n'  ' == 0     // true```" }
+      ]
+    },
+
+    {
+      "id": "css-basics",
+      "name": "CSS Basics",
+      "description": "CSS (Cascading Style Sheets) is a declarative language that defines how the content of an HTML page should be presented to the user.",
+      "tags": ["required-for-junior"],
+      "dependencies": [],
+      "resources": [
+        {
+          "name": "Mozilla: CSS Syntax",
+          "type": "article",
+          "url": "https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Syntax"
+        },
+        {
+          "name": "How CSS Selectors Work",
+          "type": "article",
+          "url": "https://css-tricks.com/how-css-selectors-work/"
+        },
+        {
+          "name": "Mozilla: Cascade and Inheritance",
+          "type": "article",
+          "url": "https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Cascade_and_inheritance"
+        },
+        {
+          "name": "The CSS Box Model",
+          "type": "article",
+          "url": "https://css-tricks.com/the-css-box-model/"
+        },
+        {
+          "name": "Specifics on CSS Specificity",
+          "type": "article",
+          "url": "https://css-tricks.com/specifics-on-css-specificity/"
+        },
+        {
+          "name": "HTML and CSS: The very basics",
+          "type": "video",
+          "url": "https://css-tricks.com/video-screencasts/58-html-css-the-very-basics/"
+        },
+        {
+          "name": "CSS Introduction",
+          "type": "article",
+          "url": "https://www.w3schools.com/css/css_intro.asp"
+        },
+        {
+          "name": "CSS Selectors",
+          "type": "article",
+          "url": "https://www.w3schools.com/cssref/css_selectors.asp"
+        },
+        {
+          "name": "Mozilla: How CSS Works",
+          "type": "article",
+          "url": "https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/How_CSS_works"
+        },
+        {
+          "name": "Mozilla: CSS values and Units",
+          "type": "article",
+          "url": "https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Values_and_units"
+        },
+        {
+          "name": "Learn CSS Layout",
+          "type": "article",
+          "url": "http://learnlayout.com/"
+        },
+        {
+          "name": "Mozilla: CSS Floats",
+          "type": "article",
+          "url": "https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Floats"
+        }
+      ],
+      "abilities": [
+        "Style page elements using CSS selectors and CSS properties.",
+        "Understand how the Box Model affect the look and feel of page elements.",
+        "Debug specificity problems on selectors.",
+        "Fix most common beginner's issues with CSS",
+        "Understand the limits of CSS and how workaround them."
+      ],
+      "assessment-questions": [
+        { "question": "Can you explain the box model?" },
+        { "question": "Given the following code, can you calculate the dimensions of the element?\n```\ndiv {\n  border: 2px solid #000;\n  padding: 20px 15px;\n  margin: 10px 5px 13px 20px;\n}" },
+        { "question": "Given the following code, can you calculate the dimensions of the element?\n```\nspan {\n  border: 2px solid #000;\n  padding: 20px 15px;\n  margin: 10px 5px 13px 20px;\n}" },
+        { "question": "What's the different between inline and block elements? Can name at least two of each?" },
+        { "question": "What has more specificity, a CSS rule applied through a selector or one applied on the `style` attribute?" },
+        { "question": "How can you override styles defined on th `style` attribute?" },
+        { "question": "Given CSS inheritance, what's the normal value a CSS property has if it's not overriden? If by some reason, get overriden, how can you get the inherited value without duplicating the value?" },
+        { "question": "Given the code, which is the color of the element's text `<div class=\"foo\">Some Content</div>`?\n```\ndiv {\n  color: red;\n}\n\n.foo {\n  color: blue;\n}" },
+        { "question": "How do you define a Font Face for an element? What happens if the font is not installed in the client? How can you solve this problem?", "answer-hint": "There are at least two possible ways to solve the issue depending on your CSS expertice." },
+        { "question": "How can you namespace CSS styles? Can you give a brief example?" },
+        { "question": "Can you explain the different values of `position`? Can you give as example usual widgets per possible value? (eg. modal)" },
+        { "question": "Why should we use an element `position: absolute;` inside an element with `position: relative;`?" },
+        { "question": "How does the CSS rules for a modal backdrop looks like? (ie. the translucid element in between the modal and the page's content)" },
+        { "question": "Can you explain the difference between the unit types available?" },
+        { "question": "How can you use `margin` to horizontally center an element? What about vertically?" },
+        { "question": "How can you define a _return to top_ button that's always in the same spot in the screen? Can you give away the CSS properties?" },
+        { "question": "What does *cleanfix* means? Can you give at least two ways of implementing this technique?" },
+        { "question": "Can you explain what does `float` do? Does it affect `inline` elements?" },
+        { "question": "When clearing a `float` property, where do you have to apply the property? Is on the same floated element?" },
+        { "question": "What's `!important` used for? What's its use discouraged? What are its use cases?" },
+        { "question": "What do we mean when we refer to _short-hand properties_? Can you give at least three examples?" }
+      ]
+    },
+
+    {
+      "id": "dom",
+      "name": "DOM (Document Object Model)",
+      "description": "The Document Object Model (DOM) is a cross-platform and language-independent application programming interface that treats an HTML, XHTML, or XML document as a tree structure wherein each node is an object representing a part of the document. The objects can be manipulated programmatically and any visible changes occurring as a result may then be reflected in the display of the document.",
+      "tags": ["required-for-software-engineer"],
+      "dependencies": ["html-basics", "js-basics"],
+      "resources": [
+        {
+          "name": "DOM Tutorial",
+          "type": "documentation",
+          "url": "https://www.w3schools.com/js/js_htmldom.asp"
+        },
+        {
+          "name": "Mozilla DOM Introduction",
+          "type": "documentation",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction"
+        },
+        {
+          "name": "W3C DOM",
+          "type": "documentation",
+          "url": "https://www.w3.org/DOM/"
+        },
+        {
+          "name": "Event Listeners",
+          "type": "article",
+          "url": "https://www.w3schools.com/js/js_htmldom_eventlistener.asp"
+        }
+      ],
+      "abilities": [
+        "Understand how HTML source code gets translated into its memory representation.",
+        "Traverse HTML nodes without the need of a tool.",
+        "Modify the content and behavior of a webpage without the need of a Library/Framework.",
+        "Be able to explain how Events flow through the DOM, and how they interact with listeners.",
+        "Be able to replicate libraries features using vanilla Javascript."
+      ],
+      "assessment-questions": [
+        { "question": "What's the difference between an Attribute and a Property?" },
+        { "question": "Is it possible to add a custom property to an element? How? What about an attribute?" },
+        { "question": "What's the relation between the HTML source file and the DOM?" },
+        { "question": "Given this html page, can you draw how does the DOM looks like?\n```\n<html>\n<head>\n  <title>This is a title</title>\n</head>\n<body>\n  <article>\n    <p>This the first paragraph</p>\n    <p>This the second paragraph</p>\n  </article>\n</body>\n</html>```" },
+        { "question": "With vanilla Javascript, how can you add or remove a CSS class of an element?" },
+        { "question": "Can you explain or even show a little snippet on how to traverse the DOM? (eg. Breadth First or Depth First Search)." },
+        { "question": "Is `NodeList` an array or is it an array-like? How can you use higher-order functions on this data type?" },
+        { "question": "What's the difference between `querySelector` and `querySelectorAll`?" },
+        { "question": "Can you explain the difference between event bubbling and event capturing?" },
+        { "question": "How can you leverage event bubbling to improve performance? Can you explain a brief example?"  },
+        { "question": "On event listeners, what's the difference between `stopPropagation`, `stopImmediatePropagation`, `preventDefault` and `return false;`?" },
+        { "question": "How can you alter the style of an element without adding a class name?" },
+        { "question": "How can you get the content of an HTML element?" },
+        { "question": "Can you name at least three event listeners types? What's their syntax on Javascript and as HTML attribute?" },
+        { "question": "What would it happen if you add `onclick=\"function(e) { e.preventDefault(); }\"` to every anchor element (ie. `a`)?" }
+      ]
+    },
+
+    {
+      "id": "server-interaction",
+      "name": "Interacting with the Server",
+      "description": "HTML also defines how to interact with the server, being the two most popular and basic: _Form submission_ and _Ajax_.",
+      "tags": ["required-for-junior"],
+      "dependencies": ["html-basics", "js-basics"],
+      "resources": [
+        {
+          "name": "HTML Forms tutorial",
+          "type": "documentation",
+          "url": "https://www.w3schools.com/html/html_forms.asp"
+        },
+        {
+          "name": "Mozilla HTML Forms tutorial",
+          "type": "documentation",
+          "url": "https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms"
+        },
+        {
+          "name": "Ajax tutorial",
+          "type": "documentation",
+          "url": "https://www.w3schools.com/js/js_ajax_intro.asp"
+        },
+        {
+          "name": "Mozilla Ajax tutorial",
+          "type": "documentation",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/Guide/AJAX/Getting_Started"
+        },
+        {
+          "name": "Fetch API",
+          "type": "documentation",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API"
+        }
+      ],
+      "abilities": [
+        "Use HTML forms proficiently.",
+        "Send Ajax requests on the background improving user experience.",
+        "Use fetch API as a successor to Ajax.",
+        "Convert regular form submission to Ajax."
+      ],
+      "assessment-questions": [
+        { "question": "What's the difference between an `disabled` and `readonly`?", "answer-hint": "Submit a form and check the corresponding HTTP request" },
+        { "question": "Can we define a `<form>` within another `<form>`?" },
+        { "question": "What are the most important `<form>` attributes?" },
+        { "question": "What's the expected behavior if we omit the `action` attribute from a `<form>` tag?" },
+        { "question": "What's the purpose of the `name` attribute in an `<input>` tag? What happens if we omit it?" },
+        { "question": "Given the form ```<form action=\"/action_page.php\" method=\"post\">\n  <input type=\"text\" name=\"firstname\" value=\"Mickey\">\n  <input type=\"text\" name=\"lastname\" value=\"Mouse\">\n  <input type=\"submit\" value=\"Submit\">\n</form>```, can you define how the URL encoded form looks like?"},
+        { "question": "If you don't specify a `value` attribute for an `<option>` tag, what's its default value?" },
+        { "question": "Why should you use `POST` for submitting a form?" },
+        { "question": "A `<button>` can have a `type` attribute, what's its default value? How does it compare to a `<input type=\"submit\">`?" },
+        { "question": "A `<label>` can be used to identify an `<input>` tag? Can you name at least two ways to use them properly?" },
+        { "question": "What's the purpose of a `<fieldset>`?" },
+        { "question": "Can you name at least three new HTML5 `<input>` types?" },
+        { "question": "How can you leverage from `autocomplete` behavior?" },
+        { "question": "How does a checkbox gets URL encoded when multiple values are selected?" },
+        { "question": "When using Ajax usually we send or receive JSON, what other type of data can we send or receive?" },
+        { "question": "Why is client-side data validation discouraged?" },
+        { "question": "It is often convenient to use the Web design pattern Post/Redirect/Get, can you explain why? What problem does it try to solve? Does this happen when doing Ajax?" },
+        { "question": "Can you explain how do you convert a regular form submission to Ajax? What do you need take special care of?", "answer-hint": "Think of events" }
+      ]
+    },
+
+    {
+      "id": "js-toolbox",
+      "name": "Javascript Toolbox",
+      "description": "Javascript ecosystem is very wide and diverse, ranging from build tools, linters, transpilers, etc.",
+      "tags": ["required-for-software-engineer"],
+      "dependencies": ["js-basics"],
+      "resources": [
+        {
+          "name": "Grunt: Getting Started",
+          "type": "article",
+          "url": "https://gruntjs.com/getting-started"
+        },
+        {
+          "name": "Gulp for Beginners",
+          "type": "article",
+          "url": "https://css-tricks.com/gulp-for-beginners/"
+        },
+        {
+          "name": "Bower: Getting Started",
+          "type": "article",
+          "url": "https://bower.io/#getting-started"
+        },
+        {
+          "name": "JSLint linter",
+          "type": "documentation",
+          "url": "https://www.jslint.com/help.html"
+        },
+        {
+          "name": "JSHint linter",
+          "type": "documentation",
+          "url": "http://jshint.com/docs/"
+        },
+        {
+          "name": "Comparison of Build Tools",
+          "type": "article",
+          "url": "https://survivejs.com/webpack/appendices/comparison/"
+        },
+        {
+          "name": "Javascript transpilers",
+          "type": "article",
+          "url": "https://scotch.io/tutorials/javascript-transpilers-what-they-are-why-we-need-them"
+        },
+        {
+          "name": "Babel.js",
+          "type": "article",
+          "url": "https://babeljs.io/"
+        },
+        {
+          "name": "ScalaJs tutorial",
+          "type": "article",
+          "url": "https://www.scala-js.org/tutorial/basic/"
+        }
+      ],
+      "abilities": [
+        "Use a build tool to bundle and optimise the code.",
+        "Improve code quality by using a linter.",
+        "Decide which build to use for a new project, given its pros and cons.",
+        "Use and debug languages such as Scala.js a frontend project."
+      ],
+      "assessment-questions": [
+        { "question": "How can you debug a source that was transpiled?" }
+      ]
+    },
+
+    {
+      "id": "css-toolbox",
+      "name": "CSS Toolbox",
+      "description": "Multiple tools have created to aliviate CSS shortcomings, such as pre and post processors, linters, etc.",
+      "tags": ["required-for-software-engineer"],
+      "dependencies": ["css-basics"],
+      "resources": [
+        {
+          "name": "CSS Lint",
+          "type": "other",
+          "url": "http://csslint.net/"
+        },
+        {
+          "name": "Mozilla: CSS Preprocessor",
+          "type": "article",
+          "url": "https://developer.mozilla.org/en-US/docs/Glossary/CSS_preprocessor"
+        },
+        {
+          "name": "Deconfusing Pre and Post Processing",
+          "type": "article",
+          "url": "https://medium.com/@ddprrt/deconfusing-pre-and-post-processing-d68e3bd078a3"
+        },
+        {
+          "name": "SASS",
+          "notes": "Sass is a preprocessor scripting language that is interpreted or compiled into CSS.",
+          "type": "documentation",
+          "url": "http://sass-lang.com/guide"
+        },
+        {
+          "name": "LESS",
+          "notes": "Less is a dynamic preprocessor style sheet language that can be compiled into CSS and run on the client side or server side.",
+          "type": "documentation",
+          "url": "http://lesscss.org/usage/"
+        },
+        {
+          "name": "CSS Tricks: SASS vs LESS",
+          "type": "article",
+          "url": "https://css-tricks.com/sass-vs-less/"
+        },
+        {
+          "name": "CSS3Pie",
+          "notes": "PIE makes Internet Explorer 6-9 capable of rendering several of the most useful CSS3 decoration features.",
+          "type": "other",
+          "url": "http://css3pie.com/"
+        },
+        {
+          "name": "Pleeease",
+          "notes": "Pleeease is an application that easily process your CSS, simplifies the use of preprocessors and combines them with best postprocessors. It helps create clean stylesheets, support older browsers and offers better maintenability.",
+          "type": "other",
+          "url": "http://pleeease.io/play/"
+        },
+        {
+          "name": "Awesome CSS Framework",
+          "type": "other",
+          "url": "https://github.com/troxler/awesome-css-frameworks"
+        }
+      ],
+      "abilities": [
+        "Improve CSS code quality by using a linter",
+        "Use CSS preprocessors to write better CSS."
+      ],
+      "assessment-questions": []
+    },
+
+    {
+      "id": "html-intermediate",
+      "name": "Intermediate HTML",
+      "description": "HTML has gone through a lot of changes, developers or amateurs not always care about proper html format, which made Browser introduce quirks modes. Nonetheless we should strive to use HTML properly, here is where you start.",
+      "tags": ["required-for-software-engineer"],
+      "dependencies": ["html-basics", "dom"],
+      "resources": [
+        {
+          "name": "HTML Best Practices",
+          "type": "article",
+          "url": "https://github.com/hail2u/html-best-practices"
+        },
+        {
+          "name": "Google's Best Practices",
+          "type": "article",
+          "url": "https://developers.google.com/apps-script/guides/html/best-practices"
+        },
+        {
+          "name": "Writing your best code",
+          "type": "article",
+          "url": "https://learn.shayhowe.com/html-css/writing-your-best-code/"
+        },
+        {
+          "name": "HTML and XHTML",
+          "type": "article",
+          "url": "https://www.w3schools.com/html/html_xhtml.asp"
+        },
+        {
+          "name": "HTML Encoding",
+          "type": "article",
+          "url": "https://www.w3schools.com/html/html_charset.asp"
+        },
+        {
+          "name": "Joel On Software: The absolute minimum every developer...",
+          "type": "article",
+          "url": "https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/"
+        }
+      ],
+      "abilities": [
+        "Use HTML entities and encodes when needed.",
+        "Define a proper charset for a web page, to avoid funny looking characters.",
+        "Use XHTML for page declaration.",
+        "Define language codes for a webpage."
+      ],
+      "assessment-questions": [
+        { "question": "How can you access Cookies through Javascript?" },
+        { "question": "What do we mean when we refer to CDN? What are there upsides and downsides?" },
+        { "question": "Why should a `<script>` tag go at the bottom of the page?" },
+        { "question": "Why are inline scripts and CSS tags discouraged?" }
+      ]
+    },
+
+    {
+      "id": "es6",
+      "name": "ECMAScript 6",
+      "description": "After a convoluted development we have a new version of Javascript, this version brings a lot of new handy features, which are intended to improve the usability of the language and ease previous design problems.",
+      "tags": ["required-for-software-engineer"],
+      "dependencies": ["js-basics"],
+      "resources": [
+        {
+          "name": "You Don't Know JS: ES6 & Beyond",
+          "type": "book",
+          "url": "http://shop.oreilly.com/product/0636920033769.do"
+        },
+        {
+          "name": "Exploring ES6",
+          "type": "book",
+          "url": "http://exploringjs.com/es6.html"
+        },
+        {
+          "name": "Exploring JS: Modules",
+          "type": "article",
+          "url": "http://exploringjs.com/es6/ch_modules.html"
+        },
+        {
+          "name": "Mozilla: Imports",
+          "type": "article",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import"
+        }
+      ],
+      "abilities": [
+        "Use destructuring and spread/rest operator proficiently.",
+        "Escape Callback Hell with Promises and Async/Await.",
+        "Implement your own Async/Await constructs with Generators.",
+        "Use the new collection types to have a richful codebase.",
+        "Simplify code using lambdas instead of function expressions."
+      ],
+      "assessment-questions": [
+        { "question": "Can you explain what does `for..of` on object? Why was it introduced?" },
+        { "question": "A Generator is a well-known programming construct, can you explain which it is and why is it used for?" },
+        { "question": "How can you implement immutability on an object level? There are several options, can you explain each?" },
+        { "question": "Why was `const` and `let` introduced? How do they compare to `var`?" },
+        { "question": "With the introduction of `const` and `let`, how does JS function scope change?" },
+        { "question": "How can we omit using `return` on a lambda? When we cannot use it?" }
+      ]
+    },
+
+    {
+      "id": "css-intermediate",
+      "name": "Intermediate CSS",
+      "description": "Multiple techniques and features have emerged on CSS that we can use to bring better look and feel to our users, features such as Mobile First, Web Fonts and so on.",
+      "tags": ["required-for-software-engineer"],
+      "dependencies": ["css-basics"],
+      "resources": [
+        {
+          "name": "CSS Sprites",
+          "type": "article",
+          "url": "https://www.w3schools.com/css/css_image_sprites.asp"
+        },
+        {
+          "name": "Font Awesome",
+          "notes": "Font Awesome is an example of Font Icons, widely used.",
+          "type": "other",
+          "url": "https://fontawesome.com/"
+        },
+        {
+          "name": "CSS Media Queries",
+          "type": "article",
+          "url": "https://www.w3schools.com/css/css_rwd_mediaqueries.asp"
+        },
+        {
+          "name": "How To Write Mobile First CSS",
+          "type": "article",
+          "url": "https://zellwk.com/blog/how-to-write-mobile-first-css/"
+        },
+        {
+          "name": "CSS Web Fonts",
+          "type": "article",
+          "url": "https://www.w3schools.com/css/css3_fonts.asp"
+        },
+        {
+          "name": "CSS Tricks: Using @font-face",
+          "type": "article",
+          "url": "https://css-tricks.com/snippets/css/using-font-face/"
+        },
+        {
+          "name": "CSS Box Shadow",
+          "type": "article",
+          "url": "https://www.w3schools.com/cssref/css3_pr_box-shadow.asp"
+        },
+        {
+          "name": "CSS Box Shadow Generator",
+          "type": "other",
+          "url": "https://www.cssmatic.com/box-shadow"
+        },
+        {
+          "name": "CSS Pseudo Classes",
+          "type": "article",
+          "url": "https://www.w3schools.com/css/css_pseudo_classes.asp"
+        },
+        {
+          "name": "An Ultimate Guide To CSS Pseudo Classes And Pseudo Elements",
+          "type": "article",
+          "url": "https://www.smashingmagazine.com/2016/05/an-ultimate-guide-to-css-pseudo-classes-and-pseudo-elements/"
+        }
+      ],
+      "abilities": [
+        "Make a website look better on mobile devices",
+        "Add content dynamically without Javascript",
+        "Style pages with custom fonts not installed in the client"
+      ],
+      "assessment-questions": [
+        { "question": "What's the difference between a Sprite Sheet and Font Icons? Can name pros and cons between each other?" },
+        { "question": "What's a CSS Reset used for?" },
+        { "question": "How can we set the font for a web page that the user hasn't installed in his/her computer?" },
+        { "question": "How can we insert elements and content dynamically without using Javascript? Can you define a simple tooltip with this technique?" },
+        { "question": "How does the `box-sizing` property affect the calculation of an element's size?" },
+        { "question": "What's the required CSS property for using pseudo-elements?" },
+        { "question": "CSS Font Icons usually are implemented with pseudo-elements, can you define a simple CSS rule that does that?" },
+        { "question": "What's the difference between `rem` and `em`?" },
+        { "question": "How can you define ellipsis in a text that longer than the container element?"},
+        { "question": "Why is `px` unit discouraged on Mobile First Design? When can it be used?" },
+        { "question": "How can you make an Image responsive? Can you give away the CSS properties?" }
+      ]
+    },
+
+    {
+      "id": "html-advanced",
+      "name": "Advanced HTML",
+      "description": "HTML 5 includes detailed processing models to encourage more interoperable implementations; it extends, improves and rationalizes the markup available for documents, and introduces markup and application programming interfaces (APIs) for complex web applications. For the same reasons, HTML 5 is also a candidate for cross-platform mobile applications, because it includes features designed with low-powered devices in mind.",
+      "tags": ["required-for-senior-software-engineer"],
+      "dependencies": ["html-intermediate", "dom"],
+      "resources": [
+        {
+          "name": "Can I Use",
+          "type": "other",
+          "notes": "This page let's you see which HTML5 features are supported by each browser.",
+          "url": "https://caniuse.com/"
+        },
+        {
+          "name": "HTML5 Migration",
+          "type": "article",
+          "url": "https://www.w3schools.com/html/html5_migration.asp"
+        },
+        {
+          "name": "Web Workers",
+          "type": "article",
+          "url": "https://www.w3schools.com/html/html5_webworkers.asp"
+        },
+        {
+          "name": "Mozilla: Web Workers",
+          "type": "article",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers"
+        },
+        {
+          "name": "Introduction to WAI ARIA",
+          "type": "article",
+          "url": "https://www.sitepoint.com/introduction-wai-aria/"
+        },
+        {
+          "name": "W3C WAI ARIA Introduction",
+          "type": "documentation",
+          "url": "https://www.w3.org/WAI/PF/aria/introduction"
+        },
+        {
+          "name": "Mozilla: Web Storage API",
+          "type": "article",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API"
+        },
+        {
+          "name": "Mozilla: Web Sockets",
+          "type": "article",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API"
+        },
+        {
+          "name": "HTML5 Rocks: Shadow DOM",
+          "type": "article",
+          "url": "https://www.html5rocks.com/en/tutorials/webcomponents/shadowdom/"
+        }
+      ],
+      "abilities": [
+        "Know when an HTML feature is not supported by a browser and how to work around it.",
+        "Use Web Workers to improve performance.",
+        "Improve Web Page usability by considering impaired people.",
+        "Analize when a web page has accessibility issues and how to solve them.",
+        "Go beyond cookies using th new storage API.",
+        "Send server side notifications"
+      ],
+      "assessment-questions": [
+        { "question": "How can you use *LocalStorage* or *SessionStorage*?" },
+        { "question": "Can you explain the difference between *LocalStorage* or *SessionStorage* and Cookies?", "answer-hint": "They differ on how they interact with the server and the type of information they can store." },
+        { "question": "Can you explaing roughly how WebSocket works? Can you give a simple example on how would you use it implement a chat client?" },
+        { "question": "What does WAI-ARIA specify?" },
+        { "question": "In regards with WAI-ARIA, why is autofocus discouraged?" },
+        { "question": "In regards with WAI-ARIA, what do we mean with Contrast Ratio and what does it meant to solve?" },
+        { "question": "How can you interact with the *History API*? What's its main purpose?" },
+        { "question": "What do we mean when we refer to SPA?" },
+        { "question": "What modification has been introduced to `<iframe>`? How does it behave differently?" },
+        { "question": "Which new HTML5 feature allow us to keep `<script>` tags at the top of the page without degrading performance?" },
+        { "question": "Can you explain what's Shadow DOM and how does it work?" },
+        { "question": "Can a Web Worker access the web page global namespace (ie. Variable, methods, etc.)?" },
+        { "question": "How do you communicate with Web Workers (back and forth)?" },
+        { "question": "If you have Akka experience, how would you code a toy Akka with Web Workers?" },
+        { "question": "What type of message can you send to a Web Worker? How does this data transfered?" }
+      ]
+    },
+
+    {
+      "id": "css-advanced",
+      "name": "Advanced CSS",
+      "description": "Unlike CSS 2, which is a large single specification defining various features, CSS 3 is divided into several separate documents called \"modules\". Each module adds new capabilities or extends features defined in CSS 2, preserving backward compatibility.",
+      "tags": ["required-for-senior-software-engineer"],
+      "dependencies": ["css-intermediate"],
+      "resources": [
+        {
+          "name": "CSS Transformations",
+          "type": "article",
+          "url": "https://www.w3schools.com/css/css3_2dtransforms.asp"
+        },
+        {
+          "name": "CSS Transitions",
+          "type": "article",
+          "url": "https://www.w3schools.com/css/css3_transitions.asp"
+        },
+        {
+          "name": "CSS Animations",
+          "type": "article",
+          "url": "https://www.w3schools.com/css/css3_animations.asp"
+        },
+        {
+          "name": "CSS Flexbox",
+          "type": "article",
+          "url": "https://www.w3schools.com/css/css3_flexbox.asp"
+        },
+        {
+          "name": "CSS Tricks: A Complete Guide to Flexbox",
+          "type": "article",
+          "url": "https://css-tricks.com/snippets/css/a-guide-to-flexbox/"
+        },
+        {
+          "name": "Mozilla: Grid Layout",
+          "type": "article",
+          "url": "https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Grids"
+        },
+        {
+          "name": "CSS Variables",
+          "type": "article",
+          "url": "https://www.w3schools.com/css/css3_variables.asp"
+        },
+        {
+          "name": "CSS Multi Columns",
+          "type": "article",
+          "url": "https://www.w3schools.com/css/css3_multiple_columns.asp"
+        }
+      ],
+      "abilities": [
+        "Define web page transformations, transitions and animations without needing Javascript.",
+        "Define more complex and flexible web page layouts."
+      ],
+      "assessment-questions": [
+        { "question": "Can you name at least two type of CSS tranforms, and how to use them?" },
+        { "question": "What type of properties can be transitioned? Can you name one that cannot be transitioned?" },
+        { "question": "What does the `transition-timing-function` property do?" },
+        { "question": "Do different `transition-timing-function` affect the duration of the transition? Can you explain why?" },
+        { "question": "What's a keyframe?" },
+        { "question": "Defining vertical height can be difficult (if not impossible) in CSS, given a `flex` container how can you make sure every contained element has the same size? Regardless of its content and without setting the `height` property." },
+        { "question": "How can you define a variable in CSS? How is this different to a LESS or SASS variable?" },
+        { "question": "Given a `flex` container how can you easily change the layout of the contained elements? (eg. from horizontal to vertical)" },
+        { "question": "What's the required convention when using CSS `var`?" },
+        { "question": "Can you scope a CSS `var`? Why? Does it relate to every other CSS rule?"},
+        { "question": "Vertical centering can be difficult in CSS, now with `flex` we can do it, how?" },
+        { "question": "What does the properties `flex-grow` and `flex-shrink`? Does it work if every contained element has the same value?" },
+        { "question": "How can you define a Grid layout of four columns (each of different sizes)? Can you give the CSS code?" },
+        { "question": "What's the purpose of `repeat` in Grid layout, how do you use it?" },
+        { "question": "Grid layout introduced a new unit `fr`, what does it mean and how is it used?" },
+        { "question": "What's the purpose of `minmax` in Grid layout, how do you use it?" }
+      ]
+    }
+
+  ],
+
+  "projects": []
+}
