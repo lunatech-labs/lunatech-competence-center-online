@@ -18,7 +18,7 @@ trait StudentService {
 
 object StudentService {
   final case class Config(name: String, token: String)
-  final case class Student(person: Person, mentor: Person)
+  final case class Student(person: Person, mentor: Option[Person])
 }
 
 class PostgresStudentService(transactor: Transactor[Task], peopleService: PeopleService) extends StudentService {
@@ -62,8 +62,8 @@ class PostgresStudentService(transactor: Transactor[Task], peopleService: People
 
   private def buildStudent(student: String, mentor: String): Future[String \/ Student] =
     Future.join(peopleService.findByEmail(student), peopleService.findByEmail(mentor)) map {
-      case (Some(student), Some(mentor)) => Student(student, mentor).right[String]
-      case (Some(student), _) => s"Mentor $mentor not found in the People Service, skipping student record for $student".left[Student]
+      case (Some(student), Some(mentor)) => Student(student, Some(mentor)).right[String]
+      case (Some(student), _) => Student(student, None).right[String]
       case (_, _) => s"Student $student not found in the People Service, skipping student record".left[Student]
     }
 }
