@@ -69,9 +69,9 @@ class ApiPeopleService(apiKey: String, client: Service[Request, Response]) exten
             throw new Exception(errormsg)
         }
       case response =>
-        logger.error(s"Request $request failed with header ${request.headerMap} and body ")
-        throw new Exception(s"Unexpected response from people api, Response Status: ${response.statusCode}, Response: ${response.contentString}")
-      }
+        logger.warn(s"Request $request failed with header ${request.headerMap} and body ")
+        None
+    }
   }
 }
 
