@@ -23,7 +23,7 @@ trait TokenVerifier {
   def verifyToken(idTokenString: String): Option[GoogleUser]
 }
 
-class GoogleTokenVerifier(clientId: String) extends TokenVerifier {
+class GoogleTokenVerifier(clientId: String, allowedDomains: List[String]) extends TokenVerifier {
 
   override def verifyToken(idTokenString: String): Option[GoogleUser] = {
     val transport = new NetHttpTransport()
@@ -34,17 +34,18 @@ class GoogleTokenVerifier(clientId: String) extends TokenVerifier {
       .setAudience(List(clientId).asJava)
       .build()
 
-    Option(verifier.verify(idTokenString)).map { idToken =>
-      val payload = idToken.getPayload
-
-      // Get profile information from payload
-      GoogleUser(
-        payload.getSubject,
-        payload.getEmail,
-        payload.get("name").asInstanceOf[String],
-        payload.get("family_name").asInstanceOf[String],
-        payload.get("given_name").asInstanceOf[String],
-        payload.get("imageUrl").asInstanceOf[String])
+    Option(verifier.verify(idTokenString))
+      .map(_.getPayload)
+      .filter(payload => allowedDomains.contains(payload.getHostedDomain))
+      .map { payload =>
+        // Get profile information from payload
+        GoogleUser(
+          payload.getSubject,
+          payload.getEmail,
+          payload.get("name").asInstanceOf[String],
+          payload.get("family_name").asInstanceOf[String],
+          payload.get("given_name").asInstanceOf[String],
+          payload.get("imageUrl").asInstanceOf[String])
     }
   }
 }
