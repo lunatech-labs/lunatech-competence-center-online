@@ -614,6 +614,11 @@
       "dependencies": ["css-basics"],
       "resources": [
         {
+          "name": "CSS Guidelines",
+          "type": "documentation",
+          "url": "https://cssguidelin.es/"
+        },
+        {
           "name": "CSS Sprites",
           "type": "article",
           "url": "https://www.w3schools.com/css/css_image_sprites.asp"
@@ -836,6 +841,55 @@
         { "question": "Grid layout introduced a new unit `fr`, what does it mean and how is it used?" },
         { "question": "What's the purpose of `minmax` in Grid layout, how do you use it?" }
       ]
+    },
+
+    {
+      "id": "css-methodologies",
+      "name": "Methodologies CSS",
+      "description": "Like any other programming language CSS has different methodologies that were created to manage and deal with the complexity that can arise on big CSS files (or projects).",
+      "tags": ["required-for-senior-software-engineer"],
+      "dependencies": ["css-intermediate"],
+      "resources": [
+        {
+          "name": "An introduction to CSS Methodologies",
+          "type": "article",
+          "url": "https://codepen.io/hidanielle/post/css-methodologies-naming-conventions-and-file-structures"
+        },
+        {
+          "name": "BEM Introduction",
+          "type": "article",
+          "url": "http://getbem.com/introduction/"
+        },
+        {
+          "name": "CSS Tricks: BEM 101",
+          "type": "article",
+          "url": "https://css-tricks.com/bem-101/"
+        },
+        {
+          "name": "An introduction to OOCSS",
+          "type": "article",
+          "url": "https://www.smashingmagazine.com/2011/12/an-introduction-to-object-oriented-css-oocss/"
+        },
+        {
+          "name": "Basics of OOCSS",
+          "type": "article",
+          "url": "https://www.hongkiat.com/blog/basics-of-object-oriented-css/"
+        },
+        {
+          "name": "SMACSS (includes Free Ebook)",
+          "type": "documentation",
+          "url": "https://smacss.com/"
+        },
+        {
+          "name": "LESS & BEM",
+          "type": "other",
+          "url": "https://css-tricks.com/forums/topic/less-bem/"
+        }
+      ],
+      "abilities": [
+        "Manage complex CSS and untangle complicated classes."
+      ],
+      "assessment-questions": []
     }
 
   ],
