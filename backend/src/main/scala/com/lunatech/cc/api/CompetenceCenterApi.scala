@@ -43,7 +43,7 @@ object CompetenceCenterApi extends App {
                               career: CareerFrameworkService.Config)
 
     sealed trait TokenVerifierConfig
-    case class Google(google: GoogleConfig) extends TokenVerifierConfig
+    case class Google(google: GoogleConfig, allowedDomains: List[String]) extends TokenVerifierConfig
     case class Fake(fake: FakeConfig) extends TokenVerifierConfig
 
     case class FakeConfig(overrideEmail: String)
@@ -78,8 +78,8 @@ object CompetenceCenterApi extends App {
   val tokenVerifier = config.tokenVerifier match {
     case Config.Fake(fakeConfig) =>
       new StaticTokenVerifier(fakeConfig.overrideEmail)
-    case Config.Google(googleConfig) =>
-      new GoogleTokenVerifier(googleConfig.oauthClientId)
+    case Config.Google(googleConfig, allowed) =>
+      new GoogleTokenVerifier(googleConfig.oauthClientId, allowed)
   }
 
   // For endpoints that require an API key OR a Google authenticated user.
