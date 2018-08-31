@@ -1,0 +1,104 @@
+<!--
+     @license
+     Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+     This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+     The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+     The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+     Code distributed by Google as part of the polymer project is also
+     subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+   -->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="page-cvs.html"> <!-- ToDo @Ender separate CV project components as much as you can -->
+<link rel="import" href="core-curriculum/subject-details.html">
+<link rel="import" href="core-curriculum/enrollment-status.html">
+<link rel="import" href="util/page-behavior.html">
+<link rel="import" href="../bower_components/cv-editor/cv-editor.html">
+
+<!--ToDo This page is still in development-->
+
+<dom-module id="page-employees">
+    <template>
+        <style>
+            :host {
+                display: block;
+                padding: 10px 20px;
+            }
+        </style>
+
+        <iron-meta id="meta"></iron-meta>
+
+        <app-route
+                route="{{route}}"
+                pattern="/::employeeEmail"
+                data="{{routeData}}"
+                active="{{employeeSelected}}">
+        </app-route>
+
+        <iron-ajax id="ajaxLoad"
+                   url="/api/passport"
+                   handle-as="json"
+                   last-response="{{passport}}"></iron-ajax>
+
+        <iron-pages
+                selected="[[page]]"
+                attr-for-selected="id"
+                role="main">
+
+            <div id="list">
+                <page-cvs base-path="/passports"></page-cvs>
+            </div>
+
+            <cv-editor id="details" data="{{passport}}" editable="true" employeeEmail="{{routeData.studentEmail}}"></cv-editor>
+
+        </iron-pages>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'page-employees',
+
+            behaviors: [PageBehavior],
+
+            properties: {
+                page: {
+                    type: String,
+                    computed: '_computePage(employeeSelected)'
+                },
+
+                title: {
+                    value: "Passports"
+                },
+
+                employeeName: {
+                    type: String,
+                    value: ""
+                },
+
+                passport: {
+                    type: Object
+                },
+
+                routeData: {
+                    observer: "_routeDataChanged"
+                }
+            },
+
+            _routeDataChanged: function() {
+                console.log("Route data changed: ", this.routeData, this.routeData.studentEmail)
+            },
+
+            _computePage: function(employeeSelected) {
+                if(employeeSelected) {
+                    this.$.ajaxLoad.headers = { "X-ID-Token": this.$.meta.byKey("idToken")};
+                    this.$.ajaxLoad.generateRequest();
+                    return 'details'
+                } else {
+                    return 'list'
+                }
+            }
+        });
+    </script>
+</dom-module>

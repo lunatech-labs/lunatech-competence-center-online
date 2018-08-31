@@ -107,8 +107,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <a name="core-curriculum" href="/core-curriculum">University</a>
             <a name="students" hiddend$="[[!hasAnyRole(lunatechProfile,'mentor')]]" href="/students">Students</a>
             <a name="workshops" href="/workshops">Workshops</a>
-            <!-- <a name="passport" hidden$="[[!hasRole(lunatechProfile,'developer')]]" href="/passport/me">Developer Passport</a> -->
-            <a name="cvs"  hidden$="[[!hasRole(lunatechProfile,'cv-editor')]]" href="/cvs">CVs</a>
+            <a name="passport"  href="/passport/me">My Passport</a>
+            <!--<a name="cvs" href="/employees">CVs</a>  &lt;!&ndash;ToDo @Ender enable authorization &ndash;&gt;-->
             <a name="techmatrix" href="http://techmatrix.lunatech.com" target="_new">Tech Matrix</a>
 
             <br />
@@ -142,12 +142,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <page-workshops       on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" name="workshops" title="Workshops"></page-workshops>
 
             <template is="dom-if" name="passport" restamp>
-                <page-passport    on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" name="passport" title="Developer Passport" route=[[subroute]]></page-passport>
+                <page-passport on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" route=[[subroute]]></page-passport>
             </template>
 
-            <template is="dom-if" name="cvs" restamp>
-                <page-cvs         on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" name="cvs" title="CVs" route=[[subroute]]></page-cvs>
-            </template>
+
+            <!--<template is="dom-if" name="employees" restamp>-->
+                <!--<page-employees on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" route=[[subroute]]></page-employees>-->
+            <!--</template>-->
 
             <template is="dom-if" name="core-curriculum" restamp>
                 <page-core-curriculum on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" route=[[subroute]]></page-core-curriculum>
@@ -272,7 +273,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _pageChanged: function(page) {
         console.log("_pageChanged", arguments);
         // Load page import on demand. Show 404 page if fails
-        var resolvedPageUrl = this.resolveUrl('page-' +page + '.html');
+        var resolvedPageUrl = this.resolveUrl('page-' + page + '.html');
         this.importHref(resolvedPageUrl, null, this._showPage404, true);
       },
 

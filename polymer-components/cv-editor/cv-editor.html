@@ -51,8 +51,17 @@ CV Editor
        width: 50%;
      }
 
-     .header { @apply(--paper-font-headline);}
-     .header-out { @apply(--paper-font-headline); margin-top: 10px; margin-left: 15px;}
+     .card-content-achievements {
+       text-aligh: left;
+       width: 99%;
+     }
+
+     .header {
+       @apply(--paper-font-headline);
+     }
+
+     /*ToDo @Ender This was breaking the vaadin-date-picker. */
+     /*.header-out { @apply(--paper-font-headline); margin-top: 10px; margin-left: 15px;}*/
 
      paper-card {
        width:100%;
@@ -108,11 +117,40 @@ CV Editor
      paper-radio-button.small {
        font-size   : .65em;
      }
+
+     paper-textarea.no-underline {
+       --paper-input-container-underline: {
+         display: none;
+       };
+       --paper-input-container-underline-focus: {
+         display: none;
+       };
+       --paper-input-container-underline-disabled: {
+         display: none;
+       };
+     }
+
+     ul li {
+       width: 50%;
+     }
+
+     ul li.left {
+       float: left;
+     }
+
+     ul li.right {
+       float: right;
+     }
+
+     ul li.left span.right {
+       margin-right: 2em;
+     }
+
    </style>
    <iron-meta id="meta"></iron-meta>
 
    <iron-ajax id="ajaxSave"
-      url="/api/employees/me"
+      url="/api/passport"
       method="PUT"
       content-type="application/json"
       on-response="cvSaved"></iron-ajax>
@@ -122,32 +160,28 @@ CV Editor
      <paper-card elevation="0" class="horizontal">
        <div class="card-content">
          <div class="header">Personal Details
-           <paper-input label="Given name" value="{{data.employee.basics.givenName}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Family name" value="{{data.employee.basics.familyName}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Label" value="{{data.employee.basics.label}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Start" value="{{data.employee.basics.startYear}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Given name" value="{{data.basics.givenName}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Family name" value="{{data.basics.familyName}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Label" value="{{data.basics.label}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Start Year" value="{{data.basics.startYear}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Office" value="{{data.basics.contact.name}}" class="no-underline" readonly></paper-input>
+           <paper-textarea label="Summary" value="{{data.basics.profile}}" class="no-underline no-label" readonly></paper-textarea>
+
          </div>
        </div>
        <div class="card-content">
-         <img-mask id="photoImage" src="{{data.employee.basics.image}}" size="200"></img-mask>
-       </div>
-     </paper-card>
-     <paper-card elevation="0">
-       <div class="card-content">
-         {{data.employee.basics.profile}}
+         <img-mask id="photoImage" src="{{data.basics.image}}" size="200"></img-mask>
        </div>
      </paper-card>
      <paper-card elevation="0">
        <div class="card-content" style="width=100%;">
          <div class="header">Education
-           <template is="dom-repeat" items="{{data.employee.educations}}">
+           <template is="dom-repeat" items="{{data.educations}}">
              <div class="content">
-               <br>
                <b>{{item.studyType}}</b>
                <br>
                <pre>{{item.institution}} / {{item.country}} / {{item.startDate}} - {{item.endDate}} </pre>
                {{item.description}}
-               <br>
              </div>
            </template>
          </div>
@@ -156,13 +190,19 @@ CV Editor
      <paper-card elevation="0">
        <div class="card-content">
          <div class="header">Key Experience
-           <template is="dom-repeat" items="{{data.employee.projects}}">
+           <!--Todo @Ender check why if does not work!-->
+           <!--<template is="dom-if" if="{{data.projects.length == 0}}">-->
+             <!--<br>-->
+             <!--<div class="content">-->
+               <!--You did not fill any experience yet!-->
+             <!--</div>-->
+           <!--</template>-->
+           <template is="dom-repeat" items="{{data.projects}}">
              <div class="content">
                <br>
                <b>{{item.client}}</b> {{item.startDate}} - {{item.endDate}}
                <br>
                <b>{{item.role}}</b> : {{item.summary}}
-               <br>
              </div>
            </template>
          </div>
@@ -171,28 +211,39 @@ CV Editor
      <paper-card elevation="0">
        <div class="card-content">
          <div class="header">Key Skills
-           <template is="dom-if" if="{{data.employee.skills.length}}">
+           <template is="dom-if" if="{{data.skills.length}}">
+           <div class="content">
+             <br>
+             <b>TechMatrix Skills</b>
+             <ul data-column="2">
+             <template is="dom-repeat" items="{{data.skills}}" filter="isTechMatrix" observe="item.category">
+               <li class$="{{getClassForLiItem(index)}}">
+                 <span class="left"> {{item.name}}</span>
+                 <span class="right"> {{item.level}} / 10</span>
+               </li>
+             </template>
+            </ul>
+           </div>
+           <br>
            <div class="content">
              <br>
              <b>Technical Skills</b>
-             <template is="dom-repeat" items="{{data.employee.skills}}" filter="isTech" observe="item.category">
-               <br>
+             <template is="dom-repeat" items="{{data.skills}}" filter="isTech" observe="item.category">
                <div class="content">
                  <div class="left">
                    {{item.name}}
                  </div>
                  <pre></pre>
                  <div class="right">
-                   {{item.level}}
+                   {{item.level}} / 10
                  </div>
                </div>
              </template>
            </div>
+           <br>
            <div class="content">
-             <br>
-             <br>
              <b>Fun Skills</b>
-             <template is="dom-repeat" items="{{data.employee.skills}}" filter="isFun" observe="item.category">
+             <template is="dom-repeat" items="{{data.skills}}" filter="isFun" observe="item.category">
                <br>
                <div class="content">
                  <div class="left">
@@ -200,7 +251,7 @@ CV Editor
                  </div>
                  <pre></pre>
                  <div class="right">
-                   {{item.level}}
+                   {{item.level}} / 10
                  </div>
                </div>
              </template>
@@ -211,50 +262,53 @@ CV Editor
      </paper-card>
      <paper-card elevation="0">
        <div class="card-content">
-         <div class="header">Achievements
-           <template is="dom-repeat" items="{{data.employee.achievements}}">
-             <div class="content">
-               <br>
-               {{item}}
-             </div>
-           </template>
-         </div>
+         <div class="header">Achievements</div>
+         <template is="dom-repeat" items="{{data.achievements}}">
+           <br>
+           <div class="content">
+             {{item}}
+           </div>
+         </template>
+
        </div>
      </paper-card>
    </template>
 
    <!-- editable view -->
    <template is="dom-if" if="{{isEditableVisible}}">
+     <!-- personal details-->
      <paper-card elevation="0" class="horizontal">
        <div class="card-content">
          <div class="header">Personal Details
-           <paper-input label="Given name" value="{{data.employee.basics.givenName}}"></paper-input>
-           <paper-input label="Family name" value="{{data.employee.basics.familyName}}"></paper-input>
-           <paper-input label="Label" value="{{data.employee.basics.label}}"></paper-input>
-           <paper-input label="Start" value="{{data.employee.basics.startYear}}"></paper-input>
+           <paper-input label="Given name" value="{{data.basics.givenName}}"></paper-input>
+           <paper-input label="Family name" value="{{data.basics.familyName}}"></paper-input>
+           <paper-input label="Label" value="{{data.basics.label}}"></paper-input>
+           <paper-input label="Start Year" value="{{data.basics.startYear}}"></paper-input>
            <div class="floating-label">Office</div>
-           <paper-radio-group selected="{{data.employee.basics.contact.name}}">
-             <paper-radio-button class="small" name="LUNATECH ROTTERDAM">Rotterdam</paper-radio-button>
-             <paper-radio-button class="small" name="LUNATECH AMSTERDAM">Amsterdam</paper-radio-button>
-             <paper-radio-button class="small" name="LUNATECH PARIS">Paris</paper-radio-button>
+           <paper-radio-group selected="{{data.basics.contact.name}}">
+             <paper-radio-button class="small" name="ROTTERDAM">Rotterdam</paper-radio-button>
+             <paper-radio-button class="small" name="AMSTERDAM">Amsterdam</paper-radio-button>
+             <paper-radio-button class="small" name="PARIS">Paris</paper-radio-button>
            </paper-radio-group>
          </div>
        </div>
        <div class="card-content">
-         <img-mask id="photoImage" src="{{data.employee.basics.image}}" size="200" on-tap="photoSelected"></img-mask>
-         <paper-input label="Photo address" value="{{data.employee.basics.image}}"></paper-input>
+         <img-mask id="photoImage" src="{{data.basics.image}}" size="200" on-tap="photoSelected"></img-mask>
+         <paper-input label="Photo address" value="{{data.basics.image}}"></paper-input>
          <paper-button hidden$=[[!photoChanged]] on-tap="resetPhoto">Reset Photo</paper-button>
        </div>
      </paper-card>
+     <!-- summary-->
      <paper-card elevation="0">
        <div class="card-content">
-         <paper-textarea label="Summary" value="{{data.employee.basics.profile}}"></paper-textarea>
+         <paper-textarea label="Summary" value="{{data.basics.profile}}"></paper-textarea>
        </div>
      </paper-card>
+     <!-- education -->
      <paper-card elevation="0">
        <div class="header-out">Education
          <div class="card-group">
-           <template is="dom-repeat" items="{{data.employee.educations}}">
+           <template is="dom-repeat" items="{{data.educations}}" observe="item" >
              <paper-card class="horizontal">
                <div class="card-content">
                  <paper-input label="Institution" value="{{item.institution}}"></paper-input>
@@ -271,14 +325,15 @@ CV Editor
                </div>
              </paper-card>
            </template>
-         </div class="card-group">
+         </div>
          <paper-icon-button icon="add-circle" on-click="addEducation" title="Add education" mini></paper-icon-button>
        </div>
      </paper-card>
+     <!-- key experience-->
      <paper-card elevation="0">
        <div class="header-out">Key Experience
          <div class="card-group">
-           <template is="dom-repeat" items="{{data.employee.projects}}">
+           <template is="dom-repeat" items="{{data.projects}}">
              <paper-card class="horizontal">
                <div class="card-content">
                  <paper-input label="Client" value="{{item.client}}"></paper-input>
@@ -294,14 +349,15 @@ CV Editor
                </div>
              </paper-card>
            </template>
-         </div class="card-group">
+         </div>
          <paper-icon-button icon="add-circle" title="Add project" on-click="addProject"></paper-icon-button>
        </div>
      </paper-card>
+     <!-- key skills-->
      <paper-card elevation="0">
        <div class="header-out">Key Skills
            <div class="card-group">
-             <template is="dom-repeat" items="{{data.employee.skills}}">
+             <template is="dom-repeat" items="{{data.skills}}" filter="isFunOrTech">
                <paper-card class="horizontal">
                  <div class="card-content">
                    <paper-input label="Name" value="{{item.name}}"></paper-input>
@@ -319,28 +375,27 @@ CV Editor
                  </div>
                </paper-card>
              </template>
-           </div class="card-group">
+           </div>
            <paper-icon-button icon="add-circle" title="Add skill" on-click="addSkill"></paper-icon-button>
 
        </div>
      </paper-card>
+     <!-- achievements-->
      <paper-card elevation="0">
-       <div class="card-content">
-         <div class="header">Achievements
-           <div class="card-group">
-             <template is="dom-repeat" items="{{data.employee.achievements}}">
-               <paper-card class="horizontal">
-                 <div class="card-content">
-                   <paper-textarea label="Achievement" value="{{item}}"></paper-textarea>
-                 </div>
-                 <div class="card-actions">
-                   <paper-icon-button icon="delete" title="Delete achievement" on-click="removeAchievement"></paper-icon-button>
-                 </div>
-               </paper-card>
-             </template>
-           </div class="card-group">
-           <paper-button icon="add-circle" title="Add achievement" on-click="addAchievement"></paper-icon-button>
+       <div class="header">Achievements
+         <div class="card-group">
+           <template is="dom-repeat" items="{{data.achievements}}">
+             <paper-card class="horizontal">
+               <div class="card-content">
+                 <paper-textarea label="Achievement" value="{{item}}"></paper-textarea>
+               </div>
+               <div class="card-actions">
+                 <paper-icon-button icon="delete" title="Delete achievement" on-click="removeAchievement"></paper-icon-button>
+               </div>
+             </paper-card>
+           </template>
          </div>
+         <paper-icon-button icon="add-circle" title="Add achievement" on-click="addAchievement"></paper-icon-button>
        </div>
      </paper-card>
 
@@ -351,26 +406,26 @@ CV Editor
      <paper-card elevation="0" class="horizontal">
        <div class="card-content">
          <div class="header">Personal Details
-           <paper-input label="Given name" value="{{data.employee.basics.givenName}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Family name" value="{{data.employee.basics.familyName}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Label" value="{{data.employee.basics.label}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Start" value="{{data.employee.basics.startYear}}" class="no-underline" readonly></paper-input>
-           <paper-input label="Office" value="{{data.employee.basics.contact.name}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Given name" value="{{data.basics.givenName}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Family name" value="{{data.basics.familyName}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Label" value="{{data.basics.label}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Start Year" value="{{data.basics.startYear}}" class="no-underline" readonly></paper-input>
+           <paper-input label="Office" value="{{data.basics.contact.name}}" class="no-underline" readonly></paper-input>
          </div>
        </div>
        <div class="card-content">
-         <img-mask id="photoImage" src="{{data.employee.basics.image}}" size="200"></img-mask>
+         <img-mask id="photoImage" src="{{data.basics.image}}" size="200"></img-mask>
        </div>
      </paper-card>
      <paper-card elevation="0">
          <div class="card-content">
-           <paper-textarea label="Summary" value="{{data.employee.basics.profile}}"></paper-textarea>
+           <paper-textarea label="Summary" value="{{data.basics.profile}}"></paper-textarea>
          </div>
      </paper-card>
      <paper-card elevation="0">
        <div class="header-out">Education
          <div class="card-group">
-           <template is="dom-repeat" items="{{data.employee.educations}}">
+           <template is="dom-repeat" items="{{data.educations}}">
              <paper-card class="horizontal">
                <div class="card-content">
                  <paper-input label="Institution" value="{{item.institution}}"></paper-input>
@@ -387,14 +442,14 @@ CV Editor
                </div>
              </paper-card>
            </template>
-         </div class="card-group">
+         </div>
          <paper-icon-button icon="add-circle" on-click="addEducation" title="Add education" mini></paper-icon-button>
        </div>
      </paper-card>
      <paper-card elevation="0">
        <div class="header-out">Key Experience
          <div class="card-group">
-           <template is="dom-repeat" items="{{data.employee.projects}}">
+           <template is="dom-repeat" items="{{data.projects}}">
              <paper-card class="horizontal">
                <div class="card-content">
                  <paper-input label="Client" value="{{item.client}}"></paper-input>
@@ -410,14 +465,14 @@ CV Editor
                </div>
              </paper-card>
            </template>
-         </div class="card-group">
+         </div>
          <paper-icon-button icon="add-circle" title="Add project" on-click="addProject"></paper-icon-button>
        </div>
      </paper-card>
      <paper-card elevation="0">
        <div class="header-out">Key Skills
            <div class="card-group">
-             <template is="dom-repeat" items="{{data.employee.skills}}">
+             <template is="dom-repeat" items="{{data.skills}}">
                <paper-card class="horizontal">
                  <div class="card-content">
                    <paper-input label="Name" value="{{item.name}}"></paper-input>
@@ -435,28 +490,27 @@ CV Editor
                  </div>
                </paper-card>
              </template>
-           </div class="card-group">
+           </div>
            <paper-icon-button icon="add-circle" title="Add skill" on-click="addSkill"></paper-icon-button>
 
        </div>
      </paper-card>
      <paper-card elevation="0">
        <div class="card-content">
-         <div class="header">Achievements
-           <div class="card-group">
-             <template is="dom-repeat" items="{{data.employee.achievements}}">
-               <paper-card class="horizontal">
-                 <div class="card-content">
-                   <paper-textarea label="Achievement" value="{{item}}"></paper-textarea>
-                 </div>
-                 <div class="card-actions">
-                   <paper-icon-button icon="delete" title="Delete achievement" on-click="removeAchievement"></paper-icon-button>
-                 </div>
-               </paper-card>
-             </template>
-           </div class="card-group">
-           <paper-button icon="add-circle" title="Add achievement" on-click="addAchievement"></paper-icon-button>
+         <div class="header">Achievements</div>
+         <div class="card-group">
+           <template is="dom-repeat" items="{{data.achievements}}">
+             <paper-card class="horizontal">
+               <div class="card-content-achievements">
+                 <paper-input label="Achievement" value="{{item.desc}}"></paper-input>
+               </div>
+               <div class="card-actions">
+                 <paper-icon-button icon="delete" title="Delete achievement" on-click="removeAchievement"></paper-icon-button>
+               </div>
+             </paper-card>
+           </template>
          </div>
+         <paper-icon-button icon="add-circle" title="Add achievement" on-click="addAchievement"></paper-icon-button>
        </div>
      </paper-card>
    </template>
@@ -464,14 +518,15 @@ CV Editor
    <template is="dom-if" if="{{editable}}">
      <paper-button hidden="{{isOverviewVisible}}" title="Save Modifications" on-tap="save">Save</paper-button>
      <paper-icon-button hidden="{{!isOverviewVisible}}"  title="Go to Edit" icon="icons:create" on-tap="doEdit" class="edit" mini></paper-icon-button>
-   </template>
-   <template is="dom-if" if="true">
-   <paper-icon-button hidden="{{isOverviewVisible}}" title="Go to Overview" icon="icons:arrow-back" on-tap="doOverview" class="done" mini></paper-icon-button>
-   <paper-icon-button hidden="{{isGeneratingVisible}}" title="Go to PDF generation" icon="image:picture-as-pdf" on-tap="doGenerate" mini></paper-icon-button>
-   <paper-icon-button hidden="{{!isGeneratingVisible}}" title="Reset Modifications" icon="icons:refresh" on-tap="resetData"   mini></paper-icon-button>
-   <paper-icon-button hidden="{{!isGeneratingVisible}}" title="Generate PDF" icon="icons:done" on-tap="getPDF" mini></paper-icon-button>
+     <!--<paper-icon-button title="Reset and go Overview" icon="icons:arrow-back" on-tap="resetDataAndDoOverview"   mini></paper-icon-button>-->
    </template>
 
+   <template is="dom-if" if="true">
+     <paper-icon-button hidden="{{isOverviewVisible}}" title="Go to Overview" icon="icons:arrow-back" on-tap="doOverview" class="done" mini></paper-icon-button>
+     <!--<paper-icon-button hidden="{{isGeneratingVisible}}" title="Go to PDF generation" icon="image:picture-as-pdf" on-tap="doGenerate" mini></paper-icon-button>-->
+     <paper-icon-button hidden="{{!isGeneratingVisible}}" title="Reset Modifications" icon="icons:refresh" on-tap="resetData"   mini></paper-icon-button>
+     <!--<paper-icon-button hidden="{{!isGeneratingVisible}}" title="Generate PDF" icon="icons:done" on-tap="getPDF" mini></paper-icon-button>-->
+   </template>
 
    <iron-ajax id="ajaxDownloadPDF"
       url="/api/cvs"
@@ -481,6 +536,7 @@ CV Editor
       on-response="cvDownloaded"
       debounce-duration="3000">
    </iron-ajax>
+
  </template>
 
  <script>
@@ -522,35 +578,53 @@ CV Editor
        isEditableVisible: {
                type: Boolean,
                value: false
+       },
+       editable: {
+           type: Boolean,
+           value: true
+       },
+       employeeEmail: {
+           type: String,
+           value: true
+       },
+       routeData: {
+           observer: "_routeDataChanged"
        }
+     },
+
+     _routeDataChanged: function() {
+        console.log("Route data changed: ", this.employeeEmail)
      },
 
      attached: function() {
-       this.$.ajaxSave.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
-       if(this.data.employee.basics === undefined) {
-         this.set('data.employee.basics', {});
+       this.$.ajaxSave.headers = { "X-ID-Token": this.$.meta.byKey("idToken")};
+       if(this.data.basics === undefined) {
+         this.set('data.basics', {});
        }
 
-       if(this.data.employee.education === undefined ){
-         this.set('data.employee.education', []);
+       if(this.data.education === undefined ){
+         this.set('data.education', []);
        }
 
-       if(this.data.employee.skills === undefined) {
-         this.set('data.employee.skills', {});
+       if(this.data.skills === undefined) {
+         this.set('data.skills', {});
        }
      },
-
 
      doEdit: function(e){
-       this.isEditableVisible=true;
-       this.isOverviewVisible=false;
-       this.isGeneratingVisible=false;
+         this.show();
+         this.dataBackup=JSON.parse(JSON.stringify(this.data));
+         this.isEditableVisible=true;
+         this.isOverviewVisible=false;
+         this.isGeneratingVisible=false;
      },
 
-     doOverview: function(e){
-       this.isOverviewVisible=true;
-       this.isEditableVisible=false;
-       this.isGeneratingVisible=false;
+     doOverview: function(e) {
+         // this.dataBackup=JSON.parse(JSON.stringify(this.data));
+         this.data = JSON.parse(JSON.stringify(this.dataBackup));
+         this.isOverviewVisible=true;
+         this.isEditableVisible=false;
+         this.isGeneratingVisible=false;
      },
 
      doGenerate: function(e){
@@ -561,18 +635,25 @@ CV Editor
      },
 
      resetData: function(e) {
+       this.show();
        this.data=JSON.parse(JSON.stringify(this.dataBackup));
      },
 
+     resetDataAndDoOverview: function(e) {
+         this.resetData(e);
+         this.doOverview(e);
+     },
+
      getPDF : function(e) {
-       a = this.$.ajaxDownloadPDF;
-       a.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
-       employeeData = this.data.employee;
-       metaData = {"client" : "test", "creationDate" : "2017-05-05", "office" : "Rotterdam", "language" : "EN" };
+       let downloadPDF = this.$.ajaxDownloadPDF;
+       downloadPDF.headers = { "X-ID-Token": this.$.meta.byKey("idToken")};
+       employeeData = this.data;
+       metaData = {"client" : "test", "creationDate" : "2017-05-05", "office" : "Rotterdam", "language" : "EN" }; // ToDo @Ender to be removed.
        cvData = {"employee": employeeData, "meta": metaData};
-       a.body = cvData;
+       downloadPDF.body = cvData;
        this.win = window.open('about:blank', '_blank'); // we need to open a window at user input as browsers block async window.open
-       a.generateRequest();
+       console.log(cvData);
+       downloadPDF.generateRequest();
      },
 
      cvDownloaded : function(e) {
@@ -582,44 +663,41 @@ CV Editor
      },
 
      addEducation: function() {
-
-       this.push('data.employee.educations', { 'foo': 'bar' });
+       this.push('data.educations', {});
      },
 
      removeEducation: function(e) {
-       this.splice('data.employee.educations', e.model.index, 1);
+       this.show();
+       this.splice('data.educations', e.model.index, 1);
      },
 
      removeSummary: function(e) {
-       this.data.employee.basics.profile='';
+       this.data.basics.profile='';
        this.$.summaryTextarea.update('');
      },
 
      addProject: function() {
-
-       this.push('data.employee.projects', { 'foo': 'bar' });
+       this.push('data.projects', {});
      },
 
      removeProject: function(e) {
-       this.splice('data.employee.projects', e.model.index, 1);
+       this.splice('data.projects', e.model.index, 1);
      },
 
      addSkill: function() {
-
-       this.push('data.employee.skills', { 'foo': 'bar' });
+         this.push('data.skills', {});
      },
 
      removeSkill: function(e) {
-       this.splice('data.employee.skills', e.model.index, 1);
+       this.splice('data.skills', e.model.__data.itemsIndex, 1);
      },
 
      addAchievement: function() {
-
-       this.push('data.employee.achievements', { 'foo': 'bar' });
+       this.push('data.achievements', "");
      },
 
      removeAchievement: function(e) {
-       this.splice('data.employee.achievements', e.model.index, 1);
+       this.splice('data.achievements', e.model.index, 1);
      },
 
      show: function() {
@@ -631,8 +709,23 @@ CV Editor
        this.photoChanged = false;
      },
 
+     isFunOrTech: function(item) {
+         // ToDo @ender There should be better way to do this!!!
+         if(!item) {
+             return true;
+         }
+         if(!item.category) {
+             return true;
+         }
+         return this.isTech(item) || this.isFun(item);
+     },
+
+     isTechMatrix: function(item) {
+       return !this.isFunOrTech(item);
+     },
+
      isTech: function(item) {
-       return item.category === 'tech';
+         return item.category === 'tech';
      },
 
      isFun: function(item) {
@@ -642,38 +735,35 @@ CV Editor
      cvSaved: function(data) {
        this.isEditableVisible=false;
        this.isOverviewVisible=true;
-       console.log("CV saved!");
-       console.log(arguments);
+       this.data=JSON.parse(JSON.stringify(data.detail.response));
      },
 
      save: function() {
-       a = this.$.ajaxSave
-       console.log(JSON.stringify(this.data));
-
-       a.body = this.data;
-       a.generateRequest();
+       saveXhr = this.$.ajaxSave;
+       saveXhr.body = this.data;
+       saveXhr.generateRequest();
      },
 
      photoSelected: function() {
-       console.log("Photo selected!");
-       console.log(this.$.photoInput.files.length);
-
        var reader = new FileReader();
        var photoImage = this.$.photoImage;
 
-       if(photoImage.savedSrc == undefined) {
+       if(photoImage.savedSrc === undefined) {
          photoImage.savedSrc = photoImage.src
        }
 
        reader.onload = function (e) {
          photoImage.src = e.target.result;
-       }
+       };
 
        this.photoChanged = true;
 
        reader.readAsDataURL(this.$.photoInput.files[0]);
-     }
+     },
 
+     getClassForLiItem: function(index) {
+       return ((index % 2 === 0) ? 'left' : 'right');
+     }
 
    });
  </script>

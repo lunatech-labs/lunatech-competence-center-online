@@ -40,7 +40,8 @@ object CompetenceCenterApi extends App {
     case class HttpConfig(port: Int)
     case class ServicesConfig(people: PeopleService.Config,
                               workshops: StudentService.Config,
-                              career: CareerFrameworkService.Config)
+                              career: CareerFrameworkService.Config,
+                              skillmatrix: SkillMatrixService.Config)
 
     sealed trait TokenVerifierConfig
     case class Google(google: GoogleConfig, allowedDomains: List[String]) extends TokenVerifierConfig
@@ -66,8 +67,10 @@ object CompetenceCenterApi extends App {
   new DBMigration(config.database).migrate()
 
   val cvService = new PostgresCVService(transactor)
+  val passportService = new PostgresPassportService(transactor)
   val workshopService = EventBriteWorkshopService(config.services.workshops)
   val peopleService = ApiPeopleService(config.services.people)
+  val matrixService = ApiSkillMatrixService(config.services.skillmatrix)
   val coreCurriculumService = new PostgresCoreCurriculumService(
     transactor,
     new File(config.coreCurriculum.directory))
@@ -84,10 +87,28 @@ object CompetenceCenterApi extends App {
   }
 
   // For endpoints that require an API key OR a Google authenticated user.
+  private val staticTokenVerifier = new StaticTokenVerifier("erik.janssen@lunatech.nl")
+
+  val auth_clients_json = s"""[{ "name": "Erik Janssen", "roles": ["admin","developer"], "key": "${sys.env.getOrElse("PEOPLE_API_KEY", "")}"}]"""
+  val debug_authConfig = AuthConfig(auth_clients_json)
+
+  val debug_authenticated: Endpoint[ApiUser] =
+    authenticatedBuilder(debug_authConfig, tokenVerifier = staticTokenVerifier, peopleService)
+
   val authenticated: Endpoint[ApiUser] =
     authenticatedBuilder(config.auth, tokenVerifier, peopleService)
+
   val authenticatedUser: Endpoint[EnrichedGoogleUser] =
     authenticated.mapOutput {
+      case -\/(_) =>
+        Output.failure(
+          new RuntimeException("This endpoint only accepts an ID-Token"),
+          Status.Unauthorized)
+      case \/-(user) => Output.payload(user)
+    }
+
+  val debug_authenticatedUser: Endpoint[EnrichedGoogleUser] =
+    debug_authenticated.mapOutput {
       case -\/(_) =>
         Output.failure(
           new RuntimeException("This endpoint only accepts an ID-Token"),
@@ -104,11 +125,15 @@ object CompetenceCenterApi extends App {
 
   val cvController = new CVController(cvService,
                                       peopleService,
+    passportService,
                                       cvFormatter,
-                                      authenticated,
-                                      authenticatedUser)
+    debug_authenticated,
+    debug_authenticatedUser)
+
   val workshopController =
     new WorkshopController(workshopService, authenticated)
+  val passportController = new PassportController(passportService ,peopleService, matrixService, debug_authenticated, debug_authenticatedUser)
+
   val peopleController = new PeopleController(peopleService, authenticatedUser)
   val coreCurriculumController = new CoreCurriculumController(
     coreCurriculumService,
@@ -125,13 +150,12 @@ object CompetenceCenterApi extends App {
     authenticated,
     authenticatedUser)
   val service = (
-    cvController.`GET /employees` :+:
-      cvController.`GET /employees/me` :+:
-      cvController.`GET /employees/employeeId` :+:
-      cvController.`PUT /employees/me` :+:
+    cvController.`GET /employees/cvs` :+:
+      cvController.`GET /cvs/me` :+:
+      cvController.`GET /cvs/cvId` :+:
+      cvController.`GET /cvs/employeeId` :+:
       cvController.`POST /cvs` :+:
       cvController.`GET /cvs` :+:
-      cvController.`GET /cvs/employeeId` :+:
       workshopController.`GET /workshops` :+:
       peopleController.`GET /people/me` :+:
       coreCurriculumController.`GET /core-curriculum` :+:
@@ -146,6 +170,10 @@ object CompetenceCenterApi extends App {
       coreCurriculumController.`PUT /people/me/projects/{subject}/{project}/{status}` :+:
       coreCurriculumController.`DELETE /people/me/projects/{subject}/{project}` :+:
       coreCurriculumController.`PUT /people/me/projects/{subject}/{project}?url={url}` :+:
+      passportController.`GET /employees/passport` :+:
+      passportController.`PUT /passport` :+:
+      passportController.`GET /passport/me` :+:
+      passportController.`GET /passport/employeeId` :+:
       studentController.`GET /students` :+:
       studentController.`GET /students/me` :+:
       studentController.`GET /students/{studentEmail}` :+:

@@ -2,10 +2,12 @@ package com.lunatech.cc.models
 
 import com.lunatech.cc.api.EnrichedGoogleUser
 import com.lunatech.cc.api.services.Person
-import io.circe.{Decoder, ObjectEncoder}
+import io.circe.{Decoder, Encoder, Json, ObjectEncoder}
 
 import scala.language.implicitConversions
 import io.circe.generic.semiauto._
+import shapeless.{Generic, HNil}
+
 
 case class Contact(name: String,
                    address: String,
@@ -28,7 +30,63 @@ case class Employee(basics: BasicDetails,
                     skills: Seq[Skill],
                     achievements: Seq[String],
                     projects: Seq[Project],
-                    educations: Seq[Education])
+                    educations: Seq[Education]) {
+
+  def updateSkills(matrix: Seq[Skill]): Employee =
+    {
+      val filtered: Seq[Skill] = skills.filterNot(s => matrix.exists(t => t.name == s.name))
+      this.copy(skills = matrix ++ filtered )
+    }
+}
+
+object Employee {
+  def apply(user:EnrichedGoogleUser): Employee = {
+    val bd: BasicDetails = BasicDetails(user.givenName,user.familyName,"","",user.email,"","",Contact("","","","","","",""))
+    basicEmployee(bd)
+  }
+
+  def apply(person: Person): Employee = {
+    val bd: BasicDetails = BasicDetails(person.name.givenName,person.name.familyName,"","",person.email,"","",Contact("","","","","","",""))
+    basicEmployee(bd)
+  }
+
+  private def basicEmployee(bd: BasicDetails) = {
+    Employee(bd,Seq(),Seq(),Seq(),Seq())
+  }
+}
+
+sealed trait SkillLevel {
+  def level: Int
+}
+
+object SkillLevel {
+  implicit def encodeCaseObject[A <: Product](implicit
+                                              gen: Generic.Aux[A, HNil]
+                                             ): Encoder[A] = Encoder[String].contramap[A](_.productPrefix)
+
+  //TODO replace with shapeless magic
+  def stringToLevel(json: String): SkillLevel = json match {
+    case "NOVICE" => NOVICE
+    case "ADVANCED_BEGINNER" => ADVANCED_BEGINNER
+    case "COMPETENT" => COMPETENT
+    case "PROFICIENT" => PROFICIENT
+    case "EXPERT" => EXPERT
+  }
+}
+
+case object NOVICE extends SkillLevel { val level = 2}
+case object ADVANCED_BEGINNER extends SkillLevel { val level = 4}
+case object COMPETENT extends SkillLevel { val level = 6}
+case object PROFICIENT extends SkillLevel { val level = 8}
+case object EXPERT extends SkillLevel { val level = 10}
+
+case class Tech(id:Int, name: String, techType: String)
+case class MatrixSkill(tech: Tech, skillLevel: String, id:Int) {
+
+  def toSkill: Skill = Skill(tech.techType, tech.name,SkillLevel.stringToLevel(skillLevel).level)
+}
+
+case class MatrixSkills(skills: Seq[MatrixSkill])
 
 case class Skill(category: String,
                  name: String,
@@ -54,6 +112,17 @@ case class Meta(client: String,
 
 case class CV(employee: Employee,
               meta: Meta)
+
+case class CVData(id:String, cv: Json)
+
+object CVData {
+  implicit val cdEncoder: ObjectEncoder[CVData] = deriveEncoder[CVData]
+  implicit val cdDecoder: Decoder[CVData] = deriveDecoder[CVData]
+
+}
+
+case class CVS(person: Person, cvs: List[CVData])
+
 
 case class Skills(interpersonal: List[String], leadership: List[String], managerial: List[String])
 case class Specialization(name: String, requiredCurriculum: String, optionalCurriculum: String)
