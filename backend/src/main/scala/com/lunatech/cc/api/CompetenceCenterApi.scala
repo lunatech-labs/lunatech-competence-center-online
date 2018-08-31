@@ -66,6 +66,7 @@ object CompetenceCenterApi extends App {
   new DBMigration(config.database).migrate()
 
   val cvService = new PostgresCVService(transactor)
+  val passportService = new PostgresPassportService(transactor)
   val workshopService = EventBriteWorkshopService(config.services.workshops)
   val peopleService = ApiPeopleService(config.services.people)
   val coreCurriculumService = new PostgresCoreCurriculumService(
@@ -108,6 +109,8 @@ object CompetenceCenterApi extends App {
                                       authenticatedUser)
   val workshopController =
     new WorkshopController(workshopService, authenticated)
+  val passportController = new PassportController(passportService ,peopleService, authenticatedUser)
+
   val peopleController = new PeopleController(peopleService, authenticatedUser)
   val coreCurriculumController = new CoreCurriculumController(
     coreCurriculumService,
@@ -119,14 +122,18 @@ object CompetenceCenterApi extends App {
     careerFrameworkService,
     authenticated,
     authenticatedUser)
+  /*
+  *
+
+    */
   val service = (
     cvController.`GET /employees` :+:
       cvController.`GET /employees/me` :+:
       cvController.`GET /employees/employeeId` :+:
       cvController.`PUT /employees/me` :+:
       cvController.`POST /cvs` :+:
-      cvController.`GET /cvs` :+:
-      cvController.`GET /cvs/employeeId` :+:
+//      cvController.`GET /cvs` :+:
+      cvController.`GET /cvs/cvId` :+:
       workshopController.`GET /workshops` :+:
       peopleController.`GET /people/me` :+:
       coreCurriculumController.`GET /core-curriculum` :+:
@@ -141,6 +148,9 @@ object CompetenceCenterApi extends App {
       coreCurriculumController.`PUT /people/me/projects/{subject}/{project}/{status}` :+:
       coreCurriculumController.`DELETE /people/me/projects/{subject}/{project}` :+:
       coreCurriculumController.`PUT /people/me/projects/{subject}/{project}?url={url}` :+:
+      passportController.`PUT /passport` :+:
+      passportController.`GET /passport/me` :+:
+      passportController.`GET /passport/employeeId` :+:
       studentController.`GET /students` :+:
       studentController.`GET /students/me` :+:
       studentController.`GET /students/{studentEmail}` :+:

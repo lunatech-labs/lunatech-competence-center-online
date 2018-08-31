@@ -1,7 +1,9 @@
 package com.lunatech.cc.api
 
+import java.util.UUID
+
 import com.lunatech.cc.api.Routes._
-import com.lunatech.cc.api.services.PeopleService
+import com.lunatech.cc.api.services.{CVService, PeopleService}
 import com.lunatech.cc.formatter.{CVFormatter, FormatResult}
 import com.lunatech.cc.models.CV
 import com.twitter.io.{Buf, Reader}
@@ -11,7 +13,6 @@ import io.circe.generic.auto._
 import io.circe.syntax._
 import io.finch._
 import io.finch.circe._
-import cats.implicits._
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory._
 import scalaz._
@@ -25,27 +26,29 @@ class CVController(cvService: CVService, peopleService: PeopleService, cvFormatt
     Ok(cvService.findAll.asJson)
   }
 
-  val `GET /employees/me`: Endpoint[Json] = get(employees :: me :: authenticatedUser) { (user: EnrichedGoogleUser) =>
+  val `GET /employees/me`: Endpoint[List[Json]] = get(employees :: me :: authenticatedUser) { (user: EnrichedGoogleUser) =>
     logger.debug(s"GET /employees/me for $user")
-    cvService.findById(user.email) match {
-      case Some(json) => Ok(json)
-      case None => {
-        val json = CV(user).asJson
-        logger.debug(json.toString)
-        Ok(json)
-        // NotFound(new RuntimeException("No CV found"))
-      } //TODO: return empty CV filled with user data
-
+    cvService.findByPerson(user) match {
+      case Nil => Ok(List(CV(user).asJson))
+      case l => Ok(l)
     }
   }
 
-  val `GET /employees/employeeId`: Endpoint[Json] = get(employees :: string :: authenticated) { (employeeId: String, apiUser: ApiUser) =>
+  val `GET /employees/employeeId`: Endpoint[List[Json]] = get(employees :: string :: authenticated) { (employeeId: String, apiUser: ApiUser) =>
     logger.debug(s"GET /employees/$employeeId for $apiUser")
 
-    cvService.findById(employeeId) match {
-      case Some(json) => Ok(json)
-      case None => NotFound(new RuntimeException("No CV found"))
+    peopleService.findByEmail(employeeId)
+      .map {
+      case Some(person) => cvService.findByPersonId(employeeId) match {
+        case Nil => {
+          val cvl: List[Json] = List(CV(person).asJson)
+          Ok(cvl)
+        }
+        case l => Ok(l)
+      }
+      case _ => NotFound(new Exception(s"Employee $employeeId not found"))
     }
+
   }
 
   val `PUT /employees/me`: Endpoint[Json] = put(employees :: me :: authenticatedUser :: jsonBody[Json]) { (user: EnrichedGoogleUser, employee: Json) =>
@@ -75,30 +78,32 @@ class CVController(cvService: CVService, peopleService: PeopleService, cvFormatt
     }
   }
 
-  val `GET /cvs`: Endpoint[Json] = get(cvs :: authenticated).mapAsync { (_: ApiUser) =>
-    for {
+    val `GET /cvs/cvId`: Endpoint[Json] = get(cvs :: uuid :: authenticated) { (cvId: UUID, apiUser: ApiUser) =>
+      logger.debug(s"GET /cvs/${cvId.toString} for ${apiUser}")
+
+      cvService.findById(cvId) match {
+        case Some(value) => Ok(value)
+        case None => NotFound(new Exception(s"not found cv with id $cvId"))
+      }
+    }
+
+  val `GET /cvs`: Endpoint[Json] = get(cvs :: authenticated).mapAsync { (apiUser: ApiUser) =>
+    logger.debug(s"GET /cvs by $apiUser")
+
+    val result =  for {
       people <- peopleService.findByRole("developer")
-      cvs <- Future.value(cvService.findAll.flatMap(_.as[CV].toValidated.toOption))
-      _ = cvs.foreach(println)
+      cvs <- Future.value(cvService.findAll)
+      //      cvs <- Future.value(cvService.findAll.flatMap(_.as[CV].toValidated.toOption))
+//      _ = cvs.foreach(println)
     } yield {
+      people.map(p => cvs.get(p.email) match {
+        case Some(d) => (p,d)
+        case None => (p,List.empty[(UUID,Json)])
+      })}
 
-      people.map { person =>
-        Json.obj(
-          "person" -> person.asJson,
-          "cv" -> cvs.find(_.employee.basics.email.toLowerCase == person.email.toLowerCase).getOrElse(CV(person)).asJson
-        )
-      }.asJson
-    }
+    result.map(d => d.asJson)
   }
 
-  val `GET /cvs/employeeId`: Endpoint[Json] = get(cvs :: string :: authenticated) { (employeeId: String, apiUser: ApiUser) =>
-    logger.debug(s"GET /cvs/$employeeId for $apiUser")
 
-    cvService.findById(employeeId) match {
-      case Some(json) => Ok(json)
-      case None => NotFound(new RuntimeException("No CV found"))
-    }
-
-  }
 
 }

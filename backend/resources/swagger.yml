@@ -76,6 +76,29 @@ paths:
           description: Returns PDF
           schema: 
             type: file
+    get:
+      summary: Get all CVs
+      produces:
+        - application/json
+      description: Retrieve a list of CVs for all registered employees
+      parameters:
+        - $ref: '#/parameters/employeeQueryId'
+      responses:
+        '200':
+          description: List of Employees with attached List of CVs
+          schema:
+            $ref: '#/definitions/CVS'
+  /cvs/{cvId}:
+    get:
+      description: Get a specific CV
+      parameters:
+        - $ref: '#/parameters/cvId'
+      responses:
+        '200':
+          description: get a specific CV
+          schema:
+            $ref: '#/definitions/CV'
+
   /career:
     get:
       description: Get list of career framework levels
@@ -112,11 +135,24 @@ parameters:
     required: true
     schema:
       $ref: '#/definitions/CV'
-  employeeId: 
+  cvId:
+    in: path
+    name: cvId
+    description: uuid
+    required: true
+    type: string
+    format: uuid
+  employeeId:
     in: path
     name: employeeId
-    description: todo
+    description: email address
     required: true
+    type: string
+  employeeQueryId:
+    in: query
+    name: employee
+    description: email address
+    required: false
     type: string
   shortname:
     in: path
@@ -252,7 +288,22 @@ definitions:
           $ref: '#/definitions/Specialization'
       skills:
         $ref: '#/definitions/Skill'
-
+  CVS:
+    type: array
+    items:
+      $ref: '#/definitions/IDCV'
+  IDCV:
+    type: object
+    required:
+      - email
+      - cvs
+    properties:
+      email:
+        type: string
+      cvs:
+        type: array
+        items:
+          $ref: '#/definitions/CV'
   CV:
     type: object
     required:
@@ -267,9 +318,15 @@ definitions:
   Meta:
     type: object
     required:
-    - language
+    - client
+    - creationDate
     - office
+    - language
     properties:
+      client:
+        type: string
+      creationDate:
+        type: string
       language:
         type: string
         enum: 
