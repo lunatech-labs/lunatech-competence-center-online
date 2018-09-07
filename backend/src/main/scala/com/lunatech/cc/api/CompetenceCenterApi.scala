@@ -86,6 +86,7 @@ object CompetenceCenterApi extends App {
   // For endpoints that require an API key OR a Google authenticated user.
   val authenticated: Endpoint[ApiUser] =
     authenticatedBuilder(config.auth, tokenVerifier, peopleService)
+
   val authenticatedUser: Endpoint[EnrichedGoogleUser] =
     authenticated.mapOutput {
       case -\/(_) =>
@@ -127,10 +128,10 @@ object CompetenceCenterApi extends App {
 
     */
   val service = (
-    cvController.`GET /employees` :+:
-      cvController.`GET /employees/me` :+:
-      cvController.`GET /employees/employeeId` :+:
-      cvController.`PUT /employees/me` :+:
+    cvController.`GET /employees/cvs` :+:
+      cvController.`GET /cvs/me` :+:
+      cvController.`GET /cvs/employeeId` :+:
+//      cvController.`PUT /employees/me` :+:
       cvController.`POST /cvs` :+:
 //      cvController.`GET /cvs` :+:
       cvController.`GET /cvs/cvId` :+:

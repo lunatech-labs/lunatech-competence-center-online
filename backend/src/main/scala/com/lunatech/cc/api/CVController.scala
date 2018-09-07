@@ -21,20 +21,39 @@ class CVController(cvService: CVService, peopleService: PeopleService, cvFormatt
 
   lazy val logger: Logger = getLogger(getClass)
 
-  val `GET /employees`: Endpoint[Json] = get(employees :: authenticated) { (user: ApiUser) =>
-    logger.debug(s"GET /employees by user $user")
-    Ok(cvService.findAll.asJson)
+  /**
+    * Returns all developers with their CVs
+    */
+  val `GET /employees/cvs`: Endpoint[Json] = get(employees :: cvs :: authenticated) { (user: ApiUser) =>
+    logger.debug(s"GET /employees/cvs by user $user")
+
+    val result =  for {
+      people <- peopleService.findByRole("developer")
+      cvs <- Future.value(cvService.findAll)
+    } yield {
+      people.map(p => cvs.get(p.email) match {
+        case Some(d) => (p,d)
+        case None => (p,List.empty[(UUID,Json)])
+      })}
+
+    result.map(d => Ok(d.asJson))
+
   }
 
-  val `GET /employees/me`: Endpoint[List[Json]] = get(employees :: me :: authenticatedUser) { (user: EnrichedGoogleUser) =>
-    logger.debug(s"GET /employees/me for $user")
-    cvService.findByPerson(user) match {
-      case Nil => Ok(List(CV(user).asJson))
-      case l => Ok(l)
-    }
-  }
+//  val `GET /employees/me`: Endpoint[Json] = get(employees :: me :: authenticatedUser) { (user: EnrichedGoogleUser) =>
+//    logger.debug(s"GET /employees/me for $user")
+//      println("get /employees/me")
+//
+//    cvService.findByPerson(user) match {
+//      case Nil => Ok(CV(user).employee.asJson)
+//      case l => Ok(l.head)
+//    }
+//  }
 
-  val `GET /employees/employeeId`: Endpoint[List[Json]] = get(employees :: string :: authenticated) { (employeeId: String, apiUser: ApiUser) =>
+  /**
+    * Returns the CVs for a specific employee
+    */
+  val `GET /cvs/employeeId`: Endpoint[List[Json]] = get(cvs :: string :: authenticated) { (employeeId: String, apiUser: ApiUser) =>
     logger.debug(s"GET /employees/$employeeId for $apiUser")
 
     peopleService.findByEmail(employeeId)
@@ -51,18 +70,24 @@ class CVController(cvService: CVService, peopleService: PeopleService, cvFormatt
 
   }
 
-  val `PUT /employees/me`: Endpoint[Json] = put(employees :: me :: authenticatedUser :: jsonBody[Json]) { (user: EnrichedGoogleUser, employee: Json) =>
-    employee.as[CV] match {
+  /**
+    * Updates a CV for me
+    */
+  val `PUT /cvs/me`: Endpoint[Json] = put(cvs :: me :: authenticatedUser :: jsonBody[Json]) { (user: EnrichedGoogleUser, cv: Json) =>
+    cv.as[CV] match {
       case Right(_) =>
         logger.debug("received data")
-        cvService.insert(user.email, employee)
-        Ok(employee)
+        cvService.insert(user.email, cv)
+        Ok(cv)
       case Left(e) =>
-        logger.debug(s"incorrect data $employee")
+        logger.debug(s"incorrect data $cv")
         BadRequest(new RuntimeException(e))
     }
   }
 
+  /**
+    * Creates a CV PDF
+    */
   val `POST /cvs`: Endpoint[Buf] = post(cvs :: authenticated :: jsonBody[Json]) { (_: ApiUser, cv: Json) =>
     logger.debug(cv.toString)
     cv.as[CV] match {
@@ -72,36 +97,43 @@ class CVController(cvService: CVService, peopleService: PeopleService, cvFormatt
             Reader.readAll(result).map { content =>
               Ok(content).withHeader("Content-type" -> "application/pdf").withHeader("ACCESS_CONTROL_ALLOW_ORIGIN" -> "*")
             }
-          case Left(e) => Future(InternalServerError(e))
+          case Left(e) => Future.value(InternalServerError(e))
         }
-      case Left(e) => Future(BadRequest(new RuntimeException(e)))
+      case Left(e) => Future.value(BadRequest(new RuntimeException(e)))
     }
   }
 
-    val `GET /cvs/cvId`: Endpoint[Json] = get(cvs :: uuid :: authenticated) { (cvId: UUID, apiUser: ApiUser) =>
-      logger.debug(s"GET /cvs/${cvId.toString} for ${apiUser}")
+  /**
+    * Returns a specific CV
+    */
+  val `GET /cvs/cvId`: Endpoint[Json] = get(cvs :: uuid :: authenticated) { (cvId: UUID, apiUser: ApiUser) =>
+    logger.debug(s"GET /cvs/${cvId.toString} for ${apiUser}")
 
-      cvService.findById(cvId) match {
-        case Some(value) => Ok(value)
-        case None => NotFound(new Exception(s"not found cv with id $cvId"))
-      }
+    cvService.findById(cvId) match {
+      case Some(value) => Ok(value)
+      case None => NotFound(new Exception(s"not found cv with id $cvId"))
     }
+  }
 
-  val `GET /cvs`: Endpoint[Json] = get(cvs :: authenticated).mapAsync { (apiUser: ApiUser) =>
+  /**
+    * Returns all CVs for me
+    */
+  val `GET /cvs/me`: Endpoint[List[Json]] = get(cvs :: me :: authenticatedUser) { (user: EnrichedGoogleUser) =>
+    logger.debug(s"GET /employees/me for $user")
+    cvService.findByPerson(user) match {
+      case Nil => Ok(List(CV(user).asJson))
+      case l => Ok(l)
+    }
+  }
+
+  /**
+    * Returns all CVS stored in the database
+    */
+  val `GET /cvs`: Endpoint[Json] = get(cvs :: authenticated) { (apiUser: ApiUser) =>
     logger.debug(s"GET /cvs by $apiUser")
 
-    val result =  for {
-      people <- peopleService.findByRole("developer")
-      cvs <- Future.value(cvService.findAll)
-      //      cvs <- Future.value(cvService.findAll.flatMap(_.as[CV].toValidated.toOption))
-//      _ = cvs.foreach(println)
-    } yield {
-      people.map(p => cvs.get(p.email) match {
-        case Some(d) => (p,d)
-        case None => (p,List.empty[(UUID,Json)])
-      })}
+    Ok(cvService.findAll.asJson)
 
-    result.map(d => d.asJson)
   }
 
 
