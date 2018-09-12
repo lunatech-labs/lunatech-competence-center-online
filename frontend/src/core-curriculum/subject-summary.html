@@ -7,6 +7,7 @@
 <link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
 <link rel="import" href="./subject-card.html">
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="./goals-tab.html">
 
 <dom-module id="subject-summary">
   <template>
@@ -27,6 +28,17 @@
         left: 50%;
         margin-left: -50px;
         margin-top: -50px;
+      }
+
+      paper-tabs {
+        width: 100%;
+        color: black;
+        --paper-tabs-selection-bar-color: #d42937;
+        background-color: #e2e0e0;
+      }
+
+      paper-tab.iron-selected {
+        color: #d42937;
       }
 
       .formatted-table {
@@ -73,6 +85,10 @@
         clear: both;
       }
 
+      .page {
+        padding: 15px
+      }
+
     </style>
     <iron-meta id="meta"></iron-meta>
     <iron-ajax id="ajaxLoad"
@@ -88,10 +104,19 @@
                loading="{{projectsLoading}}"
                url="/api/people/[[email]]/projects"
                last-response="{{projects}}"></iron-ajax>
+    <iron-ajax id="goalsLoad"
+               loading="{{goalsLoading}}"
+               url="/api/people/[[email]]/goals"
+               last-response="{{goals}}"></iron-ajax>
 
     <paper-spinner active=[[loading]]></paper-spinner>
-
-    <div class="topics">
+    <paper-tabs selected="{{selected}}">
+      <paper-tab>Progress</paper-tab>
+      <paper-tab>Study plan</paper-tab>
+    </paper-tabs>
+    <iron-pages selected="{{selected}}">
+    <div class = "page">
+      <div class="topics">
         <tr>
             <h3>Progress on required knowledge</h3>
         </tr>
@@ -105,14 +130,14 @@
             <template is="dom-repeat" items=[[summary]] mutable-data>
                 <tr>
                     <td><a href="[[basePath]]/[[item.id]]">[[item.name]]</a></td>
-                    <td>[[item.known_required]] / [[item.required]]</td>
+                    <td>[[item.known_required]]/[[item.required]]</td>
                     <td><paper-progress value=[[item.progress]]></paper-progress></td>
                 </tr>
             </template>
             </tbody>
         </table>
-    </div>
-    <div class="projects">
+      </div>
+      <div class="projects">
         <tr>
             <h3>Projects in progress:</h3>
         </tr>
@@ -136,8 +161,8 @@
             </template>
             </tbody>
         </table>
-    </div>
-    <div class="projects">
+      </div>
+      <div class="projects">
         <tr>
             <h3>Done projects:</h3>
         </tr>
@@ -161,9 +186,9 @@
             </template>
             </tbody>
         </table>
-    </div>
-    <div class="clear"></div>
-    <div class="log">
+      </div>
+      <div class="clear"></div>
+      <div class="log">
         <tr>
             <h3>Activity log</h3>
         </tr>
@@ -185,7 +210,14 @@
             </template>
             </tbody>
         </table>
+      </div>
     </div>
+    <div class = "page">
+        <template is="dom-if" if="[[goals]]">
+            <goals-tab goals=[[goals]] email=[[email]]></goals-tab>
+      </template>
+    </div>
+    </iron-pages>
   </template>
   <script>
   (function () {
@@ -207,6 +239,11 @@
         progress: {
           type: Object,
           observer: '_onProgressChange'
+        },
+
+        goals: {
+          type: Array,
+          observer: '_onGoalsChange'
         },
 
         projects: {
@@ -231,12 +268,18 @@
 
         projectsInProgress: {
           type: Array
+        },
+
+        selected: {
+          type: Number,
+          value: 0
         }
       },
 
       ready: function() {
         this.$.progressLoad.headers = {'X-ID-Token': this.$.meta.byKey('idToken')};
         this.$.projectsLoad.headers = {'X-ID-Token': this.$.meta.byKey('idToken')};
+        this.$.goalsLoad.headers = {'X-ID-Token': this.$.meta.byKey('idToken')};
         this.$.ajaxLoad.generateRequest();
       },
 
@@ -259,6 +302,7 @@
       _onEmailChange: function() {
         this.$.progressLoad.generateRequest();
         this.$.projectsLoad.generateRequest();
+        this.$.goalsLoad.generateRequest();
       },
 
       _isNotEmptyUrl: function(url) {
@@ -339,6 +383,10 @@
           this.set('projectsInProgress', inProgress);
           this.set('projectsDone', done);
         }
+      },
+
+      _onGoalsChange: function() {
+        console.debug("_onGoalsChange")
       },
 
       _onProgressChange: function() {
