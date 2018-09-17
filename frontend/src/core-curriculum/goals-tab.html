@@ -1,0 +1,240 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/vaadin-date-picker/vaadin-date-picker.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+
+<dom-module id="goals-tab">
+  <template>
+    <style>
+    .goal-paper {
+      background: #fafafa;
+      padding: 20px 20px 20px 20px;
+      margin: 10px 10px 10px 10px;
+      box-shadow: 0 0 2px 0 rgba(0,0,0,0.3);
+      float: left;
+      width: 40%;
+    }
+
+    input, span, vaadin-date-picker, table {
+      width: 100%;
+    }
+
+    .required {
+      color: #d42937
+    }
+    </style>
+    <iron-meta id="meta"></iron-meta>
+    <paper-dialog id="newItem">
+      <h2>Create new goal: </h2>
+      <table class="formatted-table">
+        <tbody>
+        <tr><td><b>goal number: </b></td><td><input id="new-goal-number" type="text"></td></tr>
+        <tr><td><b>name: </b><span class="required">*</span></td><td><input id="new-name" type="text"></td></tr>
+        <tr><td><b>description: </b></td><td><input id="new-description" type="text"></td></tr>
+        <tr><td><b>started on: </b></td><td><vaadin-date-picker id="new-started"></vaadin-date-picker></td></tr>
+        <tr><td><b>done on: </b></td><td><vaadin-date-picker id="new-done"></vaadin-date-picker></td></tr>
+        <tr><td><b>deadline: </b></td><td><vaadin-date-picker id="new-deadline"></vaadin-date-picker></td></tr>
+        <tr><td><b>result: </b></td><td><input id="new-result" type="text"></td></tr>
+        <tr><td><b>subject: </b></td><td><input id="new-subject" type="text"></td></tr>
+        <tr><td><b>retro: </b></td><td><input id="new-retro" type="text"></td></tr>
+        <tr><td><b>assessed on: </b></td><td><vaadin-date-picker id="new-assessed-on"></vaadin-date-picker></td></tr>
+        <tr><td><b>assessed by: </b></td><td><vaadin-date-picker id="new-assessed-by"></vaadin-date-picker></td></tr>
+        <tr><td><b>assessment notes: </b></td><td><input id="new-assessment-notes" type="text"></td></tr>
+        </tbody>
+      </table>
+      <div>
+        <paper-icon-button id="createButton" on-tap="_onCreate" icon="done"></paper-icon-button>
+        <paper-icon-button id="closeButton" on-tap="closeDialog" icon="close"></paper-icon-button>
+      </div>
+    </paper-dialog>
+    <paper-icon-button id="addButton" icon="add" on-tap="openDialog"></paper-icon-button>
+    <template is="dom-if" if="[[goals]]">
+      <template is="dom-repeat" items=[[goals]]>
+        <div class="goal-paper">
+        <table class="formatted-table">
+          <tbody>
+            <tr>
+              <td><b>Goal #</b></td>
+              <td><input id="goal-number-{{item.id}}" type="text" value="{{item.goalNumber}}"></td>
+            </tr>
+            <tr>
+              <td><b>name: </b></td>
+              <td><input id="name-{{item.id}}" type="text" value="{{item.name}}"></td>
+            </tr>
+            <tr>
+              <td><b>description: </b></td>
+              <td><input id="description-{{item.id}}" type="text" value="{{item.description}}"></td>
+            </tr>
+            <tr><td><b>created on: </b></td><td><span>{{item.createdOn}}</span></td></tr>
+            <tr><td><b>created by: </b></td><td><span>{{item.createdBy}}</span></td></tr>
+            <tr>
+              <td><b>started on: </b></td>
+              <td><vaadin-date-picker id="started-{{item.id}}" value="{{item.startedOn}}"></vaadin-date-picker></td>
+            </tr>
+            <tr>
+              <td><b>done on: </b></td>
+              <td><vaadin-date-picker id="done-{{item.id}}" value="{{item.doneOn}}"></vaadin-date-picker></td>
+            </tr>
+            <tr>
+              <td><b>deadline: </b></td>
+              <td><vaadin-date-picker id="deadline-{{item.id}}" value="{{item.deadline}}"></vaadin-date-picker></td>
+            </tr>
+            <tr>
+              <td><b>result: </b></td>
+              <td><input id="result-{{item.id}}" type="text" value="{{item.result}}"></td>
+            </tr>
+            <tr>
+              <td><b>subject: </b></td>
+              <td><input id="subject-{{item.id}}" type="text" value="{{item.subject}}"></td>
+            </tr>
+            <tr>
+              <td><b>retro: </b></td>
+              <td><input id="retro-{{item.id}}" type="text" value="{{item.retro}}"></td>
+            </tr>
+            <tr>
+              <td><b>assessed on: </b></td>
+              <td><vaadin-date-picker id="assessed-on-{{item.id}}" value="{{item.assessedOn}}"></vaadin-date-picker></td>
+            </tr>
+            <tr>
+              <td><b>assessed by: </b></td>
+              <td><input id="assessed-by-{{item.id}}" type="text" value="{{item.assessedBy}}"></td>
+            </tr>
+            <tr>
+              <td><b>assessment notes: </b></td>
+              <td><input id="assessment-notes-{{item.id}}" type="text" value="{{item.assessmentNotes}}"></td>
+            </tr>
+          </tbody>
+        </table>
+          <paper-icon-button id="saveButton-{{item.id}}" on-tap="_onSave" icon="done"></paper-icon-button>
+          <paper-icon-button id="deleteButton-{{item.id}}" on-tap="_onDelete" icon="delete"></paper-icon-button>
+        </div>
+      </template>
+    </template>
+  </template>
+  <script>
+    class Goals extends Polymer.Element {
+
+      static get is () { return 'goals-tab'; }
+
+      static get properties () {
+        return {
+          goals: {
+            type: Array,
+            observer: '_onGoalsChange'
+          },
+
+          email: {
+            type: String
+          }
+        }
+      }
+
+      _onSave(e) {
+        let goalId = e.model.__data.item.id
+        let student = e.model.__data.item.student
+        var body = {
+          id: goalId,
+          student: student,
+          goalNumber: this.shadowRoot.querySelector("#goal-number-" + goalId).value,
+          name: this.shadowRoot.querySelector("#name-" + goalId).value,
+          description: this.shadowRoot.querySelector("#description-" + goalId).value,
+          startedOn: this.shadowRoot.querySelector("#started-" + goalId).value,
+          doneOn: this.shadowRoot.querySelector("#done-" + goalId).value,
+          deadline: this.shadowRoot.querySelector("#deadline-" + goalId).value,
+          result: this.shadowRoot.querySelector("#result-" + goalId).value,
+          subject: this.shadowRoot.querySelector("#subject-" + goalId).value,
+          retro: this.shadowRoot.querySelector("#retro-" + goalId).value,
+          assessedOn: this.shadowRoot.querySelector("#assessed-on-" + goalId).value,
+          assessedBy: this.shadowRoot.querySelector("#assessed-by-" + goalId).value,
+          assessmentNotes: this.shadowRoot.querySelector("#assessment-notes-" + goalId).value
+        };
+        var sendOptions = {
+          url: "/api/people/" + student + "/goals/" + goalId,
+          method: 'POST',
+          handleAs: 'json',
+          headers: {'X-ID-Token': this.$.meta.byKey('idToken'), 'content-type': 'application/json'}
+        };
+        sendOptions.body = body;
+        var request = document.createElement('iron-request');
+        request.send(sendOptions).then(function() {
+          alert('goal saved!');
+        });
+      }
+
+      _onCreate(e) {
+        let newGoalNumber = this.shadowRoot.querySelector("#new-goal-number").value;
+        let newName = this.shadowRoot.querySelector("#new-name").value;
+        if (newName === "") {
+          alert('please fill the required fields');
+        } else if (!(/^\d*$/.test(newGoalNumber))) {
+          alert('goal number should be a positive number');
+        } else {
+          var body = {
+            student: this.email,
+            goalNumber: newGoalNumber,
+            name: newName,
+            description: this.shadowRoot.querySelector("#new-description").value,
+            startedOn: this.shadowRoot.querySelector("#new-started").value,
+            doneOn: this.shadowRoot.querySelector("#new-done").value,
+            deadline: this.shadowRoot.querySelector("#new-deadline").value,
+            result: this.shadowRoot.querySelector("#new-result").value,
+            subject: this.shadowRoot.querySelector("#new-subject").value,
+            retro: this.shadowRoot.querySelector("#new-retro").value,
+            assessedOn: this.shadowRoot.querySelector("#new-assessed-on").value,
+            assessedBy: this.shadowRoot.querySelector("#new-assessed-by").value,
+            assessmentNotes: this.shadowRoot.querySelector("#new-assessment-notes").value
+          };
+          var sendOptions = {
+            url: "/api/people/" + this.email + "/goals/",
+            method: 'PUT',
+            handleAs: 'json',
+            headers: {'X-ID-Token': this.$.meta.byKey('idToken'), 'content-type': 'application/json'}
+          };
+          sendOptions.body = body;
+          var request = document.createElement('iron-request');
+          request.send(sendOptions).then(function() {
+            body.id = request.response;
+            this.push('goals', body);
+            this.goals.sort(this.goalsSort);
+            this.$.newItem.close();
+          }.bind(this));
+
+        }
+      }
+
+      _onGoalsChange() {
+        this.goals.sort(this.goalsSort);
+      }
+
+      goalsSort(a, b) {
+        return b.goalNumber - a.goalNumber;
+      }
+
+      _onDelete(e) {
+        var r = confirm("Delete goal?");
+        if (r == true) {
+          var goalId = e.model.__data.item.id;
+          let request = document.createElement('iron-request');
+          request.send({ method: "DELETE",
+                           url: "/api/people/me/goals/" + goalId,
+                           headers: {'X-ID-Token': this.$.meta.byKey('idToken')}})
+                           .then(function() {
+          });
+          var index = this.goals.findIndex(goal => goal.id == goalId);
+          this.splice('goals', index, 1);
+          this.goals.sort(this.goalsSort);
+        }
+      }
+
+      closeDialog(e) {
+        this.$.newItem.close();
+      }
+
+      openDialog(e) {
+        this.$.newItem.open();
+      }
+    }
+    customElements.define(Goals.is, Goals);
+  </script>
+</dom-module>

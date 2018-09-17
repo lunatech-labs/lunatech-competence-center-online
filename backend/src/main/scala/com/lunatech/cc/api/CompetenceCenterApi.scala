@@ -74,6 +74,7 @@ object CompetenceCenterApi extends App {
   val studentService = new PostgresStudentService(transactor, peopleService)
   val careerFrameworkService = CareerFrameworkServiceImpl(
     config.services.career)
+  val studyPlanService = new PostgresStudyPlanService(transactor)
 
   val tokenVerifier = config.tokenVerifier match {
     case Config.Fake(fakeConfig) =>
@@ -119,6 +120,10 @@ object CompetenceCenterApi extends App {
     careerFrameworkService,
     authenticated,
     authenticatedUser)
+  val studyPlanController = new StudyPlanController(
+    studyPlanService,
+    authenticated,
+    authenticatedUser)
   val service = (
     cvController.`GET /employees` :+:
       cvController.`GET /employees/me` :+:
@@ -145,7 +150,15 @@ object CompetenceCenterApi extends App {
       studentController.`GET /students/me` :+:
       studentController.`GET /students/{studentEmail}` :+:
       careerFrameworkController.`GET /career` :+:
-      careerFrameworkController.`GET /career/{shortname}`
+      careerFrameworkController.`GET /career/{shortname}` :+:
+      studyPlanController.`GET /people/me/goals` :+:
+      studyPlanController.`GET /people/{email}/goals` :+:
+      studyPlanController.`PUT /people/me/goals` :+:
+      studyPlanController.`PUT /people/{email}/goals` :+:
+      studyPlanController.`POST /people/me/goals/{goalId}` :+:
+      studyPlanController.`POST /people/{email}/goals/{goalId}` :+:
+      studyPlanController.`DELETE /people/me/goals/{goalId}` :+:
+      studyPlanController.`DELETE /people/{email}/goals/{goalId}`
   ).toServiceAs[Application.Json]
 
   val HttpsOnlyFilter = new SimpleFilter[Request, Response] {
