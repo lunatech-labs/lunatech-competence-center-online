@@ -1,0 +1,122 @@
+.profile {
+    display: flex;
+    width: 90%;
+}
+
+.profile__imgbox {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    align-items: center;
+    user-select: none;
+    border-radius: 50%;
+    justify-content: center;
+}
+
+.profile__img {
+    border-radius: 50%;
+    overflow: hidden;
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    object-fit: cover;
+}
+
+.profile__textbox {
+    flex-grow: 100;
+    background: red;
+    border: 1px solid #efefef !important;
+    margin-right: 162px !important;
+    text-align: left;
+    padding: 20px !important;
+    color: #efefef;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile__title {
+    margin: 0 !important;
+    font-size: 50px !important;
+    flex-grow: 100;
+}
+
+.profile__subtitle {
+    margin: 0 !important;
+    font-size: 30px !important;
+    font-style: italic;
+}
+
+.profile__textbox--right {
+    margin-right: 0 !important;
+    margin-left: 162px !important;
+    text-align: right;
+}
+
+.profile__imgboxbg {
+    background: red;
+    border-radius: 50% 0 0 50%;
+    padding: 5px !important;
+    /*border-right: 1px solid white !important;*/
+    border: 1px solid #efefef !important;
+}
+
+.profile__imgboxbg--right {
+    border-radius: 0 50% 50% 0;
+}
+
+sup {
+    vertical-align: super;
+    font-size: 0.75em !important;
+    display: block;
+}
+
+section[data-markdown].present {
+    width: calc(100% - 80px) !important;
+}
+
+.reveal.lunatech h2:first-child {
+    position: fixed !important;
+    top: 0 !important;
+    text-align: left !important;
+}
+
+.reveal.slide .slides > section, .reveal.slide .slides > section > section {
+    min-height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    position: absolute !important;
+    top: 0 !important;
+    align-items: center !important;
+}
+section > h1, section > h2 {
+    position: absolute !important;
+    top: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    left: 0 !important;
+    right: 0 !important;
+    text-align: center !important;
+}
+.print-pdf .reveal.slide .slides > section, .print-pdf .reveal.slide .slides > section > section {
+    min-height: 770px !important;
+    position: relative !important;
+}
+
+.flexul {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.flexul li {
+    flex: 1;
+    width: 100%
+}
