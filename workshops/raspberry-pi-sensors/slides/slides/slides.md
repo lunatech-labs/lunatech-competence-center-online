@@ -76,9 +76,9 @@ Note:
 
 ---
 
-## Data Egress
+## Data Egest
 
-<img src="/images/egress.png" style="border: 0; box-shadow: none; width: 450px;" />
+<img src="/images/egest.png" style="border: 0; box-shadow: none; width: 450px;" />
 
 ---
 
@@ -97,6 +97,8 @@ Note:
 --- 
 
 ## In conclusion...
+
+From a small hobby project to a large distributed cluster
 
 Scalables
 
