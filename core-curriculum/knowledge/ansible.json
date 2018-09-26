@@ -1,0 +1,555 @@
+{
+  "id": "ansible",
+  "name": "Ansible",
+  "description": "Ansible is an IT automation tool that automates cloud provisioning, configuration management, application deployment, intra-service orchestration, and many other IT needs.",
+  "tags": ["ansible"],
+  "image": "/images/ansible.png",
+  "topics": [
+    {
+      "id": "ansible-basics",
+      "name": "Ansible basics",
+      "description": "A few concepts are important to get us up to speed and create our first playbook. After the basics we will be ready to spend more time going deeper on each of the concepts in order to create better, more useful and maintainable playbooks. Let's not rush and establish a solid base.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Ansible - quick start video",
+          "type": "video",
+          "url": "https://www.ansible.com/resources/videos/quick-start-video",
+          "tags": ["official"]
+        },
+        {
+          "name": "Ansible - an absolute basic overview",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=MfoAb50Br94"
+        },
+        {
+          "name": "Ansible: Simple yet powerful automation",
+          "type": "article",
+          "url": "https://blog.codecentric.de/en/2014/06/ansible-simple-yet-powerful-automation/"
+        }
+      ],
+      "abilities": [
+        "Install Ansible",
+        "Identify what a playbook is, also a role and a task; how they are related and how to use/organise them",
+        "Run a simple playbook locally"
+      ],
+      "assessment-questions": [
+        { "question": "What is Ansible?" },
+        { "question": "Where do we need to install Ansible?"}
+      ]
+    },
+    {
+      "id": "yaml-basics",
+      "name": "YAML basics",
+      "description": "It is essential to learn Ansible that we get familiar with [YAML](http://www.yaml.org/start.html) , because it is the common language across all the files Ansible uses. YAML is a data serialization language designed to be human-friendly, it is very easy to learn and use. But it is strict in terms of formatting, so we need to be careful while coding to avoid undesired surprises!",
+      "tags": ["required-for-junior"],
+      "dependencies": ["ansible-basics"],
+      "resources": [
+        {
+          "name": "YAML syntax used in Ansible",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "YAML | In one video",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=cdLNKUoMc6c"
+        },
+        {
+          "name": "Understanding YAML with Coding Exercises (up to 5:45)",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=U9_gfT0n_5Q"
+        }
+      ],
+      "abilities": [
+        "Define different data structures such us lists and dictionaries in YAML",
+        "Combine data structures in a YAML file"
+      ],
+
+      "assessment-questions": [
+        { "question": "How do we create a list in YAML?" },
+        { "question": "What is a dictionary in YAML? How do we create a dictionary in YAML?" }
+      ]
+    },
+    {
+      "id": "jinja2",
+      "name": "Jinja2",
+      "description": "Jinja2 is one of the most used template engines for Python. It allows us to apply different functions and filters. Very useful for variables interpolation and templating. Conditionals and loops can be applied using jinja2.",
+      "tags": ["required-for-junior"],
+      "dependencies": ["yaml-basics"],
+      "resources": [
+        {
+          "name": "Ansible templating with jinja2",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/user_guide/playbooks_templating.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Ansible jinja2 filters",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Jinja2 Template Designer Documentation",
+          "type": "documentation",
+          "url": "http://jinja.pocoo.org/docs/2.10/templates/",
+          "tags": ["official"]
+        },
+        {
+          "name": "Jinja2 for better Ansible playbooks and templates",
+          "type": "article",
+          "url": "https://blog.codecentric.de/en/2014/08/jinja2-better-ansible-playbooks-templates/",
+          "tags": ["official"]
+        }
+      ],
+      "abilities": [
+        "Manipulate variables by adding filters, mapping, formatting",
+        "Create generic templates to be used by Ansible"
+      ],
+      "assessment-questions": [
+        { "question": "When should we use templates in Ansible?" },
+        { "question": "How do we specify a default value for a variable?" },
+        { "question": "How do we access specific elements in a dictionary?" }
+      ]
+    },
+    {
+      "id": "variables",
+      "name": "Variables",
+      "description": "In Ansible we can define variables in many different places, sometimes resulting in unexpected overwritten values. We need to be careful about variables definition and their scope, how to interpolate their values, etc.",
+      "tags": ["required-for-junior"],
+      "dependencies": ["jinja2"],
+      "resources": [
+        {
+          "name": "Ansible variables",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Introduction to Ansible variables",
+          "type": "article",
+          "url": "https://liquidat.wordpress.com/2016/01/26/howto-introduction-to-ansible-variables/"
+        },
+        {
+          "name": "Ansible Jinja Warrior - Mastering Loop Variable Scope",
+          "type": "article",
+          "url": "https://www.arctiq.ca/our-blog/2017/2/16/ansible-jinja-warrior-loop-variable-scope/"
+        }
+      ],
+      "abilities": [
+        "Learn how/when/where variables can be defined",
+        "Use variables in templates"
+      ],
+      "assessment-questions": [
+        { "question": "If a variable is defined in a `vars/main.yml` and the same is defined in the play, which one has more precedence?" },
+        { "question": "How do we assign variables to specific systems?" },
+        { "question": "Can the value of a variable be changed during Ansible execution?" },
+        { "question": "How do we save the output of a task to a variable?" },
+        { "question": "How do we assign default value to a variable?" },
+        { "question": "Which option has the most / the least precedence over the others?" }
+      ]
+    },
+    {
+      "id": "roles",
+      "name": "Roles",
+      "description": "Roles in Ansible are an organised way to define tasks, variables, templates, files, etc. This way we can decide which roles are going to be executed in which plays, for which specific hosts, etc. With roles we can simplify our code and make it reusable.",
+      "tags": ["required-for-junior"],
+      "dependencies": ["tasks"],
+      "resources": [
+        {
+          "name": "Ansible - roles",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Ansible roles",
+          "type": "video",
+          "url": "https://www.codereviewvideos.com/course/ansible-tutorial/video/ansible-roles"
+        },
+        {
+          "name": "include_role - Load and execute a role",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/modules/include_role_module.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "import_role - Import a role into a play",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/modules/import_role_module.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Ansible tutorial - playbooks, roles, tasks",
+          "type": "documentation",
+          "url": "https://blacksaildivision.com/ansible-tutorial-part-2"
+        }
+      ],
+      "abilities": [
+        "Create different groups based on functionality",
+        "Reuse roles in different playbooks"
+      ],
+      "assessment-questions": [
+        { "question": "What's the recommended role directory layout?" },
+        { "question": "When is important to define more roles?" },
+        { "question": "If we have defined `my_role/tasks/main.yml and my_role/tasks/do_this_first.yml`, how can we be sure the content in `do_this_first` is it going to be running before `main`?" },
+        { "question": "If we have defined more than one role, how can we manage to have them executed in order?" },
+        { "question": "How do we parameterize a role?" }
+      ]
+    },
+    {
+      "id": "tasks",
+      "name": "Tasks",
+      "description": "A task is a unit of work, the definition of an action to be executed. It is considered the main component in a role. Meaningful tasks accomplish a specific goal, they execute idempotent modules and can be parameterised. A set of tasks defines a specific functionality to be executed by Ansible.",
+      "tags": ["required-for-junior"],
+      "dependencies": ["variables", "modules"],
+      "resources": [
+        {
+          "name": "Ansible - playbooks/tasks",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html#tasks-list",
+          "tags": ["official"]
+        },
+        {
+          "name": "include_tasks - dynamically include a task list",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/modules/include_tasks_module.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "import_tasks - import a task list",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/modules/import_tasks_module.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Ansible tutorial - playbooks, roles, tasks",
+          "type": "documentation",
+          "url": "https://blacksaildivision.com/ansible-tutorial-part-2"
+        }
+      ],
+      "abilities": [
+        "Add functionality to a role",
+        "Understand the logic of a role"
+      ],
+      "assessment-questions": [
+        { "question": "Why do tasks have a name?" },
+        { "question": "How do we use variables in tasks?" },
+        { "question": "How do we decide which tasks are applied to which hosts?" },
+        { "question": "How do we group tasks with related functionality?" },
+        { "question": "How can we debug the execution of a task?" },
+        { "question": "Can we also run local actions with Ansible or only remote ones?" },
+        { "question": "How do we use handlers?" }
+      ]
+    },
+    {
+      "id": "modules",
+      "name": "Modules",
+      "description": "An Ansible module is the component that actually holds the functionality we want to execute. They are the action to be performed by a task. Ansible contains plenty of built-in modules ready to use, but we can also create our own modules.",
+      "tags": ["required-for-junior"],
+      "dependencies": ["yaml-basics"],
+      "resources": [
+        {
+          "name": "Ansible - modules",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/user_guide/modules.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Ansible - module index",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/modules/modules_by_category.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Ansible Modules Fundamentals",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=9RQ-Nzgujwc"
+        },
+        {
+          "name": "Custom Ansible module",
+          "type": "article",
+          "url": "https://blog.toast38coza.me/custom-ansible-module-hello-world/"
+        }
+      ],
+      "abilities": [
+        "Identify which different types of modules we have in Ansible",
+        "Create, copy, transfer files to a remote machine",
+        "Manage users in remote machines"
+      ],
+      "assessment-questions": [
+        { "question": "How do we copy a file to a host? And how do we make it executable for a group?" },
+        { "question": "When do we use `command` and when `shell`? What's the purpose of `create` option?" },
+        { "question": "Is it possible to backup files when applying modules on them?" },
+        { "question": "How do we create a user in a system? And a list of users?" }
+      ]
+    },
+    {
+      "id": "control-flow",
+      "name": "Control flow",
+      "description": "How to decide which action should be taken? Depending on specific values, we may want to execute this or that task. Ansible offers many options to control the execution flow. Specific directives like `when` in combination with `jinja2` operators define a conditional.",
+      "tags": ["required-for-junior"],
+      "dependencies": ["yaml-basics"],
+      "resources": [
+        {
+          "name": "Ansible - conditionals",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/user_guide/playbooks_conditionals.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Jinja2 - comparisons",
+          "type": "documentation",
+          "url": "http://jinja.pocoo.org/docs/2.10/templates/#comparisons"
+        },
+        {
+          "name": "Controlling execution flow - conditionals",
+          "type": "article",
+          "url": "https://www.packtpub.com/mapt/book/networking_and_servers/9781784398293/5"
+        }
+      ],
+      "abilities": [
+        "Execute specific tasks in specific hosts",
+        "Check the output of a task and make decisions based on it"
+      ],
+      "assessment-questions": [
+        { "question": "How do we specify if a task must be executed? And a role?" }
+      ]
+    },
+    {
+      "id": "playbook",
+      "name": "Playbook",
+      "description": "Now that we have a good understanding of many Ansible features, we are ready to group them together and create a playbook that performs all the steps we want to achieve in our machines. The playbook is the entry point of our Ansible scripts, and defines what should be performed, in which order, and on which hosts.",
+      "tags": ["required-for-junior"],
+      "dependencies": ["roles", "control-flow"],
+      "resources": [
+        {
+          "name": "Ansible - Playbooks",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Ansible tutorial - playbooks, roles, tasks",
+          "type": "documentation",
+          "url": "https://blacksaildivision.com/ansible-tutorial-part-2"
+        },
+        {
+          "name": "Ansible directives",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/reference_appendices/playbooks_keywords.html",
+          "tags": ["official"]
+        }
+      ],
+      "abilities": [
+        "Automate infrastructure actions to be run on different hosts"
+      ],
+      "assessment-questions": [
+        { "question": "How do we verify if a playbook can be run successfully?" },
+        { "question": "How many playbooks can we have in our project?" },
+        { "question": "Can we define variables in our playbooks?\n\n- If so, where? how?\n\n- If not, why?" }
+      ]
+    },
+    {
+      "id": "inventory-file",
+      "name": "Inventory file",
+      "description": "Ansible needs to know where the changes are to be performed. We use inventory files to specify the machines we want to run Ansible against.",
+      "tags": ["required-for-junior"],
+      "dependencies": ["ansible-basics"],
+      "resources": [
+        {
+          "name": "Ansible - Inventory",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Hosts & the Inventory file",
+          "type": "video",
+          "url": "https://knpuniversity.com/screencast/ansible/hosts-inventory#play"
+        }
+      ],
+      "abilities": [
+        "Identify which hosts we want to run Ansible tasks against",
+        "Define common properties that apply to specific hosts or group of hosts"
+      ],
+      "assessment-questions": [
+        { "question": "Which information do we put in the inventory file?" },
+        { "question": "A specific host appears more than once in our inventory file. In which scenarios is this convenient?" }
+      ]
+    },
+    {
+      "id": "commands",
+      "name": "Commands",
+      "description": "What can we do with Ansible? How do we run a playbook? How to use the most common commands is essential to be productive when creating our Ansible scripts.",
+      "tags": [],
+      "dependencies": ["playbook", "vault", "config-file"],
+      "resources": [
+        {
+          "name": "Working with Command Line Tools",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/user_guide/command_line_tools.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Useful command line options for ansible-playbook",
+          "type": "article",
+          "url": "https://liquidat.wordpress.com/2016/02/29/useful-options-ansible-cli/"
+        },
+        {
+          "name": "Ansible commands man page: TL;DRs",
+          "type": "documentation",
+          "url": "https://www.mankier.com/package/ansible"
+        }
+      ],
+      "abilities": [
+        "Run Ansible playbooks",
+        "Encrypt information"
+      ],
+      "assessment-questions": [
+        { "question": "How can we test the output of a module?" },
+        { "question": "How do we run a playbook?" },
+        { "question": "How do we pass extra parameters to a playbook?" },
+        { "question": "How can we list all the tasks of a playbook?" }
+      ]
+    },
+    {
+      "id": "config-file",
+      "name": "Configuration file",
+      "description": "Ansible is also configurable. Want to specify a specific remote user? Or maybe avoid some extensions when parsing directories (.swp, .retry, etc)? Set the specifics globally or locally as per your needs using configuration files.",
+      "tags": [],
+      "dependencies": ["ansible-basics"],
+      "resources": [
+        {
+          "name": "Ansible - configuration file",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/installation_guide/intro_configuration.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Ansible - configuration settings",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/reference_appendices/config.html",
+          "tags": ["official"]
+        }
+      ],
+      "abilities": [
+        "Customize Ansible with your specific needs, for example, locating roles on a different place than the expected one"
+      ],
+      "assessment-questions": [
+        { "question": "Which options do we have to configure Ansible? What's the precedence?" },
+        { "question": "Where does Ansible output logs by default?" },
+        { "question": "How can we include more roles to our project that are not part of the structure of our project?" }
+      ]
+    },
+    {
+      "id": "vault",
+      "name": "Vault",
+      "description": "We need to provide Ansible with passwords and secret keys so it can run the playbooks, but... we don't want to expose sensitive data in our scripts. No problem, Vault allows us to encrypt and safely use sensitive data.",
+      "tags": [],
+      "dependencies": ["ansible-basics"],
+      "resources": [
+        {
+          "name": "Ansible - vault",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/user_guide/vault.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Working with ansible-vault",
+          "type": "article",
+          "url": "https://gist.github.com/tristanfisher/e5a306144a637dc739e7"
+        },
+        {
+          "name": "Securing Details with Ansible Vault",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=-KI3UiqyHQM"
+        }
+      ],
+      "abilities": [
+        "Encrypt sensible information to be added on the Ansible files"
+      ],
+      "assessment-questions": [
+        { "question": "Can an already encrypted file be edited?" },
+        { "question": "How do we change the password of encrypted files?" }
+      ]
+    },
+    {
+      "id": "dynamic-inventory",
+      "name": "Dynamic Inventory",
+      "description": "What if we are running on the cloud? We can spawn a new cluster and we don't know which machines we will be connecting to? We need to have some way to define where to connect to, and for that purpose we use dynamic inventories.",
+      "tags": [],
+      "dependencies": ["inventory-file"],
+      "resources": [
+        {
+          "name": "Ansible - working with Dynamic Inventory",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/user_guide/intro_dynamic_inventory.html",
+          "tags": ["official"]
+        }
+      ],
+      "abilities": [
+        "Understand how to manage with machines in the cloud."
+      ],
+      "assessment-questions": [
+        { "question": "When do we need to use dynamic inventory instead of normal inventory?" },
+        { "question": "What's necessary to setup the dynamic inventory for EC2 instances?" }
+      ]
+    },
+    {
+      "id": "ansible-galaxy",
+      "name": "Ansible Galaxy",
+      "description": "If something is already implemented, let's use it! Ansible Galaxy offers plenty of roles that can be directly included in our scripts!",
+      "tags": [],
+      "dependencies": ["roles"],
+      "resources": [
+        {
+          "name": "Ansible Galaxy documentation",
+          "type": "documentation",
+          "url": "https://docs.ansible.com/ansible/latest/reference_appendices/galaxy.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Ansible Galaxy",
+          "type": "documentation",
+          "url": "https://galaxy.ansible.com/home",
+          "tags": ["official"]
+        }
+      ],
+      "abilities": [
+        "Include roles ready-to-use in our system."
+      ],
+      "assessment-questions": [
+        { "question": "How do we add a galaxy role in our scripts?" }
+      ]
+    },
+    {
+      "id": "best-practices",
+      "name": "Best Practices",
+      "description": "Because Ansible is so flexible, there is a set of the best practices what will help us with organisation of our roles as well as readability and maintenance of our playbooks.",
+      "tags": [],
+      "dependencies": ["playbook", "inventory-file"],
+      "resources": [
+        {
+          "name": "Ansible - Best Practices",
+          "type": "documentation",
+          "url": "http://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html",
+          "tags": ["official"]
+        },
+        {
+          "name": "Ansible best practices for startups to enterprises",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=5BhAJ4mEfZ8"
+        }
+      ],
+      "abilities": [
+        "Apply and share best practices when writing Ansible scripts"
+      ],
+      "assessment-questions": [
+        { "question": "Why is important to follow Ansible best practices?" }
+      ]
+    }
+  ]
+}

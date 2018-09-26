@@ -103,6 +103,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
             <a name="home" href="/">Home</a>
+            <a name="career-framework" href="/career-framework">Career Framework</a>
             <a name="core-curriculum" href="/core-curriculum">University</a>
             <a name="students" hiddend$="[[!hasAnyRole(lunatechProfile,'mentor')]]" href="/students">Students</a>
             <a name="workshops" href="/workshops">Workshops</a>
@@ -150,6 +151,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <template is="dom-if" name="core-curriculum" restamp>
                 <page-core-curriculum on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" route=[[subroute]]></page-core-curriculum>
+            </template>
+
+            <template is="dom-if" name="career-framework" restamp>
+                <page-career-framework on-title-changed="titleChanged" on-bread-crumbs-changed="breadCrumbsChanged" route=[[subroute]]></page-career-framework>
             </template>
 
             <template is="dom-if" name="students" restamp>

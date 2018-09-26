@@ -6,6 +6,8 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
 <link rel="import" href="./subject-card.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="./goals-tab.html">
 
 <dom-module id="subject-summary">
   <template>
@@ -27,6 +29,66 @@
         margin-left: -50px;
         margin-top: -50px;
       }
+
+      paper-tabs {
+        width: 100%;
+        color: black;
+        --paper-tabs-selection-bar-color: #d42937;
+        background-color: #e2e0e0;
+      }
+
+      paper-tab.iron-selected {
+        color: #d42937;
+      }
+
+      .formatted-table {
+        padding: 10px;
+        width: 100%;
+      }
+
+      .progress-table {
+        border-top: 1px solid #dadada;
+        padding: 10px ;
+      }
+
+      .formatted-table td, .formatted-table th {
+        padding: 0 20px;
+        border-bottom: 1px solid #e8e8e8;
+      }
+
+      .topics {
+        width: 45%;
+        float: left;
+        background: #fafafa;
+        padding: 1px 1px 1px 10px;
+        box-shadow: 0 0 2px 0 rgba(0,0,0,0.3);
+        margin-bottom: 25px;
+      }
+
+      .projects {
+        width: 50%;
+        float: right;
+        margin-left: -50px;
+        margin-bottom: 25px;
+        background: #fafafa;
+        padding: 0 10px;
+        box-shadow: 0 0 2px 0 rgba(0,0,0,0.3);
+      }
+
+      .log {
+        background: #fafafa;
+        padding: 1px 1px 1px 10px;
+        box-shadow: 0 0 2px 0 rgba(0,0,0,0.3);
+      }
+
+      .clear {
+        clear: both;
+      }
+
+      .page {
+        padding: 15px
+      }
+
     </style>
     <iron-meta id="meta"></iron-meta>
     <iron-ajax id="ajaxLoad"
@@ -35,29 +97,127 @@
                last-response="{{curriculum}}"></iron-ajax>
 
     <iron-ajax id="progressLoad"
-              url="/api/people/[[email]]/knowledge"
-              loading="{{loading}}"
-              last-response="{{progress}}"></iron-ajax>
+               url="/api/people/[[email]]/knowledge"
+               loading="{{loading}}"
+               last-response="{{progress}}"></iron-ajax>
+    <iron-ajax id="projectsLoad"
+               loading="{{projectsLoading}}"
+               url="/api/people/[[email]]/projects"
+               last-response="{{projects}}"></iron-ajax>
+    <iron-ajax id="goalsLoad"
+               loading="{{goalsLoading}}"
+               url="/api/people/[[email]]/goals"
+               last-response="{{goals}}"></iron-ajax>
 
     <paper-spinner active=[[loading]]></paper-spinner>
-
-    <table>
-      <thead>
+    <paper-tabs selected="{{selected}}">
+      <paper-tab>Progress</paper-tab>
+      <paper-tab>Study plan</paper-tab>
+    </paper-tabs>
+    <iron-pages selected="{{selected}}">
+    <div class = "page">
+      <div class="topics">
         <tr>
-          <th>Subject</th><th>Done</th><th>Progress</th>
+            <h3>Progress on required knowledge</h3>
         </tr>
-      </thead>
-      <tbody>
-        <template is="dom-repeat" items=[[summary]] mutable-data>
-          <tr>
-            <td><a href="[[basePath]]/[[item.id]]">[[item.name]]</a></td>
-            <td>[[item.known_required]] / [[item.required]]</td>
-            <td><paper-progress value=[[item.progress]]</td>
-          </tr>
-        </template>
-      </tbody>
-    </table>
-
+        <table class="progress-table">
+            <thead>
+            <tr>
+                <th>Subject</th><th>Done</th><th>Progress</th>
+            </tr>
+            </thead>
+            <tbody>
+            <template is="dom-repeat" items=[[summary]] mutable-data>
+                <tr>
+                    <td><a href="[[basePath]]/[[item.id]]">[[item.name]]</a></td>
+                    <td>[[item.known_required]]/[[item.required]]</td>
+                    <td><paper-progress value=[[item.progress]]></paper-progress></td>
+                </tr>
+            </template>
+            </tbody>
+        </table>
+      </div>
+      <div class="projects">
+        <tr>
+            <h3>Projects in progress:</h3>
+        </tr>
+        <table class="formatted-table">
+            <thead>
+            <tr>
+                <th>Subject</th><th>Project</th><th>URL</th>
+            </tr>
+            </thead>
+            <tbody>
+            <template is="dom-repeat" items=[[projectsInProgress]] mutable-data>
+                <tr>
+                    <td><a href="[[basePath]]/[[item.subject]]">[[item.subject_name]]</a></td>
+                    <td>[[item.project_name]]</td>
+                    <td>
+                      <template is="dom-if" if="{{_isNotEmptyUrl(item.url)}}">
+                        <a href="[[item.url]]">[[item.url]]</a>
+                      </template>
+                    </td>
+                </tr>
+            </template>
+            </tbody>
+        </table>
+      </div>
+      <div class="projects">
+        <tr>
+            <h3>Done projects:</h3>
+        </tr>
+        <table class="formatted-table">
+            <thead>
+            <tr>
+                <th>Subject</th><th>Project</th><th>URL</th>
+            </tr>
+            </thead>
+            <tbody>
+            <template is="dom-repeat" items=[[projectsDone]] mutable-data>
+                <tr>
+                    <td><a href="[[basePath]]/[[item.subject]]">[[item.subject_name]]</a></td>
+                    <td>[[item.project_name]]</td>
+                    <td>
+                        <template is="dom-if" if="{{_isNotEmptyUrl(item.url)}}">
+                            <a href="[[item.url]]">[[item.url]]</a>
+                        </template>
+                    </td>
+                </tr>
+            </template>
+            </tbody>
+        </table>
+      </div>
+      <div class="clear"></div>
+      <div class="log">
+        <tr>
+            <h3>Activity log</h3>
+        </tr>
+        <table class="formatted-table">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Subject</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <template is="dom-repeat" items=[[activityLog]] mutable-data>
+                <tr>
+                    <td>[[item.date]]</td>
+                    <td><a href="[[basePath]]/[[item.subject]]">[[item.subject_name]]</a></td>
+                    <td>[[item.message]]</td>
+                </tr>
+            </template>
+            </tbody>
+        </table>
+      </div>
+    </div>
+    <div class = "page">
+        <template is="dom-if" if="[[goals]]">
+            <goals-tab goals=[[goals]] email=[[email]]></goals-tab>
+      </template>
+    </div>
+    </iron-pages>
   </template>
   <script>
   (function () {
@@ -81,14 +241,45 @@
           observer: '_onProgressChange'
         },
 
+        goals: {
+          type: Array,
+          observer: '_onGoalsChange'
+        },
+
+        projects: {
+          type: Array,
+          observer: '_onProjectsChange'
+        },
+
         summary: {
           type: Array,
           observer: '_onSummaryChange'
+        },
+
+        activityLog: {
+          type: Array,
+          value: [],
+          observer: '_onActivityLogChange'
+        },
+
+        projectsDone: {
+          type: Array
+        },
+
+        projectsInProgress: {
+          type: Array
+        },
+
+        selected: {
+          type: Number,
+          value: 0
         }
       },
 
       ready: function() {
         this.$.progressLoad.headers = {'X-ID-Token': this.$.meta.byKey('idToken')};
+        this.$.projectsLoad.headers = {'X-ID-Token': this.$.meta.byKey('idToken')};
+        this.$.goalsLoad.headers = {'X-ID-Token': this.$.meta.byKey('idToken')};
         this.$.ajaxLoad.generateRequest();
       },
 
@@ -104,43 +295,158 @@
         console.debug("Summary change")
       },
 
+      _onActivityLogChange: function() {
+        console.debug("Topic log change")
+      },
+
       _onEmailChange: function() {
         this.$.progressLoad.generateRequest();
+        this.$.projectsLoad.generateRequest();
+        this.$.goalsLoad.generateRequest();
+      },
+
+      _isNotEmptyUrl: function(url) {
+        return (url && url != 'empty' && url != 'null');
+      },
+
+      compare: function(a, b) {
+        let diff = 0;
+        if (b.date > a.date) diff = 1;
+        if (b.date < a.date) diff = -1;
+        if (a.date == b.date) {
+          if (a.message == "subject finished" || a.message.includes("is done"))
+            return -1;
+          if (b.message == "subject finished" || b.message.includes("is done"))
+            return 1;
+        }
+        return diff;
+      },
+
+      _onProjectsChange: function() {
+        console.debug("_onProjectsChange")
+        if (this.projects) {
+          var activityLog = this.activityLog
+          var inProgress = [];
+          var done = [];
+          this.curriculum.forEach(function(subject) {
+            var projects = this.projects[subject.id] || [];
+            let allStartedProjects = projects.map(function (projectInfo) {
+              var [id, startedOn, doneOn, url] = projectInfo;
+              var projectName = subject.projects.find(t2 => t2.id === id).name
+              return {
+                subject: subject.id,
+                subject_name: subject.name,
+                project: id,
+                project_name: projectName,
+                message: "project \"" + projectName + "\" is in progress",
+                date: startedOn
+              }
+            });
+            let allDoneProjects = projects.map(function (projectInfo) {
+              var [id, startedOn, doneOn, url] = projectInfo;
+              if (doneOn != 'null') {
+                var projectName = subject.projects.find(t2 => t2.id === id).name
+                return {
+                  subject: subject.id,
+                  subject_name: subject.name,
+                  project: id,
+                  project_name: projectName,
+                  message: "project \"" + projectName + "\" is done",
+                  date: doneOn
+                }
+              }
+            }).filter(item => item);
+            activityLog = activityLog.concat(allStartedProjects);
+            activityLog = activityLog.concat(allDoneProjects);
+            activityLog.sort(this.compare);
+
+            <!--for projects progress tables:-->
+            projects.map(function (projectInfo) {
+              var [id, startedOn, doneOn, url] = projectInfo;
+              var projectName = subject.projects.find(t2 => t2.id === id).name
+              var item = {
+                  subject: subject.id,
+                  subject_name: subject.name,
+                  project: id,
+                  project_name: projectName,
+                  url: url
+                }
+              if (doneOn === 'null') {
+                inProgress.push(item);
+              } else {
+                done.push(item);
+              }
+            });
+          }.bind(this));
+          activityLog.sort(this.compare);
+          this.set('activityLog', activityLog);
+          this.set('projectsInProgress', inProgress);
+          this.set('projectsDone', done);
+        }
+      },
+
+      _onGoalsChange: function() {
+        console.debug("_onGoalsChange")
       },
 
       _onProgressChange: function() {
         console.debug("_onProgressChange")
         if(this.progress != null) {
-
           var summary = []
+          var activityLog = this.activityLog
 
           this.curriculum.forEach(function(subject) {
             var knowledge = this.progress[subject.id] || [];
+            let allTopics = knowledge.map(function (topic) {
+              var [topicId, date] = topic;
+              var topicName = subject.topics.find(t2 => t2.id === topicId).name
+              return {
+                subject: subject.id,
+                subject_name: subject.name,
+                topic: topicId,
+                topic_name: topicName,
+                message: "topic \"" + topicName + "\" marked as known",
+                date: date
+              }
+            });
+            let known_topics = allTopics.map(t => t.topic);
+            activityLog = activityLog.concat(allTopics);
+            activityLog.sort(this.compare);
 
             subject.required = 0;
             subject.known_required = 0;
-
             subject.topics.forEach(function(topic) {
-              var known = knowledge && knowledge.includes(topic.id);
+              var known = known_topics && known_topics.includes(topic.id);
               var required = topic.tags.includes("required-for-junior");
               var known_required = known && required;
               if(required) { subject.required++ }
               if(known_required) { subject.known_required++ }
             });
 
-            if(subject.required == 0) {
+            if (known_topics.length == subject.topics.length) {
+              var logItem = {
+                subject: subject.id,
+                subject_name: subject.name,
+                message: "subject finished"
+              };
+              if (activityLog[0]) {
+                logItem.date = activityLog[0].date
+              }
+              activityLog.push(logItem);
+            }
+
+            if(subject.required === 0) {
               subject.progress = 100;
             } else {
               subject.progress = (subject.known_required / subject.required) * 100;
             }
-
             summary.push(subject);
           }.bind(this));
           this.set('summary', summary);
+          activityLog.sort(this.compare);
+          this.set('activityLog', activityLog);
         }
-
       }
-
     });
   }());
   </script>

@@ -20,11 +20,16 @@ object CoreCurriculumService {
                           name: String,
                           tags: Set[String])
 
+  case class ProjectSummary(id: String,
+                            name: String,
+                            description: String)
+
   case class SubjectSummary(id: String,
                             name: String,
                             description: String,
                             tags: Set[String],
                             topics: Set[TopicSummary],
+                            projects: Set[ProjectSummary],
                             image: String,
                             primary: Boolean)
 
@@ -38,10 +43,11 @@ object CoreCurriculumService {
           description <- c.get[String]("description")
           tags <- c.get[Set[String]]("tags")
           topics <- c.get[Set[TopicSummary]]("topics")
+          projects <- c.getOrElse[Set[ProjectSummary]]("projects")(Set.empty[ProjectSummary])
           image <- c.get[String]("image")
           primary <- c.getOrElse[Boolean]("primary")(false)
         } yield {
-          new SubjectSummary(id, name, description, tags, topics, image, primary)
+          new SubjectSummary(id, name, description, tags, topics, projects, image, primary)
         }
     }
 
@@ -64,9 +70,15 @@ trait CoreCurriculumService {
   def getSubjectSummaries: Future[Vector[SubjectSummary]]
 
   def getPersonKnowledge(person: String, subject: String): Future[Vector[String]]
-  def getAllPersonKnowledge(person: String): Future[Map[String, Vector[String]]]
+  def getAllPersonKnowledge(person: String): Future[Map[String, Vector[Vector[String]]]]
   def addPersonKnowledge(person: String, subject: String, topic: String): Future[Unit]
   def removePersonKnowledge(person: String, subject: String, topic: String): Future[Unit]
+  def getPersonSubjectProjects(person: String, subject: String): Future[Vector[Vector[String]]]
+  def getAllPersonProjects(person: String): Future[Map[String, Vector[Vector[String]]]]
+  def setProjectInProgress(person: String, subject: String, project: String): Future[Unit]
+  def setProjectDone(person: String, subject: String, project: String): Future[Unit]
+  def setProjectNotStarted(person: String, subject: String, project: String): Future[Unit]
+  def setProjectUrl(person: String, subject: String, project: String, url: Option[String]): Future[Unit]
 }
 
 class PostgresCoreCurriculumService(transactor: Transactor[Task], subjectDirectory: File) extends CoreCurriculumService {
@@ -102,15 +114,17 @@ class PostgresCoreCurriculumService(transactor: Transactor[Task], subjectDirecto
     Future { query.vector.transact(transactor).unsafeRun }
   }
 
-  override def getAllPersonKnowledge(person: String): Future[Map[String, Vector[String]]] = {
-
+  override def getAllPersonKnowledge(person: String): Future[Map[String, Vector[Vector[String]]]] = {
     val query = sql"""
-      SELECT subject, topic
+      SELECT subject, topic, created_on
       FROM person_knowledge
-      WHERE person = ${person}""".query[(String, String)]
+      WHERE person = ${person}""".query[(String, (String, String))]
 
-    Future { query.vector.transact(transactor).unsafeRun }.map { pairs =>
-      pairs.groupBy(_._1).map { case (s, v) => s -> v.map(_._2) }.toMap
+    Future {
+      query.vector.transact(transactor).unsafeRun
+    }.map { pairs => {
+      pairs.groupBy(_._1).map { case (s, v) => s -> v.map(_._2).map { case (m,n) => Vector(m, n)} }
+    }
     }
   }
 
@@ -135,4 +149,74 @@ class PostgresCoreCurriculumService(transactor: Transactor[Task], subjectDirecto
     Future { query.run.transact(transactor).unsafeRun }
   }
 
+  override def getPersonSubjectProjects(person: String, subject: String): Future[Vector[Vector[String]]] = {
+    val query = sql"""
+      SELECT project, started_on, done_on, url
+      FROM person_projects
+      WHERE person = ${person}
+      AND subject = ${subject}""".query[(String, String, Option[String], Option[String])]
+
+    Future {
+      query.vector.transact(transactor).unsafeRun
+    }.map { t => {
+      t.map { case (s, v, m, r) => Vector(s, v, m.getOrElse("null"), r.getOrElse("empty"))}}
+    }
+  }
+
+  override def getAllPersonProjects(person: String): Future[Map[String, Vector[Vector[String]]]] = {
+    val query = sql"""
+      SELECT subject, project, started_on, done_on, url
+      FROM person_projects
+      WHERE person = ${person}""".query[(String, (String, String, Option[String], Option[String]))]
+    Future {
+      query.vector.transact(transactor).unsafeRun
+    }.map { pairs => {
+      pairs.groupBy(_._1).map { case (s, v) => s -> v.map(_._2).map { case (p, so, d, r) =>
+        Vector(p, so, d.getOrElse("null"), r.getOrElse("empty")) } }
+    }}
+  }
+
+  override def setProjectInProgress(person: String, subject: String, project: String): Future[Unit] = {
+    val id = UUID.randomUUID().toString
+    val query = sql"""
+      INSERT INTO person_projects (id, person, started_on, done_on, subject,
+      project, url, assessed_on, assessed_by, assessment_notes)
+      VALUES ($id :: uuid, ${person}, current_date, null, $subject, $project, null, null, null, null)
+      ON CONFLICT (person, subject, project) DO UPDATE
+      SET done_on = NULL""".update
+    Future { query.run.transact(transactor).unsafeRun }
+  }
+
+  override def setProjectDone(person: String, subject: String, project: String): Future[Unit] = {
+    val id = UUID.randomUUID().toString
+    val query = sql"""
+      INSERT INTO person_projects (id, person, started_on, done_on, subject,
+      project, url, assessed_on, assessed_by, assessment_notes)
+      VALUES ($id :: uuid, ${person}, current_date, current_date, $subject, $project, null, null, null, null)
+      ON CONFLICT (person, subject, project) DO UPDATE
+      SET done_on = current_date
+      WHERE person_projects.done_on is NULL""".update
+
+    Future { query.run.transact(transactor).unsafeRun }
+  }
+
+  override def setProjectNotStarted(person: String, subject: String, project: String): Future[Unit] = {
+    val query = sql"""
+      DELETE FROM person_projects
+      WHERE person = $person
+      AND subject = $subject
+      AND project = $project""".update
+    Future { query.run.transact(transactor).unsafeRun }
+  }
+
+  override def setProjectUrl(person: String, subject: String, project: String, url: Option[String]): Future[Unit] = {
+    val id = UUID.randomUUID().toString
+    val query = sql"""
+      update person_projects
+      set url = ${url.getOrElse("null")}
+      where person = $person
+      and subject = $subject
+      and project = $project""".update
+    Future { query.run.transact(transactor).unsafeRun }
+  }
 }

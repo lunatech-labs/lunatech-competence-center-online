@@ -1,0 +1,330 @@
+<!--
+     @license
+     Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+     This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+     The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+     The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+     Code distributed by Google as part of the polymer project is also
+     subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+   -->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/marked-element/marked-element.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tab.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animatable-behavior.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/slide-from-right-animation.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/slide-left-animation.html">
+<link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-behavior.html">
+<link rel="import" href="../../bower_components/web-animations-js/web-animations-next-lite.min.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+
+<dom-module id="level-card">
+  <template>
+    <style>
+      :host {
+        --paper-tabs-selection-bar-color: var(--app-primary-color);
+        display: block;
+        margin-bottom: 2em;
+      }
+
+      paper-card {
+        display: block;
+      }
+
+      paper-button {
+        color: var(--paper-indigo-500);
+      }
+
+      .card-content {
+        min-height: 10vh;
+        transition: min-height 1;
+      }
+
+      .expanded .card-content {
+        min-height: 60vh;
+        overflow: auto;
+      }
+
+      paper-checkbox.level-info {
+        display: block;
+        margin: 0.5em 0;
+      }
+
+      .level-description a {
+        border: 2px solid #000;
+        border-radius: 23%;
+        color: #000;
+        display: inline-block;
+        font-size: 0.5em;
+        padding: 0 0.2em;
+        position: relative;
+        text-decoration: none;
+        top: -1em;
+      }
+    </style>
+
+    <paper-card class$="layout vertical [[cardClass]]">
+      <div class="card-content flex">
+        <h2>{{level.name}}</h2>
+        <!-- Collapsed view -->
+        <template is="dom-if" if="[[!expanded]]">
+          <marked-element markdown=[[level.description]]>
+            <div slot="markdown-html" class="level-description"></div>
+          </marked-element>
+        </template>
+        <!-- Expanded view -->
+        <template is="dom-if" if="[[expanded]]">
+          <paper-tabs selected="{{selected}}">
+            <paper-tab>DESCRIPTION</paper-tab>
+            <paper-tab>SKILLS</paper-tab>
+            <paper-tab>ABILITIES</paper-tab>
+            <template is="dom-if" if="[[isSpecialized(level)]]">
+              <paper-tab>JAVA ABILITIES</paper-tab>
+              <paper-tab>SCALA ABILITIES</paper-tab>
+            </template>
+          </paper-tabs>
+          <neon-animated-pages id="pages" class="flex" selected="{{selected}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
+            <neon-animatable>
+              <marked-element markdown=[[level.description]]>
+                <div slot="markdown-html" class="level-description"></div>
+              </marked-element>
+              <paper-checkbox class="level-info" disabled checked="[[canBeOa(level)]]">Can be Operational Advisor?</paper-checkbox>
+              <paper-checkbox class="level-info" disabled checked="[[canBePl(level)]]">Can be Project Lead?</paper-checkbox>
+              <paper-checkbox class="level-info" disabled checked="[[isSpecialized(level)]]">Specialized?</paper-checkbox>
+            </neon-animatable>
+            <neon-animatable>
+              <marked-element markdown=[[skillsMarkdowned()]]>
+                <div slot="markdown-html" class="level-description"></div>
+              </marked-element>
+            </neon-animatable>
+            <neon-animatable>
+              <paper-tabs selected="{{selectedAbilities}}">
+                <paper-tab>REQUIRED</paper-tab>
+                <paper-tab>OPTIONAL</paper-tab>
+              </paper-tabs>
+              <neon-animated-pages id="pages" class="flex" selected="{{selectedAbilities}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
+                <neon-animatable>
+                  <marked-element markdown=[[requiredAbilities]]>
+                    <div slot="markdown-html" class="level-description"></div>
+                  </marked-element>
+                </neon-animatable>
+                <neon-animatable>
+                  <marked-element markdown=[[optionalAbilities]]>
+                    <div slot="markdown-html" class="level-description"></div>
+                  </marked-element>
+                </neon-animatable>
+              </neon-animated-pages>
+            </neon-animatable>
+            <neon-animatable>
+              <paper-tabs selected="{{selectedJavaAbilities}}">
+                <paper-tab>REQUIRED</paper-tab>
+                <paper-tab>OPTIONAL</paper-tab>
+              </paper-tabs>
+              <neon-animated-pages id="pages" class="flex" selected="{{selectedJavaAbilities}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
+                <neon-animatable>
+                  <marked-element markdown=[[requiredJavaAbilities]]>
+                    <div slot="markdown-html" class="level-description"></div>
+                  </marked-element>
+                </neon-animatable>
+                <neon-animatable>
+                  <marked-element markdown=[[optionalJavaAbilities]]>
+                    <div slot="markdown-html" class="level-description"></div>
+                  </marked-element>
+                </neon-animatable>
+              </neon-animated-pages>
+            </neon-animatable>
+            <neon-animatable>
+              <paper-tabs selected="{{selectedScalaAbilities}}">
+                <paper-tab>REQUIRED</paper-tab>
+                <paper-tab>OPTIONAL</paper-tab>
+              </paper-tabs>
+              <neon-animated-pages id="pages" class="flex" selected="{{selectedScalaAbilities}}" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
+                <neon-animatable>
+                  <marked-element markdown=[[requiredScalaAbilities]]>
+                    <div slot="markdown-html" class="level-description"></div>
+                  </marked-element>
+                </neon-animatable>
+                <neon-animatable>
+                  <marked-element markdown=[[optionalScalaAbilities]]>
+                    <div slot="markdown-html" class="level-description"></div>
+                  </marked-element>
+                </neon-animatable>
+              </neon-animated-pages>
+            </neon-animatable>
+          </neon-animated-pages>
+        </template>
+      </div>
+      <div class="card-actions layout horizontal center-justified">
+        <div class="center">
+          <paper-button noink class="indigo" on-tap="expand">
+            <template is="dom-if" if="[[!expanded]]">Read more</template>
+            <template is="dom-if" if="[[expanded]]">Read less</template>
+          </paper-button>
+        </div>
+      </div>
+    </paper-card>
+  </template>
+  <script>
+    class LevelCard extends Polymer.Element {
+      static get is () { return 'level-card'; }
+
+      static get properties () {
+        return {
+          level: {
+            type: Object
+          },
+
+          expanded: {
+            type: Boolean,
+            value: false
+          },
+
+          selected: {
+            value: 0
+          },
+
+          selectedAbilities: {
+            value: 0
+          },
+
+          selectedJavaAbilities: {
+            value: 0
+          },
+
+          selectedScalaAbilities: {
+            value: 0
+          },
+
+          cardClass: {
+            type: String,
+            computed: 'computeCardClass(expanded)'
+          },
+
+          abilities: {
+            type: Object
+          },
+
+          requiredAbilities: {
+            type: String,
+            computed: 'computeRequiredAbilities(abilities)'
+          },
+
+          optionalAbilities: {
+            type: String,
+            computed: 'computeOptionalAbilities(abilities)'
+          },
+
+          requiredJavaAbilities: {
+            type: String,
+            computed: 'computeRequiredJavaAbilities(abilities)'
+          },
+
+          optionalJavaAbilities: {
+            type: String,
+            computed: 'computeOptionalJavaAbilities(abilities)'
+          },
+
+          requiredScalaAbilities: {
+            type: String,
+            computed: 'computeRequiredScalaAbilities(abilities)'
+          },
+
+          optionalScalaAbilities: {
+            type: String,
+            computed: 'computeOptionalScalaAbilities(abilities)'
+          },
+        }
+      }
+
+      expand () {
+        this.expanded = !this.expanded;
+      }
+
+      skillsMarkdowned () {
+        return Object.keys(this.level.skills).reduce(function (acc, skill) {
+          let skills = this.level.skills[skill].map(s => `    * ${s.trim()}`).join('\n');
+          return skills ? `${acc}\n* ${skill}\n${skills}` : `${acc}\n* ${skill}: N/A`;
+        }.bind(this), '');
+      }
+
+      computeCardClass (expanded) {
+        return expanded ? 'expanded' : '';
+      }
+
+      canBeOa (level) {
+        return level['canBeOa'];
+      }
+
+      canBePl (level) {
+        return level['canBePl'];
+      }
+
+      isSpecialized (level) {
+        return level.specialized;
+      }
+
+      computeAbilities (abilities, tag) {
+        let tagAbilities = '';
+        if (tag && abilities[tag]) {
+          tagAbilities = abilities[tag].map(function(subject) {
+            return `## ${subject.name} [↗](/core-curriculum/${subject.id}) \n ` +
+              subject.abilities.map(function (topic) {
+                return `* ${topic.name}`
+              }).join('\n') + '\n';
+          }).join('\n');
+        }
+
+        return tagAbilities || 'N/A';
+      }
+
+      computeRequiredAbilities (abilities) {
+        let tag = this.level['requiredCurriculum'];
+        return `# Required\n${this.computeAbilities(this.abilities, tag)}`;
+      }
+
+      computeOptionalAbilities (abilities) {
+        let tag = this.level['optionalCurriculum'];
+        return `# Optional\n${this.computeAbilities(this.abilities, tag)}`;
+      }
+
+      computeSpecializationAbilities (abilities, stag, ltag) {
+        let specialization = (this.level.specializations || []).find(x => x.name && x.name === stag);
+
+        let text = '';
+        if (specialization && specialization[ltag]) {
+          text = this.computeAbilities(abilities, specialization[ltag]);
+        }
+
+        return text || 'N/A';
+      }
+
+      computeRequiredJavaAbilities (abilities) {
+        let text = this.computeSpecializationAbilities(abilities, 'java', 'requiredCurriculum');
+        return `# Required\n${text}`;
+      }
+
+      computeOptionalJavaAbilities (abilities) {
+        let text = this.computeSpecializationAbilities(abilities, 'java', 'optionalCurriculum');
+        return `# Optional\n${text}`;
+      }
+
+      computeRequiredScalaAbilities (abilities) {
+        let text = this.computeSpecializationAbilities(abilities, 'scala', 'requiredCurriculum');
+        return `# Required\n${text}`;
+      }
+
+      computeOptionalScalaAbilities (abilities) {
+        let text = this.computeSpecializationAbilities(abilities, 'scala', 'optionalCurriculum');
+        return `# Optional\n${text}`;
+      }
+    }
+
+    customElements.define(LevelCard.is, LevelCard);
+  </script>
+</dom-module>

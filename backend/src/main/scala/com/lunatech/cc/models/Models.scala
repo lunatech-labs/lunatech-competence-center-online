@@ -2,6 +2,7 @@ package com.lunatech.cc.models
 
 import com.lunatech.cc.api.EnrichedGoogleUser
 import com.lunatech.cc.api.services.Person
+import io.circe.{Decoder, ObjectEncoder}
 
 import scala.language.implicitConversions
 import io.circe.generic.semiauto._
@@ -54,6 +55,10 @@ case class Meta(client: String,
 case class CV(employee: Employee,
               meta: Meta)
 
+case class Skills(interpersonal: List[String], leadership: List[String], managerial: List[String])
+case class Specialization(name: String, requiredCurriculum: String, optionalCurriculum: String)
+case class CareerLevel(name: String, shortName: String, description: String, curriculum: Option[String], workableLevel: Option[String], yearsOfExperience: Option[Int], specialized: Option[Boolean], canBeOa: Option[Boolean], canBePl: Option[Boolean], requiredCurriculum: Option[String], optionalCurriculum: Option[String], specializations: Option[List[Specialization]], skills: Skills)
+
 object CV {
   def apply(user:EnrichedGoogleUser): CV = {
     val bd: BasicDetails = BasicDetails(user.givenName,user.familyName,"","",user.email,"","",Contact("","","","","","",""))
@@ -101,11 +106,11 @@ package object Models {
     profile = basicDetails.profile,
     contact = basicDetails.contact)
 
-  implicit val ctEncoder = deriveEncoder[Contact]
-  implicit val ctDecoder = deriveDecoder[Contact]
+  implicit val ctEncoder: ObjectEncoder[Contact] = deriveEncoder[Contact]
+  implicit val ctDecoder: Decoder[Contact] = deriveDecoder[Contact]
 
-  implicit val bdEncoder = deriveEncoder[BasicDetails]
-  implicit val bdDecoder = deriveDecoder[BasicDetails]
+  implicit val bdEncoder: ObjectEncoder[BasicDetails] = deriveEncoder[BasicDetails]
+  implicit val bdDecoder: Decoder[BasicDetails] = deriveDecoder[BasicDetails]
 
   implicit def toXML(contact: Contact): xml.Contact = xml.Contact(
     name = contact.name,
@@ -125,8 +130,8 @@ package object Models {
     endDate = education.endDate,
     description = education.description)
 
-  implicit val edEncoder = deriveEncoder[Education]
-  implicit val edDecoder = deriveDecoder[Education]
+  implicit val edEncoder: ObjectEncoder[Education] = deriveEncoder[Education]
+  implicit val edDecoder: Decoder[Education] = deriveDecoder[Education]
 
 
   implicit def toXML(educations: Seq[Education]): xml.Educations = xml.Educations(educations.map(toXML))
@@ -136,8 +141,8 @@ package object Models {
     level = skill.level,
     category = skill.category)
 
-  implicit val skEncoder = deriveEncoder[Skill]
-  implicit val skDecoder = deriveDecoder[Skill]
+  implicit val skEncoder: ObjectEncoder[Skill] = deriveEncoder[Skill]
+  implicit val skDecoder: Decoder[Skill] = deriveDecoder[Skill]
 
 
   implicit def toXML(skills: Seq[Skill]): xml.Skills = xml.Skills(skills.map(toXML))
@@ -153,8 +158,8 @@ package object Models {
     role = project.role,
     summary = project.summary)
 
-  implicit val pjEncoder = deriveEncoder[Project]
-  implicit val pjDecoder = deriveDecoder[Project]
+  implicit val pjEncoder: ObjectEncoder[Project] = deriveEncoder[Project]
+  implicit val pjDecoder: Decoder[Project] = deriveDecoder[Project]
 
 
 
@@ -167,14 +172,24 @@ package object Models {
     language = xml.LanguageType.fromString(meta.language, xml.defaultScope)
   )
 
-  implicit val emEncoder = deriveEncoder[Employee]
-  implicit val emDecoder = deriveDecoder[Employee]
-  implicit val mtEncoder = deriveEncoder[Meta]
-  implicit val mtDecoder = deriveDecoder[Meta]
+  implicit val emEncoder: ObjectEncoder[Employee] = deriveEncoder[Employee]
+  implicit val emDecoder: Decoder[Employee] = deriveDecoder[Employee]
+  implicit val mtEncoder: ObjectEncoder[Meta] = deriveEncoder[Meta]
+  implicit val mtDecoder: Decoder[Meta] = deriveDecoder[Meta]
 
 
-  implicit val cvEncoder = deriveEncoder[CV]
-  implicit val cvDecoder = deriveDecoder[CV]
+  implicit val cvEncoder: ObjectEncoder[CV] = deriveEncoder[CV]
+  implicit val cvDecoder: Decoder[CV] = deriveDecoder[CV]
+
+
+  implicit val skillsEncoder: ObjectEncoder[Skills] = deriveEncoder[Skills]
+  implicit val skillsDecoder: Decoder[Skills] = deriveDecoder[Skills]
+
+  implicit val specializationEncoder: ObjectEncoder[Specialization] = deriveEncoder[Specialization]
+  implicit val specializationDecoder: Decoder[Specialization] = deriveDecoder[Specialization]
+
+  implicit val careerLevelEncoder: ObjectEncoder[CareerLevel] = deriveEncoder[CareerLevel]
+  implicit val careerLevelDecoder: Decoder[CareerLevel] = deriveDecoder[CareerLevel]
 
 
 }

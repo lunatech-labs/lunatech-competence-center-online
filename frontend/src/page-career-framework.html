@@ -1,0 +1,133 @@
+<!--
+     @license
+     Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+     This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+     The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+     The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+     Code distributed by Google as part of the polymer project is also
+     subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+   -->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="./career-framework/level-card.html">
+
+<dom-module id="page-career-framework">
+  <template>
+    <style>
+     :host {
+         display: block;
+         padding: 10px 20px;
+     }
+
+     .levels-container {
+       display: block;
+       width: 60%;
+     }
+    </style>
+
+    <iron-ajax id="ajaxLoad"
+               url="/api/core-curriculum"
+               loading="{{loading}}"
+               last-response="{{graphs}}"></iron-ajax>
+
+    <iron-ajax id="ajaxLoadCF"
+               url="/api/career"
+               loading="{{loading}}"
+               last-response="{{levels}}"></iron-ajax>
+
+    <paper-spinner active=[[loading]]></paper-spinner>
+
+    <!-- FIXME this page should be inside the 'career-framework-folder' -->
+    <div class="layout horizontal wrap levels-container">
+      <template is="dom-repeat" items="{{levels}}">
+        <level-card level=[[item]] abilities=[[abilities]]></level-card>
+      </template>
+    </div>
+
+  </template>
+
+  <script>
+    class PageCareerFramework extends Polymer.Element {
+      static get is () { return 'page-career-framework'; }
+
+      static get properties () {
+        return {
+
+          graphs: {
+            type: Array,
+            observer: 'dataAgreggator'
+          },
+
+          abilities: {
+            type: Object
+          },
+
+          levels: {
+            type: Object,
+            observer: 'dataAgreggator'
+          }
+        }
+      }
+
+      ready () {
+        super.ready();
+        setTimeout(function () {
+          this.$.ajaxLoad.generateRequest();
+        }.bind(this), 1000);
+        setTimeout(function () {
+          this.$.ajaxLoadCF.generateRequest();
+        }.bind(this), 1000);
+      }
+
+      dataAgreggator () {
+        if (!this.levels || !this.graphs) {
+          return;
+        }
+
+        let abilities = this.levels.reduce(function (acc, level) {
+          if (level['requiredCurriculum']) {
+            acc[level['requiredCurriculum']] = [];
+          }
+          if (level['optionalCurriculum']) {
+            acc[level['optionalCurriculum']] = [];
+          }
+          if (level.specialized) {
+            level.specializations.forEach(function (s) {
+              acc[s['requiredCurriculum']] = [];
+              acc[s['optionalCurriculum']] = [];
+            });
+          }
+
+          return acc;
+        }, {});
+
+        let g = this.graphs
+        Object.keys(abilities).forEach(function (cfLevel) {
+          let levelAbilities = abilities[cfLevel];
+
+          g.reduce(function (acc, subject) {
+            let relevantTopics = subject.topics.filter(topic => topic.tags.indexOf(cfLevel) >= 0);
+            if (relevantTopics && relevantTopics.length) {
+              acc.push({
+                id: subject.id,
+                name: subject.name,
+                abilities: relevantTopics
+              });
+            }
+
+            return acc;
+          }, levelAbilities)
+        });
+
+        this.set('abilities', abilities);
+      }
+
+    }
+
+    customElements.define(PageCareerFramework.is, PageCareerFramework);
+  </script>
+</dom-module>

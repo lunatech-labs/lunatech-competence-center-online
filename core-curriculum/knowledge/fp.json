@@ -539,5 +539,14 @@
         { "question": "Why are monad transformers useful?" }
       ]
     }
+  ],
+
+  "projects": [
+    {
+      "id": "fp-euler-baby-steps",
+      "name": "Project Euler's Baby Steps",
+      "dependencies": ["object-oriented-i"],
+      "description": "The goal of this project is to earn the **Baby Steps** award on [Project Euler](https://projecteuler.net/) using FP constructs.\n\n# Requirements\n\nProject Euler is a project that encourages, challenges and developes the skills on mathematics and programming. The exercises are abstract enough that you won't need to define almost any class hierarchy or complex application. You can read more about the project [here](https://projecteuler.net/about).\n\nCreate a new account, if you don't have already, and complete at least three Euler Problems attaining the Baby Steps awards. Since this Univerity Project is intended to get you started we recommend that you implement the first three problems:\n- [Multiples of 3 and 5](https://projecteuler.net/problem=1)\n- [Even Fibonacci numbers](https://projecteuler.net/problem=2)\n- [Largest prime factor](https://projecteuler.net/problem=3)\n\nAfter you solve each problem you can input the solution at their website to check for correctness. If you already earned the award through the Scala or Java project, you can challenge yourself to do it using FP constructs such as _HOF_ or _pure functions_, since Project Euler doesn't specify any programming paradigm and probably mutation is the easiest way to achieve a solution. After achieving this award there is nothing stopping you from doing the same with more difficult awards.\n\n# Deliverables\n\nA GitHub repository with the problems solved."
+    }
   ]
 }

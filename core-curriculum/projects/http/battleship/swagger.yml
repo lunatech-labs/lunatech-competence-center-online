@@ -1,0 +1,343 @@
+swagger: "2.0"
+info:
+  description: "This document provides the specification for the Lunatech Battelship that you need to implement.\n\nLunatech Battleship is a game similar to the well known battleship board game, but this is played through a Rest API. Your task is to implement the following specification, but first let's explain the rules of the game. The implementation must in Java or Scala, please add also a README explaining how to run the application and a brief description of the solution."
+  version: "1.0.0"
+  title: "Lunatech Battelship"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "gustavo.de.micheli@lunatech.nl"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "locahost"
+basePath: "/v1"
+tags:
+- name: "user"
+  description: "The user API will be used by the user (or the UI) to communicate with its own Lunatech Battleship instance. Think of the User API as the way the user can interact with a match that he/she is playing (get information about it, fire to the opponent and so on)."
+- name: "protocol"
+  description: "The protocol API will be used to communicate between players during a match. There are several ways you can define the architecture of the application, think of the Protocol API as the M2M communication. All fields in the request and response are mandatory, in case of bad request you must return HTTP 400."
+schemes:
+- "https"
+- "http"
+paths:
+  /protocol/game/new:
+    post:
+      tags:
+        - "protocol"
+      summary: "Creates a new game"
+      description: "This endpoint is invoked when another player is challenging us to a match."
+      operationId: "protocolNewGame"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "A new game's request, should contain the information about the opponent, and the rules he or she wants to play with."
+        required: true
+        schema:
+          $ref: "#/definitions/ProtocolReqNewGame"
+      responses:
+        201:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ProtocolResNewGame"
+        400:
+          description: "In case of invalid input"
+  /protocol/game/{gameId}:
+    put:
+      tags:
+        - "protocol"
+      summary: "Process a shot made by the opponent"
+      description: "This endpoint will be called by the opponent to signal that he or she wants to fire upon us."
+      operationId: "protocolShot"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "gameId"
+        in: "path"
+        description: "The Game's ID to be fired upon."
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "A list of shots made by the opponent."
+        required: true
+        schema:
+          $ref: "#/definitions/Shot"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ShotStatus"
+        400:
+          description: "In case of invalid input."
+        404:
+          description: "In case of game not found."
+        409:
+          description: "In case of it's NOT the opponent's turn."
+        410:
+          description: "In case of completed game."
+  /user/game/{gameId}:
+    get:
+      tags:
+        - "user"
+      summary: "Get the current game status"
+      description: "Get the current game status (from the player's perspective)."
+      operationId: "userGameStatus"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "gameId"
+        in: "path"
+        description: "The Game's ID to get the status of."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/GameStatus"
+        404:
+          description: "In case of game not found."
+        410:
+          description: "In case of completed game."
+  /user/game/new:
+    post:
+      tags:
+        - "user"
+      summary: "A user wants to start a new game"
+      description: "This endpoint is used by the user to start a new match."
+      operationId: "userNewGame"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "A new game's request, should contain the information about the ourselves, and the rules we want to play with."
+        required: true
+        schema:
+          $ref: "#/definitions/UserReqNewGame"
+      responses:
+        201:
+          description: "successful operation, should provide the URL for the new game status. See '/user/game/{gameId}'"
+          headers:
+            Location:
+                type: "string"
+        400:
+          description: "In case of invalid input"
+  /user/game/{gameId}/fire:
+    put:
+      tags:
+        - "user"
+      summary: "Send a shot to the opponent"
+      description: "This endpoint will be called by the user when he or she wants to shot to a opponent."
+      operationId: "userShot"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "gameId"
+        in: "path"
+        description: "The Game's ID to be fired upon."
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "A list of shots made by the opponent."
+        required: true
+        schema:
+          $ref: "#/definitions/Shot"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ShotStatus"
+        400:
+          description: "In case of invalid input."
+        404:
+          description: "In case of game not found."
+        409:
+          description: "In case of it's NOT the opponent's turn."
+        410:
+          description: "In case of completed game."
+  /user/game/{gameId}/auto:
+    post:
+      tags:
+        - "user"
+      summary: "Set a game into Auto-Pilot"
+      description: "This endpoint is called by an user that wants to set the autopilot on, meaning he or she no longer will actively play but will relagate the shot decision to an AI."
+      parameters:
+      - name: "gameId"
+        in: "path"
+        description: "The Game's ID to set on autopilot."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ShotStatus"
+        400:
+          description: "In case the game is already on autopilot."
+        404:
+          description: "In case of game not found."
+        410:
+          description: "In case of completed game."
+definitions:
+  ProtocolReqNewGame:
+    type: "object"
+    description: "This is the request that we get from another player (ie. Opponent). This is similar to UserReqNewGame, but the meaning of the fields are different."
+    required:
+    - "userId"
+    - "protocol"
+    - "rules"
+    properties:
+      userId:
+        type: "string"
+        description: "Opponent's user ID (should be unique)"
+      fullName:
+        type: "string"
+        description: "Opponent's full name"
+      protocol:
+        type: "string"
+        description: "This forms the protocol (base endpoint) where we can reach the opponent."
+        example: "192.169.1.201:8081"
+      rules:
+        type: "string"
+        description: "The rules the game is going to played with."
+        enum:
+        - "standard"
+        - "desperation"
+        - "super-charge"
+        - "x-shot"
+  ProtocolResNewGame:
+    type: "object"
+    description: "The response the opponent's gets on successful new game request."
+    required:
+    - "userId"
+    - "gameId"
+    - "starting"
+    - "rules"
+    properties:
+      userId:
+        type: "string"
+        description: "Player's user ID (should be unique)"
+      fullName:
+        type: "string"
+        description: "Player's full name"
+      gameId:
+        type: "string"
+        description: "This is the Game's UUID."
+        example: "55fca148-4753-4b9e-884f-0fbe17338add"
+      starting:
+        type: "string"
+        description: "Describes who's starting the game, either the player or the opponent, this is the 'userId'"
+      rules:
+        type: "string"
+        description: "The rules the game is going to played with, accepted by this player."
+        enum:
+        - "standard"
+        - "desperation"
+        - "super-charge"
+        - "x-shot"
+  Shot:
+    type: object
+    required:
+      - "shots"
+    properties:
+      shots:
+        type: "array"
+        items:
+          type: "string"
+          description: "A shot is a string which encode two hexadecimal positions."
+          example: "1xF"
+  ShotStatus:
+    type: object
+    required:
+      - "game"
+      - "shots"
+    properties:
+      game:
+        $ref: "#/definitions/GameInfo"
+      shots:
+        type: object
+        description: "This object has for key a shot coordinate, and for value its corresponding status ('miss', 'hit' or 'kill')"
+        example: "{'1xB': 'hit', '0xA': 'kill', '5x1': 'miss'}"
+  GameInfo:
+    type: object
+    required:
+      - "status"
+      - "owner"
+    properties:
+      status:
+        type: "string"
+        description: "Describes the status of the game, either if some player's turn or if the game is finished (and won)"
+        enum:
+        - "player_turn"
+        - "won"
+      owner:
+        type: "string"
+        description: "Refers to which Player is owning the current status, bu using the 'UserId', if is 'player_turn' that means this player has to shoot, and if 'won' means this player has won the match."
+  Board:
+    type: object
+    description: "Describes a Player's board"
+    required:
+      - "user_id"
+      - "board"
+    properties:
+      user_id:
+        type: "string"
+        description: "Refers to which user owns this board using the 'UserId'."
+      board:
+        type: "array"
+        description: "Describes a board by having an array of board Rows, each element is a row in the board."
+        items:
+          type: "string"
+          description: "Each row is a string where each character is a Board's cell."
+  GameStatus:
+    type: object
+    required:
+      - "game"
+      - "self"
+      - "opponent"
+    properties:
+      game:
+        $ref: "#/definitions/GameInfo"
+      self:
+        $ref: "#/definitions/Board"
+      opponent:
+        $ref: "#/definitions/Board"
+  UserReqNewGame:
+    type: "object"
+    description: "This is the request that send to another player (ie. Opponent) to start a match. Notice this is very similar to ProtocolReqNewGame but the meaning of the fields are different."
+    required:
+    - "userId"
+    - "protocol"
+    - "rules"
+    properties:
+      userId:
+        type: "string"
+        description: "Our user ID (should be unique)"
+      fullName:
+        type: "string"
+        description: "Our full name"
+      protocol:
+        type: "string"
+        description: "This forms the protocol (base endpoint) where we can reach the opponent."
+        example: "192.169.1.201:8081"
+      rules:
+        type: "string"
+        description: "The rules the game is going to played with."
+        enum:
+        - "standard"
+        - "desperation"
+        - "super-charge"
+        - "x-shot"
+externalDocs:
+  description: "Find out more about this project"
+  url: "https://docs.google.com/document/d/17Q2fqNP-PWd_ZIvmKIEJ5iTkHhZ6ha8_KZLfP31Hkg0/edit?usp=sharing"

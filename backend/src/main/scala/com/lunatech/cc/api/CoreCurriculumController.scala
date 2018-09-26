@@ -48,9 +48,67 @@ class CoreCurriculumController(coreCurriculumService: CoreCurriculumService, aut
     } yield Ok(())
   }
 
-  val `GET /people/{email}/knowledge`: Endpoint[Map[String, Vector[String]]] = get("people" :: string :: "knowledge" :: authenticated) { (person: String, apiUser: ApiUser) =>
+  val `GET /people/{email}/knowledge`: Endpoint[Map[String, Vector[Vector[String]]]] = get("people" :: string :: "knowledge" :: authenticated) { (person: String, apiUser: ApiUser) =>
     for {
       knowledge <- coreCurriculumService.getAllPersonKnowledge(person)
     } yield Ok(knowledge)
   }
+
+  val `GET /people/{email}/projects`: Endpoint[Map[String, Vector[Vector[String]]]] = get("people" :: string :: "projects" :: authenticated) { (person: String, apiUser: ApiUser) =>
+    for {
+      projects <- coreCurriculumService.getAllPersonProjects(person)
+    } yield Ok(projects)
+  }
+
+  val `GET /people/me/projects/{subject}`: Endpoint[Vector[Vector[String]]] = get("people" :: "me" :: "projects" :: string :: authenticatedUser) { (subject: String, user: EnrichedGoogleUser) =>
+    for {
+      projects <- coreCurriculumService.getPersonSubjectProjects(user.email, subject)
+    } yield Ok(projects)
+  }
+
+  val `GET /people/{email}/projects/{subject}`: Endpoint[Vector[Vector[String]]] = get("people" :: string :: "projects" :: string :: authenticated) { (email: String, subject: String, user: ApiUser) =>
+    if(user.hasRole("admin") || user.hasRole("mentor")) {
+      for {
+        projects <- coreCurriculumService.getPersonSubjectProjects(email, subject)
+      } yield Ok(projects)
+    } else {
+      Future.value(Forbidden(new RuntimeException("'admin' or 'mentor' role required for this endpoint")))
+    }
+  }
+
+  val `PUT /people/me/projects/{subject}/{project}/{status}`: Endpoint[Unit] = put("people" :: "me" :: "projects" :: string :: string :: string :: authenticatedUser) {
+    (subject: String, project: String, status: String, user: EnrichedGoogleUser) => {
+      if (status.equals("in-progress")) {
+        for {
+          _ <- coreCurriculumService.setProjectInProgress(user.email, subject, project)
+        } yield Ok(())
+      }
+      else if (status.equals("done")) {
+        for {
+          _ <- coreCurriculumService.setProjectDone(user.email, subject, project)
+        } yield Ok(())
+      }
+      else {
+        Future.value(Forbidden(new RuntimeException("unrecognized status for project")))
+      }
+    }
+  }
+
+  val `DELETE /people/me/projects/{subject}/{project}`: Endpoint[Unit] = delete("people" :: "me" :: "projects" :: string :: string :: authenticatedUser) {
+    (subject: String, project: String, user: EnrichedGoogleUser) =>
+    for {
+      _ <- coreCurriculumService.setProjectNotStarted(user.email, subject, project)
+    } yield Ok(())
+  }
+
+  val `PUT /people/me/projects/{subject}/{project}?url={url}`: Endpoint[Unit] =
+    put("people" :: "me" :: "projects" :: string :: string :: authenticatedUser :: param("url")) {
+    (subject: String, project: String, user: EnrichedGoogleUser, url: String) => {
+      var projectUrl = {if (url.equals("empty")) None else Some(url)}
+      for {
+        _ <- coreCurriculumService.setProjectUrl(user.email, subject, project, projectUrl)
+      } yield Ok(())
+    }
+  }
+
 }

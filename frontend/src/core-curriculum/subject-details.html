@@ -33,11 +33,14 @@
                url="/data/core-curriculum/knowledge/[[subject]].json"
                last-response="{{knowledge}}"></iron-ajax>
 
-     <iron-ajax id="personKnowledgeLoad"
-                loading="{{personKnowledgeLoading}}"
-                url="/api/people/{{person}}/knowledge/[[subject]]"
-                last-response="{{personKnowledge}}"></iron-ajax>
-
+    <iron-ajax id="personKnowledgeLoad"
+               loading="{{personKnowledgeLoading}}"
+               url="/api/people/{{person}}/knowledge/[[subject]]"
+               last-response="{{personKnowledge}}"></iron-ajax>
+    <iron-ajax id="personProjectsLoad"
+               loading="{{personProjectsLoading}}"
+               url="/api/people/{{person}}/projects/[[subject]]"
+               last-response="{{personProjects}}"></iron-ajax>
 
     <h1>[[knowledge.name]]</h1>
     <p>[[knowledge.description]]</p>
@@ -64,7 +67,12 @@
       </tr>
     </table>
 
-    <subject-projects topics=[[knowledge.topics]] projects=[[knowledge.projects]] person-knowledge=[[personKnowledge]]></subject-projects>
+    <subject-projects id="subjectProjects"
+            projects=[[projects]]
+            person-knowledge=[[personKnowledge]]
+            on-project-status-changed="_projectStatusChanged"
+            on-project-url-changed="_projectUrlChanged"
+    ></subject-projects>
   </template>
   <script>
     Polymer({
@@ -97,6 +105,15 @@
           type: Array
         },
 
+        personProjects: {
+          type: Array,
+          observer: '_onPersonProjectsChanged'
+        },
+
+        projects: {
+          type: Array
+        },
+
         requiredTags: {
           type: Array,
           value: ['required-for-junior']
@@ -104,7 +121,7 @@
 
         loading: {
           type: Boolean,
-          computed: '_computeLoading(dataLoading, personKnowledgeLoading)'
+          computed: '_computeLoading(dataLoading, personKnowledgeLoading, personProjectsLoading)'
         },
 
         title: {
@@ -115,6 +132,35 @@
 
       listeners: {
           'knowledge-node--clicked': '_onKnowledgeNodeClicked',
+      },
+
+      _projectStatusChanged: function(e, v) {
+        let status = this.$.subjectProjects.projectStatus.status
+        let request = document.createElement('iron-request');
+        if (status === 'done' || status === 'in-progress') {
+              request.send({ method: "PUT",
+                           url: "/api/people/me/projects/" + this.subject + "/"
+                           + this.$.subjectProjects.projectStatus.project + "/"
+                           + status,
+                           headers: {'X-ID-Token': this.$.meta.byKey('idToken')}});
+        } else if (status === 'none') {
+              request.send({ method: "DELETE",
+                           url: "/api/people/me/projects/" + this.subject + "/"
+                           + this.$.subjectProjects.projectStatus.project,
+                           headers: {'X-ID-Token': this.$.meta.byKey('idToken')}});
+        }
+      },
+
+      _projectUrlChanged: function(e, v) {
+        let url = this.$.subjectProjects.projectUrl.url
+        if (!url) {
+          url = "empty"
+        }
+         let urlRequest = document.createElement('iron-request');
+         urlRequest.send({ method: "PUT",
+           url: "/api/people/me/projects/" + this.subject + "/"
+           + this.$.subjectProjects.projectUrl.project + "?url=" + url,
+           headers: {'X-ID-Token': this.$.meta.byKey('idToken')}});
       },
 
       _iKnowThisChanged: function(e, v) {
@@ -133,18 +179,21 @@
 
           if (!setting && this.personKnowledge.includes(topic)) {
             let request = document.createElement('iron-request');
-            let promise = request.send({ method: "DELETE", url: "/api/people/me/knowledge/" + this.subject + "/" + topic, headers: {'X-ID-Token': this.$.meta.byKey('idToken')}}).then(function(){
+            let promise = request.send({
+              method: "DELETE",
+              url: "/api/people/me/knowledge/" + this.subject + "/" + topic,
+              headers: {'X-ID-Token': this.$.meta.byKey('idToken')}})
+            .then(function(){
               this.splice('personKnowledge', this.personKnowledge.indexOf(topic), 1);
             }.bind(this));
-
           }
 
         }
 
       },
 
-      _computeLoading: function(dataLoading, personKnowledgeLoading) {
-        return dataLoading || personKnowledgeLoading;
+      _computeLoading: function(dataLoading, personKnowledgeLoading, personProjectsLoading) {
+        return dataLoading || personKnowledgeLoading || personProjectsLoading;
       },
 
       _reloadData: function() {
@@ -152,6 +201,7 @@
         if (this.person && this.subject) {
           this.$.subjectLoad.generateRequest();
           this.$.personKnowledgeLoad.generateRequest();
+          this.$.personProjectsLoad.generateRequest();
         }
       },
 
@@ -161,8 +211,43 @@
         this.$.topicCard.open();
       },
 
+      _onPersonProjectsChanged: function (personProjects) {
+        var infoProjects = [];
+        if(this.knowledge.projects && this.knowledge.topics && personProjects) {
+          var requiredForJunior = this.knowledge.topics.filter(topic => {
+            if(topic.tags) {
+              return topic.tags.includes('required-for-junior')
+            } else {
+              return false;
+            }
+          }).map(topic => topic.id);
+          this.knowledge.projects.forEach(function(project) {
+            var infoProject = {
+              id: project.id,
+              name: project.name,
+              description: project.description,
+              dependencies: requiredForJunior
+            };
+            personProjects.forEach(function(personProject) {
+              if (personProject[0] == project.id) {
+                if (personProject[2] != 'null')
+                  infoProject.status = "done"
+                else
+                  infoProject.status = "in-progress"
+                infoProject.url = personProject[3]
+              }
+            })
+            if (infoProject.status == undefined)
+              infoProject.status = "none"
+            infoProjects.push(infoProject);
+          });
+        }
+        this.set('projects', infoProjects);
+      },
+
       ready: function() {
         this.$.personKnowledgeLoad.headers = {'X-ID-Token': this.$.meta.byKey('idToken')};
+        this.$.personProjectsLoad.headers = {'X-ID-Token': this.$.meta.byKey('idToken')};
       },
 
       _onKnowledgeChange: function(knowledge) {

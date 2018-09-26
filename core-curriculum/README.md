@@ -51,11 +51,19 @@ So far, the defined tags are:
 ### Topic tags
 Also, *topics* can be annotated, describing if such topic is required, or if it belongs to a certain specialisation.
 
-- required-for-junior: This topic should be known by a Junior Software Developer, whether she or he intends to specialize in Java or Scala.
-- required-for-medior: This topic should be known by a Medior Software Developer, whether she or he intends to specialize in Java or Scala.
-- required-for-senior: This topic should be known by a Senior Software Developer, whether she or he intends to specialize in Java or Scala.
-- required-for-scala-medior: This topic should be known by a Medior Scala Developer.
-- required-for-scala-senior: This topic should be known by a Senior Scala Developer.
-- required-for-java-medior: This topic should be known by a Medior Java Developer.
-- required-for-java-senior: This topic should be known by a Senior Java Developer.
+- required-for-trainee: This topic should be known by a Trainee Developer.
+- required-for-junior: This topic should be known by a Junior Software Engineer.
+- required-for-medior: This topic should be known by a Software Engineer, whether she or he intends to specialize in Java or Scala.
+- required-for-medior: This topic should be known by a Scala Software Engineer.
+- required-for-medior: This topic should be known by a Java Software Engineer.
+- required-for-senior: This topic should be known by a Senior Software Engineer, whether she or he is specialized in Java or Scala.
+- required-for-senior: This topic should be known by a Scala Senior Software Engineer.
+- required-for-senior: This topic should be known by a Java Senior Software Engineer.
+
+
+
+- required-for-scala-medior: This topic should be known by a Medior Scala Engineer.
+- required-for-scala-senior: This topic should be known by a Senior Scala Engineer.
+- required-for-java-medior: This topic should be known by a Medior Java Engineer.
+- required-for-java-senior: This topic should be known by a Senior Java Engineer.
 - fp: for Functional Programming.
