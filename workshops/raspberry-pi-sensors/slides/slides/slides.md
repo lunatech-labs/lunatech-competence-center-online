@@ -96,6 +96,9 @@ Note:
 
 <img src="/images/egress.png" style="border: 0; box-shadow: none; width: 450px;" />
 
+Note:
+- http://grafana.dcos.lunatech.com
+
 ---
 
 ## MarathonLB
@@ -118,8 +121,14 @@ Note:
 - Use EdgeLB (Enterprise only)
 
 Note:
-- Data enrichment with Kafka Streams, and use Kafka as a buffer for the raw data
+- Kafka as a buffer for the raw data
+- Kafka source for MQTT Ingest
+- Data enrichment with Kafka Streams
+- Kafka sink to InfluxDB
+
 - EdgeLB over MarathonLB
+- MarathonLB -> self service
+- EdgeLB -> centrally managed, Enterprise, more config, dedicated pools
 
 ---
 
