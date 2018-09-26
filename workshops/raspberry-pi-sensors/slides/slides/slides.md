@@ -34,17 +34,17 @@
     </div>
 </div>
 
---- 
+---
 
 ## Sensor Nodes
 
 <div style='display:flex; width:90%;'>
     <div style='flex-grow:50;'>
         <ul class='flexul'>
-            <li>Written in Python</li>
             <li>Runs on a Raspberry PI Zero W</li>
             <li>DHT11 Temperature & Humidity Sensor</li>
-            <li>Publishes data to MQTT</li>
+            <li>Publishes data over MQTT</li>
+            <li>Written in Python</li>
         </ul>
     </div>
     <div style='flex-grow:50;'>
@@ -52,13 +52,26 @@
     </div>
 </div>
 
-Note: 
-- written in python
+Note:
 - on raspberry pi
 - battery powered
 - Logs to directly systemD
 - gets humidity, temperature, timestamp
-- and does an mqtt publish to our cluster
+- and does a mqtt publish to our cluster
+- written in python
+- show rpi cli
+
+---
+
+## DC/OS cluster on AWS
+<img src="/images/aws.png" style="border: 0; box-shadow: none; width: 80%;" />
+
+Note:
+- CloudFormation template for evaluation and testing
+- Terraform for GCP or AWS
+- https://dcos.io/install/
+- https://downloads.dcos.io/dcos/stable/aws.html
+-
 
 ---
 
@@ -67,39 +80,60 @@ Note:
 <img src="/images/ingest.png" style="border: 0; box-shadow: none; width: 450px;" />
 
 Note:
-- asd
-- CloudFormation template for evaluation and testing, and Terraform for GCP or AWS
+- Talk about data flow
 
 ---
 
 ## Akka
 
+- Stream data from MQTT broker
+- Transform to useful format
+- Send measurements to InfluxDB
+
 ---
 
-## Data Egest
+## Data Egress
 
-<img src="/images/egest.png" style="border: 0; box-shadow: none; width: 450px;" />
+<img src="/images/egress.png" style="border: 0; box-shadow: none; width: 450px;" />
+
+Note:
+- http://grafana.dcos.lunatech.com
 
 ---
 
 ## MarathonLB
 
-Note: Ingress + Egress LB and how it works with Amazon ELB
+- DC/OS Universe package
+- Automatically exposes applications based on:
+  - Network configuration
+  - Labels
+
+Note:
+- Ingress + Egress LB and how it works with Amazon ELB
+- Show DC/OS web ui
 
 ---
 
 ## Improvements
 
-Note: 
-- Data enrichment with Kafka Streams, and use Kafka as a buffer for the raw data
+- Use Kafka to buffer raw data
+- Use Kafka streams to transform the data
+- Use EdgeLB (Enterprise only)
+
+Note:
+- Kafka as a buffer for the raw data
+- Kafka source for MQTT Ingest
+- Data enrichment with Kafka Streams
+- Kafka sink to InfluxDB
+
 - EdgeLB over MarathonLB
+- MarathonLB -> self service
+- EdgeLB -> centrally managed, Enterprise, more config, dedicated pools
 
---- 
+---
 
-## In conclusion...
+## In conclusion
 
 From a small hobby project to a large distributed cluster
-
-Scalables
 
 https://github.com/wjglerum/IoT-collector/tree/mesos-meetup-2018
