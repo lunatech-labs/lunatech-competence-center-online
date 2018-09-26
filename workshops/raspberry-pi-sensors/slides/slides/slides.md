@@ -103,7 +103,7 @@ Note:
 
 ## MarathonLB
 
-<div style='display:flex; width:90%;' data-markdown>
+<div style='display:flex; width:90%;'>
     <div style='flex-grow:50;'>
         <ul>
             <li style='margin-bottom: 25px;'>DC/OS Universe package</li>
@@ -128,9 +128,18 @@ Note:
 
 ## Improvements
 
-- Use Kafka to buffer raw data
-- Use Kafka streams to transform the data
-- Use EdgeLB (Enterprise only)
+<div style='display:flex; width:90%;'>
+    <div style='flex-grow:50;'>
+        <ul>
+            <li style='margin-bottom: 25px;'>Use Kafka to buffer raw data</li>
+            <li style='margin-bottom: 25px;'>Use Kafka streams to transform the data</li>
+            <li style='margin-bottom: 25px;'>Use EdgeLB (Enterprise only)</li>
+        </ul>
+    </div>
+    <div style='flex-grow:50;'>
+        <img src="/images/edgelb.png"  style="border: 0; box-shadow: none; width:750px;" />
+    </div>
+</div>
 
 Note:
 - Kafka as a buffer for the raw data
