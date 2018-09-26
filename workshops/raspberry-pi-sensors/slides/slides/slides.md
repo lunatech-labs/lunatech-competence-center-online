@@ -103,10 +103,22 @@ Note:
 
 ## MarathonLB
 
-- DC/OS Universe package
-- Automatically exposes applications based on:
-  - Network configuration
-  - Labels
+<div style='display:flex; width:90%;' data-markdown>
+    <div style='flex-grow:50;'>
+        <ul>
+            <li style='margin-bottom: 25px;'>DC/OS Universe package</li>
+            <li>Automatically exposes applications based on:
+                <ul class='flexul'>
+                    <li style='margin-bottom: 25px; margin-top: 25px;'>Network configuration</li>
+                    <li>Labels</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div style='flex-grow:50;'>
+        <img src="/images/marathonlb.png"  style="border: 0; box-shadow: none; width:550px;" />
+    </div>
+</div>
 
 Note:
 - Ingress + Egress LB and how it works with Amazon ELB
