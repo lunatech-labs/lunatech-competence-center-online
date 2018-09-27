@@ -503,6 +503,11 @@
       "id": "akka-auto-scaling",
       "name": "Auto-scaling application",
       "description": "The goal of this project it to implement an auto-scaling concept using Akka.\n\nAkka is useful for vertical and horizontal scaling, but the latter requires provisioning of new nodes by a third service.\n\n# Requirements\n\nGiven any Akka application, you task is to develop a library that can listen to the mailbox of certain actors across a cluster and decides when it time to scale up. How the provisioning actually happens is not part of the exercise (since it depends on the hosting platform), so just think you can do this with two HTTP calls (`scale-up` and `scale-down`)\n\n**Note:** You can consider [Gatling](https://gatling.io/) for stress testing of your application.\n\n# Deliverables\n\nA GitHub repository with a working application, that you can demostrate how your system copes with load (you can use Gatling for load testing)."
+    },
+    {
+      "id": "akka-battleship",
+      "name": "Implementing Lunatech Battleship",
+      "description": "The goal of this project is to implement Lunatech Battleship with Akka Actors.\n\n# Requirements\nWe've already provided a template for the application  [here](https://github.com/lunatech-labs/lunatech-competence-center-online/tree/master/core-curriculum/projects/akka/battleship), which contains the HTTP layer already implemented. This project is perfect if you want a shorter version of the same HTTP project. The template has a README where you can get more information.\n\nYour task here is to implement the game logic in whichever technology you prefer (Java or Scala).\n\n# Deliverables\nA working application which completes the HTTP layer with the Game Logic (or Business layer if you prefer).\n"
     }
   ]
 }
