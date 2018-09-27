@@ -40,7 +40,8 @@ object CompetenceCenterApi extends App {
     case class HttpConfig(port: Int)
     case class ServicesConfig(people: PeopleService.Config,
                               workshops: StudentService.Config,
-                              career: CareerFrameworkService.Config)
+                              career: CareerFrameworkService.Config,
+                              skillmatrix: SkillMatrixService.Config)
 
     sealed trait TokenVerifierConfig
     case class Google(google: GoogleConfig, allowedDomains: List[String]) extends TokenVerifierConfig
@@ -69,6 +70,7 @@ object CompetenceCenterApi extends App {
   val passportService = new PostgresPassportService(transactor)
   val workshopService = EventBriteWorkshopService(config.services.workshops)
   val peopleService = ApiPeopleService(config.services.people)
+  val matrixService = ApiSkillMatrixService(config.services.skillmatrix)
   val coreCurriculumService = new PostgresCoreCurriculumService(
     transactor,
     new File(config.coreCurriculum.directory))
@@ -110,7 +112,7 @@ object CompetenceCenterApi extends App {
                                       authenticatedUser)
   val workshopController =
     new WorkshopController(workshopService, authenticated)
-  val passportController = new PassportController(passportService ,peopleService, authenticatedUser)
+  val passportController = new PassportController(passportService ,peopleService, matrixService, authenticated, authenticatedUser)
 
   val peopleController = new PeopleController(peopleService, authenticatedUser)
   val coreCurriculumController = new CoreCurriculumController(
@@ -149,6 +151,7 @@ object CompetenceCenterApi extends App {
       coreCurriculumController.`PUT /people/me/projects/{subject}/{project}/{status}` :+:
       coreCurriculumController.`DELETE /people/me/projects/{subject}/{project}` :+:
       coreCurriculumController.`PUT /people/me/projects/{subject}/{project}?url={url}` :+:
+      passportController.`GET /employees/passport` :+:
       passportController.`PUT /passport` :+:
       passportController.`GET /passport/me` :+:
       passportController.`GET /passport/employeeId` :+:

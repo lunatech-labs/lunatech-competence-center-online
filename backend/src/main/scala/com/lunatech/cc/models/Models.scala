@@ -28,7 +28,11 @@ case class Employee(basics: BasicDetails,
                     skills: Seq[Skill],
                     achievements: Seq[String],
                     projects: Seq[Project],
-                    educations: Seq[Education])
+                    educations: Seq[Education]) {
+
+  def updateSkills(that: Seq[Skill]): Employee =
+    this.copy(skills = skills.flatMap(s => that.find(_.name == s.name)))
+}
 
 object Employee {
   def apply(user:EnrichedGoogleUser): Employee = {
@@ -45,6 +49,23 @@ object Employee {
     Employee(bd,Seq(),Seq(),Seq(),Seq())
   }
 }
+
+sealed trait SkillLevel {
+  def level: Int
+}
+
+case object NOVICE extends SkillLevel { val level = 1}
+case object ADVANCED_BEGINNER extends SkillLevel { val level = 2}
+case object COMPETENT extends SkillLevel { val level = 3}
+case object PROFICIENT extends SkillLevel { val level = 4}
+case object EXPERT extends SkillLevel { val level = 5}
+
+case class Tech(id:Int, name: String, techType: String)
+case class MatrixSkill(tech: Tech, skillLevel: SkillLevel, id:Int) {
+  def toSkill: Skill = Skill(tech.techType, tech.name,skillLevel.level)
+}
+
+case class MatrixSkills(skills: Seq[MatrixSkill])
 
 case class Skill(category: String,
                  name: String,
