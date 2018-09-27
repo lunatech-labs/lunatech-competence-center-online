@@ -17,7 +17,6 @@ tags:
 - name: "protocol"
   description: "The protocol API will be used to communicate between players during a match. There are several ways you can define the architecture of the application, think of the Protocol API as the M2M communication. All fields in the request and response are mandatory, in case of bad request you must return HTTP 400."
 schemes:
-- "https"
 - "http"
 paths:
   /protocol/game/new:
@@ -287,10 +286,10 @@ definitions:
     type: object
     description: "Describes a Player's board"
     required:
-      - "user_id"
+      - "userId"
       - "board"
     properties:
-      user_id:
+      userId:
         type: "string"
         description: "Refers to which user owns this board using the 'UserId'."
       board:
