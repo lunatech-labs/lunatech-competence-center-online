@@ -163,7 +163,7 @@
       }
 
       _onCreate(e) {
-        let newGoalNumber = this.shadowRoot.querySelector("#new-goal-number").value;
+        let newGoalNumber = this.shadowRoot.querySelector("#new-goal-number").value || 0;
         let newName = this.shadowRoot.querySelector("#new-name").value;
         if (newName === "") {
           alert('please fill the required fields');
