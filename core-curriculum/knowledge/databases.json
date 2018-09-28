@@ -574,6 +574,7 @@
     {
       "id": "rdbms-project-1",
       "name": "Designing a database schema for a Phonebook application",
+      "dependencies": ["rdbms-sql-basics", "rdbms-schemas"],
       "description": "The goal of this project is to design a database schema in third normal format (3NF) for a phonebook application.\n\n# Requirements\n\nDesign an API for a phonebook application. The phonebook has one top-level resource, a `Contact`. A contact has a name and a type, which can have the value `Personal` or `Business`.\n\nContacts have zero or more phone numbers. A phone number consists of a number and a type, which is one of 'Mobile' or 'Fixed'. \n\n# Deliverables\n\nPostgreSQL compatible CREATE TABLE statements. Can be combined with the Scala or Java Phonebook project."
     }
   ]

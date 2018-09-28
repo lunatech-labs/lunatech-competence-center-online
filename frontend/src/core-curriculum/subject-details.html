@@ -213,20 +213,13 @@
 
       _onPersonProjectsChanged: function (personProjects) {
         var infoProjects = [];
-        if(this.knowledge.projects && this.knowledge.topics && personProjects) {
-          var requiredForJunior = this.knowledge.topics.filter(topic => {
-            if(topic.tags) {
-              return topic.tags.includes('required-for-junior')
-            } else {
-              return false;
-            }
-          }).map(topic => topic.id);
+        if(this.knowledge.projects && personProjects) {
           this.knowledge.projects.forEach(function(project) {
             var infoProject = {
               id: project.id,
               name: project.name,
               description: project.description,
-              dependencies: requiredForJunior
+              dependencies: project.dependencies
             };
             personProjects.forEach(function(personProject) {
               if (personProject[0] == project.id) {
