@@ -12,7 +12,7 @@ trait PassportService {
 
   def findByPerson(user: EnrichedGoogleUser): Option[Json]
 
-  def findById(email: String): Option[Json]
+  def findByEmail(email: String): Option[Json]
 
   def findAll: List[Json]
 
@@ -24,9 +24,9 @@ trait PassportService {
 class PostgresPassportService(transactor: Transactor[Task]) extends PassportService {
   import PassportQueries._
 
-  override def findByPerson(user: EnrichedGoogleUser): Option[Json] = findById(user.email)
+  override def findByPerson(user: EnrichedGoogleUser): Option[Json] = findByEmail(user.email)
 
-  override def findById(email: String): Option[Json] =
+  override def findByEmail(email: String): Option[Json] =
     findByIDQuery(email).option.transact(transactor).unsafeRun()
 
   override def findAll: List[Json] = findAllQuery.list.transact(transactor).unsafeRun()

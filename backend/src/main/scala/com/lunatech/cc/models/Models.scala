@@ -75,11 +75,11 @@ object SkillLevel {
   }
 }
 
-case object NOVICE extends SkillLevel { val level = 1}
-case object ADVANCED_BEGINNER extends SkillLevel { val level = 2}
-case object COMPETENT extends SkillLevel { val level = 3}
-case object PROFICIENT extends SkillLevel { val level = 4}
-case object EXPERT extends SkillLevel { val level = 5}
+case object NOVICE extends SkillLevel { val level = 2}
+case object ADVANCED_BEGINNER extends SkillLevel { val level = 4}
+case object COMPETENT extends SkillLevel { val level = 6}
+case object PROFICIENT extends SkillLevel { val level = 8}
+case object EXPERT extends SkillLevel { val level = 10}
 
 case class Tech(id:Int, name: String, techType: String)
 case class MatrixSkill(tech: Tech, skillLevel: String, id:Int) {

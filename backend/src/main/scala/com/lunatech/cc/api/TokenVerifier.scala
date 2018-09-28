@@ -3,11 +3,15 @@ package com.lunatech.cc.api
 import com.google.api.client.googleapis.auth.oauth2.{GoogleIdTokenVerifier, GooglePublicKeysManager}
 import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.json.jackson.JacksonFactory
+import com.lunatech.cc.api.services.{Person, PersonName}
 
 import scala.collection.JavaConverters._
 
 case class GoogleUser(userId: String, email: String, name: String, familyName: String, givenName: String, imageUrl: String)
-case class EnrichedGoogleUser(userId: String, email: String, name: String, familyName: String, givenName: String, imageUrl: String, roles: Set[String])
+case class EnrichedGoogleUser(userId: String, email: String, name: String, familyName: String, givenName: String, imageUrl: String, roles: Set[String]) {
+  def toPerson = Person(email,PersonName(name,familyName,givenName),roles)
+}
+
 object EnrichedGoogleUser {
   def apply(googleUser: GoogleUser, roles: Set[String]): EnrichedGoogleUser = EnrichedGoogleUser(
     userId = googleUser.userId,
@@ -55,8 +59,8 @@ class StaticTokenVerifier(email: String) extends TokenVerifier {
     Some(GoogleUser(
       userId = email,
       email = email,
-      name = "Sample User",
-      givenName = "John",
-      familyName = "Doe",
+      name = "Erik Janssen",
+      givenName = "Erik",
+      familyName = "Janssen",
       imageUrl = ""))
 }

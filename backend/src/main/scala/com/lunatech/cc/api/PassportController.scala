@@ -19,20 +19,24 @@ class PassportController(passportService: PassportService, peopleService: People
   lazy val logger: Logger = getLogger(getClass)
 
   val `GET /passport/me`: Endpoint[Json] = get("passport" :: "me":: authenticatedUser) { (user: EnrichedGoogleUser) =>
-    logger.debug(s"GET /passport for $user")
-    passportService.findByPerson(user) match {
-      case Some(json) => Ok(json)
-      case None => Ok(Employee(user).asJson)
-    }
+      logger.debug(s"GET /passport for $user")
+      getUpdatedPassportOrDefault(user.toPerson).map(Ok)
   }
 
   val `GET /passport/employeeId`: Endpoint[Json] = get("passport" :: string :: authenticated) { (employeeId: String, user: ApiUser) =>
     logger.debug(s"GET /passport/$employeeId for $user")
 
-    passportService.findById(employeeId) match {
-      case Some(json) => Ok(json)
-      case None => NotFound(new RuntimeException(s"No data found for $employeeId"))
+    val result: Future[Either[RuntimeException, Json]] = peopleService.findByEmail(employeeId).flatMap {
+      case Some(e) => getUpdatedPassportOrDefault(e).map(Right(_))
+      case None =>  Future.value(Left(new RuntimeException(s"No data found for $employeeId")))
     }
+
+    result.map {
+      case Right(j) => Ok(j)
+      case Left(e) => NotFound(e)
+    }
+
+
   }
 
   val `PUT /passport`: Endpoint[Json] = put("passport" :: authenticatedUser :: jsonBody[Json]) { (user: EnrichedGoogleUser, passport: Json) =>
@@ -56,37 +60,7 @@ class PassportController(passportService: PassportService, peopleService: People
 
     val result: Future[Seq[Future[Json]]] =  for {
       people <- peopleService.findByRole("developer")
-    } yield {
-      people.map(p => {
-
-        val skills: Future[Seq[Skill]] = skillMatrixService.findByEmail(p.email).map(_.skills.map(_.toSkill))
-
-        skills.map { skls =>
-
-          passportService.findById(p.email) match {
-            case Some(d) => {
-              logger.debug(s"GET /employees/passport finding passport for $d")
-
-              val pass: Employee = d.as[Employee] match {
-                case Left(value) => {
-                  logger.warn(s"Error retrieving data, creating new Employee")
-
-                  Employee.apply(p).updateSkills(skls)
-                } //TODO error handling
-                case Right(e) => {
-                  logger.debug(s"ok updating skills for ${e.basics.email}")
-                  e.updateSkills(skls)
-                }
-              }
-              pass.asJson
-            }
-            case None => {
-              logger.debug(s"No data found for user ${p.email} and $skls")
-              Employee.apply(p).updateSkills(skls).asJson
-            }
-          }
-        }
-      })}
+    } yield people.map(p => getUpdatedPassportOrDefault(p))
 
     result.flatMap(d =>  {
       Future.collect(d).map( r => {
@@ -94,6 +68,34 @@ class PassportController(passportService: PassportService, peopleService: People
       })
     })
 
+  }
+
+  private def getUpdatedPassportOrDefault(p: Person) = {
+
+    val skills: Future[Seq[Skill]] = skillMatrixService.findByEmail(p.email).map(_.skills.map(_.toSkill))
+
+    skills.map { skls =>
+
+      passportService.findByEmail(p.email) match {
+        case Some(d) => {
+          logger.debug(s"GET /employees/passport finding passport for $d")
+
+          val pass: Employee = d.as[Employee] match {
+            case Left(e) =>
+              logger.warn(s"Error retrieving data ${e.message}, creating new Employee")
+              Employee.apply(p).updateSkills(skls)
+            case Right(e) =>
+              logger.debug(s"ok updating skills for ${e.basics.email}")
+              e.updateSkills(skls)
+          }
+          pass.asJson
+        }
+        case None => {
+          logger.debug(s"No data found for user ${p.email} and $skls")
+          Employee.apply(p).updateSkills(skls).asJson
+        }
+      }
+    }
   }
 
 

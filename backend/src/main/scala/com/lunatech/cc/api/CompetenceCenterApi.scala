@@ -88,17 +88,26 @@ object CompetenceCenterApi extends App {
   // For endpoints that require an API key OR a Google authenticated user.
   private val staticTokenVerifier = new StaticTokenVerifier("erik.janssen@lunatech.nl")
 
-  val auth_clients_json = s"""[{ "name": "Erik Janssen", "roles": ["admin","developer"], "key": "${sys.env.getOrElse("PEOPLE_API_KEY", "")}" }]"""
-  val authConfig = AuthConfig(auth_clients_json)
+  val auth_clients_json = s"""[{ "name": "Erik Janssen", "roles": ["admin","developer"], "key": "${sys.env.getOrElse("PEOPLE_API_KEY", "")}"}]"""
+  val debug_authConfig = AuthConfig(auth_clients_json)
 
-  val debugauthenticated: Endpoint[ApiUser] =
-    authenticatedBuilder(authConfig, tokenVerifier = staticTokenVerifier, peopleService)
+  val debug_authenticated: Endpoint[ApiUser] =
+    authenticatedBuilder(debug_authConfig, tokenVerifier = staticTokenVerifier, peopleService)
 
   val authenticated: Endpoint[ApiUser] =
     authenticatedBuilder(config.auth, tokenVerifier, peopleService)
 
   val authenticatedUser: Endpoint[EnrichedGoogleUser] =
     authenticated.mapOutput {
+      case -\/(_) =>
+        Output.failure(
+          new RuntimeException("This endpoint only accepts an ID-Token"),
+          Status.Unauthorized)
+      case \/-(user) => Output.payload(user)
+    }
+
+  val debug_authenticatedUser: Endpoint[EnrichedGoogleUser] =
+    debug_authenticated.mapOutput {
       case -\/(_) =>
         Output.failure(
           new RuntimeException("This endpoint only accepts an ID-Token"),
@@ -115,12 +124,14 @@ object CompetenceCenterApi extends App {
 
   val cvController = new CVController(cvService,
                                       peopleService,
+    passportService,
                                       cvFormatter,
-                                      authenticated,
-                                      authenticatedUser)
+    debug_authenticated,
+    debug_authenticatedUser)
+
   val workshopController =
     new WorkshopController(workshopService, authenticated)
-  val passportController = new PassportController(passportService ,peopleService, matrixService, debugauthenticated, authenticatedUser)
+  val passportController = new PassportController(passportService ,peopleService, matrixService, debug_authenticated, debug_authenticatedUser)
 
   val peopleController = new PeopleController(peopleService, authenticatedUser)
   val coreCurriculumController = new CoreCurriculumController(

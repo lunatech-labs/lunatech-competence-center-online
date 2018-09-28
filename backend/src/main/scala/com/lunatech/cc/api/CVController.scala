@@ -3,9 +3,9 @@ package com.lunatech.cc.api
 import java.util.UUID
 
 import com.lunatech.cc.api.Routes._
-import com.lunatech.cc.api.services.{CVService, PeopleService}
+import com.lunatech.cc.api.services.{CVService, PassportService, PeopleService}
 import com.lunatech.cc.formatter.{CVFormatter, FormatResult}
-import com.lunatech.cc.models.CV
+import com.lunatech.cc.models.{CV, Employee}
 import com.twitter.io.{Buf, Reader}
 import com.twitter.util.Future
 import io.circe._
@@ -17,7 +17,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory._
 import scalaz._
 
-class CVController(cvService: CVService, peopleService: PeopleService, cvFormatter: CVFormatter, authenticated: Endpoint[ApiUser], authenticatedUser: Endpoint[EnrichedGoogleUser]) {
+class CVController(cvService: CVService, peopleService: PeopleService, passportService: PassportService, cvFormatter: CVFormatter, authenticated: Endpoint[ApiUser], authenticatedUser: Endpoint[EnrichedGoogleUser]) {
 
   lazy val logger: Logger = getLogger(getClass)
 
@@ -46,17 +46,18 @@ class CVController(cvService: CVService, peopleService: PeopleService, cvFormatt
   val `GET /cvs/employeeId`: Endpoint[List[Json]] = get(cvs :: string :: authenticated) { (employeeId: String, apiUser: ApiUser) =>
     logger.debug(s"GET /employees/$employeeId for $apiUser")
 
-    peopleService.findByEmail(employeeId)
-      .map {
-      case Some(person) => cvService.findByPersonId(employeeId) match {
-        case Nil => {
-          val cvl: List[Json] = List(CV(person).asJson)
-          Ok(cvl)
-        }
-        case l => Ok(l)
+    val result: List[Json] = cvService.findByPersonId(employeeId) match {
+      case Nil => {
+        passportService.findByEmail(employeeId).map(j => j.as[Employee] match {
+          case Left(_) => List.empty[Json]
+          case Right(employee) => List(CV(employee).asJson)
+        }).getOrElse(List.empty[Json])
       }
-      case _ => NotFound(new Exception(s"Employee $employeeId not found"))
+      case l => l
     }
+
+    if(result.nonEmpty) Ok(result)
+    else NotFound(new Exception(s"Employee $employeeId not found"))
 
   }
 
