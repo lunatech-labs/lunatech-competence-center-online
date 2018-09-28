@@ -6,6 +6,9 @@ import io.circe.{Decoder, ObjectEncoder}
 
 import scala.language.implicitConversions
 import io.circe.generic.semiauto._
+import io.circe.Encoder
+import shapeless.{ Generic, HNil }
+
 
 case class Contact(name: String,
                    address: String,
@@ -30,8 +33,11 @@ case class Employee(basics: BasicDetails,
                     projects: Seq[Project],
                     educations: Seq[Education]) {
 
-  def updateSkills(that: Seq[Skill]): Employee =
-    this.copy(skills = skills.flatMap(s => that.find(_.name == s.name)))
+  def updateSkills(matrix: Seq[Skill]): Employee =
+    {
+      val filtered: Seq[Skill] = skills.filterNot(s => matrix.exists(t => t.name == s.name))
+      this.copy(skills = matrix ++ filtered )
+    }
 }
 
 object Employee {
@@ -54,6 +60,21 @@ sealed trait SkillLevel {
   def level: Int
 }
 
+object SkillLevel {
+  implicit def encodeCaseObject[A <: Product](implicit
+                                              gen: Generic.Aux[A, HNil]
+                                             ): Encoder[A] = Encoder[String].contramap[A](_.productPrefix)
+
+  //TODO replace with shapeless magic
+  def stringToLevel(json: String): SkillLevel = json match {
+    case "NOVICE" => NOVICE
+    case "ADVANCED_BEGINNER" => ADVANCED_BEGINNER
+    case "COMPETENT" => COMPETENT
+    case "PROFICIENT" => PROFICIENT
+    case "EXPERT" => EXPERT
+  }
+}
+
 case object NOVICE extends SkillLevel { val level = 1}
 case object ADVANCED_BEGINNER extends SkillLevel { val level = 2}
 case object COMPETENT extends SkillLevel { val level = 3}
@@ -61,8 +82,9 @@ case object PROFICIENT extends SkillLevel { val level = 4}
 case object EXPERT extends SkillLevel { val level = 5}
 
 case class Tech(id:Int, name: String, techType: String)
-case class MatrixSkill(tech: Tech, skillLevel: SkillLevel, id:Int) {
-  def toSkill: Skill = Skill(tech.techType, tech.name,skillLevel.level)
+case class MatrixSkill(tech: Tech, skillLevel: String, id:Int) {
+
+  def toSkill: Skill = Skill(tech.techType, tech.name,SkillLevel.stringToLevel(skillLevel).level)
 }
 
 case class MatrixSkills(skills: Seq[MatrixSkill])

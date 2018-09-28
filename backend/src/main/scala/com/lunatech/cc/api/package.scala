@@ -33,14 +33,24 @@ package object api {
 
   def authenticatedBuilder(config: AuthConfig, tokenVerifier: TokenVerifier, peopleService: PeopleService): Endpoint[ApiUser] = (paramOption("apiKey") :: headerOption("X-ID-Token")).mapOutputAsync {
     case None :: None :: HNil =>
-      Future.value(Output.failure(new RuntimeException("API Key or ID-Token required"), Status.Unauthorized))
+      { println("bam")
+        Future.value(Output.failure(new RuntimeException("API Key or ID-Token required"), Status.Unauthorized))
+      }
     case (Some(_) :: Some(_) :: HNil) =>
-      Future.value(Output.failure(new RuntimeException("API Key and ID-Token received, only one allowed"), Status.Unauthorized))
+      {
+        println("boom")
+        Future.value(Output.failure(new RuntimeException("API Key and ID-Token received, only one allowed"), Status.Unauthorized))
+      }
     case (Some(apiKey) :: None :: HNil) =>
       config.clients.get(apiKey) match {
         case Some(client) =>
-          Future.value(Output.payload(-\/(client)))
-        case None => Future.value(Output.failure(new RuntimeException("Bad API Key"), Status.Unauthorized))
+          {println("bim")
+            Future.value(Output.payload(-\/(client)))
+          }
+        case None => {
+          println("boem")
+          Future.value(Output.failure(new RuntimeException("Bad API Key"), Status.Unauthorized))
+        }
       }
     case (None :: Some(idToken) :: HNil) =>
       tokenVerifier.verifyToken(idToken) match {

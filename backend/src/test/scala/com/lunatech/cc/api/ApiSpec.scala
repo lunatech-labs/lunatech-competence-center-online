@@ -23,7 +23,7 @@ class ApiSpec extends FlatSpec with Matchers {
   private val cvService = new StaticCVService
   private val cvFormatter = new StaticCVFormatter
   private val staticPeopleService = new StaticPeopleService
-  private val staticTokenVerifier = new StaticTokenVerifier("developer@lunatech.com")
+  private val staticTokenVerifier = new StaticTokenVerifier("erik.janssen@lunatech.nl")
 
   private val authenticatedUser: Endpoint[EnrichedGoogleUser] = Endpoint.const(Data.enrichedgoogleUser)
 

@@ -40,16 +40,6 @@ class CVController(cvService: CVService, peopleService: PeopleService, cvFormatt
 
   }
 
-//  val `GET /employees/me`: Endpoint[Json] = get(employees :: me :: authenticatedUser) { (user: EnrichedGoogleUser) =>
-//    logger.debug(s"GET /employees/me for $user")
-//      println("get /employees/me")
-//
-//    cvService.findByPerson(user) match {
-//      case Nil => Ok(CV(user).employee.asJson)
-//      case l => Ok(l.head)
-//    }
-//  }
-
   /**
     * Returns the CVs for a specific employee
     */

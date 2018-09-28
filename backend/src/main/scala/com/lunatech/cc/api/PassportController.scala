@@ -1,7 +1,5 @@
 package com.lunatech.cc.api
 
-import java.util.UUID
-
 import com.lunatech.cc.api.services.{PassportService, PeopleService, Person, SkillMatrixService}
 import com.lunatech.cc.models.{Employee, Skill}
 import com.twitter.util.Future
@@ -28,7 +26,7 @@ class PassportController(passportService: PassportService, peopleService: People
     }
   }
 
-  val `GET /passport/employeeId`: Endpoint[Json] = get("passport" :: string :: authenticatedUser) { (employeeId: String, user: EnrichedGoogleUser) =>
+  val `GET /passport/employeeId`: Endpoint[Json] = get("passport" :: string :: authenticated) { (employeeId: String, user: ApiUser) =>
     logger.debug(s"GET /passport/$employeeId for $user")
 
     passportService.findById(employeeId) match {
@@ -56,32 +54,44 @@ class PassportController(passportService: PassportService, peopleService: People
   val `GET /employees/passport`: Endpoint[Json] = get(employees :: "passport" :: authenticated) { (user: ApiUser) =>
     logger.debug(s"GET /employees/passport by user $user")
 
-    val result: Future[Seq[Future[(Person, Json)]]] =  for {
+    val result: Future[Seq[Future[Json]]] =  for {
       people <- peopleService.findByRole("developer")
     } yield {
       people.map(p => {
+
         val skills: Future[Seq[Skill]] = skillMatrixService.findByEmail(p.email).map(_.skills.map(_.toSkill))
 
         skills.map { skls =>
 
           passportService.findById(p.email) match {
             case Some(d) => {
-              val pass: Employee = d.as[Employee] match {
-                case Left(value) => Employee.apply(p) //TODO error handling
-                case Right(e) => e.updateSkills(skls)
-              }
+              logger.debug(s"GET /employees/passport finding passport for $d")
 
-              (p, pass.asJson)
+              val pass: Employee = d.as[Employee] match {
+                case Left(value) => {
+                  logger.warn(s"Error retrieving data, creating new Employee")
+
+                  Employee.apply(p).updateSkills(skls)
+                } //TODO error handling
+                case Right(e) => {
+                  logger.debug(s"ok updating skills for ${e.basics.email}")
+                  e.updateSkills(skls)
+                }
+              }
+              pass.asJson
             }
-            case None => (p, Json.Null)
+            case None => {
+              logger.debug(s"No data found for user ${p.email} and $skls")
+              Employee.apply(p).updateSkills(skls).asJson
+            }
           }
         }
       })}
 
-
-
     result.flatMap(d =>  {
-      Future.collect(d).map( r => Ok(r.asJson))
+      Future.collect(d).map( r => {
+        Ok(r.asJson)
+      })
     })
 
   }

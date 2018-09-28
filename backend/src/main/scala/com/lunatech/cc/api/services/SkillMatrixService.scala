@@ -11,6 +11,7 @@ import com.lunatech.cc.models.MatrixSkills
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory._
 
+
 trait SkillMatrixService {
   def findByEmail(email: String): Future[MatrixSkills]
 }
@@ -32,16 +33,24 @@ class ApiSkillMatrixService(apiKey: String, client: Service[Request, Response]) 
     client(request)
       .map {
         case response: Response if response.status == Status.Ok =>
-          parse(response.getContentString()).toValidated.toValidatedNel andThen {
-            json: Json => json.as[MatrixSkills].toValidated.toValidatedNel
-          } valueOr {
-            failures =>
-              val errormsg = s"Unexpected response from people api, Parsing failures: $failures, Response Status: ${response.statusCode}, Response: ${response.contentString}"
-              logger.error(errormsg)
-              throw new Exception(errormsg)
-          }
+          logger.debug(s"Request $request succeeded with header ${request.headerMap}")
+              parse(response.getContentString()).toValidated.toValidatedNel andThen {
+              json: Json => {
+                val out = json.as[MatrixSkills].toValidated.toValidatedNel
+                logger.debug(s"$out")
+                out
+              }
+            } valueOr {
+              failures =>
+                val errormsg = s"Unexpected response from Skill-Matrix api, Parsing failures: $failures, Response Status: ${response.statusCode}, Response: ${response.contentString}"
+                logger.error(errormsg)
+                throw new Exception(errormsg)
+            }
+        case response: Response if response.status == Status.NotFound =>
+          logger.debug(s"Request $request failed with header ${request.headerMap} and USER_NOT_FOUND")
+          MatrixSkills(Seq())
         case response =>
-          logger.warn(s"Request $request failed with header ${request.headerMap} and body ")
+          logger.debug(s"Request $request failed with header ${request.headerMap} Response Status: ${response.statusCode}, Response: ${response.contentString} ")
           MatrixSkills(Seq())
       }
   }
