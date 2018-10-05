@@ -126,12 +126,12 @@ object CompetenceCenterApi extends App {
                                       peopleService,
     passportService,
                                       cvFormatter,
-    authenticated,
-    authenticatedUser)
+    debug_authenticated,
+    debug_authenticatedUser)
 
   val workshopController =
     new WorkshopController(workshopService, authenticated)
-  val passportController = new PassportController(passportService ,peopleService, matrixService, authenticated, authenticatedUser)
+  val passportController = new PassportController(passportService ,peopleService, matrixService, debug_authenticated, debug_authenticatedUser)
 
   val peopleController = new PeopleController(peopleService, authenticatedUser)
   val coreCurriculumController = new CoreCurriculumController(
@@ -154,7 +154,7 @@ object CompetenceCenterApi extends App {
       cvController.`GET /cvs/employeeId` :+:
 //      cvController.`PUT /employees/me` :+:
       cvController.`POST /cvs` :+:
-//      cvController.`GET /cvs` :+:
+      cvController.`GET /cvs` :+:
       cvController.`GET /cvs/cvId` :+:
       workshopController.`GET /workshops` :+:
       peopleController.`GET /people/me` :+:

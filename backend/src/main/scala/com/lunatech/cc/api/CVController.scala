@@ -5,7 +5,7 @@ import java.util.UUID
 import com.lunatech.cc.api.Routes._
 import com.lunatech.cc.api.services.{CVService, PassportService, PeopleService}
 import com.lunatech.cc.formatter.{CVFormatter, FormatResult}
-import com.lunatech.cc.models.{CV, Employee}
+import com.lunatech.cc.models.{CV, CVData, CVS, Employee}
 import com.twitter.io.{Buf, Reader}
 import com.twitter.util.Future
 import io.circe._
@@ -20,6 +20,7 @@ import scalaz._
 class CVController(cvService: CVService, peopleService: PeopleService, passportService: PassportService, cvFormatter: CVFormatter, authenticated: Endpoint[ApiUser], authenticatedUser: Endpoint[EnrichedGoogleUser]) {
 
   lazy val logger: Logger = getLogger(getClass)
+  private val emptyList = List.empty[CVData]
 
   /**
     * Returns all developers with their CVs
@@ -32,29 +33,36 @@ class CVController(cvService: CVService, peopleService: PeopleService, passportS
       cvs <- Future.value(cvService.findAll)
     } yield {
       people.map(p => cvs.get(p.email) match {
-        case Some(d) => (p,d)
-        case None => (p,List.empty[(UUID,Json)])
+        case Some(d) => CVS(p,d)
+        case None => CVS(p,emptyList)
       })}
 
     result.map(d => Ok(d.asJson))
 
   }
 
+  private def findCVs(employeeId: String): List[CVData] = cvService.findByPersonId(employeeId) match {
+    case Nil => {
+      passportService.findByEmail(employeeId).map(j => j.as[Employee] match {
+        case Left(_) => emptyList
+        case Right(employee) => {
+          val cvid = UUID.randomUUID()
+          val cv = CV(employee).asJson
+          val d: Int = cvService.insert(cvid,employeeId, cv)
+          if(d > 0) List(CVData(cvid.toString,cv))
+          else emptyList
+        }
+      }).getOrElse(emptyList)
+    }
+    case l => l
+  }
   /**
     * Returns the CVs for a specific employee
     */
-  val `GET /cvs/employeeId`: Endpoint[List[Json]] = get(cvs :: string :: authenticated) { (employeeId: String, apiUser: ApiUser) =>
+  val `GET /cvs/employeeId`: Endpoint[List[CVData]] = get(cvs :: string :: authenticated) { (employeeId: String, apiUser: ApiUser) =>
     logger.debug(s"GET /employees/$employeeId for $apiUser")
 
-    val result: List[Json] = cvService.findByPersonId(employeeId) match {
-      case Nil => {
-        passportService.findByEmail(employeeId).map(j => j.as[Employee] match {
-          case Left(_) => List.empty[Json]
-          case Right(employee) => List(CV(employee).asJson)
-        }).getOrElse(List.empty[Json])
-      }
-      case l => l
-    }
+    val result = findCVs(employeeId)
 
     if(result.nonEmpty) Ok(result)
     else NotFound(new Exception(s"Employee $employeeId not found"))
@@ -64,11 +72,11 @@ class CVController(cvService: CVService, peopleService: PeopleService, passportS
   /**
     * Updates a CV for me
     */
-  val `PUT /cvs/me`: Endpoint[Json] = put(cvs :: me :: authenticatedUser :: jsonBody[Json]) { (user: EnrichedGoogleUser, cv: Json) =>
+  val `PUT /cvs/uuid`: Endpoint[Json] = put(cvs :: uuid :: authenticatedUser :: jsonBody[Json]) { (cvId: UUID, user: EnrichedGoogleUser, cv: Json) =>
     cv.as[CV] match {
-      case Right(_) =>
+      case Right(data) =>
         logger.debug("received data")
-        cvService.insert(user.email, cv)
+        cvService.insert(cvId,data.employee.basics.email, cv)
         Ok(cv)
       case Left(e) =>
         logger.debug(s"incorrect data $cv")
@@ -83,6 +91,7 @@ class CVController(cvService: CVService, peopleService: PeopleService, passportS
     logger.debug(cv.toString)
     cv.as[CV] match {
       case Right(data) =>
+        cvService.insert(UUID.randomUUID(),data.employee.basics.email, cv)
         cvFormatter.format(data) match {
           case Right(FormatResult(result, _)) =>
             Reader.readAll(result).map { content =>
@@ -109,12 +118,14 @@ class CVController(cvService: CVService, peopleService: PeopleService, passportS
   /**
     * Returns all CVs for me
     */
-  val `GET /cvs/me`: Endpoint[List[Json]] = get(cvs :: me :: authenticatedUser) { (user: EnrichedGoogleUser) =>
+  val `GET /cvs/me`: Endpoint[List[CVData]] = get(cvs :: me :: authenticatedUser) { (user: EnrichedGoogleUser) =>
     logger.debug(s"GET /employees/me for $user")
-    cvService.findByPerson(user) match {
-      case Nil => Ok(List(CV(user).asJson))
-      case l => Ok(l)
-    }
+
+    val result: List[CVData] = findCVs(user.email)
+
+    if(result.nonEmpty) Ok(result)
+    else NotFound(new Exception(s"Employee ${user.email} not found"))
+
   }
 
   /**

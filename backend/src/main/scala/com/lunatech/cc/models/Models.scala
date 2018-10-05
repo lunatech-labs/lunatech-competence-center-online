@@ -2,12 +2,11 @@ package com.lunatech.cc.models
 
 import com.lunatech.cc.api.EnrichedGoogleUser
 import com.lunatech.cc.api.services.Person
-import io.circe.{Decoder, ObjectEncoder}
+import io.circe.{Decoder, Encoder, Json, ObjectEncoder}
 
 import scala.language.implicitConversions
 import io.circe.generic.semiauto._
-import io.circe.Encoder
-import shapeless.{ Generic, HNil }
+import shapeless.{Generic, HNil}
 
 
 case class Contact(name: String,
@@ -113,6 +112,17 @@ case class Meta(client: String,
 
 case class CV(employee: Employee,
               meta: Meta)
+
+case class CVData(id:String, cv: Json)
+
+object CVData {
+  implicit val cdEncoder: ObjectEncoder[CVData] = deriveEncoder[CVData]
+  implicit val cdDecoder: Decoder[CVData] = deriveDecoder[CVData]
+
+}
+
+case class CVS(person: Person, cvs: List[CVData])
+
 
 case class Skills(interpersonal: List[String], leadership: List[String], managerial: List[String])
 case class Specialization(name: String, requiredCurriculum: String, optionalCurriculum: String)
