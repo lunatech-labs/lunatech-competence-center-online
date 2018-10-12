@@ -37,11 +37,11 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/CV'
+              $ref: '#/definitions/CVByPerson'
 
   /passport/me:
     get:
-      description: Get my passport
+      description: Get passport for logged in user
       responses:
         '200':
           description: Your current passport
@@ -60,15 +60,8 @@ paths:
           description: get specific employee data
           schema:
             $ref: '#/definitions/Employee'
-      
-  /passport/me:
-    get:
-      description: Get data for logged in user
-      responses:
-        '200':
-          description: get employee data
-          schema:
-            $ref: '#/definitions/Employee'
+
+  /passport:
     put:
       summary: Create new Employee or update
       consumes:
@@ -83,20 +76,6 @@ paths:
           schema:
             $ref: '#/definitions/Employee'
   /cvs:
-    post:
-      summary: Create CV
-      consumes:
-        - application/json
-      produces:
-        - application/pdf
-      description: Generate a CV for user in body
-      parameters:
-        - $ref: '#/parameters/cvData'
-      responses:
-        '200':
-          description: Returns PDF
-          schema: 
-            type: file
     get:
       summary: Get all CVs
       produces:
@@ -109,6 +88,7 @@ paths:
           description: List of Employees with attached List of CVs
           schema:
             $ref: '#/definitions/CVS'
+
   /cvs/{cvId}:
     get:
       description: Get CVs for a specific user
@@ -120,7 +100,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/CV'
+              $ref: '#/definitions/IDCV'
   /cvs/me:
     get:
       description: Get all CVs for logged in user
@@ -128,11 +108,11 @@ paths:
         - $ref: '#/parameters/api-key'
       responses:
         '200':
-          description: get a specific CV
+          description: get my CVs
           schema:
             type: array
             items:
-              $ref: '#/definitions/CV'
+              $ref: '#/definitions/IDCV'
 
   /career:
     get:
@@ -156,6 +136,12 @@ paths:
           schema:
             $ref: '#/definitions/Career'
 parameters:
+  api-key:
+    in: header
+    name: X-ID-Token
+    description: Authentication key
+    required: true
+    type: string
   employeeData:
     in: body
     name: employ
@@ -223,10 +209,7 @@ definitions:
     required:
      - givenName
      - familyName
-     - label
-     - startYear
      - email
-     - profile
 
     properties:
       givenName:
@@ -269,20 +252,9 @@ definitions:
         type: string
 
   Skills:
-    type: object
-    properties:
-      interpersonal:
-        type: array
-        items:
-          type: string
-      leadership:
-        type: array
-        items:
-          type: string
-      managerial:
-        type: array
-        items:
-          type: string
+    type: array
+    items:
+      $ref: '#/definitions/Skill'
 
   Specialization:
     type: object
@@ -327,18 +299,29 @@ definitions:
     type: array
     items:
       $ref: '#/definitions/IDCV'
-  IDCV:
+  CVByPerson:
     type: object
     required:
-      - email
+      - person
       - cvs
     properties:
-      email:
-        type: string
+      person:
+        $ref: '#/definitions/Person'
       cvs:
         type: array
         items:
-          $ref: '#/definitions/CV'
+          $ref: '#/definitions/IDCV'
+  IDCV:
+    type: object
+    required:
+      - id
+      - cv
+    properties:
+      id:
+        type: string
+        format: uuid
+      cv:
+        $ref: '#/definitions/CV'
   CV:
     type: object
     required:
@@ -364,10 +347,10 @@ definitions:
         type: string
       language:
         type: string
-        enum: 
+        enum:
           - FR
           - NL
-      office: 
+      office:
         type: string
         enum:
           - Amsterdam
@@ -383,6 +366,27 @@ definitions:
       level:
         type: integer
         format: int32
+  Person:
+    type: object
+    properties:
+      email:
+        type: string
+      name:
+        $ref: '#/definitions/PersonName'
+      roles:
+        type: array
+        items:
+          type: string
+
+  PersonName:
+    type: object
+    properties:
+      fullName:
+        type: string
+      familyName:
+        type: string
+      givenName:
+        type: string
   Achievement:
     type: string
   Project:
