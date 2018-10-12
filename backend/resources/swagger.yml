@@ -18,18 +18,39 @@ produces:
   - application/pdf
 
 paths:
-  /employees:
+  /employees/passport:
     get:
-      description: Get list of employee
+      description: Get the passport for each employee
       responses:
         '200':
-          description: An list of employees with most recent data
+          description: The employee list with their latest passport. The passport is never empty.
           schema:
             type: array
             items:
               $ref: '#/definitions/Employee'
-              
-  /employees/{employeeId}:
+  /employees/cvs:
+    get:
+      description: Get all CVs for each employee
+      responses:
+        '200':
+          description: The employee list with all their CVs. The list of CVs can be empty
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CV'
+
+  /passport/me:
+    get:
+      description: Get my passport
+      responses:
+        '200':
+          description: Your current passport
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Employee'
+
+  /passport/{employeeId}:
     get:
       description: Get personal data for specific user
       parameters:
@@ -40,7 +61,7 @@ paths:
           schema:
             $ref: '#/definitions/Employee'
       
-  /employees/me:
+  /passport/me:
     get:
       description: Get data for logged in user
       responses:
@@ -80,7 +101,7 @@ paths:
       summary: Get all CVs
       produces:
         - application/json
-      description: Retrieve a list of CVs for all registered employees
+      description: Retrieve a list of all CVs in the database
       parameters:
         - $ref: '#/parameters/employeeQueryId'
       responses:
@@ -90,14 +111,28 @@ paths:
             $ref: '#/definitions/CVS'
   /cvs/{cvId}:
     get:
-      description: Get a specific CV
+      description: Get CVs for a specific user
       parameters:
         - $ref: '#/parameters/cvId'
       responses:
         '200':
           description: get a specific CV
           schema:
-            $ref: '#/definitions/CV'
+            type: array
+            items:
+              $ref: '#/definitions/CV'
+  /cvs/me:
+    get:
+      description: Get all CVs for logged in user
+      parameters:
+        - $ref: '#/parameters/api-key'
+      responses:
+        '200':
+          description: get a specific CV
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CV'
 
   /career:
     get:

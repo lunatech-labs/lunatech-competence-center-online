@@ -151,11 +151,10 @@ object CompetenceCenterApi extends App {
   val service = (
     cvController.`GET /employees/cvs` :+:
       cvController.`GET /cvs/me` :+:
+      cvController.`GET /cvs/cvId` :+:
       cvController.`GET /cvs/employeeId` :+:
-//      cvController.`PUT /employees/me` :+:
       cvController.`POST /cvs` :+:
       cvController.`GET /cvs` :+:
-      cvController.`GET /cvs/cvId` :+:
       workshopController.`GET /workshops` :+:
       peopleController.`GET /people/me` :+:
       coreCurriculumController.`GET /core-curriculum` :+:

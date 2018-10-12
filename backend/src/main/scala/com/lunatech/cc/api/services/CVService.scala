@@ -35,7 +35,7 @@ class PostgresCVService(transactor: Transactor[Task]) extends CVService {
   override def findByPerson(user: EnrichedGoogleUser): List[CVData] = findByPersonId(user.email)
 
   override def findById(id: UUID): Option[Json] =
-      sql"SELECT cv FROM cvs WHERE id = ${id.toString} ORDER BY created_on DESC".query[Json].option.transact(transactor).unsafeRun()
+      sql"SELECT cv FROM cvs WHERE id = (${id.toString} :: UUID) ".query[Json].option.transact(transactor).unsafeRun()
 
   override def findAll: Map[String,List[CVData]] = sql"SELECT person, id, cv FROM cvs ORDER BY person ASC"
     .query[(String, String, Json)].to[List].map {
