@@ -124,6 +124,11 @@
           "name": "JS The Right Way",
           "type": "article",
           "url": "http://jstherightway.org/"
+        },
+        {
+          "name": "An Introduction to JavaScript for Sophisticated Programmers",
+          "type": "article",
+          "url": "http://casual-effects.blogspot.com/2014/01/an-introduction-to-javascript-for.html"
         }
       ],
       "abilities": [
