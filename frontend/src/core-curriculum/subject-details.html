@@ -222,12 +222,12 @@
               dependencies: project.dependencies
             };
             personProjects.forEach(function(personProject) {
-              if (personProject[0] == project.id) {
-                if (personProject[2] != 'null')
+              if (personProject.project == project.id) {
+                if (personProject.doneOn)
                   infoProject.status = "done"
                 else
                   infoProject.status = "in-progress"
-                infoProject.url = personProject[3]
+                infoProject.url = personProject.url
               }
             })
             if (infoProject.status == undefined)

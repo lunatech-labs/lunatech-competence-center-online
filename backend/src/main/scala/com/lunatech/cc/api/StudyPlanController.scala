@@ -27,13 +27,9 @@ class StudyPlanController(studyPlanService: StudyPlanService, authenticated: End
 
   val `GET /people/{email}/goals`: Endpoint[Json] = get("people" :: string :: "goals" :: authenticated) {
     (email: String, user: ApiUser) =>
-    if(user.hasRole("admin") || user.hasRole("mentor") || user.toOption.map(_.email).contains(email)) {
-      for {
-        goals <- studyPlanService.getAllStudentGoals(email)
-      } yield Ok(goals.asJson)
-    } else {
-      Future.value(Forbidden(new RuntimeException("'admin' or 'mentor' role required for this endpoint")))
-    }
+    for {
+      goals <- studyPlanService.getAllStudentGoals(email)
+    } yield Ok(goals.asJson)
   }
 
   val `PUT /people/me/goals`: Endpoint[String] =
