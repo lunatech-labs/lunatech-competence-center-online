@@ -212,30 +212,22 @@
       },
 
       _onPersonProjectsChanged: function (personProjects) {
-        var infoProjects = [];
         if(this.knowledge.projects && personProjects) {
           this.knowledge.projects.forEach(function(project) {
-            var infoProject = {
-              id: project.id,
-              name: project.name,
-              description: project.description,
-              dependencies: project.dependencies
-            };
             personProjects.forEach(function(personProject) {
-              if (personProject[0] == project.id) {
-                if (personProject[2] != 'null')
-                  infoProject.status = "done"
+              if (personProject.project == project.id) {
+                if (personProject.doneOn)
+                  project.status = "done"
                 else
-                  infoProject.status = "in-progress"
-                infoProject.url = personProject[3]
+                  project.status = "in-progress"
+                project.url = personProject.url
               }
             })
-            if (infoProject.status == undefined)
-              infoProject.status = "none"
-            infoProjects.push(infoProject);
+            if (project.status == undefined)
+              project.status = "none"
           });
         }
-        this.set('projects', infoProjects);
+        this.set('projects', this.knowledge.projects);
       },
 
       ready: function() {

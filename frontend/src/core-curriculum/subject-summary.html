@@ -322,66 +322,44 @@
         return diff;
       },
 
-      _onProjectsChange: function() {
+     _onProjectsChange: function() {
         console.debug("_onProjectsChange")
         if (this.projects) {
           var activityLog = this.activityLog
-          var inProgress = [];
-          var done = [];
+          let allStartedProjects = [];
+          let allDoneProjects = [];
           this.curriculum.forEach(function(subject) {
-            var projects = this.projects[subject.id] || [];
-            let allStartedProjects = projects.map(function (projectInfo) {
-              var [id, startedOn, doneOn, url] = projectInfo;
-              var projectName = subject.projects.find(t2 => t2.id === id).name
-              return {
+            var subjectProjects = this.projects.filter(project => project.subject === subject.id);
+            Array.prototype.forEach.call(subjectProjects, function (projectInfo) {
+              var projectName = subject.projects.find(t2 => t2.id === projectInfo.project).name;
+              var startedItem =  {
                 subject: subject.id,
                 subject_name: subject.name,
-                project: id,
+                project: projectInfo.project,
                 project_name: projectName,
                 message: "project \"" + projectName + "\" is in progress",
-                date: startedOn
-              }
-            });
-            let allDoneProjects = projects.map(function (projectInfo) {
-              var [id, startedOn, doneOn, url] = projectInfo;
-              if (doneOn != 'null') {
-                var projectName = subject.projects.find(t2 => t2.id === id).name
-                return {
-                  subject: subject.id,
-                  subject_name: subject.name,
-                  project: id,
-                  project_name: projectName,
-                  message: "project \"" + projectName + "\" is done",
-                  date: doneOn
-                }
-              }
-            }).filter(item => item);
-            activityLog = activityLog.concat(allStartedProjects);
-            activityLog = activityLog.concat(allDoneProjects);
-            activityLog.sort(this.compare);
-
-            <!--for projects progress tables:-->
-            projects.map(function (projectInfo) {
-              var [id, startedOn, doneOn, url] = projectInfo;
-              var projectName = subject.projects.find(t2 => t2.id === id).name
-              var item = {
-                  subject: subject.id,
-                  subject_name: subject.name,
-                  project: id,
-                  project_name: projectName,
-                  url: url
-                }
-              if (doneOn === 'null') {
-                inProgress.push(item);
-              } else {
-                done.push(item);
+                date: projectInfo.startedOn,
+                url: projectInfo.url,
+                status: projectInfo.doneOn ? 'done':'in-progress'
+              };
+              allStartedProjects.push(startedItem);
+              if (projectInfo.doneOn) {
+                var doneItem = JSON.parse(JSON.stringify(startedItem));
+                doneItem.date = projectInfo.doneOn;
+                doneItem.message = "project \"" + projectName + "\" is done";
+                allDoneProjects.push(doneItem);
               }
             });
           }.bind(this));
+          <!--for activity log:-->
+          activityLog = activityLog.concat(allStartedProjects);
+          activityLog = activityLog.concat(allDoneProjects);
           activityLog.sort(this.compare);
           this.set('activityLog', activityLog);
-          this.set('projectsInProgress', inProgress);
-          this.set('projectsDone', done);
+          <!--for dashboard:-->
+          var projectsInProgress = allStartedProjects.filter(startedProject => startedProject.status != 'done');
+          this.set('projectsInProgress', projectsInProgress);
+          this.set('projectsDone', allDoneProjects);
         }
       },
 
@@ -391,22 +369,22 @@
 
       _onProgressChange: function() {
         console.debug("_onProgressChange")
-        if(this.progress != null) {
+        if(this.progress) {
+
           var summary = []
           var activityLog = this.activityLog
 
           this.curriculum.forEach(function(subject) {
-            var knowledge = this.progress[subject.id] || [];
-            let allTopics = knowledge.map(function (topic) {
-              var [topicId, date] = topic;
-              var topicName = subject.topics.find(t2 => t2.id === topicId).name
+            var knowledge = this.progress.filter(knowledgeItem => knowledgeItem.subject === subject.id);
+            let allTopics = knowledge.map(function (topicItem) {
+              var topicName = subject.topics.find(t2 => t2.id === topicItem.topic).name
               return {
                 subject: subject.id,
                 subject_name: subject.name,
-                topic: topicId,
+                topic: topicItem.topic,
                 topic_name: topicName,
                 message: "topic \"" + topicName + "\" marked as known",
-                date: date
+                date: topicItem.createdOn
               }
             });
             let known_topics = allTopics.map(t => t.topic);

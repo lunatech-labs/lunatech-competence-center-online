@@ -1,17 +1,17 @@
 package com.lunatech.cc.api.services
 
 import java.io.{File, FileFilter}
+import java.util.UUID
 
 import com.twitter.util.Future
 import doobie.imports._
-import java.util.UUID
-
-import io.circe._
-import io.circe.parser.decode
-import io.circe.generic.auto._
 import fs2.Task
+import io.circe._
+import io.circe.generic.auto._
+import io.circe.parser.decode
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory.getLogger
+import io.circe.Decoder, io.circe.Encoder, io.circe.generic.semiauto._
 
 import scala.io.Source
 
@@ -32,6 +32,22 @@ object CoreCurriculumService {
                             projects: Set[ProjectSummary],
                             image: String,
                             primary: Boolean)
+
+  case class KnowledgeItem(subject: String,
+                           topic: String,
+                           createdOn: String)
+
+  case class ProjectItem(subject: String,
+                         project: String,
+                         startedOn: String,
+                         doneOn: Option[String],
+                         url: Option[String])
+
+  implicit val knowledgeItemDecoder: Decoder[KnowledgeItem] = deriveDecoder[KnowledgeItem]
+  implicit val knowledgeItemEncoder: Encoder[KnowledgeItem] = deriveEncoder[KnowledgeItem]
+
+  implicit val projectItemDecoder: Decoder[ProjectItem] = deriveDecoder[ProjectItem]
+  implicit val projectItemEncoder: Encoder[ProjectItem] = deriveEncoder[ProjectItem]
 
   object SubjectSummary {
     // Manual decoder, to deal with 'primary' being an optional field, defaulting to false.
@@ -68,13 +84,12 @@ trait CoreCurriculumService {
   import CoreCurriculumService._
 
   def getSubjectSummaries: Future[Vector[SubjectSummary]]
-
-  def getPersonKnowledge(person: String, subject: String): Future[Vector[String]]
-  def getAllPersonKnowledge(person: String): Future[Map[String, Vector[Vector[String]]]]
+  def getPersonSubjectTopics(person: String, subject: String): Future[Vector[String]]
+  def getAllPersonKnowledge(person: String): Future[Vector[KnowledgeItem]]
   def addPersonKnowledge(person: String, subject: String, topic: String): Future[Unit]
   def removePersonKnowledge(person: String, subject: String, topic: String): Future[Unit]
-  def getPersonSubjectProjects(person: String, subject: String): Future[Vector[Vector[String]]]
-  def getAllPersonProjects(person: String): Future[Map[String, Vector[Vector[String]]]]
+  def getPersonSubjectProjects(person: String, subject: String): Future[Vector[ProjectItem]]
+  def getAllPersonProjects(person: String): Future[Vector[ProjectItem]]
   def setProjectInProgress(person: String, subject: String, project: String): Future[Unit]
   def setProjectDone(person: String, subject: String, project: String): Future[Unit]
   def setProjectNotStarted(person: String, subject: String, project: String): Future[Unit]
@@ -103,29 +118,34 @@ class PostgresCoreCurriculumService(transactor: Transactor[Task], subjectDirecto
     }.toVector
   }
 
-  override def getPersonKnowledge(person: String, subject: String): Future[Vector[String]] = {
-
+  /**
+    * @return list of topics
+    */
+  override def getPersonSubjectTopics(person: String, subject: String): Future[Vector[String]] = {
     val query = sql"""
       SELECT topic
       FROM person_knowledge
-      WHERE person = ${person}
-      AND subject = ${subject}""".query[String]
+      WHERE person = $person
+      AND subject = $subject""".query[String]
 
     Future { query.vector.transact(transactor).unsafeRun }
   }
 
-  override def getAllPersonKnowledge(person: String): Future[Map[String, Vector[Vector[String]]]] = {
+  /**
+    * @return list of KnowledgeItems
+    */
+  override def getAllPersonKnowledge(person: String): Future[Vector[KnowledgeItem]] = {
     val query = sql"""
       SELECT subject, topic, created_on
       FROM person_knowledge
-      WHERE person = ${person}""".query[(String, (String, String))]
-
-    Future {
-      query.vector.transact(transactor).unsafeRun
-    }.map { pairs => {
-      pairs.groupBy(_._1).map { case (s, v) => s -> v.map(_._2).map { case (m,n) => Vector(m, n)} }
-    }
-    }
+      WHERE person = $person""".query[(String, String, String)]
+    Future { query.vector.transact(transactor).unsafeRun }
+      .map { knowledgeItems => {
+        knowledgeItems.map {
+        case (subject, topic, createdOn) =>
+          KnowledgeItem(subject = subject, topic = topic, createdOn = createdOn)
+        }
+    }}
   }
 
   override def addPersonKnowledge(person: String, subject: String, topic: String): Future[Unit] = {
@@ -149,30 +169,49 @@ class PostgresCoreCurriculumService(transactor: Transactor[Task], subjectDirecto
     Future { query.run.transact(transactor).unsafeRun }
   }
 
-  override def getPersonSubjectProjects(person: String, subject: String): Future[Vector[Vector[String]]] = {
+  /**
+    * @return list of ProjectItems
+    */
+  override def getPersonSubjectProjects(person: String, subject: String): Future[Vector[ProjectItem]] = {
     val query = sql"""
       SELECT project, started_on, done_on, url
       FROM person_projects
-      WHERE person = ${person}
-      AND subject = ${subject}""".query[(String, String, Option[String], Option[String])]
-
-    Future {
-      query.vector.transact(transactor).unsafeRun
-    }.map { t => {
-      t.map { case (s, v, m, r) => Vector(s, v, m.getOrElse("null"), r.getOrElse("empty"))}}
-    }
+      WHERE person = $person
+      AND subject = $subject""".query[(String, String, Option[String], Option[String])]
+    Future { query.vector.transact(transactor).unsafeRun }
+      .map { projectItemsItems => {
+        projectItemsItems.map {
+          case (project, startedOn, doneOn, url) =>
+            ProjectItem(
+              subject = subject,
+              project = project,
+              startedOn = startedOn,
+              doneOn = doneOn,
+              url = url)
+        }
+      }}
   }
 
-  override def getAllPersonProjects(person: String): Future[Map[String, Vector[Vector[String]]]] = {
+  /**
+    * @return list of ProjectItems
+    */
+  override def getAllPersonProjects(person: String): Future[Vector[ProjectItem]] = {
     val query = sql"""
       SELECT subject, project, started_on, done_on, url
       FROM person_projects
-      WHERE person = ${person}""".query[(String, (String, String, Option[String], Option[String]))]
+      WHERE person = $person""".query[(String, String, String, Option[String], Option[String])]
     Future {
       query.vector.transact(transactor).unsafeRun
-    }.map { pairs => {
-      pairs.groupBy(_._1).map { case (s, v) => s -> v.map(_._2).map { case (p, so, d, r) =>
-        Vector(p, so, d.getOrElse("null"), r.getOrElse("empty")) } }
+    }.map { projectItemsItems => {
+      projectItemsItems.map {
+        case (subject, project, startedOn, doneOn, url) =>
+          ProjectItem(
+            subject = subject,
+            project = project,
+            startedOn = startedOn,
+            doneOn = doneOn,
+            url = url)
+      }
     }}
   }
 
