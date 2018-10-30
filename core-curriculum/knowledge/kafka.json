@@ -1,0 +1,193 @@
+{
+    "id":"kafka",
+    "name":"Kafka",
+    "description":"Kafka is a distributed streaming platform",
+    "headmaster":"ikenna.ogbajie@lunatech.nl",
+    "teachers":[
+      "gustavo.de.micheli@lunatech.nl"
+    ],
+    "tags":[
+      "java",
+      "scala"
+    ],
+    "image":"/images/apache-kafka.png",
+    "topics":[
+      {
+        "id":"kafka-basic",
+        "name":"Basic Kafka",
+        "description":"In order to get a good grasp of how kafka works, it is important to understand the log as a data-structure, topics, partitioning, replication and how producers and consumers work.",
+        "tags":[
+          "required-for-junior"
+        ],
+        "resources":[
+          {
+            "name":"Kafka Introduction",
+            "type":"documentation",
+            "url":"https://kafka.apache.org/intro",
+            "tags":[
+              "official"
+            ]
+          },
+          {
+            "name":"Meet Kafka - Kafka: The Definitive guide",
+            "type":"book",
+            "url":"https://www.confluent.io/resources/kafka-the-definitive-guide/",
+            "notes":"Chapter 1. Meet Kafka"
+          },
+          {
+            "name":"The Log: What every software engineer should know about real-time data's unifying abstraction",
+            "type":"documentation",
+            "url":"https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying"
+          },
+          {
+            "name":"The role of zookeeper in Kafka [Quora]",
+            "type":"documentation",
+            "url":"https://www.quora.com/What-is-the-actual-role-of-Zookeeper-in-Kafka-What-benefits-will-I-miss-out-on-if-I-don%E2%80%99t-use-Zookeeper-and-Kafka-together"
+          },
+          {
+            "name":"The role of zookeeper in Kafka",
+            "type":"documentation",
+            "url":"http://www.waitingforcode.com/apache-kafka/the-role-of-apache-zookeeper-in-apache-kafka/read"
+          },
+          {
+            "name":"Installiing Confluent Kafka",
+            "type":"documentation",
+            "url":"https://docs.confluent.io/current/installation/installing_cp.html"
+          },
+          {
+            "name":"Landoop fast data dev for fast kafka development",
+            "type":"other",
+            "url":"https://github.com/Landoop/fast-data-dev"
+          },
+          {
+            "name":"Kafka Producers - Kafka: The Definitive guide",
+            "type":"documentation",
+            "url":"https://www.confluent.io/resources/kafka-the-definitive-guide/",
+            "notes":"Chapter 3. Kafka Producers"
+          },
+          {
+            "name":"The Producer",
+            "type":"documentation",
+            "url":"https://kafka.apache.org/documentation/#theproducer"
+          },
+          {
+            "name":"Kafka Consumer - Kafka: The Definitive guide",
+            "type":"documentation",
+            "url":"https://www.confluent.io/resources/kafka-the-definitive-guide/",
+            "notes":"Chapter 4. Kafka Consumers"
+          },
+          {
+            "name":"The Consumer",
+            "type":"documentation",
+            "url":"https://kafka.apache.org/documentation/#theconsumer"
+          },
+          {
+            "name":"Kafka Java Producer Client",
+            "type":"documentation",
+            "url":"https://kafka.apache.org/0100/javadoc/index.html?org/apache/kafka/clients/producer/KafkaProducer.html"
+          },
+          {
+            "name":"Kafka Java Consumer Client",
+            "type":"documentation",
+            "url":"https://kafka.apache.org/0100/javadoc/index.html?org/apache/kafka/clients/producer/KafkaConsumer.html"
+          },
+          {
+            "name":"Kafka CLI",
+            "type":"documentation",
+            "url":"https://www.cloudera.com/documentation/kafka/latest/topics/kafka_command_line.html"
+          },
+          {
+            "name":"Message Delivery Semantics",
+            "type":"documentation",
+            "url":"https://kafka.apache.org/documentation/#semantics"
+          }
+        ]
+      },
+      {
+        "id": "Configuration & Optimization",
+        "name": "Kafka Configuration deployment and optimization",
+        "description":  "Kafka applications and Clusters need to configured properly so they perform as expected, without knowledge of these configurations, the application/cluster will run with the defaults which is usually not what is planned for",
+        "tags":  [
+          "required-for-medior"
+        ],
+        "resources": [
+          {
+            "name":"Reliable data delivery",
+            "type":"book",
+            "url":"https://www.confluent.io/resources/kafka-the-definitive-guide/",
+            "notes":"Chapter 6. Reliable data delivery"
+          },
+          {
+            "name":"Broker configs",
+            "type":"documentation",
+            "url":"https://docs.confluent.io/current/installation/configuration/broker-configs.html"
+          },
+          {
+            "name":"Apache: Producer configs",
+            "type":"documentation",
+            "url": "https://kafka.apache.org/documentation/#producerconfigs"
+          },
+          {
+            "name":"Horton Works: Producer configs",
+            "type":"documentation",
+            "url": "https://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.6.5/bk_kafka-component-guide/content/kafka-producer-settings.html"
+          },
+          {
+            "name":"Consumer configs",
+            "type":"documentation",
+            "url": "https://kafka.apache.org/documentation/#consumerconfigs"
+          },
+          {
+            "name":"Optimizing a kafka deployment",
+            "type":"article",
+            "url":"https://www.confluent.io/blog/optimizing-apache-kafka-deployment/"
+          },
+          {
+            "name":"Configuring kafka streams application",
+            "type":"documentation",
+            "url":"https://kafka.apache.org/10/documentation/streams/developer-guide/config-streams"
+          }
+        ]
+      },
+      {"id":"kafka-streams",
+        "name":"Building Kafka Streams applications",
+        "description":"Kafka streams is a library for building applications and microservices where input and output are stored in Kafka clusters. ",
+        "tags": [
+          "required-for-medior"
+        ],
+        "resources": [
+          {
+            "name":"Stream Processing",
+            "type":"book",
+            "url":"https://www.confluent.io/resources/kafka-the-definitive-guide/",
+            "notes":"Chapter 11. Stream Processing"
+          },
+          {
+            "name":"Kafka Streams - Core concepts",
+            "type":"documentation",
+            "url":"https://docs.confluent.io/current/streams/concepts.html"
+          },
+          {
+            "name":"Architecture - Confluent Kafka",
+            "type":"documentation",
+            "url":"https://docs.confluent.io/current/streams/architecture.html"
+          },
+          {
+            "name":"KStreams and KTable operations (Streams DSL)",
+            "type":"documentation",
+            "url":"http://kafka.apache.org/20/documentation/streams/developer-guide/dsl-api.html"
+          },
+          {
+            "name":"Data types and Serialization",
+            "type":"documentation",
+            "url":"http://kafka.apache.org/20/documentation/streams/developer-guide/datatypes.html"
+          },
+          {
+            "name":"Unit testing Kafka streams applications",
+            "type":"documentation",
+            "url":"http://kafka.apache.org/documentation/streams/developer-guide/testing.html"
+          }
+        ]
+      }
+    ]
+  }
