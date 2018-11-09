@@ -1,0 +1,23 @@
+.reveal .slides > section.present, .reveal .slides > section > section.present {
+    width: 90%;
+}
+
+ul {
+    list-style-type: none !important;
+}
+
+.centered-code-example {
+    width: 25% !important;
+}
+
+.text-red {
+    color: red;
+}
+
+.text-green {
+    color: green;
+}
+
+h1 {
+    font-size: 7vw !important;
+}

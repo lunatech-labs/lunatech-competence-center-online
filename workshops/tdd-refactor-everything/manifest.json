@@ -1,0 +1,14 @@
+{
+  "id": "tdd-refactor-everything",
+  "name": "How to use TDD to refactor all the things",
+  "author": "Angel Sanadinov",
+  "image": "image.jpg",
+  "description": "A look at what TDD is, what it is not and how it can give you the confidence to refactor anything.",
+  "tags": ["tdd", "testing", "refactoring"],
+  "core-curriculum": [],
+  "teachers": ["Angel Sanadinov"],
+  "contributors": ["Angel Sanadinov"],
+  "prerequisites": "None",
+  "preparations": "<enter the preparations of the workshop>",
+  "schedule": []
+}
