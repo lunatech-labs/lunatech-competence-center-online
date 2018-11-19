@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "cssnano": "^4.1.7",
+    "node-elm-compiler": "^5.0.1",
+    "sass": "^1.15.1"
+  },
+  "dependencies": {
+    "dagre": "^0.8.2"
+  }
+}

@@ -1,0 +1,113 @@
+.knowledge-graph-container {
+  position: relative;
+  overflow: scroll;
+  padding: 10px;
+  margin-top: 2em;
+  background-color: #e9ecef;
+  border-radius: .25rem;
+}
+
+.knowledge-graph {
+
+}
+
+.knowledge-nodes {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+
+  &.hidden {
+    visibility: hidden;
+  }
+}
+
+// Knowledge related stuff
+.knowledge-node {
+  display: block;
+  position: absolute;
+  min-width: 100px;
+  background-color: #FFF;
+  border: 1px solid #000;
+  border-radius: 8px;
+  box-shadow: #000 2px 2px 2px;
+  box-sizing: border-box;
+  min-width: 200px;
+  padding: 8px;
+  padding-left: 23px;
+  text-align: center;
+  opacity: 1;
+  color: black;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  h2 {
+    font-size: 18pt;
+  }
+
+  .label {
+    background-color: #4357E4;
+    border-bottom-left-radius: 7px;
+    border-right: 1px solid black;
+    border-top-left-radius: 7px;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 15px;
+  }
+
+  &.required {
+    .label {
+        background-color: #F00;
+    }
+
+    &.known {
+      .label {
+        background-color: #5faa5f;
+      }
+    }
+  }
+
+  &.known {
+    .label {
+      background-color: #5faa5f;
+    }
+  }
+
+  // For the resources
+  .hidden {
+    display: none;
+  }
+
+  .resources {
+    display: flex;
+    justify-content:center;
+  }
+
+  .resource {
+    margin-left: 10px;
+  }
+
+}
+
+.project-description {
+  h1 { font-size: 1.25rem; }
+  h2 { font-size: 1rem; }
+}
+
+.knowledge-edges {
+  svg {
+    position: relative;
+    top: 0;
+    left: 0;
+  }
+
+  path {
+    stroke-width: 2;
+    stroke: black;
+    stroke-linecap: none;
+    fill: none;
+  }
+}

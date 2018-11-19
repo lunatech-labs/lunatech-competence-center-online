@@ -10,3 +10,9 @@ backend/image
 scripts/local_nginx_amend.conf
 environment-specific.conf
 .DS_Store
+node_modules
+.cache
+dist
+elm-frontend/elm-stuff
+elm-frontend/.cache
+elm-frontend/node_modules

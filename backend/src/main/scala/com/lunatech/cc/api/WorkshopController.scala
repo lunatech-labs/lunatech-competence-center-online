@@ -12,7 +12,7 @@ class WorkshopController(workshopService: WorkshopService, authenticated: Endpoi
 
   lazy val logger: Logger = getLogger(getClass)
 
-  val `GET /workshops`: Endpoint[Json] = get("workshops" :: authenticated) { (_: ApiUser) =>
+  val `GET /workshops`: Endpoint[Json] = get("workshops") {
     for {
       workshops <- workshopService.listWorkshops
     } yield Ok(workshops.asJson)

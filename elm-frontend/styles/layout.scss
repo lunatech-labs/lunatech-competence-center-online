@@ -1,0 +1,214 @@
+// TODO, import bootstrap and use Bootstrap mixins for sizes, instead of the media queries here?
+$sidebar-width: 250px;
+$sidebar-width-collapsed: 44px;
+$sidebar-color: #212118;
+$sidebar-hover-color: #494942;
+
+html {
+  // For bouncy scroll / scrolling past the top or bottom of the page, color the HTML the same as the sidebar for
+  // aesthetic reasons.
+  background-color: $sidebar-color;
+}
+#sidebar {
+  background-color: $sidebar-color;
+  min-width: $sidebar-width;
+  max-width: $sidebar-width;
+  // min-height: 100vh;
+  height: 100%;
+  color: #ddd;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  .sidebar-header {
+    display: block;
+    padding: 20px 10px;
+
+    .logo {
+      background-image: url('../images/sidebar-lunatech.png');
+      display: inline-block;
+      width: 150px;
+      height: 25px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    .logo-icon {
+      width: 24px;
+      height: 24px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      display: inline-block;
+      background-image: url('../images/sidebar-icon.png');
+      margin-right: 10px;
+    }
+  }
+
+  li {
+    vertical-align: middle;
+    margin: 5px 5px 20px 5px;
+    border-radius: 5px;
+
+    a {
+      padding: 5px;
+      display: block;
+    }
+
+    &:hover {
+      background-color: $sidebar-hover-color;
+    }
+
+
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .icon {
+    width: 24px;
+    height: 24px;
+    background-size: 24px;
+    margin-right: 10px;
+    display: inline-block;
+    position: relative;
+    top: 5px;
+
+    &.university {
+      background-image: url('../images/university-icon.png');
+    }
+
+    &.workshops {
+      background-image: url('../images/workshops-icon.png');
+    }
+
+    &.guilds {
+      background-image: url('../images/guilds-icon.png');
+      background-size: 21px;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+  }
+
+  .authentication {
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    position: absolute;
+    width: $sidebar-width - 10px;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+
+    .user {
+
+    }
+
+    .logout {
+      margin-right: 10px;
+    }
+
+    &:hover {
+      background-color: $sidebar-hover-color;
+    }
+  }
+
+  @media (max-width: 768px) {
+    max-width: $sidebar-width-collapsed;
+    min-width: $sidebar-width-collapsed;
+
+    .icon {
+      margin-right: 0;
+    }
+
+    .user {
+      position: absolute;
+      bottom: 30px;
+    }
+
+    .logout {
+      position: absolute;
+      left: 5px;
+      bottom: 0;
+    }
+  }
+
+
+}
+
+.wrapper {
+    display: flex;
+    align-items: stretch;
+    margin-left: $sidebar-width;
+
+    @media (max-width: 768px) {
+      margin-left: $sidebar-width-collapsed;
+    }
+}
+
+.container-fluid {
+    background-color:white;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.banner {
+   height: 200px;
+   width: 100%;
+   background-size:cover;
+   background-position: center;
+}
+
+// A spinner that only shows up after a second, to not needlessly flash it for
+// quickly loaded content.
+.spinner {
+    // Centering it
+    position: relative;
+    top: 50%;
+    left: 50%;
+    margin-left: -50px;
+    margin-top: -50px;
+
+    // Showing it only after a second.
+    animation: 1s fadeIn;
+    animation-fill-mode: forwards;
+    visibility: hidden;
+
+    // The actual spinner.
+    .inner {
+      border: 2px solid #f3f3f3; /* Light grey */
+      border-top: 2px solid #3498db; /* Blue */
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      animation: spin 1s linear infinite;
+
+
+    }
+
+}
+
+// img [ class "logo", src "/images/competence-center-logo.png" ] []
+.login-screen h3.card-title {
+  background-image: url('../images/competence-center-logo.png');
+  background-size:cover;
+  height: 45px;
+}
+
+// Basically not a fade-in but instant appearance. Used by the .spinner.
+@keyframes fadeIn {
+  99% {
+    visibility: hidden;
+  }
+  100% {
+    visibility: visible;
+  }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

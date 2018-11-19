@@ -29,6 +29,7 @@ object WorkshopService {
     description: String,
     url: String,
     logoUrl: Option[String],
+    location: String,
     date: String,
     startTime: String,
     endTime: String)
@@ -66,6 +67,13 @@ object EventBriteWorkshopService {
     val dateFormatter = DateTimeFormatter.ofPattern("MMMM d")
     val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
+    private def getLocation(description: String) = {
+      val lowerDesc = description.toLowerCase
+      if(lowerDesc contains "rotterdam") "Rotterdam"
+      else if(lowerDesc contains "amsterdam") "Amserdam"
+      else "See Details"
+    }
+
     final def apply(c: HCursor): Decoder.Result[EventDetails] =
       for {
         id <- (c.downField("id").as[String])
@@ -82,6 +90,7 @@ object EventBriteWorkshopService {
         description = description.split("\n")(0),
         url = vanityUrl.getOrElse(url),
         logoUrl = logoUrl,
+        location = getLocation(description),
         date = startDate.format(dateFormatter),
         startTime = startDate.format(timeFormatter),
         endTime = endDate.format(timeFormatter))

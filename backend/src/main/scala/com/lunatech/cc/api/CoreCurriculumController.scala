@@ -54,11 +54,18 @@ class CoreCurriculumController(coreCurriculumService: CoreCurriculumService,
     } yield Ok(())
   }
 
-  val `GET /people/{email}/knowledge`: Endpoint[Vector[KnowledgeItem]] =
-    get("people" :: string :: "knowledge" :: authenticated) { (person: String, apiUser: ApiUser) =>
+  val `GET /people/me/knowledge`: Endpoint[Map[String, Vector[String]]] = get("people" :: "me" :: "knowledge" :: authenticatedUser) { (user: EnrichedGoogleUser) =>
+    for {
+      knowledge <- coreCurriculumService.getAllPersonKnowledge(user.email)
+    } yield Ok(knowledge.groupBy(_.subject).mapValues(_.map(_.topic)))
+  }
+
+  val notMeString = string.shouldNot("be me")(_ == "me")
+
+  val `GET /people/{email}/knowledge`: Endpoint[Map[String, Vector[String]]] = get("people" :: notMeString :: "knowledge" :: authenticated) { (person: String, apiUser: ApiUser) =>
     for {
       knowledge <- coreCurriculumService.getAllPersonKnowledge(person)
-    } yield Ok(knowledge)
+    } yield Ok(knowledge.groupBy(_.subject).mapValues(_.map(_.topic)))
   }
 
   val `GET /people/{email}/projects`: Endpoint[Vector[ProjectItem]] =
