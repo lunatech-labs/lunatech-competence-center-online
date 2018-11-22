@@ -1,7 +1,7 @@
 {
     "id":"kafka",
     "name":"Kafka",
-    "description":"Kafka is a distributed streaming platform",
+    "description":"Kafka is a distributed streaming platform. Kafka can be used to publish and subscribe to streams of records — as a messaging system. It can also be used to store streams of records in a fault-tolerant way — as a storage system. Recently, Kafka has added functionality to allow for processing streams of records.",
     "headmaster":"ikenna.ogbajie@lunatech.nl",
     "teachers":[
       "gustavo.de.micheli@lunatech.nl"
@@ -40,6 +40,11 @@
             "url":"https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying"
           },
           {
+            "name": "Introduction to Apache Kafka by James Ward - Devoxx",
+            "type": "video",
+            "url": "https://www.youtube.com/watch?v=UEg40Te8pnE"
+          },
+          {
             "name":"The role of zookeeper in Kafka [Quora]",
             "type":"documentation",
             "url":"https://www.quora.com/What-is-the-actual-role-of-Zookeeper-in-Kafka-What-benefits-will-I-miss-out-on-if-I-don%E2%80%99t-use-Zookeeper-and-Kafka-together"
@@ -50,20 +55,26 @@
             "url":"http://www.waitingforcode.com/apache-kafka/the-role-of-apache-zookeeper-in-apache-kafka/read"
           },
           {
-            "name":"Installiing Confluent Kafka",
+            "name":"Installing Confluent Kafka",
             "type":"documentation",
             "url":"https://docs.confluent.io/current/installation/installing_cp.html"
           },
           {
             "name":"Landoop fast data dev for fast kafka development",
             "type":"other",
-            "url":"https://github.com/Landoop/fast-data-dev"
+            "url":"https://github.com/Landoop/fast-data-dev",
+            "notes": "Kafka Docker for development"
           },
           {
             "name":"Kafka Producers - Kafka: The Definitive guide",
             "type":"documentation",
             "url":"https://www.confluent.io/resources/kafka-the-definitive-guide/",
             "notes":"Chapter 3. Kafka Producers"
+          },
+          {
+            "name": "Apache Kafka for beginners",
+            "type": "video",
+            "url": "https://www.udemy.com/apache-kafka-tutorial-for-beginners/"
           },
           {
             "name":"The Producer",
@@ -101,14 +112,25 @@
             "type":"documentation",
             "url":"https://kafka.apache.org/documentation/#semantics"
           }
-        ]
+        ],
+        "abilities": [
+          "Understand Kafka's role in a stack",
+          "Implement a Kafka consumer",
+          "Implement a Kafka producer",
+          "Use the Kafka console cli",
+          "Configure producer and consumer to suit a delivery semantic"
+        ],
+        "assessment-questions": []
       },
       {
-        "id": "Configuration & Optimization",
-        "name": "Kafka Configuration deployment and optimization",
+        "id": "configuration-optimization",
+        "name": "Kafka configuration and optimization",
         "description":  "Kafka applications and Clusters need to configured properly so they perform as expected, without knowledge of these configurations, the application/cluster will run with the defaults which is usually not what is planned for",
         "tags":  [
           "required-for-medior"
+        ],
+        "dependencies": [
+          "kafka-basic"
         ],
         "resources": [
           {
@@ -143,24 +165,43 @@
             "url":"https://www.confluent.io/blog/optimizing-apache-kafka-deployment/"
           },
           {
+            "name": "Tuning Kafka for low latency guaranteed messaging",
+            "type": "video",
+            "url": "https://www.youtube.com/watch?v=oQe7PpDDdzA"
+          },
+          {
             "name":"Configuring kafka streams application",
             "type":"documentation",
             "url":"https://kafka.apache.org/10/documentation/streams/developer-guide/config-streams"
           }
-        ]
+        ],
+        "abilities": [
+          "Configure a Kafka broker",
+          "Configure a Kafka Consumer",
+          "Configure a Kafka Producer",
+          "Configure a Kafka Streams application",
+          "Optimize kafka applications, clusters"
+        ],
+        "assessment-questions": []
       },
       {"id":"kafka-streams",
-        "name":"Building Kafka Streams applications",
+        "name":"Kafka Streams",
         "description":"Kafka streams is a library for building applications and microservices where input and output are stored in Kafka clusters. ",
         "tags": [
           "required-for-medior"
         ],
+        "dependencies": ["kafka-basic", "configuration-optimization"],
         "resources": [
           {
             "name":"Stream Processing",
             "type":"book",
             "url":"https://www.confluent.io/resources/kafka-the-definitive-guide/",
             "notes":"Chapter 11. Stream Processing"
+          },
+          {
+            "name": "Event stream processing using Kafka Streams - Berlin Buzzwords",
+            "type": "video",
+            "url": "https://www.youtube.com/watch?v=OwA_gpWt3xA"
           },
           {
             "name":"Kafka Streams - Core concepts",
@@ -183,11 +224,73 @@
             "url":"http://kafka.apache.org/20/documentation/streams/developer-guide/datatypes.html"
           },
           {
+            "name": "Kafka Streams for Data Processing",
+            "type": "video",
+            "url": "https://www.udemy.com/kafka-streams/"
+          },
+          {
             "name":"Unit testing Kafka streams applications",
             "type":"documentation",
             "url":"http://kafka.apache.org/documentation/streams/developer-guide/testing.html"
           }
-        ]
+        ],
+        "abilities": [
+          "Understand stream processing topologies, stateful and stateless stream processing",
+          "Use the Kafka stream processing DSL",
+          "Perform processing operations using KTable",
+          "Perform processing operations using KStreams",
+          "Create Custom Serdes",
+          "Unit test Kafka stream processing applications"
+        ],
+        "assessment-questions": []
+      },
+      {
+        "id": "kafka-connect",
+        "name": "Kafka Connect",
+        "description": "Open source component of Kafka that can be used to connect external systems with Kafka.",
+        "dependencies": ["kafka-basic", "configuration-optimization"],
+        "resources": [
+          {
+            "name": "Kafka Connect Concepts",
+            "type": "documentation",
+            "url": "https://docs.confluent.io/current/connect/devguide.html#core-concepts-and-apis",
+            "tags": ["official"]
+          },
+          {
+            "name": "Building data pipelines",
+            "type": "book",
+            "url": "https://www.confluent.io/resources/kafka-the-definitive-guide/",
+            "notes": "Chapter 7. Building data pipelines"
+          },
+          {
+            "name": "Make Your Connections Count – Kafka Connect (Kafka Summit)",
+            "type": "video",
+            "url": "https://www.youtube.com/watch?v=YyTebiMx6Gc"
+          },
+          {
+            "name": "Custom Connectors",
+            "type": "documentation",
+            "url": "https://docs.confluent.io/current/connect/devguide.html#developing-a-simple-connector",
+            "tags": ["official"]
+          },
+          {
+            "name": "Kafka Connect Hands-on Learning",
+            "type": "video",
+            "url": "https://www.udemy.com/kafka-connect/"
+          },
+          {
+            "name": "Installing and Configuring Connectors",
+            "type": "documentation",
+            "url": "https://docs.confluent.io/current/connect/userguide.html#installing-and-configuring-kconnect-long",
+            "tags": ["official"]
+          }
+        ],
+        "abilities": [
+          "Understand Kafka connectors and their usage",
+          "Create custom connectors - Sink/Sources",
+          "Deploy and Configure Kafka connectors"
+        ],
+        "assessment-questions": []
       }
     ]
   }
