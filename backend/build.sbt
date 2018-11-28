@@ -61,6 +61,10 @@ coverageExcludedPackages := "scalaxb;xml;"
 enablePlugins(JavaAppPackaging)
 enablePlugins(AshScriptPlugin)
 
+// No need for docs our src package
+publishArtifact in packageDoc := false
+publishArtifact in packageSrc := false
+
 maintainer := "Erik Bakker <erik.bakker@lunatech.com>"
 packageSummary := "Competence Center Online"
 packageDescription := "Competence Center main application"
