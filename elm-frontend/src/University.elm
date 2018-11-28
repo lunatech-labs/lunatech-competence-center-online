@@ -949,11 +949,11 @@ viewProjectStatus subjectId projectId projectStatuses =
           , input [ type_ "text", Html.Attributes.value url, class "form-control", placeholder "Repository URL", urlInput, urlBlur ] []
           ]
   in
-    Html.form []
-    [ div
+
+    div
       [ class "form-row align-items-center" ]
       (List.map (\elem -> div [ class "col-auto", class "my-1" ] [ elem ]) content)
-    ]
+
 
 
 viewKnowledgeGraph : SubjectDetails -> Knowledge -> Html Msg
