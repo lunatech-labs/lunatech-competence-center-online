@@ -1,7 +1,7 @@
 package com.lunatech.cc.api
 
 import com.lunatech.cc.api.services.CoreCurriculumService
-import com.lunatech.cc.api.services.CoreCurriculumService.{KnowledgeItem, ProjectItem}
+import com.lunatech.cc.api.services.CoreCurriculumService.ProjectItem
 import com.twitter.util.Future
 import io.circe.Json
 import io.circe.generic.auto._
@@ -75,6 +75,13 @@ class CoreCurriculumController(coreCurriculumService: CoreCurriculumService,
     } yield Ok(projects)
   }
 
+  val `GET /people/me/projects`: Endpoint[Vector[ProjectItem]] =
+    get("people" :: "me" :: "projects" :: authenticatedUser) { (user: EnrichedGoogleUser) =>
+    for {
+      projects <- coreCurriculumService.getPersonProjects(user.email)
+    } yield Ok(projects)
+  }
+
   val `GET /people/me/projects/{subject}`: Endpoint[Vector[ProjectItem]] =
     get("people" :: "me" :: "projects" :: string :: authenticatedUser) { (subject: String, user: EnrichedGoogleUser) =>
     for {
@@ -120,6 +127,8 @@ class CoreCurriculumController(coreCurriculumService: CoreCurriculumService,
     } yield Ok(())
   }
 
+  // FIXME, don't use 'empty' as magic value.
+  // FIXME, PUT a body, don't use the query string for the cargo.
   val `PUT /people/me/projects/{subject}/{project}?url={url}`: Endpoint[Unit] =
     put("people" :: "me" :: "projects" :: string :: string :: authenticatedUser :: param("url")) {
     (subject: String, project: String, user: EnrichedGoogleUser, url: String) => {

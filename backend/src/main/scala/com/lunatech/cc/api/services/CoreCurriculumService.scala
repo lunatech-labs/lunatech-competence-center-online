@@ -88,6 +88,7 @@ trait CoreCurriculumService {
   def getAllPersonKnowledge(person: String): Future[Vector[KnowledgeItem]]
   def addPersonKnowledge(person: String, subject: String, topic: String): Future[Unit]
   def removePersonKnowledge(person: String, subject: String, topic: String): Future[Unit]
+  def getPersonProjects(person: String): Future[Vector[ProjectItem]]
   def getPersonSubjectProjects(person: String, subject: String): Future[Vector[ProjectItem]]
   def getAllPersonProjects(person: String): Future[Vector[ProjectItem]]
   def setProjectInProgress(person: String, subject: String, project: String): Future[Unit]
@@ -167,6 +168,28 @@ class PostgresCoreCurriculumService(transactor: Transactor[Task], subjectDirecto
                       AND topic = $topic""".update
 
     Future { query.run.transact(transactor).unsafeRun }
+  }
+
+  /**
+    * @return list of ProjectItems
+    */
+  override def getPersonProjects(person: String): Future[Vector[ProjectItem]] = {
+    val query = sql"""
+      SELECT subject, project, started_on, done_on, url
+      FROM person_projects
+      WHERE person = $person""".query[(String, String, String, Option[String], Option[String])]
+    Future { query.vector.transact(transactor).unsafeRun }
+      .map { projectItemsItems => {
+        projectItemsItems.map {
+          case (subject, project, startedOn, doneOn, url) =>
+            ProjectItem(
+              subject = subject,
+              project = project,
+              startedOn = startedOn,
+              doneOn = doneOn,
+              url = url)
+        }
+      }}
   }
 
   /**

@@ -1,4 +1,4 @@
-module University exposing (AssessmentQuestion, Edge, Knowledge, Model, Msg(..), MyStudentDetails, Project, Resource, Route(..), SubjectDetails, SubjectSummary, TopicDetails, TopicSummary, assessmentQuestionDecoder, assessmentQuestionsHintPopoverStateInTopicDetails, byIdInList, computeEdges, computeGraphLayoutCmd, edgePath, emptyModel, grouped, hasKnowledge, knowledgeDecoder, loadMyKnowledge, loadMyStudentDetails, loadSubjectDetails, loadSubjectSummaries, modelSubjectDetailsDict, myStudentDetailsDecoder, nodePosition, projectDecoder, resourceDecoder, route, routeLoadCmd, subjectCardRow, subjectDetailsDecoder, subjectDetailsTopicDetailsList, subjectSummariesDecoder, subjectSummaryDecoder, tabStateInTopicDetails, topicDetailsDecoder, topicSummaryDecoder, update, view, viewAbilities, viewAssessmentQuestions, viewEdges, viewHome, viewKnowledgeGraph, viewProjects, viewResources, viewSubject, viewSubjectCard, viewSubjectCards, viewTopic, viewTopicKnowledgeCard, viewTopicNode, viewTopicTabs, listContainsLens)
+module University exposing (AssessmentQuestion, Edge, Knowledge, Model, Msg(..), MyStudentDetails, Project, Resource, Route(..), SubjectDetails, SubjectSummary, TopicDetails, TopicSummary, assessmentQuestionDecoder, assessmentQuestionsHintPopoverStateInTopicDetails, byIdInList, computeEdges, computeGraphLayoutCmd, edgePath, emptyModel, grouped, hasKnowledge, knowledgeDecoder, loadMyKnowledge, loadSubjectDetails, loadSubjectSummaries, modelSubjectDetailsDict, myStudentDetailsDecoder, nodePosition, projectDecoder, resourceDecoder, route, routeLoadCmd, subjectCardRow, subjectDetailsDecoder, subjectDetailsTopicDetailsList, subjectSummariesDecoder, subjectSummaryDecoder, tabStateInTopicDetails, topicDetailsDecoder, topicSummaryDecoder, update, view, viewAbilities, viewAssessmentQuestions, viewEdges, viewHome, viewKnowledgeGraph, viewProjects, viewResources, viewSubject, viewSubjectCard, viewSubjectCards, viewTopic, viewTopicKnowledgeCard, viewTopicNode, viewTopicTabs, listContainsLens)
 
 import Authentication
 import Bootstrap.Button
@@ -23,7 +23,7 @@ import Markdown
 import Monocle.Common as MC
 import Monocle.Compose as Compose
 import Monocle.Lens exposing (Lens)
-import Monocle.Optional exposing (Optional)
+import Monocle.Optional as Optional exposing (..)
 import RemoteData exposing (..)
 import Svg
 import Svg.Attributes
@@ -40,7 +40,7 @@ type alias Model =
     { subjectSummaries : WebData (List SubjectSummary)
     , subjectDetails : Dict String SubjectDetails
     , myKnowledge : WebData Knowledge
-    , myStudentDetails : WebData MyStudentDetails
+    , myProjects : WebData ProjectStatuses
     }
 
 
@@ -49,7 +49,7 @@ emptyModel =
     { subjectSummaries = NotAsked
     , subjectDetails = Dict.empty
     , myKnowledge = NotAsked
-    , myStudentDetails = NotAsked
+    , myProjects = NotAsked
     }
 
 
@@ -119,6 +119,13 @@ type alias Resource =
 type alias Knowledge =
     Dict String (List String)
 
+type ProjectStatus
+  = NotStarted
+  | Started String
+  | Finished String
+
+type alias ProjectStatuses =
+    Dict (String, String) ProjectStatus
 
 type alias MyStudentDetails =
     { foo : String
@@ -129,13 +136,21 @@ type Msg
     = SubjectSummariesResponse (WebData (List SubjectSummary))
     | SubjectDetailsResponse (WebData SubjectDetails)
     | MyKnowledgeResponse (WebData Knowledge)
-    | MyStudentDetailsResponse (WebData MyStudentDetails)
+    | MyProjectsResponse (WebData ProjectStatuses)
+    | GenericSave (WebData ())
     | GraphLayoutComputed Graphs.GraphLayout
     | TabMsg String String Tab.State
     | AssessmentQuestionHintPopoverMsg String String String Bootstrap.Popover.State
     | ToggleTopicKnown String String
     | MyKnowledgeUpdateResponse (WebData ())
+    | UpdateProject UpdateProjectMsg
 
+type UpdateProjectMsg
+    = StartProject String String
+    | FinishProject String String
+    | StopProject String String
+    | SetProjectURL String String String
+    | SaveProjectURL String String
 
 type alias TopicSummary =
     { id : String
@@ -170,10 +185,9 @@ routeLoadCmd authenticatedUser model r =
 
                     _ ->
                         Cmd.none
-                , case model.myStudentDetails of
+                , case model.myProjects of
                     NotAsked ->
-                        loadMyStudentDetails authenticatedUser
-
+                        loadMyProjects authenticatedUser
                     _ ->
                         Cmd.none
                 ]
@@ -244,6 +258,7 @@ removeKnowledgeCmd authenticatedUser subjectId topicId =
           |> Cmd.map MyKnowledgeUpdateResponse
 
 
+
 update : Authentication.AuthenticatedUser -> Msg -> Model -> ( Model, Cmd Msg )
 update authenticatedUser msg model =
     case msg of
@@ -257,11 +272,11 @@ update authenticatedUser msg model =
         SubjectSummariesResponse subjects ->
             ( { model | subjectSummaries = subjects }, Cmd.none )
 
-        MyStudentDetailsResponse myStudentDetails ->
-            ( { model | myStudentDetails = myStudentDetails }, Cmd.none )
-
         MyKnowledgeResponse myKnowledge ->
             ( { model | myKnowledge = myKnowledge }, Cmd.none )
+
+        MyProjectsResponse myProjects ->
+            ( { model | myProjects = myProjects }, Cmd.none )
 
         SubjectDetailsResponse subjectDetailsWebData ->
             case subjectDetailsWebData of
@@ -274,6 +289,11 @@ update authenticatedUser msg model =
                 -- TODO, display this error somewhere.
                 _ ->
                     ( model, Cmd.none )
+
+        -- TODO, we probably want to check this for errors, and if there's an
+        -- error, store it in the model and show it in the UI until the user discards the message.
+        GenericSave _ ->
+          ( model, Cmd.none )
 
         TabMsg subjectId topicId state ->
             let
@@ -305,15 +325,79 @@ update authenticatedUser msg model =
                   |> Compose.optionalWithLens (lensFromOptional [] (MC.dict subjectId))
                   |> Compose.optionalWithLens (listContainsLens topicId)
 
-              newModel = Monocle.Optional.modify lens not model
+              newModel = Optional.modify lens not model
               newValue = not ((lens.getOption model) |> Maybe.withDefault False)
           in
-            (Monocle.Optional.modify lens not model, setKnowledgeCmd authenticatedUser subjectId topicId newValue)
+            (Optional.modify lens not model, setKnowledgeCmd authenticatedUser subjectId topicId newValue)
 
         MyKnowledgeUpdateResponse _ ->
           (model, Cmd.none) -- FIXME, show an error if necessary.
 
+        UpdateProject updateProjectMsg ->
+          updateProject authenticatedUser updateProjectMsg model
+
+
+updateProject : Authentication.AuthenticatedUser -> UpdateProjectMsg -> Model -> (Model, Cmd Msg)
+updateProject authenticatedUser updateProjectMsg model =
+
+    case updateProjectMsg of
+      StartProject subjectId projectId ->
+        let
+          url = (modelProjectURLOptional subjectId projectId).getOption model |> Maybe.withDefault ""
+          newModel = (modelProjectStatusOptional subjectId projectId).set (Started url) model
+        in
+          (newModel, saveProjectStatus authenticatedUser subjectId projectId newModel)
+
+      FinishProject subjectId projectId ->
+        let
+          url = (modelProjectURLOptional subjectId projectId).getOption model |> Maybe.withDefault ""
+          newModel = (modelProjectStatusOptional subjectId projectId).set (Finished url) model
+        in
+          (newModel, saveProjectStatus authenticatedUser subjectId projectId newModel)
+
+      StopProject subjectId projectId ->
+        let
+          newModel = (modelProjectStatusOptional subjectId projectId).set NotStarted model
+        in
+        (newModel, saveProjectStatus authenticatedUser subjectId projectId newModel)
+
+      SetProjectURL subjectId projectId url ->
+        ((modelProjectURLOptional subjectId projectId).set url model, Cmd.none)
+
+      SaveProjectURL subjectId projectId ->
+        (model, saveProjectStatus authenticatedUser subjectId projectId model)
+
 -- Lenses, lenses everywhere!
+modelMyProjects : Optional Model ProjectStatuses
+modelMyProjects = Optional
+      (\model -> case model.myProjects of
+        Success prj -> Just prj
+        _ -> Nothing)
+      (\newProjects model -> { model | myProjects = Success newProjects })
+
+myProjectsProjectStatus : String -> String -> Optional ProjectStatuses ProjectStatus
+myProjectsProjectStatus subjectId projectId = MC.dict (subjectId, projectId)
+
+modelProjectStatusOptional : String -> String -> Optional Model ProjectStatus
+modelProjectStatusOptional subjectId projectId =
+  modelMyProjects |> Compose.optionalWithOptional (myProjectsProjectStatus subjectId projectId)
+
+projectStatusURLOptional : Optional ProjectStatus String
+projectStatusURLOptional = Optional
+  (\status -> case status of
+    Started url -> Just url
+    Finished url -> Just url
+    _ -> Nothing)
+  (\newUrl status -> case status of
+    Started _ -> Started newUrl
+    Finished _ -> Finished newUrl
+    other -> other)
+
+modelProjectURLOptional : String -> String -> Optional Model String
+modelProjectURLOptional subjectId projectId =
+  modelProjectStatusOptional subjectId projectId
+    |> Compose.optionalWithOptional projectStatusURLOptional
+
 modelMyKnowledge : Optional Model Knowledge
 modelMyKnowledge =
     Optional
@@ -375,22 +459,6 @@ loadSubjectSummaries =
         |> RemoteData.sendRequest
         |> Cmd.map SubjectSummariesResponse
 
-
-loadMyStudentDetails : Authentication.AuthenticatedUser -> Cmd Msg
-loadMyStudentDetails authenticatedUser =
-    Http.request
-        { method = "GET"
-        , headers = [ Http.header "x-id-token" authenticatedUser.idToken ]
-        , url = "/api/students/me"
-        , body = Http.emptyBody
-        , expect = Http.expectJson myStudentDetailsDecoder
-        , timeout = Nothing
-        , withCredentials = False
-        }
-        |> RemoteData.sendRequest
-        |> Cmd.map MyStudentDetailsResponse
-
-
 loadMyKnowledge : Authentication.AuthenticatedUser -> Cmd Msg
 loadMyKnowledge authenticatedUser =
     Http.request
@@ -405,6 +473,72 @@ loadMyKnowledge authenticatedUser =
         |> RemoteData.sendRequest
         |> Cmd.map MyKnowledgeResponse
 
+
+saveProjectStatus : Authentication.AuthenticatedUser -> String -> String -> Model -> Cmd Msg
+saveProjectStatus authenticatedUser subjectId projectId model =
+  let
+    putStatusAndUrl : String -> String -> Cmd Msg
+    putStatusAndUrl status url =
+      Cmd.batch
+        [ Http.request
+          { method = "PUT"
+          , headers = [ Http.header "x-id-token" authenticatedUser.idToken ]
+          , url = "/api/people/me/projects/" ++ subjectId ++ "/" ++ projectId ++ "?url=" ++ url
+          , body = Http.emptyBody
+          , expect = Http.expectJson <| Decode.succeed ()
+          , timeout = Nothing
+          , withCredentials = False
+          }
+          |> RemoteData.sendRequest
+          |> Cmd.map GenericSave
+        , Http.request
+          { method = "PUT"
+          , headers = [ Http.header "x-id-token" authenticatedUser.idToken ]
+          , url = "/api/people/me/projects/" ++ subjectId ++ "/" ++ projectId ++ "/" ++ status
+          , body = Http.emptyBody
+          , expect = Http.expectJson <| Decode.succeed ()
+          , timeout = Nothing
+          , withCredentials = False
+          }
+          |> RemoteData.sendRequest
+          |> Cmd.map GenericSave
+        ]
+  in
+    case (modelProjectStatusOptional subjectId projectId).getOption model of
+
+      -- Shouldn't happen
+      Nothing -> Cmd.none
+
+      Just NotStarted ->
+        Http.request
+         { method = "DELETE"
+         , headers = [ Http.header "x-id-token" authenticatedUser.idToken ]
+         , url = "/api/people/me/projects/" ++ subjectId ++ "/" ++ projectId
+         , body = Http.emptyBody
+         , expect = Http.expectJson <| Decode.succeed ()
+         , timeout = Nothing
+         , withCredentials = False
+         }
+         |> RemoteData.sendRequest
+         |> Cmd.map GenericSave
+
+      Just (Started url) -> putStatusAndUrl "in-progress" url
+
+      Just (Finished url) -> putStatusAndUrl "done" url
+
+loadMyProjects : Authentication.AuthenticatedUser -> Cmd Msg
+loadMyProjects authenticatedUser =
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "x-id-token" authenticatedUser.idToken ]
+        , url = "/api/people/me/projects"
+        , body = Http.emptyBody
+        , expect = Http.expectJson projectsDecoder
+        , timeout = Nothing
+        , withCredentials = False
+        }
+        |> RemoteData.sendRequest
+        |> Cmd.map MyProjectsResponse
 
 loadSubjectDetails : String -> Cmd Msg
 loadSubjectDetails subjectId =
@@ -429,6 +563,24 @@ knowledgeDecoder : Decoder Knowledge
 knowledgeDecoder =
     Decode.dict (Decode.list Decode.string)
 
+projectsDecoder : Decoder ProjectStatuses
+projectsDecoder =
+  Decode.map Dict.fromList
+    (Decode.list namedProjectStatusDecoder)
+
+namedProjectStatusDecoder : Decoder ((String, String), ProjectStatus)
+namedProjectStatusDecoder =
+  let
+    statusMapper subjectId topicId doneOn url =
+        ((subjectId, topicId), case doneOn of
+          Nothing -> Started (url |> Maybe.withDefault "")
+          Just v -> Finished (url |> Maybe.withDefault ""))
+  in
+    Decode.map4 statusMapper
+      (field "subject" Decode.string)
+      (field "project" Decode.string)
+      (maybe (field "doneOn" Decode.string))
+      (maybe (field "url" Decode.string))
 
 topicSummaryDecoder : Decoder TopicSummary
 topicSummaryDecoder =
@@ -446,7 +598,7 @@ subjectSummariesDecoder =
 myStudentDetailsDecoder : Decoder MyStudentDetails
 myStudentDetailsDecoder =
     Decode.succeed MyStudentDetails
-        |> hardcoded "foo"
+        |> hardcoded "foo" -- FIXME
 
 
 subjectDetailsDecoder : Decoder SubjectDetails
@@ -527,7 +679,7 @@ resourceDecoder =
 
 view : Route -> Model -> Html Msg
 view r model =
-    case RemoteData.map2 (\a b -> ( a, b )) model.subjectSummaries model.myKnowledge of
+    case RemoteData.map3 (\a b c-> ( a, b, c )) model.subjectSummaries model.myKnowledge model.myProjects of
         NotAsked ->
             Fragments.spinner
 
@@ -537,7 +689,7 @@ view r model =
         RemoteData.Failure err ->
             text "Failed to load the Core Curriculum."
 
-        Success ( subjectSummaries, myKnowledge ) ->
+        Success ( subjectSummaries, myKnowledge, myProjects ) ->
             case r of
                 Home ->
                     viewHome subjectSummaries
@@ -548,7 +700,7 @@ view r model =
                             Fragments.spinner
 
                         Just subjectDetails ->
-                            viewSubject subjectDetails myKnowledge
+                            viewSubject subjectDetails myKnowledge myProjects
 
                 ShowTopic subjectId topicId ->
                     case Dict.get subjectId model.subjectDetails of
@@ -587,13 +739,13 @@ viewHome subjectSummaries =
         ]
 
 
-viewSubject : SubjectDetails -> Knowledge -> Html Msg
-viewSubject subjectDetails knowledge =
+viewSubject : SubjectDetails -> Knowledge -> ProjectStatuses -> Html Msg
+viewSubject subjectDetails knowledge projectstatuses =
     div []
         [ Fragments.viewBreadCrumbs [ ( "University", Just "/university" ), ( subjectDetails.name, Nothing ) ]
         , h1 [] [ text subjectDetails.name ]
         , viewKnowledgeGraph subjectDetails knowledge
-        , viewProjects subjectDetails.projects
+        , viewProjects subjectDetails.id subjectDetails.projects projectstatuses
         ]
 
 
@@ -746,9 +898,10 @@ viewAbilities abilities =
             ]
 
 
-viewProjects : List Project -> Html Msg
-viewProjects projects =
+viewProjects : String -> List Project -> ProjectStatuses -> Html Msg
+viewProjects subjectId projects projectStatuses =
   let
+
     viewProject : Project -> Html Msg
     viewProject project = div
       [ class "card", class "mt-3" ]
@@ -762,10 +915,45 @@ viewProjects projects =
       , div
         [ class "card-footer" ]
         [ text <| "Depends on: " ++ String.join ", " project.dependencies]
+      , div [ class "card-footer" ]
+          [ viewProjectStatus subjectId project.id projectStatuses ]
       ]
   in
     div [ class "mt-3" ] <|
       (h1 [] [ text "Projects"]) :: (List.map viewProject projects)
+
+viewProjectStatus : String -> String -> ProjectStatuses -> Html Msg
+viewProjectStatus subjectId projectId projectStatuses =
+  let
+    status value = label [ class "my-1", class "mr-2" ] [ text <| "Status: " ++ value ]
+    urlInput = onInput (\v -> UpdateProject <| SetProjectURL subjectId projectId v)
+    urlBlur = onBlur <| UpdateProject <| SaveProjectURL subjectId projectId
+    statusClick constructor = onClick <| UpdateProject <| constructor subjectId projectId
+    content =
+      case Dict.get (subjectId, projectId) projectStatuses |> Maybe.withDefault NotStarted of
+        NotStarted ->
+          [ status "Not Started"
+          , button [ type_ "button", class "btn btn-primary", statusClick StartProject ] [ text "Start" ]
+          ]
+
+        Started url ->
+            [ status "In Progress"
+            , button [ type_ "button", class "btn btn-cancel", statusClick StopProject] [ text "Cancel" ]
+            , input [ type_ "text", Html.Attributes.value url, class "form-control", placeholder "Repository URL", urlInput, urlBlur ] []
+            , button [ type_ "button", class "btn btn-primary", statusClick FinishProject ] [ text "Finished!" ]
+            ]
+
+        Finished url ->
+          [ status "Completed"
+          , button [ type_ "button", class "btn btn-cancel", statusClick StartProject ] [ text "Reopen" ]
+          , input [ type_ "text", Html.Attributes.value url, class "form-control", placeholder "Repository URL", urlInput, urlBlur ] []
+          ]
+  in
+    Html.form []
+    [ div
+      [ class "form-row align-items-center" ]
+      (List.map (\elem -> div [ class "col-auto", class "my-1" ] [ elem ]) content)
+    ]
 
 
 viewKnowledgeGraph : SubjectDetails -> Knowledge -> Html Msg

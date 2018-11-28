@@ -138,6 +138,7 @@ object CompetenceCenterApi extends App {
       coreCurriculumController.`GET /people/me/knowledge` :+:
       coreCurriculumController.`GET /people/{email}/knowledge` :+:
       coreCurriculumController.`GET /people/me/knowledge/{subject}` :+:
+      coreCurriculumController.`GET /people/me/projects` :+:
       coreCurriculumController.`GET /people/me/projects/{subject}` :+:
       coreCurriculumController.`GET /people/{email}/knowledge/{subject}` :+:
       coreCurriculumController.`GET /people/{email}/projects` :+:
