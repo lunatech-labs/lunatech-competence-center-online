@@ -86,7 +86,7 @@ mappings in Docker ++= Seq(
 
 // Add frontend files to Docker
 mappings in Docker ++= {
-  val sourceDir = baseDirectory.value / ".." / "frontend" / "build" / "default"
+  val sourceDir = baseDirectory.value / ".." / "elm-frontend" / "dist"
   ((sourceDir.*** --- sourceDir) pair relativeTo(sourceDir)).map { case (file, mapping) =>
     file -> ("opt/docker/frontend/" + mapping)
   }
@@ -108,26 +108,15 @@ mappings in Docker ++= {
   }
 }
 
-val buildFrontend = TaskKey[File]("build-frontend", "Build the Polymer Frontend")
+val buildFrontend = TaskKey[File]("build-frontend", "Build the Elm Frontend")
 
 buildFrontend := {
-  val srcDir = baseDirectory.value / ".." / "frontend"
-  val targetDir = srcDir / "build" / "default"
+  val srcDir = baseDirectory.value / ".." / "elm-frontend"
+  val targetDir = srcDir / "dist"
 
-  println(s"Running 'npm install' in directory $srcDir")
-  val npmOut = Process("npm install", Some(srcDir)).!
-  if(npmOut != 0) sys.exit(npmOut)
-
-  println(s"Running 'polymer build' in directory $srcDir")
-  val polymerOut = Process("polymer build", Some(srcDir)).!
-
-  if(polymerOut != 0) sys.exit(polymerOut)
-
-  // There seems to be a bug in Polymer-cli preventing all dependencies to be properly copied to
-  // the build directory. We were missing the google-signin buttons.
-  println(s"Running 'bower install' in directory $targetDir")
-  val bowerOut = Process("bower install --force", Some(targetDir)).!
-  if(bowerOut != 0) sys.exit(bowerOut)
+  println(s"Running 'parcel build index.html' in directory $srcDir")
+  val parcelOut = Process("parcel build index.html", Some(srcDir)).!
+  if(parcelOut != 0) sys.exit(parcelOut)
 
   targetDir
 }
