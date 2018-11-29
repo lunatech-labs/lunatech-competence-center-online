@@ -69,7 +69,7 @@ import('./src/Main.elm')
 
           // This initializes the library, and also automatically signs in if the user was previously signed in.
           const googleAuth = gapi.auth2.init({
-            client_id: '172845937673-smq0kn52ie1spg9irdrhk4stgk7nrp0g.apps.googleusercontent.com'
+            client_id: '172845937673-o2va0riva3oihoib0f7ld1c70vt9eojo.apps.googleusercontent.com'
           });
 
 
