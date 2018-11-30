@@ -9,16 +9,15 @@
 <link rel="import" href="../bower_components/paper-datatable-api/paper-datatable-api-column.html">
 <link rel="import" href="shared-styles.html">
 
+<!--ToDo This page is still in development-->
+
 <dom-module id="page-cvs">
-
     <template>
-
         <style include="iron-flex iron-flex-alignment"></style>
         <style>
             div.layout > div {
                 width: 90%;
             }
-
             paper-card {
                 width: 100%;
             }
@@ -29,7 +28,7 @@
         <div class="layout horizontal center-justified">
             <div>
                 <iron-ajax id="ajaxLoad"
-                           url="/api/cvs"
+                           url="/api/employees/passport"
                            handle-as="json"
                            loading={{loading}}
                            on-response="_handleResponse"></iron-ajax>
@@ -43,20 +42,20 @@
                     </div>
                     <div class="card-content">
                         <paper-datatable-api data="[[dataTable]]" on-sort="_handleSort" on-filter="_handleFilter">
-                            <paper-datatable-api-column header="Name" property="person.name.fullName" type="String"
+                            <paper-datatable-api-column header="Name" property="basics" type="Object"
+                                                        sortable>
+                                <template>[[value.givenName]] [[value.familyName]] </template>
+                            </paper-datatable-api-column>
+                            <paper-datatable-api-column header="Email" property="basics.email" type="String"
+                                                        sortable>
+                                <template> <a name="workshops" href="/employees/[[value]]">{{value}}</a></template>
+                            </paper-datatable-api-column>
+                            <paper-datatable-api-column header="Title" property="basics.label" type="String"
                                                         sortable>
                                 <template>[[value]]</template>
                             </paper-datatable-api-column>
-                            <paper-datatable-api-column header="Email" property="person.email" type="String"
-                                                        sortable>
-                                <template>{{value}}</template>
-                            </paper-datatable-api-column>
-                            <paper-datatable-api-column header="Title" property="cv.employee.basics.label" type="String"
-                                                        sortable>
-                                <template>[[value]]</template>
-                            </paper-datatable-api-column>
-                            <paper-datatable-api-column header="Skills" property="cv">
-                                <template>{{formatSkills(item)}}</template>
+                            <paper-datatable-api-column header="Skills" property="skills">
+                                <template>[[formatSkills(value)]]</template>
                             </paper-datatable-api-column>
                             <div no-results>Loading or no more items...</div>
                         </paper-datatable-api>
@@ -67,41 +66,54 @@
     </template>
 
     <script>
-        Polymer({
-            is: 'page-cvs',
-            properties: {
-                data: {
-                    type: Array,
-                    notify: true
-                },
-                dataTable: {
-                    type: Array,
-                    notify: true
+        class PageCVs extends Polymer.Element {
+            static get is () {
+                return 'page-cvs';
+            }
+
+            static get properties () {
+                return {
+                    data: {
+                        type: Array,
+                        notify: true
+                    },
+                    dataTable: {
+                        type: Array,
+                        notify: true
+                    }
                 }
-            },
-            ready: function() {
-                this.$.ajaxLoad.headers = {'X-ID-Token': this.$.meta.byKey('idToken')};
-                this.$.ajaxLoad.generateRequest();
-            },
-            formatSkills: function(cv) {
-                if (!cv || !cv.employee.skills) {
+            }
+
+            ready () {
+                super.ready();
+                setTimeout(function () {
+                    this.$.ajaxLoad.headers = {'X-ID-Token': this.$.meta.byKey('idToken')};
+                    this.$.ajaxLoad.generateRequest();
+                }.bind(this), 1000);
+            }
+
+            formatSkills(skills) {
+                if (!skills) {
                     return '';
                 }
-                return cv.employee.skills.map(function(skill) {
+                return skills.map(function(skill) {
                     return skill.name;
                 }).join(', ');
-            },
-            _handleResponse: function(event) {
+            }
+
+            _handleResponse(event) {
                 this.data = event.detail.response;
                 this.dataTable = this.data;
-            },
-            _handleFilter: function(event) {
+            }
+
+            _handleFilter(event) {
                 var keyword = this.searchTerm;
                 this.dataTable = this.data.filter(function(item) {
-                    return item.person.email.match(keyword, 'i');
+                    return item.basics.email.match(keyword, 'i');
                 });
-            },
-            _handleSort: function(event) {
+            }
+
+            _handleSort(event) {
                 function index(obj,is, value) {
                     if (typeof is == 'string')
                         return index(obj,is.split('.'), value);
@@ -114,15 +126,18 @@
                 }
 
                 this.dataTable = this.data.sort(function(a, b) {
+                    console.log("Hiii");
+                    console.log(event.detail.sort.property);
+                    console.log(typeof event.detail.sort.property !== 'basics');
                     if(typeof event.detail.sort.property !==undefined){
                         var aString = index(a,event.detail.sort.property);
                         var bString = index(b,event.detail.sort.property);
-                    }else{
-                        var aString = a.person.name.fullName;
-                        var bString = b.person.name.fullName;
+                    } else {
+                        var aString = a.basics.givenName;
+                        var bString = b.basics.givenName;
                     }
 
-                    if(event.detail.sort.direction == 'desc'){
+                    if(event.detail.sort.direction == 'desc') {
                         return (aString < bString) ? 1 : ((bString < aString) ? -1 : 0);
                     } else {
                         return -1 * ((aString < bString) ? 1 : ((bString < aString) ? -1 : 0));
@@ -131,9 +146,13 @@
                 console.log(event.detail.sort.property, event.detail.sort.direction);
                 //for some reason this's needed to trigger the data table refresh
                 this.dataTable = this.dataTable.filter(function(item) {
-                    return item.person.email.match('', 'i');
+
+                    return item.basics.email.match('', 'i');
                 });
             }
-        });
+
+        }
+        customElements.define(PageCVs.is, PageCVs);
+
     </script>
 </dom-module>

@@ -38,7 +38,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <paper-spinner active=[[loading]]></paper-spinner>
 
     <iron-ajax id="ajaxLoad"
-        url="/api/employees/me"
+        url="/api/passport/me"
         handle-as="json"
         last-response="{{passport}}"
         loading={{loading}}></iron-ajax>
@@ -50,20 +50,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
   <script>
-    Polymer({
-      is: 'page-passport',
-      properties: {
-        passport: {
-          type: Object
-        }
-      },
+      class PagePassport extends Polymer.Element {
+          static get is () {
+              return 'page-passport';
+          }
 
-      ready: function() {
-        this.$.ajaxLoad.headers = { "X-ID-Token": this.$.meta.byKey("idToken")}
-        this.$.ajaxLoad.generateRequest();
+          static get properties () {
+              return {
+                  passport: {
+                      type: Object
+                  }
+              }
+          }
+
+          ready() {
+              super.ready();
+              this.$.ajaxLoad.headers = { "X-ID-Token": this.$.meta.byKey("idToken")};
+              this.$.ajaxLoad.generateRequest();
+          }
       }
 
-    });
+      customElements.define(PagePassport.is, PagePassport);
+
   </script>
 
 </dom-module>
