@@ -213,7 +213,6 @@ CV Editor
          <div class="header">Key Skills
            <template is="dom-if" if="{{data.skills.length}}">
            <div class="content">
-             <br>
              <b>TechMatrix Skills</b>
              <ul data-column="2">
              <template is="dom-repeat" items="{{data.skills}}" filter="isTechMatrix" observe="item.category">
@@ -222,26 +221,24 @@ CV Editor
                  <span class="right"> {{item.level}} / 10</span>
                </li>
              </template>
-            </ul>
+             </ul>
            </div>
-           <br>
            <div class="content">
-             <br>
              <b>Technical Skills</b>
              <template is="dom-repeat" items="{{data.skills}}" filter="isTech" observe="item.category">
+               <br>
                <div class="content">
                  <div class="left">
                    {{item.name}}
                  </div>
-                 <pre></pre>
                  <div class="right">
                    {{item.level}} / 10
                  </div>
                </div>
              </template>
            </div>
-           <br>
            <div class="content">
+             <br>
              <b>Fun Skills</b>
              <template is="dom-repeat" items="{{data.skills}}" filter="isFun" observe="item.category">
                <br>
@@ -249,13 +246,13 @@ CV Editor
                  <div class="left">
                    {{item.name}}
                  </div>
-                 <pre></pre>
                  <div class="right">
                    {{item.level}} / 10
                  </div>
                </div>
              </template>
            </div>
+
            </template>
          </div>
        </div>
@@ -264,7 +261,6 @@ CV Editor
        <div class="card-content">
          <div class="header">Achievements</div>
          <template is="dom-repeat" items="{{data.achievements}}">
-           <br>
            <div class="content">
              {{item}}
            </div>
@@ -272,6 +268,8 @@ CV Editor
 
        </div>
      </paper-card>
+
+
    </template>
 
    <!-- editable view -->
