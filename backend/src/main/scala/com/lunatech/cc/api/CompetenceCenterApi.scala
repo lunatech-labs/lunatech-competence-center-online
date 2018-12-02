@@ -127,12 +127,12 @@ object CompetenceCenterApi extends App {
                                       peopleService,
     passportService,
                                       cvFormatter,
-    debug_authenticated,
-    debug_authenticatedUser)
+    authenticated,
+    authenticatedUser)
 
   val workshopController =
     new WorkshopController(workshopService, authenticated)
-  val passportController = new PassportController(passportService ,peopleService, matrixService, debug_authenticated, debug_authenticatedUser)
+  val passportController = new PassportController(passportService ,peopleService, matrixService, authenticated, authenticatedUser)
 
   val peopleController = new PeopleController(peopleService, authenticatedUser)
   val coreCurriculumController = new CoreCurriculumController(
