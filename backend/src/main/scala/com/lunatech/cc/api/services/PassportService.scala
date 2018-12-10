@@ -34,7 +34,6 @@ class PostgresPassportService(transactor: Transactor[Task]) extends PassportServ
   override def save(email: String, passport: Json): Int =
     saveQuery(email,passport).run.transact(transactor).unsafeRun()
 
-
 }
 
 /**
@@ -50,7 +49,8 @@ object PassportQueries {
   def findAllQuery:Query0[Json] = sql"SELECT passport FROM passports".query[Json]
 
   def saveQuery(email: String, passport: Json) =
-    sql"INSERT INTO passports (id, person, passport, created_on, modified_on) VALUES (${UUID.randomUUID.toString} :: UUID, $email, $passport, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) ON CONFLICT (person) DO UPDATE SET passport = EXCLUDED.passport,modified_on = CURRENT_TIMESTAMP".update
-
-
+    sql"""
+        WITH upsert AS (UPDATE passports SET passport=$passport, modified_on=CURRENT_TIMESTAMP WHERE person = $email RETURNING *)
+        INSERT INTO passports (id, person, passport, created_on, modified_on) SELECT ${UUID.randomUUID.toString} :: UUID, $email, $passport, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP WHERE NOT EXISTS (SELECT * FROM upsert)
+      """.update
 }

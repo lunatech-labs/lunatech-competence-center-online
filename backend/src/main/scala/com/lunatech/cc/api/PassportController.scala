@@ -36,18 +36,16 @@ class PassportController(passportService: PassportService, peopleService: People
       case Left(e) => NotFound(e)
     }
 
-
   }
 
   val `PUT /passport`: Endpoint[Json] = put("passport" :: authenticatedUser :: jsonBody[Json]) { (user: EnrichedGoogleUser, passport: Json) =>
     passport.as[Employee] match {
       case Right(_) =>
         logger.debug("received data")
-        val result: Int = passportService.save(user.email, passport)
-        if (result > 0) Ok(passport)
-        else InternalServerError(new Exception("Errors while saving passport"))
+        passportService.save(user.email, passport)
+        Ok(passport)
       case Left(e) =>
-        logger.debug(s"incorrect data $e in $passport")
+        logger.error(s"incorrect data $e in $passport")
         BadRequest(new RuntimeException(e))
     }
   }
@@ -97,10 +95,6 @@ class PassportController(passportService: PassportService, peopleService: People
       }
     }
   }
-
-
-
-
 
 }
 
