@@ -3,6 +3,7 @@ package exampledb.test.specs.unit.data
 import scala.concurrent.Future
 import scala.concurrent.duration._
 
+import akka.actor.ActorSystem
 import akka.util.Timeout
 import exampledb.Value
 import exampledb.data.Store
@@ -15,6 +16,7 @@ class StoreSpec extends fixture.AsyncFlatSpec with Matchers {
     withFixture(test.toNoArgAsyncTest(FixtureParam(new Store())))
 
   private implicit val timeout: Timeout = 3.seconds
+  private implicit val system: ActorSystem = ActorSystem(name = "StoreSpec")
 
   private val testKey = "some key"
   private val testValue = "some value".getBytes

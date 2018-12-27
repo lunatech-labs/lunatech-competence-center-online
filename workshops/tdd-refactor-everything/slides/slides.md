@@ -225,7 +225,7 @@ Note:
 * Actual code - https://github.com/akka/akka-management/blob/c6f17cd1f7e162638d085e73d92bde6389306807/discovery-marathon-api/src/main/scala/akka/discovery/marathon/MarathonApiSimpleServiceDiscovery.scala#L35
 
 
-## Simple database with REST API 1/2
+## Simple database 1/2
 
 ***Data Store***
 
@@ -359,12 +359,12 @@ actualState should be(expectedState)
 <!-- .element: class="fragment fade-in" -->
 
 
-## Simple database with REST API 2/2
+## Simple database 2/2
 
-***REST API***
+***Transactions***
 
-* Can add, update and remove data
-* Can retrieve data
+* Can aggregate multiple updates in one request
+* Supports transactions for aggregated updates
 ---
 
 ### Refactoring
@@ -400,12 +400,12 @@ Note:
 * Remove tests when they say the same thing in the same way and confidence is not reduced
 
 
-## Simple database with REST API 3/2
+## Simple database 3/2
 
-***Transactions***
+***Persistence***
 
-* Can aggregate multiple updates in one request
-* Supports transactions for aggregated updates
+* All updates are persisted
+* Database can be restarted without losing data
 ---
 
 ## Further Reading
