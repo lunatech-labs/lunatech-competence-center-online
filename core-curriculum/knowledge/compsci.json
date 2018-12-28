@@ -1,0 +1,624 @@
+{
+  "id": "compsci",
+  "name": "Computer Science",
+  "description": "Computer science is the theory, experimentation, and engineering that form the basis for the design and use of computers. It involves the study of algorithms that process, store, and communicate digital information.\n\nWe'll use **Java** from most of the learning resources, but all these concepts apply to any programming language including Scala. For this reason you can download _Think Java: How to Think Like a Computer Scientist_ from our Ebooks Page.",
+  "headmaster": "gustavo.de.micheli@lunatech.com",
+  "teachers": [ "erik.bakker@lunatech.com", "gustavo.de.micheli@lunatech.com" ],
+  "tags": [],
+  "image": "/images/compsci.jpg",
+  "topics": [
+    {
+      "id": "compsci-basics",
+      "name": "Basics",
+      "description": "We begin _Computer Science_ with the study of the basics all programs are made of, which include:\n- Variables and Constants.\n- Operators.\n- Statements and Expressions.\n- Control flow.\n\nThese tools will form the foundation for designing and implementing any kind of algorithms, if we are able to understand them without the distraction of the programming language we'll be able to use them in different environments.\n\nAlthough we usually don't work on a structured programming language (like [Basic](https://en.wikipedia.org/wiki/BASIC)) the lessons that can be learned from these languages can also be carried to a Object Oriented programming language such as Java.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Think Java: The way of the program",
+          "type": "book",
+          "url": "http://greenteapress.com/thinkjava6/html/thinkjava6002.html",
+          "notes": "See *Chapter 1*"
+        },
+        {
+          "name": "Think Java: Variables and operators",
+          "type": "book",
+          "url": "http://greenteapress.com/thinkjava6/html/thinkjava6003.html",
+          "notes": "See *Chapter 2*"
+        },
+        {
+          "name": "Think Java: Conditionals and logic",
+          "type": "book",
+          "url": "http://greenteapress.com/thinkjava6/html/thinkjava6006.html",
+          "notes": "See *Chapter 5*"
+        },
+        {
+          "name": "Think Java: Loops",
+          "type": "book",
+          "url": "http://greenteapress.com/thinkjava6/html/thinkjava6008.html",
+          "notes": "See *Chapter 7*"
+        },
+        {
+          "name": "Expressions, Statements, and Blocks",
+          "type": "article",
+          "url": "https://www.math.uni-hamburg.de/doc/java/tutorial/java/nutsandbolts/expressions.html"
+        },
+        {
+          "name": "Flowcharts",
+          "type": "article",
+          "url": "https://en.wikipedia.org/wiki/Flowchart"
+        },
+        {
+          "name": "Structured Programming",
+          "type": "article",
+          "url": "https://en.wikipedia.org/wiki/Structured_programming"
+        },
+        {
+          "name": "Notes on Structured Programming",
+          "type": "article",
+          "url": "http://www.cs.utexas.edu/users/EWD/ewd02xx/EWD249.PDF"
+        },
+        {
+          "name": "Go-to statement considered harmful",
+          "type": "article",
+          "url": "https://www.cs.utexas.edu/users/EWD/ewd02xx/EWD215.PDF"
+        }
+      ],
+      "abilities": [
+        "Define simple programs with an _Input-Compute-Output_ flow.",
+        "Define branching logic for scenarios that require different treatment of the input.",
+        "Repeat patterns or sequence of intructions with the least amount of code.",
+        "Be able to explain the difference between Statements and Expressions.",
+        "Define variables of different types.",
+        "Be able to read and write algorithms in flowcharts."
+      ],
+      "assessment-questions": [
+        { "question": "What are the most common blocks of a flowchart?" },
+        { "question": "Can you draw a flowchart that computes the average score of a list of students, given that the user input them one by one?" },
+        { "question": "Can you explain the difference between statements and expressions?" },
+        { "question": "Why is Go-To considered harmful?" },
+        { "question": "Can keywords such as `break` and `continue` be consider a special case of Go-To? How can we get rid of `break`? Show an example." },
+        { "question": "Can we consider Object Oriented Programming an extension of Structured Programming? Why?" },
+        { "question": "What's the purpose of every program?", "answer-hint": "What does a program do to its input?" },
+        { "question": "Can you define what we mean with *Algorithm*?" },
+        { "question": "What's the difference between *compiled* and *interpreted* code?" },
+        { "question": "What's the purpose of a variable?" },
+        { "question": "What do we mean when we refer to variable's type? Can you name at least 3 types?" },
+        { "question": "What do operators do? And what about operands?" },
+        { "question": "What's a *bug*? How do we deal with them?" },
+        { "question": "What type of errors can you get when working on a program?" },
+        { "question": "Why do we use conditionals (branching code)?" },
+        { "question": "What do we mean when we refer to branching code?" },
+        { "question": "Why do we use loops?" },
+        { "question": "(Java) Can *exceptions* be considered a special case of Go-To?" },
+        { "question": "(Java) Can *variables* change their type after declaration?" },
+        { "question": "What the difference between variable declaration and initialisation?" },
+        { "question": "Can *constants* change their value? Why?" }
+      ]
+    },
+
+    {
+      "id": "compsci-ethics",
+      "name": "Ethics",
+      "description": "Computer ethics is a part of practical philosophy concerned with how computing professionals should make decisions regarding professional and social conduct.",
+      "tags": ["required-for-junior"],
+      "resources": [
+        {
+          "name": "Computer ethics",
+          "type": "article",
+          "url": "https://en.wikipedia.org/wiki/Computer_ethics"
+        },
+        {
+          "name": "Computer and Information Ethics",
+          "type": "article",
+          "url": "https://plato.stanford.edu/entries/ethics-computer/"
+        }
+      ],
+      "abilities": [
+        "Recognise when the task at hand goes against a socially accepted conduct."
+      ],
+      "assessment-questions": []
+    },
+
+    {
+      "id": "decomposition",
+      "name": "Decomposition and modularity",
+      "description": "Once we learned the basics we must move on to how we structure solutions in a manageable way, decomposition and modularity let us reuse and understand code more easily, and without it every program would be a mess of one statement after another.\n\nIf we can comprehend both of these techniques we'll be able to start building and architecting solutions that other people (including future _you_) can understand, modify and improve.",
+      "tags": ["required-for-junior"],
+      "dependencies": ["compsci-basics"],
+      "resources": [
+        {
+          "name": "Think Java: Void methods",
+          "type": "book",
+          "url": "http://greenteapress.com/thinkjava6/html/thinkjava6005.html",
+          "notes": "See *Chapter 4*"
+        },
+        {
+          "name": "Think Java: Value methods",
+          "type": "book",
+          "url": "http://greenteapress.com/thinkjava6/html/thinkjava6007.html",
+          "notes": "See *Chapter 6*"
+        },
+        {
+          "name": "Think Java: Objects",
+          "type": "book",
+          "url": "http://greenteapress.com/thinkjava6/html/thinkjava6011.html",
+          "notes": "See *Chapter 10*"
+        },
+        {
+          "name": "Think Java: Classes",
+          "type": "book",
+          "url": "http://greenteapress.com/thinkjava6/html/thinkjava6012.html",
+          "notes": "See *Chapter 11*"
+        },
+        {
+          "name": "Java Lessons: Packages",
+          "type": "documentation",
+          "url": "https://docs.oracle.com/javase/tutorial/java/package/index.html"
+        },
+        {
+          "name": "Package by feature, not layer",
+          "type": "article",
+          "url": "http://www.javapractices.com/topic/TopicAction.do?Id=205"
+        },
+        {
+          "name": "Project Package Organization",
+          "type": "article",
+          "url": "https://dzone.com/articles/project-package-organization"
+        }
+      ],
+      "abilities": [
+        "Extract common patterns into functions or methods.",
+        "Structure and architect solutions in a comprehensible way, through package definition.",
+        "Encapsulate data and behavior inside a class."
+      ],
+      "assessment-questions": [
+        { "question": "Which are the parts of a function?" },
+        { "question": "What's the difference between arguments and parameters?" },
+        { "question": "What's the difference between functions and procedures?" },
+        { "question": "What's the difference between formal arguments and actual arguments?" },
+        { "question": "What's the name given to fields and methods inside a Class?" },
+        { "question": "What's the difference between a Class and an Object?" },
+        { "question": "What's method overloading?" },
+        { "question": "(Java) What's the recommended package structure? How must the folders follow the package structure?", "answer-hint": "Look for _inverse domain_" },
+        { "question": "How does a class encapsulate data and behavior?" }
+      ]
+    },
+
+    {
+      "id": "collections",
+      "name": "Collections",
+      "description": "Once we begin building and manipulating more complex data and programs we'll start needing to hold on more information that a single type can hold (eg. a Integer variable), this is where collections come in handy allowing us to group data under a single data structure.\n\nDifferent collection have different semantics, and where one is efficient for a use case it may not be for another, so picking the right one becomes important for solving the problem at hand.",
+      "tags": ["required-for-junior"],
+      "dependencies": ["decomposition"],
+      "resources": [
+        {
+          "name": "Think Java: Arrays",
+          "type": "book",
+          "url": "http://greenteapress.com/thinkjava6/html/thinkjava6009.html",
+          "notes": "See *Chapter 8*"
+        },
+        {
+          "name": "Static vs Dynamic Arrays",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=qTb1sZX74K0"
+        },
+        {
+          "name": "Linked Lists",
+          "type": "book",
+          "url": "https://www.mta.ca/~rrosebru/oldcourse/263114/Dsa.pdf",
+          "notes": "See *Chapter 2*"
+        },
+        {
+          "name": "Binary Trees",
+          "type": "book",
+          "url": "https://www.mta.ca/~rrosebru/oldcourse/263114/Dsa.pdf",
+          "notes": "See *Chapter 3*"
+        },
+        {
+          "name": "Sets",
+          "type": "book",
+          "url": "https://www.mta.ca/~rrosebru/oldcourse/263114/Dsa.pdf",
+          "notes": "See *Chapter 5*"
+        },
+        {
+          "name": "Basics of Hash Table",
+          "type": "article",
+          "url": "https://www.hackerearth.com/practice/data-structures/hash-tables/basics-of-hash-tables/tutorial/",
+          "notes": "Code is provided in C/C++"
+        },
+        {
+          "name": "Hash table simple example",
+          "type": "article",
+          "url": "http://www.algolist.net/Data_structures/Hash_table/Simple_example"
+        },
+        {
+          "name": "Queues",
+          "type": "book",
+          "url": "https://www.mta.ca/~rrosebru/oldcourse/263114/Dsa.pdf",
+          "notes": "See *Chapter 6*"
+        }
+      ],
+      "abilities": [
+        "Pick the right collection for the task at hand.",
+        "Implement your own collections.",
+        "Understand each collection's semantics"
+      ],
+      "assessment-questions": [
+        { "question": "What's the difference between static and dynamic arrays? Can you give an example? Can you name pros and cons of both?" },
+        { "question": "How do trees store information/values? What goes into the left sub-tree? And what into the right sub-tree?" },
+        { "question": "Can you name at least two implementations of a Hash Table?" },
+        { "question": "How can you modify a List and transform it into a Queue?" },
+        { "question": "In which collections cannot insert duplicate elements?", "answer-hint": "There is more than one type of collection." },
+        { "question": "What types of traversal do trees have? Can you illustrate with an example?" },
+        { "question": "What do we mean when we refer to hash collision? How can we mitigate it?" },
+        { "question": "What do we mean when we refer to *Buckets* in a hash table?" },
+        { "question": "What types of queues can we have?" }
+      ]
+    },
+
+    {
+      "id": "recursion",
+      "name": "Recursion",
+      "description": "The concept of recursive programming is often difficult, and usually taught on advanced courses, it’s also unintuitive process; when we give instructions to other people, we rarely direct them recursively. Nonetheless recursion allow us to solve some issues more elegantly with less lines of code ",
+      "tags": [],
+      "dependencies": ["decomposition"],
+      "resources": [
+        {
+          "name": "Think Java: Conditionals and logic",
+          "type": "book",
+          "url": "http://greenteapress.com/thinkjava6/html/thinkjava6006.html#sec64",
+          "notes": "See *Chapter 5, section 8*"
+        },
+        {
+          "name": "Recursion",
+          "type": "book",
+          "url": "https://en.wikipedia.org/wiki/Recursion_(computer_science)"
+        },
+        {
+          "name": "Computerphile - What on Earth is Recursion?",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=Mv9NEXX1VHc"
+        },
+        {
+          "name": "Examples of recursion in Java",
+          "type": "book",
+          "url": "https://introcs.cs.princeton.edu/java/23recursion/"
+        },
+        {
+          "name": "Introduction to Recursion",
+          "type": "video",
+          "url": "https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-00-introduction-to-computer-science-and-programming-fall-2008/video-lectures/lecture-4/"
+        },
+        {
+          "name": "Mastering recursive programming",
+          "type": "article",
+          "url": "https://developer.ibm.com/articles/l-recurs/"
+        },
+        {
+          "name": "Recursive Vs. Iterative Solutions",
+          "type": "book",
+          "url": "https://www.mta.ca/~rrosebru/oldcourse/263114/Dsa.pdf",
+          "notes": "See *Appendix C*"
+        },
+        {
+          "name": "Tail recursion",
+          "type": "article",
+          "url": "https://www.geeksforgeeks.org/tail-recursion/"
+        }
+      ],
+      "abilities": [
+        "Understand recursive functions.",
+        "Program recursive functions."
+      ],
+      "assessment-questions": [
+        { "question": "Can you implement your own version of a recursive Fibonacci function?" },
+        { "question": "Can you name some advantage of using recursive functions? What about iterative?" },
+        { "question": "What are the constituent parts of a recursive function?" }
+      ]
+    },
+
+    {
+      "id": "search-and-sorting",
+      "name": "Search and Sorting",
+      "description": "Two of the most basic problems involve searching for an element or sorting a collection, even if it's an array of integers or a list of accounts, which can be found in almost any program. Over the decades several algorithms have emerged, each with its own pros and cons, and just like collections picking the right one for the job at hand is important.\n\nWhen starting this topic it's best to learn about:\n- Bubble and Insert sort.\n- Sequential and binary search.\n\nAfter doing so, we can safely move on to more advanced techniques such as:\n- Quicksort and Shellsort.",
+      "tags": ["required-for-junior"],
+      "assessment-questions": [],
+      "dependencies": ["collections"],
+      "resources": [
+        {
+          "name": "Sorting",
+          "type": "book",
+          "url": "https://www.mta.ca/~rrosebru/oldcourse/263114/Dsa.pdf",
+          "notes": "See *Chapter 8*"
+        },
+        {
+          "name": "Searching",
+          "type": "book",
+          "url": "https://www.mta.ca/~rrosebru/oldcourse/263114/Dsa.pdf",
+          "notes": "See *Chapter 10*"
+        },
+        {
+          "name": "Algorithms: Sorting",
+          "type": "book",
+          "url": "https://algs4.cs.princeton.edu/20sorting/",
+          "notes": "See *Part 2*"
+        },
+        {
+          "name": "Coursera Algorithms: Sorting",
+          "type": "video",
+          "url": "https://www.coursera.org/learn/algorithms-part1",
+          "notes": "See videos on Elementary sorts, Mergesort and Quicksort."
+        }
+      ],
+      "abilities": [
+        "Understand basic sorting and searching algorithms."
+      ],
+      "assessment-questions": [
+        { "question": "As seen in the next subject, *Complexity*, Bubble and Insert Sort are very slow, where can they find their place in a program?" },
+        { "question": "What's the minimum requirement Binary Search imposes on the data stored?" }
+      ]
+    },
+
+    {
+      "id": "complexity",
+      "name": "Complexity",
+      "description": "Computational complexity theory focuses on classifying computational problems according to their inherent difficulty, and relating these classes to each other. The theory formalizes this intuition, by introducing mathematical models of computation to study these problems and quantifying their computational complexity, i.e., the amount of resources needed to solve them, such as time and storage.",
+      "dependencies": [ "search-and-sorting" ],
+      "resources": [
+        {
+          "name": "Coursera Algorithms: Analysis of Algorithms",
+          "type": "video",
+          "url": "https://www.coursera.org/learn/algorithms-part1",
+          "notes": "See videos on Analysis of Algorithms."
+        },
+        {
+          "name": "A Gentle Introduction to Algorithm Complexity Analysis",
+          "type": "article",
+          "url": "https://discrete.gr/complexity/"
+        },
+        {
+          "name": "Algorithmic Complexity",
+          "type": "article",
+          "url": "https://www.cs.cmu.edu/~adamchik/15-121/lectures/Algorithmic%20Complexity/complexity.html"
+        }
+      ],
+      "abilities": [
+        "Understand the complexity of the algorithms used in every day situations.",
+        "Compare algorithms by using a technology agnostic method with the Big-Oh notation.",
+        "Realise why your algorithm is having a bad performance."
+      ],
+      "assessment-questions": [
+        { "question": "What's the time complexity of a hash look-up? Can you explain why?" },
+        { "question": "What's the time complexity of a Binary Search? Can you explain why?" },
+        { "question": "Is `O(3n)` the same as `O(5n)`? Why?" },
+        { "question": "What does complexity measure?" },
+        { "question": "What's the difference between time and spatial complexity?" }
+      ]
+    },
+
+    {
+      "id": "model-of-computation",
+      "name": "Model of Computation",
+      "description": "A model of computation is a model which describes how a set of outputs are computed given a set of inputs. This model describes how units of computations, memories, and communications are organized. The computational complexity of an algorithm can be measured given a model of computation. Using a model allows studying the performance of algorithms independently of the variations that are specific to particular implementations and specific technology.\n\nBeware this topic is math heavy and mostly theoretical.",
+      "dependencies": [ "complexity" ],
+      "resources": [
+        {
+          "name": "Good Math",
+          "type": "book",
+          "url": "https://pragprog.com/book/mcmath/good-math",
+          "notes": "See Chapter _Finite State Machines: Simplicity Goes Far_, _The Turing Machine_ and _Calculus. No, Not That Calculus: λ Calculus_."
+        },
+        {
+          "name": "What is a Finite State Machine?",
+          "type": "article",
+          "url": "https://medium.com/@mlbors/what-is-a-finite-state-machine-6d8dec727e2c"
+        },
+        {
+          "name": "Finite State Machine (Finite Automata)",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=Qa6csfkK7_I"
+        },
+        {
+          "name": "The Rise of Finite State Machines",
+          "type": "article",
+          "url": "https://www.smashingmagazine.com/2018/01/rise-state-machines/",
+          "notes": "The code provided is on Javascript."
+        },
+        {
+          "name": "Basics of Automata Theory",
+          "type": "article",
+          "url": "https://cs.stanford.edu/people/eroberts/courses/soco/projects/2004-05/automata-theory/basics.html"
+        },
+        {
+          "name": "Computerphile - Turing Machines Explained",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=dNRDvLACg5Q"
+        },
+        {
+          "name": "Turing Machines",
+          "type": "article",
+          "url": "https://plato.stanford.edu/entries/turing-machine/"
+        },
+        {
+          "name": "Computerphile - Lambda Calculus",
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=eis11j_iGMs"
+        },
+        {
+          "name": "A Tutorial Introduction to the Lambda Calculus",
+          "type": "article",
+          "url": "http://www.inf.fu-berlin.de/inst/ag-ki/rojas_home/documents/tutorials/lambda.pdf"
+        },
+        {
+          "name": "An Introduction to Functional Programming Through Lambda Calculus",
+          "type": "book",
+          "url": "http://store.doverpublications.com/0486478831.html",
+          "notes": "See _Chapter 1, 2 and 3_."
+        }
+
+      ],
+      "assessment-questions": [],
+      "abilities": []
+    },
+
+    {
+      "id": "graphs-and-dynamic-programming",
+      "name": "Graphs and Dynamic Programming",
+      "description": "In this subject we'll study two related concepts: Graphs and Dynamic Programming.\n\nA *Graph* is data structure or collection which tries to mimic a mathematical graph, where a set of objects (vertices) are connected with each other (through edges).\n\n*Dynamic Programming* is both a mathematical optimization and a computer programming model, and it refers to solving a complex problem by creating simpler sub-problems in a recursive manner.",
+      "dependencies": [ "collections" ],
+      "resources": [
+        {
+          "name": "A Gentle Introduction to Graph Theory",
+          "type": "article",
+          "url": "https://medium.com/basecs/a-gentle-introduction-to-graph-theory-77969829ead8"
+        },
+        {
+          "name": "Graph theory and its traversal algorithms",
+          "type": "article",
+          "url": "https://hackernoon.com/graphs-in-cs-and-its-traversal-algorithms-cfee5533f74e"
+        },
+        {
+          "name": "Dynamic Programming Introduction",
+          "type": "article",
+          "url": "https://www.interviewbit.com/tutorial/dynamic-programming-dp-introduction/"
+        },
+        {
+          "name": "Dynamic Programming",
+          "type": "video",
+          "url": "https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-00sc-introduction-to-computer-science-and-programming-spring-2011/unit-3/lecture-23-dynamic-programming/#?w=535"
+        },
+        {
+          "name": "Using Graphs to Model Problems",
+          "type": "video",
+          "url": "https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-00sc-introduction-to-computer-science-and-programming-spring-2011/unit-3/lecture-21-using-graphs-to-model-problems-part-1/"
+        },
+        {
+          "name": "Dynamic Programming I: Fibonacci, Shortest Paths",
+          "type": "video",
+          "url": "https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-006-introduction-to-algorithms-fall-2011/lecture-videos/lecture-19-dynamic-programming-i-fibonacci-shortest-paths/"
+        }
+      ],
+      "assessment-questions": [],
+      "abilities": []
+    },
+
+    {
+      "id": "numerical-analysis",
+      "name": "Numerical Analysis",
+      "description": "Numerical analysis is the study of algorithms that use numerical approximation for the problems of mathematical analysis.",
+      "dependencies": [ "recursion" ],
+      "resources": [
+        {
+          "name": "Numerical Methods - Lecture Notes (Cambridge)",
+          "type": "article",
+          "url": "http://www.damtp.cam.ac.uk/user/fdl/people/sd103/lectures/nummeth98/index.htm#L_1_Title_Page"
+        },
+        {
+          "name": "Numerical Methods - Lecture Notes (Pennsylvania)",
+          "type": "article",
+          "url": "https://www.math.upenn.edu/~wilf/DeturckWilf.pdf"
+        }
+      ],
+      "assessment-questions": [],
+      "abilities": [
+        "Approximate solutions when you can't use symbolic manipulation or obtain exact reults."
+      ]
+    },
+
+    {
+      "id": "compilers",
+      "name": "Compilers",
+      "description": "A compiler is a computer program that transforms computer code written in one programming language (the source language) into another programming language (the target language)",
+      "dependencies": [ "model-of-computation" ],
+      "resources": [
+        {
+          "name": "Let's Build a Compiler",
+          "type": "article",
+          "url": "https://compilers.iecc.com/crenshaw/"
+        },
+        {
+          "name": "An Incremental Approach to Compiler Construction",
+          "type": "article",
+          "url": "http://scheme2006.cs.uchicago.edu/11-ghuloum.pdf"
+        },
+        {
+          "name": "Basics of Compiler Design",
+          "type": "article",
+          "url": "http://hjemmesider.diku.dk/~torbenm/Basics/basics_lulu2.pdf"
+        },
+        {
+          "name": "Gentle introduction into compilers",
+          "type": "article",
+          "url": "https://medium.com/dailyjs/gentle-introduction-into-compilers-part-1-lexical-analysis-and-scanner-733246be6738"
+        }
+      ],
+      "assessment-questions": [],
+      "abilities": []
+    },
+
+    {
+      "id": "game-theory",
+      "name": "Game Theory",
+      "description": "Game theory is the study of mathematical models of strategic interaction between rational decision-makers.",
+      "dependencies": [ "model-of-computation" ],
+      "resources": [
+        {
+          "name": "Game theory",
+          "type": "article",
+          "url": "https://en.wikipedia.org/wiki/Game_theory"
+        },
+        {
+          "name": "A Genius Intro To Game Theory",
+          "type": "article",
+          "url": "https://www.kotaku.com.au/2017/08/a-genius-intro-to-game-theory/"
+        },
+        {
+          "name": "Game Theory - Introduction",
+          "type": "article",
+          "url": "http://www.egwald.ca/operationsresearch/gameintroduction.php"
+        }
+      ],
+      "assessment-questions": [],
+      "abilities": []
+    }
+  ],
+
+  "projects": [
+    {
+      "id": "implement-sorting-i",
+      "name": "Implement sorting algorithms I",
+      "dependencies": ["search-and-sorting"],
+      "description": "The goal of this project is to implement basic sorting algoritms.\n\n# Requirements\n\nImplement the following algorithms:\n- Bubble sort.\n- Insert sort.\n- Selection sort.\n\nFor this project you can consider user input, sort a random string, or use the following input:\n\n```28, 28, 61, 55, 50, 1, 63, 35, 34, 99, 98, 42, 23, 71, 98, 27, 26, 5, 67, 72, 5, 67, 50, 2, 62, 89, 84, 41, 37, 2, 67, 29, 12, 83, 42, 14, 57, 98, 99, 100, 31, 4, 8, 31, 57, 26, 22, 14, 25, 68, 32, 83, 79, 22, 85, 57, 28, 59, 4, 46, 15, 6, 2, 34, 64, 49, 33, 4, 22, 10, 33, 91, 13, 30, 84, 60, 34, 96, 46, 5, 31, 98, 83, 29, 66, 92, 83, 14, 88, 33, 4, 73, 79, 56, 44, 10, 6, 57, 59, 27```\n\n# Deliverables\n\nA GitHub repository with the solution of this project."
+    },
+    {
+      "id": "implement-sorting-ii",
+      "name": "Implement sorting algorithms II",
+      "dependencies": ["search-and-sorting"],
+      "description": "The goal of this project is to implement more advanced sorting algoritms.\n\n# Requirements\n\nImplement the following algorithms:\n- Shell sort.\n- Quicksort.\n\nFor this project you can consider user input, sort a random string, or use the following input:\n\n```28, 28, 61, 55, 50, 1, 63, 35, 34, 99, 98, 42, 23, 71, 98, 27, 26, 5, 67, 72, 5, 67, 50, 2, 62, 89, 84, 41, 37, 2, 67, 29, 12, 83, 42, 14, 57, 98, 99, 100, 31, 4, 8, 31, 57, 26, 22, 14, 25, 68, 32, 83, 79, 22, 85, 57, 28, 59, 4, 46, 15, 6, 2, 34, 64, 49, 33, 4, 22, 10, 33, 91, 13, 30, 84, 60, 34, 96, 46, 5, 31, 98, 83, 29, 66, 92, 83, 14, 88, 33, 4, 73, 79, 56, 44, 10, 6, 57, 59, 27```\n\n# Deliverables\n\nA GitHub repository with the solution of this project."
+    },
+    {
+      "id": "implement-recursion",
+      "name": "Implement recursion algorithms",
+      "dependencies": ["recursion"],
+      "description": "The goal of this project is to implement a basic recursive algorithms.\n\n# Requirements\n\nImplement the following algorithms:\n- Factorial.\n- Fibonacci.\n- Tower of Hanoi.\n\nAs a bonus point you can consider implementing a iterative solution to be able to compare against.\n\n# Deliverables\n\nA GitHub repository with the solution of this project."
+    },
+    {
+      "id": "implement-collection-i",
+      "name": "Implement collections I",
+      "dependencies": ["collections"],
+      "description": "The goal of this project is to implement basic collections.\n\n# Requirements\n\nImplement the following colletions:\n- Linked list.\n- Binary tree.\n- Hash table.\n\nThese collections must be able to: 1) add an element, 2) remove and element, 3) search for an element, and 4) count the amount of elements (must be computed every time).\n\n# Deliverables\n\nA GitHub repository with the solution of this project."
+    },
+    {
+      "id": "implement-collection-ii",
+      "name": "Implement collections II",
+      "dependencies": ["collections"],
+      "description": "The goal of this project is to implement more advanced collections.\n\n# Requirements\n\nImplement the following colletions:\n- Priority Queue.\n- Red-Black Tree.\n- AVL Tree.\n\nThese collections must be able to: 1) add an element, 2) remove and element, 3) search for an element, and 4) count the amount of elements (must be computed every time).\n\n# Deliverables\n\nA GitHub repository with the solution of this project."
+    },
+    {
+      "id": "implement-graph",
+      "name": "Implement graphs",
+      "dependencies": ["graphs-and-dynamic-programming"],
+      "description": "The goal of this project is to implement a graph data structure.\n\n# Requirements\n\nImplement a graph data structure and then implement Dijkstra's algorithm on top of it.\n\n# Deliverables\n\nA GitHub repository with the solution of this project."
+    }
+  ]
+}
