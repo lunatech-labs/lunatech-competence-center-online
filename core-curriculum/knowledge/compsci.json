@@ -111,6 +111,11 @@
           "name": "Computer and Information Ethics",
           "type": "article",
           "url": "https://plato.stanford.edu/entries/ethics-computer/"
+        },
+        {
+          "name": "GDPR: A Practical Guide for Developers",
+          "type": "article",
+          "url": "https://techblog.bozho.net/gdpr-practical-guide-developers/"
         }
       ],
       "abilities": [
@@ -167,9 +172,11 @@
         }
       ],
       "abilities": [
+        "Improve code readability through decomposition and modularity.",
         "Extract common patterns into functions or methods.",
         "Structure and architect solutions in a comprehensible way, through package definition.",
-        "Encapsulate data and behavior inside a class."
+        "Encapsulate data and behavior inside a class.",
+        "Be able to define ADT (Abstract Data Type)"
       ],
       "assessment-questions": [
         { "question": "Which are the parts of a function?" },
@@ -180,7 +187,9 @@
         { "question": "What's the difference between a Class and an Object?" },
         { "question": "What's method overloading?" },
         { "question": "(Java) What's the recommended package structure? How must the folders follow the package structure?", "answer-hint": "Look for _inverse domain_" },
-        { "question": "How does a class encapsulate data and behavior?" }
+        { "question": "How does a class encapsulate data and behavior?" },
+        { "question": "Can you give an example of ADT (Abstract Data Type)?" },
+        { "question": "When do you recommend to extract functionality over a function? Why not a class? Can you explain how you choose? "}
       ]
     },
 
@@ -239,7 +248,7 @@
         }
       ],
       "abilities": [
-        "Pick the right collection for the task at hand.",
+        "Pick the right collection for the task at hand, explaining the reasons behind it.",
         "Implement your own collections.",
         "Understand each collection's semantics"
       ],
@@ -257,12 +266,77 @@
     },
 
     {
-      "id": "recursion",
-      "name": "Recursion",
-      "description": "The concept of recursive programming is often difficult, and usually taught on advanced courses, it’s also unintuitive process; when we give instructions to other people, we rarely direct them recursively. Nonetheless recursion allow us to solve some issues more elegantly with less lines of code ",
+      "id": "logic",
+      "name": "Logic",
+      "description": "Logic, or in this particular case first-order logic is a collection of formal systems used in mathematics, philosophy, linguistics, and computer science. First-order logic is the standard for the formalization of mathematics into axioms.",
       "tags": [],
-      "dependencies": ["decomposition"],
+      "dependencies": [],
       "resources": [
+        {
+          "name": "Introduction to Mathematical Thinking",
+          "type": "book",
+          "url": "https://www.amazon.com/Introduction-Mathematical-Thinking-Keith-Devlin/dp/0615653634",
+          "notes": "See *Chapter 2*"
+        },
+        {
+          "name": "forall X",
+          "type": "book",
+          "url": "https://www.fecundity.com/codex/forallx.pdf"
+        },
+        {
+          "name": "MIT: Mathematics for Computer Science",
+          "type": "video",
+          "url": "https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-042j-mathematics-for-computer-science-spring-2015/proofs/tp2-2/",
+          "notes": "See also *1.5 Quantifiers & Predicate Logic*"
+        },
+        {
+          "name": "Boolean algebra",
+          "type": "article",
+          "url": "https://en.wikipedia.org/wiki/Boolean_algebra"
+        }
+      ],
+      "abilities": [
+        "Think in term of logical predicates, be able to state them in a piece of paper or in a computer program.",
+        "Recognise when a predicate in incorrectly formulated (or invalid), and be able to fix it.",
+        "Simplify logical predicates."
+      ],
+      "assessment-questions": [
+        { "question": "How is an argument valid?" },
+        { "question": "What's a truth table and what is it used for?" },
+        { "question": "What's a Tautology?" },
+        { "question": "What's a Contradiction?" },
+        { "question": "What's a Contingent Sentence?" },
+        { "question": "What's the use of De Morgan's laws? Can you give an example of one?" },
+        { "question": "What are the most common connectives?" },
+        { "question": "How can we compose a predicate?" }
+      ]
+    },
+
+    {
+      "id": "proofs-and-recursion",
+      "name": "Proofs and Recursion",
+      "description": "In mathematics and computer science, a proof is an inferential argument for a mathematical statement, showing deductive or inductive reasoning by employing formal logic.\n\nThe concept of recursive programming is often difficult, and usually taught on advanced courses, it’s also unintuitive process; when we give instructions to other people, we rarely direct them recursively. Nonetheless recursion allow us to solve some issues more elegantly with less lines of code ",
+      "tags": [],
+      "dependencies": ["decomposition", "logic"],
+      "resources": [
+        {
+          "name": "MIT: Mathematics for Computer Science",
+          "type": "video",
+          "url": "https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-042j-mathematics-for-computer-science-spring-2015/proofs/tp1-1/",
+          "notes": "See also *1.2 Proof Methods*"
+        },
+        {
+          "name": "Introduction to Mathematical Thinking",
+          "type": "book",
+          "url": "https://www.amazon.com/Introduction-Mathematical-Thinking-Keith-Devlin/dp/0615653634",
+          "notes": "See *Chapter 3*"
+        },
+        {
+          "name": "Proof in Mathematics: An Introduction",
+          "type": "book",
+          "url": "https://web.maths.unsw.edu.au/~jim/proofs.html",
+          "notes": "Chapters a provided as links"
+        },
         {
           "name": "Think Java: Conditionals and logic",
           "type": "book",
@@ -308,9 +382,11 @@
       ],
       "abilities": [
         "Understand recursive functions.",
-        "Program recursive functions."
+        "Program and debug recursive functions (eg. Buggy base case)."
       ],
       "assessment-questions": [
+        { "question": "Can you explain the similarities between recursion and induction?" },
+        { "question": "What proof methods are there available? Can you give an example?" },
         { "question": "Can you implement your own version of a recursive Fibonacci function?" },
         { "question": "Can you name some advantage of using recursive functions? What about iterative?" },
         { "question": "What are the constituent parts of a recursive function?" }
@@ -351,11 +427,16 @@
         }
       ],
       "abilities": [
-        "Understand basic sorting and searching algorithms."
+        "Understand basic sorting and searching algorithms.",
+        "Implement your own sorting and searching algorithms."
       ],
       "assessment-questions": [
+        { "question": "Can you explain where does the name *Bubble* sort comes from?" },
+        { "question": "Can you explain how does *Bubble sort* work? Can you give an example in a piece of paper?" },
+        { "question": "Can you explain how does *Binary search* work? Can you give an example in a piece of paper?" },
+        { "question": "What's the minimum requirement Binary Search imposes on the data stored?" },
         { "question": "As seen in the next subject, *Complexity*, Bubble and Insert Sort are very slow, where can they find their place in a program?" },
-        { "question": "What's the minimum requirement Binary Search imposes on the data stored?" }
+        { "question": "As seen in the next subject, *Complexity*, why there isn't a better sorting algorithm that `Log(n)`?"}
       ]
     },
 
@@ -363,7 +444,7 @@
       "id": "complexity",
       "name": "Complexity",
       "description": "Computational complexity theory focuses on classifying computational problems according to their inherent difficulty, and relating these classes to each other. The theory formalizes this intuition, by introducing mathematical models of computation to study these problems and quantifying their computational complexity, i.e., the amount of resources needed to solve them, such as time and storage.",
-      "dependencies": [ "search-and-sorting" ],
+      "dependencies": [ "search-and-sorting", "proofs-and-recursion" ],
       "resources": [
         {
           "name": "Coursera Algorithms: Analysis of Algorithms",
@@ -506,7 +587,7 @@
       "id": "numerical-analysis",
       "name": "Numerical Analysis",
       "description": "Numerical analysis is the study of algorithms that use numerical approximation for the problems of mathematical analysis.",
-      "dependencies": [ "recursion" ],
+      "dependencies": [ "proofs-and-recursion" ],
       "resources": [
         {
           "name": "Numerical Methods - Lecture Notes (Cambridge)",
@@ -599,8 +680,8 @@
     {
       "id": "implement-recursion",
       "name": "Implement recursion algorithms",
-      "dependencies": ["recursion"],
-      "description": "The goal of this project is to implement a basic recursive algorithms.\n\n# Requirements\n\nImplement the following algorithms:\n- Factorial.\n- Fibonacci.\n- Tower of Hanoi.\n\nAs a bonus point you can consider implementing a iterative solution to be able to compare against.\n\n# Deliverables\n\nA GitHub repository with the solution of this project."
+      "dependencies": ["proofs-and-recursion"],
+      "description": "The goal of this project is to implement a basic recursive algorithms.\n\n# Requirements\n\nImplement the following algorithms:\n- Factorial.\n- Fibonacci.\n- Tower of Hanoi.\n\nAs a bonus point you can consider implementing an iterative solution to be able to compare against.\n\n# Deliverables\n\nA GitHub repository with the solution of this project."
     },
     {
       "id": "implement-collection-i",
@@ -613,6 +694,12 @@
       "name": "Implement collections II",
       "dependencies": ["collections"],
       "description": "The goal of this project is to implement more advanced collections.\n\n# Requirements\n\nImplement the following colletions:\n- Priority Queue.\n- Red-Black Tree.\n- AVL Tree.\n\nThese collections must be able to: 1) add an element, 2) remove and element, 3) search for an element, and 4) count the amount of elements (must be computed every time).\n\n# Deliverables\n\nA GitHub repository with the solution of this project."
+    },
+    {
+      "id": "implement-huffman",
+      "name": "Implement Huffman coding",
+      "dependencies": ["collections"],
+      "description": "The goal of this project is to implement a compresion algorithm using Huffman codes. It is best to work on this project after implementing your own binary tree.\n\n# Requirements\n\nImplement a program that is able to compress and decompress a string of characters, this program should be able to:\n- Create a Huffman tree based on an input string.\n- Compress an input string based on its Huffman tree.\n- Decompress a string given a Huffman tree.\n\n# Deliverables\n\nA GitHub repository with the solution of this project."
     },
     {
       "id": "implement-graph",
