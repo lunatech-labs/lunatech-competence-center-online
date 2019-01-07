@@ -273,6 +273,12 @@
       "dependencies": [],
       "resources": [
         {
+          "name": "Delftse Foundations of Computation",
+          "type": "book",
+          "url": "https://textbooks.open.tudelft.nl/index.php/textbooks/catalog/view/13/14/64-1",
+          "notes": "See also *Chapter 2 - Logic*. There are also several exercises."
+        },
+        {
           "name": "Introduction to Mathematical Thinking",
           "type": "book",
           "url": "https://www.amazon.com/Introduction-Mathematical-Thinking-Keith-Devlin/dp/0615653634",
@@ -298,17 +304,23 @@
       "abilities": [
         "Think in term of logical predicates, be able to state them in a piece of paper or in a computer program.",
         "Recognise when a predicate in incorrectly formulated (or invalid), and be able to fix it.",
-        "Simplify logical predicates."
+        "Simplify logical propositions.",
+        "Translate logical propositions into logical circuits."
       ],
       "assessment-questions": [
+        { "question": "What's a proposition?" },
+        { "question": "What's the difference between proposition and predicate?" },
         { "question": "How is an argument valid?" },
         { "question": "What's a truth table and what is it used for?" },
         { "question": "What's a Tautology?" },
         { "question": "What's a Contradiction?" },
-        { "question": "What's a Contingent Sentence?" },
+        { "question": "What's a Contingency?" },
         { "question": "What's the use of De Morgan's laws? Can you give an example of one?" },
-        { "question": "What are the most common connectives?" },
-        { "question": "How can we compose a predicate?" }
+        { "question": "What are the most common connectives or operators?" },
+        { "question": "How can we compose a predicate?" },
+        { "question": "What types of quantifiers do we have? Can you give an example?" },
+        { "question": "Can you explain *Logical equivalence*?" },
+        { "question": "Can you explain how propositions get translated into logical circuits? Consider ¬(A∧(B∨C))∨(B∧¬A)" }
       ]
     },
 
@@ -319,6 +331,12 @@
       "tags": [],
       "dependencies": ["decomposition", "logic"],
       "resources": [
+        {
+          "name": "Delftse Foundations of Computation",
+          "type": "book",
+          "url": "https://textbooks.open.tudelft.nl/index.php/textbooks/catalog/view/13/14/64-1",
+          "notes": "See also *Chapter 3 - Proof*. There are also several exercises."
+        },
         {
           "name": "MIT: Mathematics for Computer Science",
           "type": "video",
@@ -387,6 +405,8 @@
       "assessment-questions": [
         { "question": "Can you explain the similarities between recursion and induction?" },
         { "question": "What proof methods are there available? Can you give an example?" },
+        { "question": "Can you explain how *Proof by Contradiction* works?" },
+        { "question": "Can you explain how *Proof by Induction* works?" },
         { "question": "Can you implement your own version of a recursive Fibonacci function?" },
         { "question": "Can you name some advantage of using recursive functions? What about iterative?" },
         { "question": "What are the constituent parts of a recursive function?" }
