@@ -370,20 +370,46 @@ actualState should be(expectedState)
 ### Refactoring
 
 
-## Refactoring
+## Refactoring - Why?
 
-* When tests are thorough enough <!-- .element: class="fragment fade-in-then-semi-out" -->
-* When tests can be run frequently <!-- .element: class="fragment fade-in-then-semi-out" -->
-* When automated tools can support you <!-- .element: class="fragment fade-in-then-semi-out" -->
-* When small steps can be taken <!-- .element: class="fragment fade-in-then-semi-out" -->
-* When all tests are passing <!-- .element: class="fragment fade-in-then-semi-out" -->
+* Deal with technical debt <!-- .element: class="fragment fade-in-then-semi-out" -->
+* Improve current design of code <!-- .element: class="fragment fade-in-then-semi-out" -->
+* Make code easier to understand <!-- .element: class="fragment fade-in-then-semi-out" -->
+* Reduce development time <!-- .element: class="fragment fade-in-then-semi-out" -->
 
 Note:
-* Should be confident that the code is going from working state to another
+* Over time, great solutions to small problems turn into a lot of technical debt
+* Some abstraction may not have been obvious when the code was originally written
+* Making a piece of code more obvious of its intent can reveal 'obvious' bugs
+* Combination of previous points; reduces time needed to add new features
+
+
+## Refactoring - When?
+
+* Tests are thorough enough <!-- .element: class="fragment fade-in-then-semi-out" -->
+* Tests can be run frequently <!-- .element: class="fragment fade-in-then-semi-out" -->
+* Automated tools can support you <!-- .element: class="fragment fade-in-then-semi-out" -->
+* Small steps can be taken <!-- .element: class="fragment fade-in-then-semi-out" -->
+* All tests are passing <!-- .element: class="fragment fade-in-then-semi-out" -->
+
+Note:
+* Should be confident that the code is going from one working state to another
 * Quick feedback reduces the size of the refactoring steps
 * Tools definitely help a lot but they do have limits
 * Making small steps and running tests frequently reduces debugging time
 * Do not refactor and add functionality (or fix bugs) at the same time
+
+
+## Refactoring - Where?
+
+* Code with comments <!-- .element: class="fragment fade-in-then-semi-out" -->
+* Code with high complexity <!-- .element: class="fragment fade-in-then-semi-out" -->
+* Code duplication <!-- .element: class="fragment fade-in-then-semi-out" -->
+
+Note:
+* Code should be expressive enough to not need comments
+* Excessive branching / conditionals (cyclomatic complexity) may indicate that the code does more than one thing
+* Duplication should be avoided but only when the things will change for the same reason
 
 
 ## Guided refactoring
