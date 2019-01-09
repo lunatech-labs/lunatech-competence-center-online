@@ -62,9 +62,6 @@ Note:
 * Big chunks of code and big tests are difficult to maintain and refactor
 * Single responsibility principle
 * Code is easily testable if tests are written first
-* Example Code (bad) - https://github.com/sndnv/sowe/blob/master/src/main/scala/owe/map/ops/EntityOps.scala#L27
-* Example Test (bad) - https://github.com/sndnv/sowe/blob/master/src/test/scala/owe/test/specs/unit/map/ops/EntityOpsSpec.scala#L63
-* Before Refactoring (really bad) - https://github.com/sndnv/sowe/commit/df521c4738b5f048f68dbb2372ced62dfbe85df4?diff=split
 
 
 ## Fibonacci example
@@ -171,6 +168,14 @@ it should "produce Fibonacci numbers" in {
   fib(42) should be(267914296)
 }
 ```
+
+
+## Simple database 1/3
+
+***Data Store***
+
+* Can add, update and remove data
+* Can retrieve data
 ---
 
 ### Getting Started
@@ -225,12 +230,12 @@ Note:
 * Actual code - https://github.com/akka/akka-management/blob/c6f17cd1f7e162638d085e73d92bde6389306807/discovery-marathon-api/src/main/scala/akka/discovery/marathon/MarathonApiSimpleServiceDiscovery.scala#L35
 
 
-## Simple database 1/2
+## Simple database 2/3
 
-***Data Store***
+***Transactions***
 
-* Can add, update and remove data
-* Can retrieve data
+* Can aggregate multiple updates in one request
+* Supports transactions for aggregated updates
 ---
 
 ### What TDD is not
@@ -248,123 +253,6 @@ Note:
 * Can give false sense of security
 * How to mock AWS? - https://github.com/localstack/localstack
 * It might not be always appropriate or practical to follow
----
-
-### Tests
-
-
-## Isolated tests
-
-* One test should not affect another <!-- .element: class="fragment fade-in-then-semi-out" -->
-* Test order should not matter <!-- .element: class="fragment fade-in-then-semi-out" -->
-* Tests should run in parallel <!-- .element: class="fragment fade-in-then-semi-out" -->
-
-Note:
-* Just like production code, isolation is key
-* Tests should make sense on their own, regardless of run order
-* Run tests in parallel decreases development cycle
-
-
-## Starter tests
-
-* Where does a component belong?
-* What inputs does it have?
-* What outputs does it produce?
-
-Note:
-* Answer only one question at a time
-* Heavy use of interfaces/traits helps
-
-
-## Learning tests
-
-* Is an external service behaving as expected?
-* Is its behaviour consistent after updating?
-
-Note:
-* Validate that services/libraries really work as expected
-* Check if an update changes critical behaviour
-* Can serve as concise documentation
-
-
-## Regression tests
-
-* Each bug is a missed test
-
-Note:
-* Find bug => Write test => Fix bug
-
-
-## Mutation tests
-
-* Changing code behaviour to identify flawed tests
-
-Note:
-* Tests for evaluating the quality of existing tests
-* Can mimic common programming mistakes
-* Extremely slow
-* Example - https://github.com/sndnv/sowe/tree/enable-mutation-tests
-
-
-### Mutation Testing libraries
-
-* PIT Mutation Testing - http://pitest.org/ (Java)
-* Mutation testing for Scala - https://github.com/sugakandrey/scalamu (Scala)
-* Stryker - https://stryker-mutator.io/ (JS, C#, Scala)
-
-
-## Meaningful Test Data
-
-```scala
-val state = State(100, 25)
-```
-
-vs <!-- .element: class="fragment fade-in" -->
-
-```scala
-val state = State(
-  currentAmount = Commodity.Amount(100),
-  replenishAmount = Commodity.Amount(25)
-)
-```
-<!-- .element: class="fragment fade-in" -->
-
-
-## Evident Test Data
-
-```scala
-def updateState(state: State): State = ???
-
-updateState(State(100, 25)) should be(State(125, 25))
-```
-
-vs <!-- .element: class="fragment fade-in" -->
-
-```scala
-def updateState(state: State): State = ???
-
-val initialState = State(
-  currentAmount = Commodity.Amount(100),
-  replenishAmount = Commodity.Amount(25)
-)
-
-val expectedState = initialState.copy(
-  currentAmount = initialState.currentAmount + initialState.replenishAmount
-)
-
-val actualState = updateState(initialState)
-
-actualState should be(expectedState)
-```
-<!-- .element: class="fragment fade-in" -->
-
-
-## Simple database 2/2
-
-***Transactions***
-
-* Can aggregate multiple updates in one request
-* Supports transactions for aggregated updates
 ---
 
 ### Refactoring
@@ -409,7 +297,7 @@ Note:
 Note:
 * Code should be expressive enough to not need comments
 * Excessive branching / conditionals (cyclomatic complexity) may indicate that the code does more than one thing
-* Duplication should be avoided but only when the things will change for the same reason
+* Duplication should be avoided but only when two pieces of code will change for the same reason (for example, in tests)
 
 
 ## Guided refactoring
@@ -426,7 +314,7 @@ Note:
 * Remove tests when they say the same thing in the same way and confidence is not reduced
 
 
-## Simple database 3/2
+## Simple database 3/3
 
 ***Persistence***
 
