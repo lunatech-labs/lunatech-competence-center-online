@@ -1,0 +1,27 @@
+{
+  "id": "introduction_to_kubernetes",
+  "name": "Introduction to Kubernetes",
+  "author": "Michael Haddon",
+  "image": "image.jpeg",
+  "description": "An introduction to Kubernetes and container orchestration. This course will give you a brief introduction to infrastructure as code. As well as CI/CD with Jenkins.",
+  "tags": ["kubernetes", "docker", "devops", "jenkins"],
+  "core-curriculum": [],
+  "teachers": ["Michael Haddon"],
+  "contributors": ["Michael Haddon"],
+  "prerequisites": "Will to live and a small amount of knowledge of containerisation.",
+  "preparations": "- Minikube version 0.25.2, Virtual Box ",
+  "schedule": [
+    {
+      "block-name": "Day 1",
+      "description": "N/A"
+    },
+    {
+      "block-name": "Day 2",
+      "description": "N/A"
+    },
+    {
+      "block-name": "Day 3",
+      "description": "N/A"
+    }
+  ]
+}
