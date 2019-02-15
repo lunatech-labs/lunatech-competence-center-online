@@ -104,7 +104,7 @@
         {
           "name": "Core Concepts and architecture",
           "type": "video",
-          "url": "https://academy.datastax.com/resources/ds201-cassandra-core-concepts"
+          "url": "https://academy.datastax.com/resources/ds201-foundations-apache-cassandra"
         }
       ],
       "dependencies": ["apache-cassandra"],
