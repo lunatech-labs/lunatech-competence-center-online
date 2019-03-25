@@ -218,24 +218,25 @@ class PostgresCoreCurriculumService(transactor: Transactor[Task], subjectDirecto
   override def setProjectInProgress(person: String, subject: String, project: String): Future[Unit] = {
     val id = UUID.randomUUID().toString
     val query = sql"""
-      INSERT INTO person_projects (id, person, started_on, done_on, subject,
-      project, url, assessed_on, assessed_by, assessment_notes)
-      VALUES ($id :: uuid, ${person}, current_date, null, $subject, $project, null, null, null, null)
-      ON CONFLICT (person, subject, project) DO UPDATE
-      SET done_on = NULL""".update
+        WITH upsert AS (UPDATE person_projects SET started_on=current_date, done_on = NULL
+        WHERE person = $person and subject=$subject and project=$project RETURNING *)
+        INSERT INTO person_projects (id, person, started_on, done_on, subject, project, url, assessed_on, assessed_by, assessment_notes)
+        SELECT $id :: uuid, $person, current_date, null, $subject, $project, null, null, null, null
+        WHERE NOT EXISTS (SELECT * FROM upsert)
+      """.update
     Future { query.run.transact(transactor).unsafeRun }
   }
 
   override def setProjectDone(person: String, subject: String, project: String): Future[Unit] = {
     val id = UUID.randomUUID().toString
     val query = sql"""
-      INSERT INTO person_projects (id, person, started_on, done_on, subject,
-      project, url, assessed_on, assessed_by, assessment_notes)
-      VALUES ($id :: uuid, ${person}, current_date, current_date, $subject, $project, null, null, null, null)
-      ON CONFLICT (person, subject, project) DO UPDATE
-      SET done_on = current_date
-      WHERE person_projects.done_on is NULL""".update
-
+        WITH upsert AS (UPDATE person_projects SET done_on = current_date WHERE done_on is NULL
+        and person = $person and subject=$subject and project=$project RETURNING *)
+        INSERT INTO person_projects (id, person, started_on, done_on, subject,
+        project, url, assessed_on, assessed_by, assessment_notes)
+        SELECT $id :: uuid, $person, current_date, current_date, $subject, $project, null, null, null, null
+        WHERE NOT EXISTS (SELECT * FROM upsert)
+      """.update
     Future { query.run.transact(transactor).unsafeRun }
   }
 
