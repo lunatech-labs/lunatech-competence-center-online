@@ -1,0 +1,23 @@
+worker_processes 1;
+
+daemon off;
+error_log /dev/stderr info;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    access_log /dev/stdout;
+    sendfile        on;
+    keepalive_timeout  65;
+
+    server {
+        listen       8080;
+        server_name  localhost;
+
+        location / {
+            proxy_pass http://${DOCKER_IP}:8080/;
+        }
+    }
+}
